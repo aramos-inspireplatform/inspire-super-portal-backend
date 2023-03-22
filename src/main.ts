@@ -1,12 +1,35 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ConfigService } from '@nestjs/config';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { NestFactory } from '@nestjs/core';
+import { NestFastifyApplication } from '@nestjs/platform-fastify';
+import { AppModule } from '~/app.module';
+import { apiVersioningFactory } from '~/nestjs/factories/api-versioning.factory';
+import { corstFactory } from '~/nestjs/factories/cors.factory';
+import { fastifyAdapterFactory } from '~/nestjs/factories/fastify-adapter.factory';
+import { fastifyCompressFactory } from '~/nestjs/factories/fastify-compress.factory';
+import { fastifyHelmetFactory } from '~/nestjs/factories/fastify-helmet.factory';
+import { fastifyMultipartFactory } from '~/nestjs/factories/fastify-multipart.factory';
+import { swaggerFactory } from '~/nestjs/factories/swagger.factory';
+import { useGlobalInterceptors } from '~/nestjs/factories/use-global-interceptors.factory';
+import { usePipesFactory } from '~/nestjs/factories/use-pipes.factory';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const configService: ConfigService = app.get<ConfigService>(ConfigService);
+  const fastifyAdapter = fastifyAdapterFactory();
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    fastifyAdapter,
+  );
 
+  usePipesFactory(app);
+  useGlobalInterceptors(app);
+  corstFactory(app);
+  apiVersioningFactory(app);
+  await fastifyHelmetFactory(app);
+  await fastifyMultipartFactory(app);
+  await fastifyCompressFactory(app);
+  swaggerFactory(app);
+
+  const configService: ConfigService = app.get<ConfigService>(ConfigService);
   const httpPort = configService.getOrThrow<number>('PORT');
   await app
     .listen(httpPort)
