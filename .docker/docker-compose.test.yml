@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  inspire_super_portal_postgres_test:
+    container_name: inspire_super_portal_postgres_test
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=inspire_super_portal_test
+    ports:
+      - 5435:5432

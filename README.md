@@ -1,73 +1,163 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+# Running the Containers
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
-
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Installation
+## Test Database
 
 ```bash
-$ npm install
+cd .docker/
+
+docker compose -f docker-compose.test.yml up --build -d
 ```
 
-## Running the app
+## Dev Database
 
 ```bash
-# development
-$ npm run start
+cd .docker/
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker compose up --build -d
 ```
 
-## Test
+
+# Stoping the Containers
 
 ```bash
-# unit tests
-$ npm run test
+cd .docker/
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker compose -f docker-compose.test.yml down
+docker compose down
 ```
 
-## Support
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+# Mapper
 
-## Stay in touch
+How to use the custom mapper
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```ts
+/**
+ * domain/entities.ts
+ */
 
-## License
+class Name {
+  firstname: string;
+  lastname: string;
 
-Nest is [MIT licensed](LICENSE).
+  constructor(attrs: { firstname: string; lastname: string }) {
+    Object.assign(this, attrs);
+  }
+}
+
+type AddressAttrs = { street: string; block: string; neighborhood: string };
+
+class Address {
+  street: string;
+  block: string;
+  neighborhood: string;
+
+  constructor(attrs: AddressAttrs) {
+    Object.assign(this, attrs);
+  }
+}
+
+class Accounts {
+  id: string;
+  name: Name;
+  address: Address;
+
+  constructor(attrs: { id: string; name: Name; address: Address }) {
+    Object.assign(this, attrs);
+  }
+}
+
+/**
+ * infra/mappers.ts
+ */
+
+type ModelAttrs = {
+  id: string;
+  firstname: string;
+  lastname: string;
+  street: string;
+  block: string;
+  neighborhood: string;
+};
+
+
+// This is a Typeorm entity
+class AccountModel {
+  id: string;
+  firstname: string;
+  lastname: string;
+  street: string;
+  block: string;
+  neighborhood: string;
+
+  constructor(attrs: ModelAttrs) {
+    Object.assign(this, attrs);
+  }
+}
+
+/**
+ * domain/mappers.ts
+ */
+
+function Mapper<TIn, TOut>(
+  inClazz: TIn,
+  castFunction: (value: TIn) => TOut,
+): TOut {
+  return castFunction(inClazz);
+}
+
+const accountEntityToModel = (account: Accounts) =>
+  Mapper(
+    account,
+    (accountEntity) =>
+      new AccountModel({
+        block: accountEntity.address.block,
+        firstname: accountEntity.name.firstname,
+        id: accountEntity.id,
+        lastname: accountEntity.name.lastname,
+        neighborhood: accountEntity.address.neighborhood,
+        street: accountEntity.address.street,
+      }),
+  );
+
+const accountModelToEntity = (model: AccountModel) =>
+  Mapper(
+    model,
+    (model) =>
+      new Accounts({
+        id: model.id,
+        address: new Address({
+          block: model.block,
+          neighborhood: model.neighborhood,
+          street: model.street,
+        }),
+        name: new Name({
+          firstname: model.firstname,
+          lastname: model.lastname,
+        }),
+      }),
+  );
+
+/**
+ * main.ts
+ */
+const account = new Accounts({
+  id: '1',
+  name: new Name({ firstname: 'Geovane', lastname: 'Otto' }),
+  address: new Address({
+    street: 'street',
+    block: 'block',
+    neighborhood: 'neighborhood',
+  }),
+});
+
+const model = accountEntityToModel(account);
+
+const entity = accountModelToEntity(model);
+
+console.log(model);
+console.log('\t\t-----\t\t');
+console.log(entity);
+
+
+```
