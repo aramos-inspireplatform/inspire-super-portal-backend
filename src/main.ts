@@ -18,6 +18,9 @@ async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
     AppModule,
     fastifyAdapter,
+    {
+      snapshot: true,
+    },
   );
 
   usePipesFactory(app);
