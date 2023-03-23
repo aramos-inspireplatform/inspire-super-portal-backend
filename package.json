@@ -109,12 +109,17 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
+    "coverageDirectory": "./coverage",
     "testEnvironment": "node",
     "coveragePathIgnorePatterns": [
       "<rootDir>/src/nestjs",
       "<rootDir>/src/common",
+      "<rootDir>/src/shared/infra/database",
+      "<rootDir>/src/shared/infra/nestjs",
+      "<rootDir>/src/shared/infra/env",
+      "<rootDir>/src/shared/infra/readme-docs",
       "<rootDir>/src/main.ts",
+      "<rootDir>/src/repl.ts",
       "index.ts"
     ],
     "roots": [
