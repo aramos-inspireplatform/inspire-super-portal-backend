@@ -1,15 +1,16 @@
 // TODO: move to the jwt options from lib
-type SignOptions = {
-  expiresIn: string;
-};
+export namespace IJwtService {
+  type SignOptions = {
+    expiresIn: string;
+  };
 
-type JwtArgs<T> = {
-  payload: T;
-  subject: string;
-  issuer?: string;
-  signOptions: SignOptions;
-};
-
+  type JwtArgs<T> = {
+    payload: T;
+    subject: string;
+    issuer?: string;
+    signOptions: SignOptions;
+  };
+}
 export type ClassContructor<T> = new () => T;
 
 export interface IJwtService {

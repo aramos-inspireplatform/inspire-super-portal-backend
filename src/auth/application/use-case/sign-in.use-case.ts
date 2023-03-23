@@ -1,14 +1,19 @@
+import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 import { IJwtService } from '~/auth/infra/json-web-tokens/services/jwt.service';
 import { IPasswordHashService } from '~/auth/infra/password-hash/services/password-hash.service';
 import { ClassContructor } from '~/shared/types/class-constructor.type';
 
-type AuthUser = {
-  id: string;
-  passwordHash: string;
-  email: string;
-};
+export namespace AuthSignInService {
+  export type AuthUser = {
+    id: string;
+    passwordHash: string;
+    email: string;
+  };
+}
 
-export class AuthSignInService<TUser extends AuthUser> {
+export class AuthSignInService<
+  TUser extends AuthSignInService.AuthUser = AuthSignInService.AuthUser,
+> {
   constructor(
     private readonly passwordHashService: IPasswordHashService,
     private readonly jwtService: IJwtService,
@@ -26,7 +31,7 @@ export class AuthSignInService<TUser extends AuthUser> {
     if (!isValidPassword)
       throw args.throwableError
         ? new args.throwableError()
-        : new Error('invalid credentials');
+        : new InvalidCredentialsException();
 
     const accessToken = await this.jwtService.sign({
       signOptions: {
