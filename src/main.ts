@@ -3,15 +3,15 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { AppModule } from '~/app.module';
-import { apiVersioningFactory } from '~/nestjs/factories/api-versioning.factory';
-import { corstFactory } from '~/nestjs/factories/cors.factory';
-import { fastifyAdapterFactory } from '~/nestjs/factories/fastify-adapter.factory';
-import { fastifyCompressFactory } from '~/nestjs/factories/fastify-compress.factory';
-import { fastifyHelmetFactory } from '~/nestjs/factories/fastify-helmet.factory';
-import { fastifyMultipartFactory } from '~/nestjs/factories/fastify-multipart.factory';
-import { swaggerFactory } from '~/nestjs/factories/swagger.factory';
-import { useGlobalInterceptors } from '~/nestjs/factories/use-global-interceptors.factory';
-import { usePipesFactory } from '~/nestjs/factories/use-pipes.factory';
+import { apiVersioningFactory } from '~/shared/infra/nestjs/factories/api-versioning.factory';
+import { corstFactory } from '~/shared/infra/nestjs/factories/cors.factory';
+import { fastifyAdapterFactory } from '~/shared/infra/nestjs/factories/fastify-adapter.factory';
+import { fastifyCompressFactory } from '~/shared/infra/nestjs/factories/fastify-compress.factory';
+import { fastifyHelmetFactory } from '~/shared/infra/nestjs/factories/fastify-helmet.factory';
+import { fastifyMultipartFactory } from '~/shared/infra/nestjs/factories/fastify-multipart.factory';
+import { swaggerFactory } from '~/shared/infra/nestjs/factories/swagger.factory';
+import { useGlobalInterceptors } from '~/shared/infra/nestjs/factories/use-global-interceptors.factory';
+import { usePipesFactory } from '~/shared/infra/nestjs/factories/use-pipes.factory';
 
 async function bootstrap() {
   const fastifyAdapter = fastifyAdapterFactory();
