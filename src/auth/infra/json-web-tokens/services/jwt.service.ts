@@ -4,7 +4,7 @@ export namespace IJwtService {
     expiresIn: string;
   };
 
-  type JwtArgs<T> = {
+  export type JwtArgs<T> = {
     payload: T;
     subject: string;
     issuer?: string;
@@ -14,7 +14,7 @@ export namespace IJwtService {
 export type ClassContructor<T> = new () => T;
 
 export interface IJwtService {
-  sign<T>(args: JwtArgs<T>): Promise<string>;
+  sign<T>(args: IJwtService.JwtArgs<T>): Promise<string>;
 
   validateAccessToken<DecodedToken>(args: {
     token: string;

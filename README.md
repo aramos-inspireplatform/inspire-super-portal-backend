@@ -170,3 +170,26 @@ console.log(entity);
 
 
 ```
+
+
+
+# Improvements
+
+Na classe AuthSignInService fazer com que o AccessToken e RefreshToken sejam IJwtService
+
+Saindo disso:
+```ts
+  constructor(
+    private readonly passwordHashService: IPasswordHashService,
+    private readonly jwtService: IJwtService,
+  ) {}
+```
+
+Para isso:
+```ts
+  constructor(
+    private readonly passwordHashService: IPasswordHashService,
+    private readonly accessTokenService: IJwtService,
+    private readonly refreshTokenService: IJwtService,
+  ) {}
+```
