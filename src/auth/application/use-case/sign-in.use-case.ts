@@ -1,7 +1,7 @@
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 import { IJwtService } from '~/auth/infra/json-web-tokens/services/jwt.service';
 import { IPasswordHashService } from '~/auth/infra/password-hash/services/password-hash.service';
-import { ClassContructor } from '~/shared/types/class-constructor.type';
+import { ClassConstructor } from '~/shared/types/class-constructor.type';
 
 export namespace AuthSignInService {
   export type AuthUser = {
@@ -22,7 +22,7 @@ export class AuthSignInService<
   async signIn(args: {
     user: TUser;
     password: string;
-    throwableError?: ClassContructor<Error>;
+    throwableError?: ClassConstructor<Error>;
   }) {
     const isValidPassword = await this.passwordHashService.compare({
       hash: args.user.passwordHash,

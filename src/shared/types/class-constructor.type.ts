@@ -1,1 +1,1 @@
-export type ClassContructor<T> = new () => T;
+export type ClassConstructor<T> = new () => T;
