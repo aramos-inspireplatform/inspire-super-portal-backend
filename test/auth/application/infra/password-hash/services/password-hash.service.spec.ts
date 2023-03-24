@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import { PasswordHashService } from '~/auth/infra/password-hash/services/password-hash.service';
+import { PasswordHashService } from '~/auth/infra/password-hash/password-hash.service';
 
 const sut = new PasswordHashService();
 

@@ -38,14 +38,14 @@ describe('UsersService', () => {
 
   describe('findByEmail', () => {
     it('should throw an error when user is not found', async () => {
-      userRepository.findBy.mockResolvedValueOnce(null);
+      userRepository.findByEmail.mockResolvedValueOnce(null);
       expect(
         usersService.findByEmail({ email: 'any-email@email.com' }),
       ).rejects.toThrow(new UserNotFoundException());
     });
 
     it('should throw an specific error when user is not found', async () => {
-      userRepository.findBy.mockResolvedValueOnce(null);
+      userRepository.findByEmail.mockResolvedValueOnce(null);
       expect(
         usersService.findByEmail({
           email: 'any-email@email.com',
@@ -56,7 +56,7 @@ describe('UsersService', () => {
 
     it('should return an user when success', async () => {
       const user = makeUserFaker();
-      userRepository.findBy.mockResolvedValueOnce(user);
+      userRepository.findByEmail.mockResolvedValueOnce(user);
       expect(
         usersService.findByEmail({ email: user.email }),
       ).resolves.toBeInstanceOf(User);

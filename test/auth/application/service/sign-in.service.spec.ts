@@ -1,12 +1,12 @@
 import { mock, MockProxy } from 'jest-mock-extended';
 import { AuthSignInService } from '~/auth/application/service/sign-in.service';
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
-import { IJwtService } from '~/auth/infra/json-web-tokens/services/jwt.service';
-import { IPasswordHashService } from '~/auth/infra/password-hash/services/password-hash.service';
+import { IJsonWebTokensService } from '~/auth/infra/contracts/json-web-tokens-service.contract';
+import { IPasswordHashService } from '~/auth/infra/contracts/password-hash-service.contract';
 
 const makeSut = () => {
-  const mockAccessTokenJwtService = mock<IJwtService>();
-  const mockRefreshTokenJwtService = mock<IJwtService>();
+  const mockAccessTokenJwtService = mock<IJsonWebTokensService>();
+  const mockRefreshTokenJwtService = mock<IJsonWebTokensService>();
   const mockPasswordHashService = mock<IPasswordHashService>();
   const sut = new AuthSignInService(
     mockPasswordHashService,
@@ -30,8 +30,8 @@ class ErrorExample extends Error {
 describe('AuthSignInService', () => {
   let signInService: AuthSignInService;
   let passwordHash: MockProxy<IPasswordHashService>;
-  let jwtAccessTokenService: MockProxy<IJwtService>;
-  let jwtRefreshTokenService: MockProxy<IJwtService>;
+  let jwtAccessTokenService: MockProxy<IJsonWebTokensService>;
+  let jwtRefreshTokenService: MockProxy<IJsonWebTokensService>;
 
   beforeEach(() => {
     const {
