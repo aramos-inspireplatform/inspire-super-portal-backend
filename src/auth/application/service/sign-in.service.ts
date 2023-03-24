@@ -1,13 +1,13 @@
 import { ISignInService } from '~/auth/application/service/contracts/sign-in.contract';
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
-import { IJwtService } from '~/auth/infra/json-web-tokens/services/jwt.service';
-import { IPasswordHashService } from '~/auth/infra/password-hash/services/password-hash.service';
+import { IJsonWebTokensService } from '~/auth/infra/contracts/json-web-tokens-service.contract';
+import { IPasswordHashService } from '~/auth/infra/contracts/password-hash-service.contract';
 
 export class AuthSignInService implements ISignInService {
   constructor(
     private readonly passwordHashService: IPasswordHashService,
-    private readonly accessTokenJwtService: IJwtService,
-    private readonly refreshTokenJwtService: IJwtService,
+    private readonly accessTokenJwtService: IJsonWebTokensService,
+    private readonly refreshTokenJwtService: IJsonWebTokensService,
   ) {}
 
   async signIn(

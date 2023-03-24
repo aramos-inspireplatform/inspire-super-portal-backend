@@ -1,5 +1,10 @@
 import { User } from '~/users/domain/entities/user.entity';
 
+export namespace IUserRepository {
+  export type Params = { email: string };
+  export type Result = Promise<User | undefined>;
+}
+
 export interface IUserRepository {
-  findBy(attrs: { field: string; value: any }): Promise<User>;
+  findByEmail(attrs: IUserRepository.Params): IUserRepository.Result;
 }

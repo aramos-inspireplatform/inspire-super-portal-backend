@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AuthModule } from '~/auth/ioc/auth.module';
+import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
 import { validateEnvironmentSchema } from '~/shared/infra/env/validate-environment';
-import { DatabaseModule } from '~/shared/infra/database/database.module';
+import { UsersModule } from '~/users/ioc/users.module';
 
 @Module({
   imports: [
@@ -12,6 +14,8 @@ import { DatabaseModule } from '~/shared/infra/database/database.module';
       validate: validateEnvironmentSchema,
     }),
     DatabaseModule,
+    UsersModule,
+    AuthModule,
   ],
 })
 export class AppModule {}

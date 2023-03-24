@@ -2,11 +2,12 @@ import { ConfigService } from '@nestjs/config';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import * as migrations from '~/shared/infra/database/migrations';
 import * as entities from '~/shared/infra/database/entities';
+import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 
-export class DatabaseProviderFactory {
+export class DataSourceProviderFactory {
   static register() {
     return {
-      provide: 'DATA_SOURCE',
+      provide: DatabaseProvidersSymbols.DATA_SOURCE,
       useFactory: async (configService: ConfigService) => {
         const dataSource = new DataSource(
           this.generateDataSourceOptions(configService),
@@ -33,7 +34,6 @@ export class DatabaseProviderFactory {
         migrationsRun: true,
         synchronize: false,
       };
-
     return {
       type: 'postgres',
       host: configService.getOrThrow('DB_HOST'),
@@ -44,6 +44,7 @@ export class DatabaseProviderFactory {
       entities,
       migrations,
       synchronize: false,
+      logging: configService.get<string>('DB_LOGGING', 'false') === 'true',
     };
   }
 }

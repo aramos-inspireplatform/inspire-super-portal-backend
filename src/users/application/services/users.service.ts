@@ -11,9 +11,8 @@ export class UsersService implements IFindUserByEmail {
     email: string;
     throwableError?: ClassConstructor<Error>;
   }): Promise<User> {
-    const user = await this.userRepository.findBy({
-      field: 'email',
-      value: attrs.email,
+    const user = await this.userRepository.findByEmail({
+      email: attrs.email,
     });
     if (!user)
       throw attrs.throwableError
