@@ -55,6 +55,7 @@
     "typeorm-model-generator": "^0.4.6"
   },
   "devDependencies": {
+    "@faker-js/faker": "^7.6.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
@@ -96,7 +97,7 @@
     },
     "moduleNameMapper": {
       "^~/(.*)$": "<rootDir>/src/$1",
-      "^~test/(.*)+": "<rootDir>/test/$1"
+      "^~/test/(.*)+": "<rootDir>/test/$1"
     },
     "moduleFileExtensions": [
       "js",

@@ -1,62 +1,19 @@
-import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
-import { IJwtService } from '~/auth/infra/json-web-tokens/services/jwt.service';
-import { IPasswordHashService } from '~/auth/infra/password-hash/services/password-hash.service';
-import { ClassConstructor } from '~/shared/types/class-constructor.type';
+import { AuthSignInService } from '~/auth/application/service/sign-in.service';
+import { IFindUserByEmail } from '~/users/application/services/contracts/find-user-by-email.contract';
 
-export namespace AuthSignInService {
-  export type AuthUser = {
-    id: string;
-    passwordHash: string;
-    email: string;
-  };
-}
-
-export class AuthSignInService<
-  TUser extends AuthSignInService.AuthUser = AuthSignInService.AuthUser,
-> {
+export class SignInUseCase {
   constructor(
-    private readonly passwordHashService: IPasswordHashService,
-    private readonly jwtService: IJwtService,
+    private readonly findUser: IFindUserByEmail,
+    private readonly authSignInService: AuthSignInService,
   ) {}
 
-  async signIn(args: {
-    user: TUser;
-    password: string;
-    throwableError?: ClassConstructor<Error>;
-  }) {
-    const isValidPassword = await this.passwordHashService.compare({
-      hash: args.user.passwordHash,
-      plain: args.password,
+  async signIn(attrs: { email: string; password: string }) {
+    const user = await this.findUser.findByEmail({
+      email: attrs.email,
     });
-    if (!isValidPassword)
-      throw args.throwableError
-        ? new args.throwableError()
-        : new InvalidCredentialsException();
-
-    const accessToken = await this.jwtService.sign({
-      signOptions: {
-        expiresIn: process.env.JWT_EXPIRE_IN as string,
-      },
-      payload: {
-        email: args.user.email,
-      },
-      subject: args.user.id,
-      issuer: process.env.JWT_ISSUER,
+    return this.authSignInService.signIn({
+      password: attrs.password,
+      user,
     });
-    const refreshToken = await this.jwtService.sign({
-      signOptions: {
-        expiresIn: process.env.JWT_EXPIRE_IN as string,
-      },
-      payload: {
-        email: args.user.email,
-      },
-      subject: args.user.id,
-      issuer: process.env.JWT_ISSUER,
-    });
-
-    return {
-      accessToken,
-      refreshToken,
-    };
   }
 }

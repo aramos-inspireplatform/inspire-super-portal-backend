@@ -1,15 +1,9 @@
 import { ClassConstructor } from '~/shared/types/class-constructor.type';
 
 export namespace IJwtService {
-  type SignOptions = {
-    expiresIn: string;
-  };
-
   export type JwtArgs<T> = {
     payload: T;
     subject: string;
-    issuer?: string;
-    signOptions: SignOptions;
   };
 }
 
