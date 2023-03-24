@@ -1,16 +1,22 @@
-import { AuthSignInService } from '~/auth/application/use-case/sign-in.use-case';
+import { mock, MockProxy } from 'jest-mock-extended';
+import { AuthSignInService } from '~/auth/application/service/sign-in.service';
+import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 import { IJwtService } from '~/auth/infra/json-web-tokens/services/jwt.service';
 import { IPasswordHashService } from '~/auth/infra/password-hash/services/password-hash.service';
-import { mock, MockProxy } from 'jest-mock-extended';
-import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 
 const makeSut = () => {
-  const mockJwtService = mock<IJwtService>();
+  const mockAccessTokenJwtService = mock<IJwtService>();
+  const mockRefreshTokenJwtService = mock<IJwtService>();
   const mockPasswordHashService = mock<IPasswordHashService>();
-  const sut = new AuthSignInService(mockPasswordHashService, mockJwtService);
+  const sut = new AuthSignInService(
+    mockPasswordHashService,
+    mockAccessTokenJwtService,
+    mockRefreshTokenJwtService,
+  );
   return {
     sut,
-    mockJwtService,
+    mockAccessTokenJwtService,
+    mockRefreshTokenJwtService,
     mockPasswordHashService,
   };
 };
@@ -24,13 +30,20 @@ class ErrorExample extends Error {
 describe('AuthSignInService', () => {
   let signInService: AuthSignInService;
   let passwordHash: MockProxy<IPasswordHashService>;
-  let jwtService: MockProxy<IJwtService>;
+  let jwtAccessTokenService: MockProxy<IJwtService>;
+  let jwtRefreshTokenService: MockProxy<IJwtService>;
 
   beforeEach(() => {
-    const { sut, mockPasswordHashService, mockJwtService } = makeSut();
+    const {
+      sut,
+      mockPasswordHashService,
+      mockAccessTokenJwtService,
+      mockRefreshTokenJwtService,
+    } = makeSut();
     signInService = sut;
     passwordHash = mockPasswordHashService;
-    jwtService = mockJwtService;
+    jwtAccessTokenService = mockAccessTokenJwtService;
+    jwtRefreshTokenService = mockRefreshTokenJwtService;
   });
 
   afterEach(() => {
@@ -39,7 +52,7 @@ describe('AuthSignInService', () => {
   });
 
   it('should throw when password is invalid', async () => {
-    const user: AuthSignInService.AuthUser = {
+    const user = {
       email: 'any-email@mail.com',
       id: 'any-id',
       passwordHash: 'hash-password',
@@ -54,7 +67,7 @@ describe('AuthSignInService', () => {
   });
 
   it('should throw correct error when invalid login', async () => {
-    const user: AuthSignInService.AuthUser = {
+    const user = {
       email: 'any-email@mail.com',
       id: 'any-id',
       passwordHash: 'hash-password',
@@ -70,14 +83,14 @@ describe('AuthSignInService', () => {
   });
 
   it('should return accessToken and refreshToken on success', async () => {
-    const user: AuthSignInService.AuthUser = {
+    const user = {
       email: 'any-email@mail.com',
       id: 'any-id',
       passwordHash: 'hash-password',
     };
     passwordHash.compare.mockResolvedValueOnce(true);
-    jwtService.sign.mockResolvedValueOnce('any-access-token');
-    jwtService.sign.mockResolvedValueOnce('any-refresh-token');
+    jwtAccessTokenService.sign.mockResolvedValueOnce('any-access-token');
+    jwtRefreshTokenService.sign.mockResolvedValueOnce('any-refresh-token');
     expect(
       signInService.signIn({
         user,
