@@ -1,35 +1,53 @@
-import { mock, MockProxy } from 'jest-mock-extended';
-import { AuthSignInService } from '~/auth/application/service/sign-in.service';
+import { MockProxy, mock } from 'jest-mock-extended';
 import { SignInUseCase } from '~/auth/application/use-case/sign-in.use-case';
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
-import { makeUserFaker } from '../../../users/faker/user.faker'; //TODO: needs to find a fix for this shit
-import { IFindUserByEmail } from '~/users/application/services/contracts/find-user-by-email.contract';
-import { User } from '~/users/domain/entities/user.entity';
-import { UserNotFoundException } from '~/users/domain/exceptions/user-not-found.exception';
+import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
+import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
+import { makeUserFaker } from '../../../users/faker/user.faker'; // TODO: fix this import on import mappers tsconfig.json
+import { IUserRepository } from '~/users/infra/contracts/repository/user-repository.contract';
 
 const makeSut = () => {
-  const mockFindUser = mock<IFindUserByEmail>();
-  const mockAuthSignInService = mock<AuthSignInService>();
+  const mockUserRepository = mock<IUserRepository>();
+  const mockPasswordHashService = mock<IPasswordHashService>();
+  const mockAccessTokenJwtService = mock<IJsonWebTokensService>();
+  const mockRefreshTokenJwtService = mock<IJsonWebTokensService>();
 
-  const sut = new SignInUseCase(mockFindUser, mockAuthSignInService);
+  const sut = new SignInUseCase(
+    mockUserRepository,
+    mockPasswordHashService,
+    mockAccessTokenJwtService,
+    mockRefreshTokenJwtService,
+  );
 
   return {
     sut,
-    mockFindUser,
-    mockAuthSignInService,
+    mockUserRepository,
+    mockPasswordHashService,
+    mockAccessTokenJwtService,
+    mockRefreshTokenJwtService,
   };
 };
 
 describe('SignInUseCase', () => {
+  let userRepository: MockProxy<IUserRepository>;
   let signInUseCase: SignInUseCase;
-  let findUser: MockProxy<IFindUserByEmail>;
-  let authSignInService: MockProxy<AuthSignInService>;
+  let passwordHashService: MockProxy<IPasswordHashService>;
+  let accessTokenJwtService: MockProxy<IJsonWebTokensService>;
+  let refreshTokenJwtService: MockProxy<IJsonWebTokensService>;
 
   beforeEach(() => {
-    const { sut, mockFindUser, mockAuthSignInService } = makeSut();
+    const {
+      sut,
+      mockUserRepository,
+      mockPasswordHashService,
+      mockAccessTokenJwtService,
+      mockRefreshTokenJwtService,
+    } = makeSut();
     signInUseCase = sut;
-    findUser = mockFindUser;
-    authSignInService = mockAuthSignInService;
+    userRepository = mockUserRepository;
+    passwordHashService = mockPasswordHashService;
+    accessTokenJwtService = mockAccessTokenJwtService;
+    refreshTokenJwtService = mockRefreshTokenJwtService;
   });
 
   afterEach(() => {
@@ -38,47 +56,41 @@ describe('SignInUseCase', () => {
   });
 
   describe('signIn', () => {
-    it('should throw a UserNotFoundException when user do not exists', async () => {
-      findUser.findByEmail.mockRejectedValueOnce(new UserNotFoundException());
-      expect(
-        signInUseCase.signIn({
-          email: 'any-email@email.com',
-          password: 'any-password',
-        }),
-      ).rejects.toThrow(new UserNotFoundException());
-    });
-
-    it('should throw a when password missmatch', async () => {
-      const user: User = makeUserFaker();
-      findUser.findByEmail.mockResolvedValueOnce(user);
-      authSignInService.signIn.mockRejectedValueOnce(
-        new InvalidCredentialsException(),
-      );
-      expect(
-        signInUseCase.signIn({
-          email: user.email,
-          password: 'any-password',
-        }),
+    it('should throw when user is not found', async () => {
+      userRepository.findByEmail.mockResolvedValueOnce(null);
+      await expect(
+        signInUseCase.signIn({ email: 'any-email@mail.com', password: '123' }),
       ).rejects.toThrow(new InvalidCredentialsException());
     });
 
-    it('should return accessToken and refresh token on success', async () => {
-      const user: User = makeUserFaker();
-      findUser.findByEmail.mockResolvedValueOnce(user);
-      authSignInService.signIn.mockResolvedValueOnce({
-        accessToken: 'any-access-token',
-        refreshToken: 'any-refresh-token',
-      });
+    it('should throw when password is not valid', async () => {
+      const mockedUser = makeUserFaker();
+      userRepository.findByEmail.mockResolvedValueOnce(mockedUser);
+      passwordHashService.compare.mockResolvedValueOnce(false);
+      await expect(
+        signInUseCase.signIn({ email: 'any-email@mail.com', password: '123' }),
+      ).rejects.toThrow(new InvalidCredentialsException());
+    });
 
-      expect(
-        signInUseCase.signIn({
-          email: user.email,
-          password: 'any-password',
-        }),
-      ).resolves.toStrictEqual({
-        accessToken: 'any-access-token',
-        refreshToken: 'any-refresh-token',
-      });
+    it('should return an accessToken and refreshToken when success', async () => {
+      const mockedUser = makeUserFaker();
+      userRepository.findByEmail.mockResolvedValueOnce(mockedUser);
+      passwordHashService.compare.mockResolvedValueOnce(true);
+      accessTokenJwtService.sign.mockResolvedValueOnce(
+        'valid.jwt.access-token',
+      );
+      refreshTokenJwtService.sign.mockResolvedValueOnce(
+        'valid.jwt.refresh-token',
+      );
+
+      const result = {
+        accessToken: 'valid.jwt.access-token',
+        refreshToken: 'valid.jwt.refresh-token',
+      };
+
+      await expect(
+        signInUseCase.signIn({ email: 'any-email@mail.com', password: '123' }),
+      ).resolves.toStrictEqual(result);
     });
   });
 });
