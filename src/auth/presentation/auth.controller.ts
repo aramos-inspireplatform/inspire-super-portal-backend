@@ -1,14 +1,11 @@
 import { Body, Controller, Inject, Ip, Post } from '@nestjs/common';
-import {
-  ApiDefaultResponse,
-  ApiTags,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { SignInUseCase } from '~/auth/application/use-case/sign-in.use-case';
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 import { AuthProvidersSymbols } from '~/auth/ioc/providers/auth-providers.symbols';
 import { SignInPayloadRequestBodyDto } from '~/auth/presentation/dto/input/sign-in-payload.dto';
 import { SignInResponseBodyDto } from '~/auth/presentation/dto/output/sign-in.dto';
+import { ApiErrorResponse } from '~/shared/infra/nestjs/decorators/api-error-response';
 import { UserAgent } from '~/shared/infra/nestjs/decorators/use-agent.decorator';
 
 @Controller('auth')
@@ -21,7 +18,11 @@ export class AuthController {
 
   @Post('sign-in')
   @ApiDefaultResponse({ type: SignInResponseBodyDto })
-  @ApiUnauthorizedResponse({ type: InvalidCredentialsException }) // TODO: needs to fix this on the swagger
+  @ApiErrorResponse({
+    message: InvalidCredentialsException.MESSAGE,
+    status: InvalidCredentialsException.STATUS_CODE,
+    error: InvalidCredentialsException.ERROR,
+  })
   async signIn(
     @Body() payload: SignInPayloadRequestBodyDto,
     @Ip() ipAddress: string,

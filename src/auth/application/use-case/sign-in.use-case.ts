@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
+import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';
 import { UserLogin } from '~/users/domain/entities/user-login.entity';
 import { User } from '~/users/domain/entities/user.entity';
 import { IUserLoginsRepository } from '~/users/infra/contracts/repository/user-logins-repository.contract';
@@ -86,7 +87,7 @@ export class SignInUseCase {
     await this.userLoginsRepository.create(
       new UserLogin({
         createdDate: new Date(),
-        id: randomUUID(), //TODO: needs to fix this part, missing informations of how we will make this id -> move to a function adapter (crypto)
+        id: RandomUUIDGeneratorAdapter(),
         ipAddress,
         userAgent,
         userId: user.id,

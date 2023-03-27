@@ -1,7 +1,7 @@
 import { InstanceProperties } from '~/shared/types/class-properties.type';
 import { User } from '~/users/domain/entities/user.entity';
 import { faker } from '@faker-js/faker';
-import { randomUUID } from 'crypto';
+import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';
 
 export const makeUserFaker = (attrs?: Partial<InstanceProperties<User>>) => {
   const fakerInstanceAttrs: InstanceProperties<User> = {
@@ -9,7 +9,7 @@ export const makeUserFaker = (attrs?: Partial<InstanceProperties<User>>) => {
     adminBlockedDate: null,
     email: faker.internet.email(),
     firstName: faker.name.firstName(),
-    id: randomUUID(),
+    id: RandomUUIDGeneratorAdapter(),
     lastName: faker.name.lastName(),
     lockoutEndDate: null,
     passwordHash: faker.lorem.word(),
