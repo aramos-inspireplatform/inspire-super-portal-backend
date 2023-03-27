@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { Languages } from '~/shared/infra/database/entities/languages';
@@ -54,38 +55,38 @@ export class Users extends BaseEntity {
   logoutDate: Date | null;
 
   @OneToMany(() => UserAgencies, (userAgencies) => userAgencies.users)
-  userAgencies: UserAgencies[];
+  userAgencies: Relation<UserAgencies>[];
 
   @OneToMany(
     () => UserAllowedTenants,
     (userAllowedTenants) => userAllowedTenants.users,
   )
-  userAllowedTenants: UserAllowedTenants[];
+  userAllowedTenants: Relation<UserAllowedTenants>[];
 
   @OneToMany(() => UserLogins, (userLogins) => userLogins.user)
-  userLogins: UserLogins[];
+  userLogins: Relation<UserLogins>[];
 
   @OneToMany(() => UserRoles, (userRoles) => userRoles.user)
-  userRoles: UserRoles[];
+  userRoles: Relation<UserRoles>[];
 
   @ManyToOne(() => States, (states) => states.users, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'address_state_id', referencedColumnName: 'id' }])
-  addressState: States;
+  addressState: Relation<States>;
 
   @ManyToOne(() => Languages, (languages) => languages.users, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'language_id', referencedColumnName: 'id' }])
-  language: Languages;
+  language: Relation<Languages>;
 
   @ManyToOne(() => TimeZones, (timeZones) => timeZones.users, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'time_zone_id', referencedColumnName: 'id' }])
-  timeZone: TimeZones;
+  timeZone: Relation<TimeZones>;
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { Users } from '~/shared/infra/database/entities/users';
 
@@ -23,5 +23,5 @@ export class Languages extends BaseEntity {
   isActive: boolean;
 
   @OneToMany(() => Users, (users) => users.language)
-  users: Users[];
+  users: Relation<Users>[];
 }

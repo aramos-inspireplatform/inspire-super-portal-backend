@@ -1,4 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { Users } from '~/shared/infra/database/entities/users';
 
@@ -16,5 +23,5 @@ export class UserLogins extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  user: Users;
+  user: Relation<Users>;
 }

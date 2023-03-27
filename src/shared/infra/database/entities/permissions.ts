@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { Actions } from '~/shared/infra/database/entities/actions';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
@@ -34,18 +35,18 @@ export class Permissions extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'action_id', referencedColumnName: 'id' }])
-  action: Actions;
+  action: Relation<Actions>;
 
   @ManyToOne(() => Subjects, (subjects) => subjects.permissions, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'subject_id', referencedColumnName: 'id' }])
-  subject: Subjects;
+  subject: Relation<Subjects>;
 
   @OneToMany(
     () => RolePermissions,
     (rolePermissions) => rolePermissions.permission,
   )
-  rolePermissions: RolePermissions[];
+  rolePermissions: Relation<RolePermissions>[];
 }

@@ -1,4 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { Roles } from '~/shared/infra/database/entities/roles';
 import { Users } from '~/shared/infra/database/entities/users';
@@ -22,12 +29,12 @@ export class UserRoles extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'role_id', referencedColumnName: 'id' }])
-  role: Roles;
+  role: Relation<Roles>;
 
   @ManyToOne(() => Users, (users) => users.userRoles, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'user_id', referencedColumnName: 'id' }])
-  user: Users;
+  user: Relation<Users>;
 }

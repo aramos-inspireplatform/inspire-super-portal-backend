@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { AgencyTenants } from '~/shared/infra/database/entities/agency-tenants';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { UserAllowedTenants } from '~/shared/infra/database/entities/user-allowed-tenants';
@@ -13,11 +13,11 @@ export class Tenants extends BaseEntity {
   tenantCode: string;
 
   @OneToMany(() => AgencyTenants, (agencyTenants) => agencyTenants.tenants)
-  agencyTenants: AgencyTenants[];
+  agencyTenants: Relation<AgencyTenants>[];
 
   @OneToMany(
     () => UserAllowedTenants,
     (userAllowedTenants) => userAllowedTenants.tenants,
   )
-  userAllowedTenants: UserAllowedTenants[];
+  userAllowedTenants: Relation<UserAllowedTenants>[];
 }

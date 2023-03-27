@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { Permissions } from '~/shared/infra/database/entities/permissions';
 
@@ -21,5 +21,5 @@ export class Subjects extends BaseEntity {
   description: string | null;
 
   @OneToMany(() => Permissions, (permissions) => permissions.subject)
-  permissions: Permissions[];
+  permissions: Relation<Permissions>[];
 }

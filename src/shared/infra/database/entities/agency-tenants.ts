@@ -1,4 +1,4 @@
-import { Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm';
 import { Agencies } from '~/shared/infra/database/entities/agencies';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { Tenants } from '~/shared/infra/database/entities/tenants';
@@ -11,12 +11,12 @@ export class AgencyTenants extends BaseEntity {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'agencies_id', referencedColumnName: 'id' }])
-  agencies: Agencies;
+  agencies: Relation<Agencies>;
 
   @ManyToOne(() => Tenants, (tenants) => tenants.agencyTenants, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenants: Tenants;
+  tenants: Relation<Tenants>;
 }

@@ -1,4 +1,4 @@
-import { Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { Tenants } from '~/shared/infra/database/entities/tenants';
 import { Users } from '~/shared/infra/database/entities/users';
@@ -11,12 +11,12 @@ export class UserAllowedTenants extends BaseEntity {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenants: Tenants;
+  tenants: Relation<Tenants>;
 
   @ManyToOne(() => Users, (users) => users.userAllowedTenants, {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'users_id', referencedColumnName: 'id' }])
-  users: Users;
+  users: Relation<Users>;
 }

@@ -1,4 +1,11 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  Relation,
+} from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { GeneralDataTypes } from '~/shared/infra/database/entities/general-data-types';
 
@@ -52,5 +59,5 @@ export class SystemConfigurations extends BaseEntity {
     { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' },
   )
   @JoinColumn([{ name: 'general_data_type_id', referencedColumnName: 'id' }])
-  generalDataType: GeneralDataTypes;
+  generalDataType: Relation<GeneralDataTypes>;
 }

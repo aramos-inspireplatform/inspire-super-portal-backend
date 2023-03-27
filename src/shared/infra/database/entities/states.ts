@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { Countries } from '~/shared/infra/database/entities/countries';
@@ -34,8 +35,8 @@ export class States extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'country_id', referencedColumnName: 'id' }])
-  country: Countries;
+  country: Relation<Countries>;
 
   @OneToMany(() => Users, (users) => users.addressState)
-  users: Users[];
+  users: Relation<Users>[];
 }

@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { RolePermissions } from '~/shared/infra/database/entities/role-permissions';
 import { UserRoles } from '~/shared/infra/database/entities/user-roles';
@@ -18,8 +18,8 @@ export class Roles extends BaseEntity {
   isAdminDefault: boolean;
 
   @OneToMany(() => RolePermissions, (rolePermissions) => rolePermissions.role)
-  rolePermissions: RolePermissions[];
+  rolePermissions: Relation<RolePermissions>[];
 
   @OneToMany(() => UserRoles, (userRoles) => userRoles.role)
-  userRoles: UserRoles[];
+  userRoles: Relation<UserRoles>[];
 }
