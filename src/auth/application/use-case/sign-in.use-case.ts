@@ -1,4 +1,3 @@
-import { randomUUID } from 'crypto';
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
