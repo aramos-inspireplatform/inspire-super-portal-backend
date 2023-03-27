@@ -1,6 +1,6 @@
 import request from 'supertest';
-import { app } from '../../helper/create-application.helper';
 import { faker } from '@faker-js/faker';
+import { app } from '~/test/helper/create-application.helper';
 
 describe('AuthController.SignIn', () => {
   it('should throw when the payload sent is invalid', async () => {
@@ -28,7 +28,7 @@ describe('AuthController.SignIn', () => {
       .post('/auth/sign-in')
       .send({
         email: faker.internet.email(),
-        password: faker.internet.password(),
+        password: `asdfWSVA123asdf@#$`,
       })
       .expect(({ body }) => {
         expect(body).toStrictEqual({

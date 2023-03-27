@@ -3,7 +3,7 @@ import { SignInUseCase } from '~/auth/application/use-case/sign-in.use-case';
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
-import { makeUserFaker } from '../../../users/faker/user.faker'; // TODO: fix this import on import mappers tsconfig.json
+import { makeUserFaker } from '~/test/users/faker/user.faker';
 import { IUserRepository } from '~/users/infra/contracts/repository/user-repository.contract';
 
 const makeSut = () => {

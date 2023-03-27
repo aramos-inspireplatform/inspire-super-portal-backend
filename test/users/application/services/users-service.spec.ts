@@ -1,10 +1,10 @@
 import { MockProxy, mock } from 'jest-mock-extended';
-import { makeUserFaker } from '../../faker/user.faker'; //TODO: needs to find a fix for this shit
 import { UsersService } from '~/users/application/services/users.service';
 import { UserNotFoundException } from '~/users/domain/exceptions/user-not-found.exception';
 import { IUserRepository } from '~/users/infra/contracts/repository/user-repository.contract';
 
 import { User } from '~/users/domain/entities/user.entity';
+import { makeUserFaker } from '~/test/users/faker/user.faker';
 
 const makeSut = () => {
   const mockUserRepository = mock<IUserRepository>();
