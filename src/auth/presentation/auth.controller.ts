@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Ip, Post } from '@nestjs/common';
 import {
   ApiDefaultResponse,
   ApiTags,
@@ -9,6 +9,7 @@ import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthoriz
 import { AuthProvidersSymbols } from '~/auth/ioc/providers/auth-providers.symbols';
 import { SignInPayloadRequestBodyDto } from '~/auth/presentation/dto/input/sign-in-payload.dto';
 import { SignInResponseBodyDto } from '~/auth/presentation/dto/output/sign-in.dto';
+import { UserAgent } from '~/shared/infra/nestjs/decorators/use-agent.decorator';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -21,8 +22,16 @@ export class AuthController {
   @Post('sign-in')
   @ApiDefaultResponse({ type: SignInResponseBodyDto })
   @ApiUnauthorizedResponse({ type: InvalidCredentialsException }) // TODO: needs to fix this on the swagger
-  async signIn(@Body() payload: SignInPayloadRequestBodyDto) {
-    const signInResult = await this.signInUseCase.signIn(payload);
+  async signIn(
+    @Body() payload: SignInPayloadRequestBodyDto,
+    @Ip() ipAddress: string,
+    @UserAgent() userAgent: string,
+  ) {
+    const signInResult = await this.signInUseCase.signIn({
+      ...payload,
+      ipAddress,
+      userAgent,
+    });
 
     return SignInResponseBodyDto.factory(SignInResponseBodyDto, signInResult);
   }

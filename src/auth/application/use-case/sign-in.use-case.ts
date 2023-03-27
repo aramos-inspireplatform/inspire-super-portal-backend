@@ -1,8 +1,20 @@
+import { randomUUID } from 'crypto';
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
 import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
+import { UserLogin } from '~/users/domain/entities/user-login.entity';
 import { User } from '~/users/domain/entities/user.entity';
+import { IUserLoginsRepository } from '~/users/infra/contracts/repository/user-logins-repository.contract';
 import { IUserRepository } from '~/users/infra/contracts/repository/user-repository.contract';
+
+export namespace SignInUseCase {
+  export type SignInUseCaseAttrs = {
+    email: string;
+    password: string;
+    ipAddress: string;
+    userAgent: string;
+  };
+}
 
 export class SignInUseCase {
   constructor(
@@ -10,9 +22,10 @@ export class SignInUseCase {
     private readonly passwordHashService: IPasswordHashService,
     private readonly accessTokenJwtService: IJsonWebTokensService,
     private readonly refreshTokenJwtService: IJsonWebTokensService,
+    private readonly userLoginsRepository: IUserLoginsRepository,
   ) {}
 
-  async signIn(args: { email: string; password: string }) {
+  async signIn(args: SignInUseCase.SignInUseCaseAttrs) {
     const user = await this.userRepository.findByEmail({
       email: args.email,
     });
@@ -43,6 +56,11 @@ export class SignInUseCase {
         subject: user.id,
       }),
     ]);
+    await this.handleNewUserLogin({
+      user,
+      ipAddress: args.ipAddress,
+      userAgent: args.userAgent,
+    });
     return {
       accessToken,
       refreshToken,
@@ -53,5 +71,25 @@ export class SignInUseCase {
     user.incrementAccessFailedCount();
     await this.userRepository.updateUser({ user });
     throw new InvalidCredentialsException();
+  }
+
+  private async handleNewUserLogin({
+    user,
+    userAgent,
+    ipAddress,
+  }: {
+    user: User;
+    userAgent: string;
+    ipAddress: string;
+  }) {
+    await this.userLoginsRepository.create(
+      new UserLogin({
+        createdDate: new Date(),
+        id: randomUUID(), //TODO: needs to fix this part, missing informations of how we will make this id,
+        ipAddress,
+        userAgent,
+        userId: user.id,
+      }),
+    );
   }
 }
