@@ -39,4 +39,11 @@ export class User {
   incrementAccessFailedCount(count = 1) {
     this.accessFailedCount += count;
   }
+
+  /**
+   * Set the property accessFailedCount to 0
+   */
+  resetAccessFailedCount() {
+    this.accessFailedCount = 0;
+  }
 }

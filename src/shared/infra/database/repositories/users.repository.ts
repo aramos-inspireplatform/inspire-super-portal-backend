@@ -13,7 +13,7 @@ export class UserRepository
   }
 
   async findByEmail(
-    attrs: IUserRepository.FindByEmailParams,
+    attrs: IUserRepository.FindByEmailArgs,
   ): IUserRepository.FindByEmailResult {
     const user = await this.findOneBy({ email: attrs.email });
     if (!user) return undefined;
@@ -21,7 +21,7 @@ export class UserRepository
   }
 
   async updateUser(
-    attrs: IUserRepository.UpdateUserParams,
+    attrs: IUserRepository.UpdateUserArgs,
   ): Promise<IUserRepository.UpdateUserResult> {
     await this.update(
       {

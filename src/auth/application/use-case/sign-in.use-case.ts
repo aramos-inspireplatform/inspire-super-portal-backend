@@ -34,7 +34,6 @@ export class SignInUseCase {
       hash: user.passwordHash,
       plain: args.password,
     });
-
     if (!passwordMatches) await this.handleAuthFailed({ user });
     const [accessToken, refreshToken] = await Promise.all([
       this.accessTokenJwtService.sign({
@@ -82,10 +81,12 @@ export class SignInUseCase {
     userAgent: string;
     ipAddress: string;
   }) {
+    user.resetAccessFailedCount();
+    await this.userRepository.updateUser({ user });
     await this.userLoginsRepository.create(
       new UserLogin({
         createdDate: new Date(),
-        id: randomUUID(), //TODO: needs to fix this part, missing informations of how we will make this id,
+        id: randomUUID(), //TODO: needs to fix this part, missing informations of how we will make this id -> move to a function adapter (crypto)
         ipAddress,
         userAgent,
         userId: user.id,

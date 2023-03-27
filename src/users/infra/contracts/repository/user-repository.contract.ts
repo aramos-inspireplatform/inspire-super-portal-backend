@@ -2,10 +2,10 @@ import { UpdateEntityType } from '~/shared/types/update-entity.type';
 import { User } from '~/users/domain/entities/user.entity';
 
 export namespace IUserRepository {
-  export type FindByEmailParams = { email: string };
+  export type FindByEmailArgs = { email: string };
   export type FindByEmailResult = Promise<User | undefined>;
 
-  export type UpdateUserParams = {
+  export type UpdateUserArgs = {
     user: UpdateEntityType<User>;
   };
   export type UpdateUserResult = User;
@@ -13,10 +13,10 @@ export namespace IUserRepository {
 
 export interface IUserRepository {
   findByEmail(
-    attrs: IUserRepository.FindByEmailParams,
+    attrs: IUserRepository.FindByEmailArgs,
   ): IUserRepository.FindByEmailResult;
 
   updateUser(
-    attrs: IUserRepository.UpdateUserParams,
+    attrs: IUserRepository.UpdateUserArgs,
   ): Promise<IUserRepository.UpdateUserResult>;
 }
