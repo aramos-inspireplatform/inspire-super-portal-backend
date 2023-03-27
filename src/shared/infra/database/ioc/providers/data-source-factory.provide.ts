@@ -33,6 +33,7 @@ export class DataSourceProviderFactory {
         migrations,
         migrationsRun: true,
         synchronize: false,
+        dropSchema: true,
       };
     return {
       type: 'postgres',

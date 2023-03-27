@@ -1,14 +1,14 @@
 import {
-  Column,
-  PrimaryGeneratedColumn,
   BaseEntity as TypeOrmBaseEntity,
+  Column,
+  PrimaryColumn,
 } from 'typeorm';
 
 export class BaseEntity extends TypeOrmBaseEntity {
-  @Column('uuid', { primary: true, name: 'id' })
+  @PrimaryColumn('uuid', { primary: true, name: 'id' })
   id: string;
 
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'alternative_id' })
+  @Column({ type: 'bigint', name: 'alternative_id' })
   alternativeId: string;
 
   @Column('timestamp with time zone', { name: 'created_date' })

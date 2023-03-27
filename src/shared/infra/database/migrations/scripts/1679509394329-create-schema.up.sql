@@ -5,7 +5,7 @@
 -- Model Author: ---
 -- object: admin_project | type: ROLE --
 -- DROP ROLE IF EXISTS admin_project;
-CREATE ROLE admin_project WITH;
+-- CREATE ROLE admin_project WITH;
 
 -- ddl-end --
 -- Database creation must be performed outside a multi lined SQL file. 
@@ -81,8 +81,8 @@ COMMENT ON COLUMN public.users.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.users.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.users OWNER TO admin_project;
+-- ALTER TABLE
+--   public.users OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.user_logins | type: TABLE --
@@ -121,8 +121,8 @@ COMMENT ON COLUMN public.user_logins.updated_date IS E'The date of last update.'
 COMMENT ON COLUMN public.user_logins.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.user_logins OWNER TO admin_project;
+-- ALTER TABLE
+--   public.user_logins OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.languages | type: TABLE --
@@ -172,8 +172,8 @@ COMMENT ON COLUMN public.languages.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.languages.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.languages OWNER TO admin_project;
+-- ALTER TABLE
+--   public.languages OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.roles | type: TABLE --
@@ -215,8 +215,8 @@ COMMENT ON COLUMN public.roles.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.roles.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.roles OWNER TO admin_project;
+-- ALTER TABLE
+--   public.roles OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.user_roles | type: TABLE --
@@ -251,8 +251,8 @@ COMMENT ON COLUMN public.user_roles.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.user_roles.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.user_roles OWNER TO admin_project;
+-- ALTER TABLE
+--   public.user_roles OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.templates | type: TABLE --
@@ -282,8 +282,8 @@ COMMENT ON COLUMN public.templates.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.templates.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.templates OWNER TO admin_project;
+-- ALTER TABLE
+--   public.templates OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.time_zones | type: TABLE --
@@ -333,8 +333,8 @@ COMMENT ON COLUMN public.time_zones.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.time_zones.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.time_zones OWNER TO admin_project;
+-- ALTER TABLE
+--   public.time_zones OWNER TO admin_project;
 
 -- ddl-end --
 -- object: fk__languages__users | type: CONSTRAINT --
@@ -437,8 +437,8 @@ COMMENT ON COLUMN public.system_configurations.updated_date IS E'The date of las
 COMMENT ON COLUMN public.system_configurations.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.system_configurations OWNER TO admin_project;
+-- ALTER TABLE
+--   public.system_configurations OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.general_data_types | type: TABLE --
@@ -472,8 +472,8 @@ COMMENT ON COLUMN public.general_data_types.updated_date IS E'The date of last u
 COMMENT ON COLUMN public.general_data_types.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.general_data_types OWNER TO admin_project;
+-- ALTER TABLE
+--   public.general_data_types OWNER TO admin_project;
 
 -- ddl-end --
 -- object: fk__general_data_types__system_configurations | type: CONSTRAINT --
@@ -530,8 +530,8 @@ COMMENT ON COLUMN public.permissions.updated_date IS E'The date of last update.'
 COMMENT ON COLUMN public.permissions.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.permissions OWNER TO admin_project;
+-- ALTER TABLE
+--   public.permissions OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.role_permissions | type: TABLE --
@@ -563,8 +563,8 @@ COMMENT ON COLUMN public.role_permissions.updated_date IS E'The date of last upd
 COMMENT ON COLUMN public.role_permissions.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.role_permissions OWNER TO admin_project;
+-- ALTER TABLE
+--   public.role_permissions OWNER TO admin_project;
 
 -- ddl-end --
 -- object: fk__roles__role_permissions | type: CONSTRAINT --
@@ -727,8 +727,8 @@ COMMENT ON COLUMN public.actions.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.actions.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.actions OWNER TO admin_project;
+-- ALTER TABLE
+--   public.actions OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.subjects | type: TABLE --
@@ -770,8 +770,8 @@ COMMENT ON COLUMN public.subjects.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.subjects.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.subjects OWNER TO admin_project;
+-- ALTER TABLE
+--   public.subjects OWNER TO admin_project;
 
 -- ddl-end --
 -- object: fk__actions__permissions | type: CONSTRAINT --
@@ -865,8 +865,8 @@ COMMENT ON COLUMN public.countries.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.countries.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.countries OWNER TO admin_project;
+-- ALTER TABLE
+--   public.countries OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.states | type: TABLE --
@@ -909,8 +909,8 @@ COMMENT ON COLUMN public.states.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.states.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.states OWNER TO admin_project;
+-- ALTER TABLE
+--   public.states OWNER TO admin_project;
 
 -- ddl-end --
 -- object: fk__countries__states | type: CONSTRAINT --
@@ -1016,8 +1016,8 @@ COMMENT ON COLUMN public.tenants.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.tenants.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.tenants OWNER TO admin_project;
+-- ALTER TABLE
+--   public.tenants OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.agencies | type: TABLE --
@@ -1048,8 +1048,8 @@ COMMENT ON COLUMN public.agencies.updated_date IS E'The date of last update.';
 COMMENT ON COLUMN public.agencies.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.agencies OWNER TO admin_project;
+-- ALTER TABLE
+--   public.agencies OWNER TO admin_project;
 
 -- ddl-end --
 -- object: public.agency_tenants | type: TABLE --
@@ -1081,8 +1081,8 @@ COMMENT ON COLUMN public.agency_tenants.updated_date IS E'The date of last updat
 COMMENT ON COLUMN public.agency_tenants.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.agency_tenants OWNER TO admin_project;
+-- ALTER TABLE
+--   public.agency_tenants OWNER TO admin_project;
 
 -- ddl-end --
 -- object: fk__tenants__agency_tenants | type: CONSTRAINT --
@@ -1134,8 +1134,8 @@ COMMENT ON COLUMN public.user_allowed_tenants.updated_date IS E'The date of last
 COMMENT ON COLUMN public.user_allowed_tenants.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.user_allowed_tenants OWNER TO admin_project;
+-- ALTER TABLE
+--   public.user_allowed_tenants OWNER TO admin_project;
 
 -- ddl-end --
 -- object: fk__users__user_allowed_tenants | type: CONSTRAINT --
@@ -1187,8 +1187,8 @@ COMMENT ON COLUMN public.user_agencies.updated_date IS E'The date of last update
 COMMENT ON COLUMN public.user_agencies.deleted_date IS E'The date of delete. Used by the soft delete.';
 
 -- ddl-end --
-ALTER TABLE
-  public.user_agencies OWNER TO admin_project;
+-- ALTER TABLE
+--   public.user_agencies OWNER TO admin_project;
 
 -- ddl-end --
 -- object: fk__users__user_agencies | type: CONSTRAINT --

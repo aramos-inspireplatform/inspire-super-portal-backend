@@ -37,5 +37,3 @@ DROP TABLE IF EXISTS public.agency_tenants CASCADE;
 DROP TABLE IF EXISTS public.user_allowed_tenants CASCADE;
 
 DROP TABLE IF EXISTS public.user_agencies CASCADE;
-
-DROP ROLE IF EXISTS admin_project;
