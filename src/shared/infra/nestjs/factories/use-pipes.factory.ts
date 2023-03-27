@@ -5,6 +5,7 @@ export function usePipesFactory(app: INestApplication) {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
+      transform: true,
       forbidUnknownValues: true,
       enableDebugMessages: true,
     }),

@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-import { IJsonWebTokensService } from '~/auth/infra/contracts/json-web-tokens-service.contract';
+import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { ClassConstructor } from '~/shared/types/class-constructor.type';
 
 export class JwtAccessTokenService implements IJsonWebTokensService {

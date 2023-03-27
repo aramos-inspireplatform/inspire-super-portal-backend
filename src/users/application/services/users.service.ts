@@ -2,7 +2,7 @@ import { ClassConstructor } from '~/shared/types/class-constructor.type';
 import { IFindUserByEmail } from '~/users/application/services/contracts/find-user-by-email.contract';
 import { User } from '~/users/domain/entities/user.entity';
 import { UserNotFoundException } from '~/users/domain/exceptions/user-not-found.exception';
-import { IUserRepository } from '~/users/infra/contracts/user-repository.contract';
+import { IUserRepository } from '~/users/infra/contracts/repository/user-repository.contract';
 
 export class UsersService implements IFindUserByEmail {
   constructor(private readonly userRepository: IUserRepository) {}

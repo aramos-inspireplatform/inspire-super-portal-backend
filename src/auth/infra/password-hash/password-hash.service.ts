@@ -1,5 +1,5 @@
 import { hash, compare } from 'bcrypt';
-import { IPasswordHashService } from '~/auth/infra/contracts/password-hash-service.contract';
+import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
 
 export class PasswordHashService implements IPasswordHashService {
   private readonly SALT_ROUNDS = 12;
