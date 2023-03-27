@@ -4,9 +4,19 @@ import { app } from '~/test/helper/create-application.helper';
 import { LanguageEntityFaker } from '~/test/shared/infra/database/entities-faker/language-entity.faker';
 import { TimeZoneEntityFaker } from '~/test/shared/infra/database/entities-faker/timezone-entity.faker';
 import { databaseInsert } from '~/test/helper/database/insert.helper';
-import { Languages, TimeZones, Users } from '~/shared/infra/database/entities';
+import {
+  Languages,
+  TimeZones,
+  UserLogins,
+  Users,
+} from '~/shared/infra/database/entities';
 import { UserEntityFaker } from '~/test/shared/infra/database/entities-faker/users-entity.faker';
-import { databaseDeleteFromEntities } from '~/test/helper/database/delete.helper';
+import {
+  databaseClearTableFromEntity,
+  databaseDeleteFromEntities,
+} from '~/test/helper/database/delete.helper';
+import { AuthProvidersSymbols } from '~/auth/ioc/providers/auth-providers.symbols';
+import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
 
 describe('AuthController', () => {
   it('should throw when the payload sent is invalid', async () => {
@@ -48,10 +58,14 @@ describe('AuthController', () => {
   it('should return an access and refresh token when sucess', async () => {
     const languageEntity = LanguageEntityFaker.build();
     const timezoneEntity = TimeZoneEntityFaker.build();
+    const password = 'myAwes0mePa455w0rd';
 
     const userEntity = UserEntityFaker.build({
       language: { id: languageEntity.id },
       timeZone: { id: timezoneEntity.id },
+      passwordHash: await app
+        .get<IPasswordHashService>(AuthProvidersSymbols.PASSWORD_HASH_SERVICE)
+        .hashPassword({ password }),
     });
 
     await databaseInsert({
@@ -71,16 +85,16 @@ describe('AuthController', () => {
     await request(app.getHttpServer())
       .post('/auth/sign-in')
       .send({
-        email: faker.internet.email(),
-        password: `asdfWSVA123asdf@#$`,
+        email: userEntity.email,
+        password,
       })
+      .set('User-Agent', 'supertest')
       .expect(({ body }) => {
-        expect(body).toStrictEqual({
-          statusCode: 401,
-          message: 'exception:INVALID_CREDENTIALS',
-          error: 'Unauthorized',
-        });
+        expect(body).toHaveProperty('accessToken');
+        expect(body).toHaveProperty('refreshToken');
       });
+
+    await databaseClearTableFromEntity({ entity: UserLogins });
 
     await databaseDeleteFromEntities({
       entity: Users,

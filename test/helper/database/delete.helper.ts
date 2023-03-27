@@ -32,3 +32,11 @@ export const databaseDeleteFromEntities = async <T>({
     .whereInIds(values.map((entity) => (entity as any)?.id))
     .execute();
 };
+
+export const databaseClearTableFromEntity = async <T>({
+  entity,
+}: {
+  entity: EntityTarget<T>;
+}) => {
+  await dataSource.createQueryBuilder().delete().from(entity).execute();
+};
