@@ -8,7 +8,7 @@ import { Languages, TimeZones, Users } from '~/shared/infra/database/entities';
 import { UserEntityFaker } from '~/test/shared/infra/database/entities-faker/users-entity.faker';
 import { databaseDeleteFromEntities } from '~/test/helper/database/delete.helper';
 
-describe('AuthController.SignIn', () => {
+describe('AuthController', () => {
   it('should throw when the payload sent is invalid', async () => {
     await request(app.getHttpServer())
       .post('/auth/sign-in')
