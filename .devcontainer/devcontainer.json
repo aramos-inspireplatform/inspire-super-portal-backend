@@ -1,0 +1,30 @@
+{
+	"name": "Inspire Super Portal",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "inspire_super_portal_dev",
+	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"forwardPorts": [
+		3336,
+		5434
+	],
+	"customizations": {
+		"extensions": [
+			"dbaeumer.vscode-eslint",
+			"esbenp.prettier-vscode",
+			"editorconfig.editorconfig",
+			"donjayamanne.githistory",
+			"eamodio.gitlens",
+			"rbbit.typescript-hero",
+			"gruntfuggly.todo-tree",
+			"mhutchie.git-graph",
+			"firsttris.vscode-jest-runner",
+			"streetsidesoftware.code-spell-checker",
+			"streetsidesoftware.code-spell-checker-portuguese",
+			"github.copilot",
+			"wallabyjs.wallaby-vscode"
+		]
+	}
+	// "mounts": [
+	// 	"source=try-node-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+	// ]
+}

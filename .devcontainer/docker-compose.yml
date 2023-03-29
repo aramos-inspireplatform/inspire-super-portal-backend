@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  inspire_super_portal_dev:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+    command: sleep infinity
+    network_mode: service:inspire_super_portal_postgres
+
+  inspire_super_portal_postgres:
+    container_name: inspire_super_portal_postgres
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=inspire_super_portal
+    ports:
+      - 5434:5432
+    volumes:
+      - ./pgdata:/var/lib/postgresql
+
+volumes:
+  postgres-data:
