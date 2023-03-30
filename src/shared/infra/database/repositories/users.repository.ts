@@ -13,16 +13,20 @@ export class UserRepository
   }
 
   async findByEmail(
-    attrs: IUserRepository.FindByEmailArgs,
+    attrs: IUserRepository.FindByEmailAttrs,
   ): IUserRepository.FindByEmailResult {
-    const user = await this.findOneBy({ email: attrs.email });
+    const user = await this.createQueryBuilder('users')
+      .leftJoinAndSelect('users.language', 'language')
+      .where('users.email = :email', { email: attrs.email })
+      .getOne();
+
     if (!user) return undefined;
     return UserModelToDomainMapper(user);
   }
 
   async updateUser(
-    attrs: IUserRepository.UpdateUserArgs,
-  ): Promise<IUserRepository.UpdateUserResult> {
+    attrs: IUserRepository.UpdateUserAttrs,
+  ): IUserRepository.UpdateUserResult {
     await this.update(
       {
         id: attrs.user.id,
@@ -33,5 +37,16 @@ export class UserRepository
     return UserModelToDomainMapper(
       await this.findOne({ where: { id: attrs.user.id } }),
     );
+  }
+
+  async findBySecurityToken(
+    attrs: IUserRepository.FindBySecurityTokenAttrs,
+  ): IUserRepository.FindBySecurityTokenResult {
+    const user = await this.createQueryBuilder('users')
+      .where('users.securityToken = :securityToken', {
+        securityToken: attrs.securityToken,
+      })
+      .getOne();
+    return UserModelToDomainMapper(user);
   }
 }
