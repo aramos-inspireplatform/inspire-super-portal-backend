@@ -15,7 +15,7 @@ import {
   databaseClearTableFromEntity,
   databaseDeleteFromEntities,
 } from '~/test/helper/database/delete.helper';
-import { AuthProvidersSymbols } from '~/auth/ioc/providers/auth-providers.symbols';
+import { AuthProvidersSymbols } from '~/auth/ioc/auth-providers.symbols';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
 
 describe('AuthController', () => {

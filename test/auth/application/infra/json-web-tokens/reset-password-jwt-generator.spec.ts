@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-import { JwtAccessTokenService } from '~/auth/infra/json-web-tokens/jwt-access-token';
+import { ResetPasswordJwtGenerator } from '~/auth/infra/json-web-tokens/reset-password-jwt-generator';
 
 jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(),
@@ -10,7 +10,7 @@ const makeSut = () => {
   const jwtSecret = 'test-secret';
   const jwtExpiration = '1h';
   const jwtIssuer = 'test-issuer';
-  const accessTokenService = new JwtAccessTokenService(
+  const accessTokenService = new ResetPasswordJwtGenerator(
     jwtSecret,
     jwtExpiration,
     jwtIssuer,
@@ -18,7 +18,7 @@ const makeSut = () => {
   return { accessTokenService, jwtSecret, jwtIssuer, jwtExpiration };
 };
 
-describe('JwtAccessTokenService', () => {
+describe('ResetPasswordJwtGenerator', () => {
   const { accessTokenService, jwtSecret, jwtIssuer, jwtExpiration } = makeSut();
 
   afterEach(() => {
