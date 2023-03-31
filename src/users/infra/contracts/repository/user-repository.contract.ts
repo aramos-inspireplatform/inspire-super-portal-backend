@@ -9,12 +9,17 @@ export namespace IUserRepository {
     user: UpdateEntityType<User>;
   };
   export type UpdateUserResult = User;
+
+  export type FindByIdArgs = { id: string };
+  export type FindByIdResult = Promise<User | undefined>;
 }
 
 export interface IUserRepository {
   findByEmail(
     attrs: IUserRepository.FindByEmailArgs,
   ): IUserRepository.FindByEmailResult;
+
+  findById(attrs: IUserRepository.FindByIdArgs): IUserRepository.FindByIdResult;
 
   updateUser(
     attrs: IUserRepository.UpdateUserArgs,

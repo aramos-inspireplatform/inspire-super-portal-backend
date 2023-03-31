@@ -19,6 +19,8 @@ export class User {
 
   adminBlockedDate: Date | null;
 
+  logoutDate: Date | null;
+
   constructor(attrs: InstanceProperties<User>) {
     this.id = attrs.id;
     this.firstName = attrs.firstName;
@@ -29,6 +31,7 @@ export class User {
     this.accessFailedCount = attrs.accessFailedCount;
     this.lockoutEndDate = attrs.lockoutEndDate;
     this.adminBlockedDate = attrs.adminBlockedDate;
+    this.logoutDate = attrs.logoutDate;
   }
 
   /**
