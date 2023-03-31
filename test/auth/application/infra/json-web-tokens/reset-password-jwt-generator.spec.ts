@@ -62,23 +62,7 @@ describe('ResetPasswordJwtGenerator', () => {
       expect(verify).toHaveBeenCalledWith(token, jwtSecret);
     });
 
-    test('should throw a custom error when a throwableError is provided', async () => {
-      const token = 'test-token';
-      const throwableError = class TestError extends Error {};
-
-      (verify as jest.Mock).mockImplementationOnce(() => {
-        throw new Error('test-error');
-      });
-
-      await expect(
-        accessTokenService.validate({
-          token,
-          throwableError,
-        }),
-      ).rejects.toThrow(throwableError);
-    });
-
-    test('should re-throw the error when no throwableError is provided', async () => {
+    test('should return the error when no throwableError is provided', async () => {
       const token = 'test-token';
 
       (verify as jest.Mock).mockImplementationOnce(() => {
@@ -89,7 +73,7 @@ describe('ResetPasswordJwtGenerator', () => {
         accessTokenService.validate({
           token,
         }),
-      ).rejects.toThrowError('test-error');
+      ).resolves.toBeInstanceOf(Error);
     });
   });
 });
