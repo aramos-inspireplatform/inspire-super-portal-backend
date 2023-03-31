@@ -27,6 +27,7 @@ export class UserRepository
   async updateUser(
     attrs: IUserRepository.UpdateUserAttrs,
   ): IUserRepository.UpdateUserResult {
+    attrs.user.updatedDate = new Date();
     await this.update(
       {
         id: attrs.user.id,

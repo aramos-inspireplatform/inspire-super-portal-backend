@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '~/auth/ioc/auth.module';
 import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
 import { validateEnvironmentSchema } from '~/shared/infra/env/validate-environment';
+import { QueueModule } from '~/shared/infra/sqs/queue.module';
 import { UsersModule } from '~/users/ioc/users.module';
 
 @Module({
@@ -35,6 +36,7 @@ import { UsersModule } from '~/users/ioc/users.module';
       name: process.env.AWS_SQS_EMAIL_QUEUE,
       type: SqsQueueType.Producer,
     }),
+    QueueModule,
     // TODO: END SQS
   ],
 })

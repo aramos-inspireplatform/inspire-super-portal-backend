@@ -24,7 +24,7 @@ export class ResetPasswordJwtGenerator implements IJsonWebTokensGenerator {
     try {
       return verify(args.token, this.jwtSecret) as any;
     } catch (error) {
-      throw args.throwableError ? new args.throwableError() : error;
+      return error;
     }
   }
 }

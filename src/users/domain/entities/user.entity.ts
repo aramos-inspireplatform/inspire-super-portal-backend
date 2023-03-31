@@ -22,6 +22,8 @@ export class User {
 
   language?: Language;
 
+  updatedDate?: Date;
+
   constructor(attrs: InstanceProperties<User>) {
     this.id = attrs.id;
     this.firstName = attrs.firstName;
