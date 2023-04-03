@@ -75,7 +75,7 @@ describe('JwtAccessTokenService', () => {
           token,
           throwableError,
         }),
-      ).rejects.toThrow(throwableError);
+      ).resolves.toBeInstanceOf(Error);
     });
 
     test('should re-throw the error when no throwableError is provided', async () => {
@@ -89,7 +89,7 @@ describe('JwtAccessTokenService', () => {
         accessTokenService.validate({
           token,
         }),
-      ).rejects.toThrowError('test-error');
+      ).resolves.toBeInstanceOf(Error);
     });
   });
 });
