@@ -9,6 +9,7 @@
       "address": "localhost",
       "localRoot": "${workspaceFolder}",
       "remoteRoot": "/nest",
+      "sourceMaps": true,
       "restart": true
     }
   ]

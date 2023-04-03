@@ -1,13 +1,16 @@
-import { HttpStatus, UnauthorizedException } from '@nestjs/common';
+import {
+  HttpStatus,
+  UnauthorizedException as NestJSUnauthorizedException,
+} from '@nestjs/common';
 
-export class InvalidCredentialsException extends UnauthorizedException {
+export class UnauthorizedException extends NestJSUnauthorizedException {
   constructor() {
-    super(InvalidCredentialsException.MESSAGE);
+    super(UnauthorizedException.MESSAGE);
   }
 }
 
-export namespace InvalidCredentialsException {
-  export const MESSAGE = 'exception:INVALID_CREDENTIALS';
+export namespace UnauthorizedException {
+  export const MESSAGE = 'exception:UNAUTHORIZED';
   export const STATUS_CODE = HttpStatus.UNAUTHORIZED;
   export const ERROR = 'Unauthorized';
 }

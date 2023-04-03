@@ -1,4 +1,4 @@
-import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
+import { InvalidCredentialsException } from '~/auth/domain/exceptions/invalid-credentials.exception';
 import { IJsonWebTokensGenerator } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
 import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';

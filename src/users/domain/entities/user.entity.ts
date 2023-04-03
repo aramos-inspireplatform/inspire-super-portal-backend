@@ -55,4 +55,12 @@ export class User {
   resetAccessFailedCount() {
     this.accessFailedCount = 0;
   }
+
+  /**
+   * Set the `logoutDate` of the user
+   * This flag is used to invalided previously generated access tokens
+   */
+  signOut() {
+    this.logoutDate = new Date();
+  }
 }

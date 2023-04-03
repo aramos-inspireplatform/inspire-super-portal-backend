@@ -7,7 +7,7 @@ export class SignOutUseCase {
   async signOut(attrs: SignOutUseCase.InputAttrs) {
     const user = await this.userRepository.findById({ id: attrs.userId });
     if (!user) throw new UserNotFoundException();
-    user.logoutDate = new Date();
+    user.signOut();
     await this.userRepository.updateUser({ user });
   }
 }
