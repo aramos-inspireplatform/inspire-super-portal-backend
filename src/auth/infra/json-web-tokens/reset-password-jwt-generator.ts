@@ -1,17 +1,17 @@
 import { sign, verify } from 'jsonwebtoken';
-import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
+import { IJsonWebTokensGenerator } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { ClassConstructor } from '~/shared/types/class-constructor.type';
 
-export class JwtAccessTokenService implements IJsonWebTokensService {
+export class ResetPasswordJwtGenerator implements IJsonWebTokensGenerator {
   constructor(
     private readonly jwtSecret: string,
     private readonly jwtExpiration: string,
     private readonly jwtIssuer: string,
   ) {}
 
-  async sign<T>(args: IJsonWebTokensService.JwtArgs<T>): Promise<string> {
+  async sign<T>(args: IJsonWebTokensGenerator.JwtArgs<T>): Promise<string> {
     return sign(args.payload as any, this.jwtSecret, {
-      subject: args.subject ? args.subject : '',
+      subject: args.subject,
       issuer: this.jwtIssuer,
       expiresIn: this.jwtExpiration,
     });
@@ -24,7 +24,7 @@ export class JwtAccessTokenService implements IJsonWebTokensService {
     try {
       return verify(args.token, this.jwtSecret) as any;
     } catch (error) {
-      throw args.throwableError ? new args.throwableError() : error;
+      return error;
     }
   }
 }

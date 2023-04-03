@@ -1,8 +1,8 @@
 import { FactoryProvider } from '@nestjs/common';
 import { SignInUseCase } from '~/auth/application/use-case/sign-in.use-case';
-import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
+import { IJsonWebTokensGenerator } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
-import { AuthProvidersSymbols } from '~/auth/ioc/providers/auth-providers.symbols';
+import { AuthProvidersSymbols } from '~/auth/ioc/auth-providers.symbols';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 import { IUserLoginsRepository } from '~/users/infra/contracts/repository/user-logins-repository.contract';
 import { IUserRepository } from '~/users/infra/contracts/repository/user-repository.contract';
@@ -14,8 +14,8 @@ export class SignInUseCaseProviderFactory {
       useFactory: (
         userRepository: IUserRepository,
         passwordHashService: IPasswordHashService,
-        accessTokenJwtService: IJsonWebTokensService,
-        refreshTokenJwtService: IJsonWebTokensService,
+        accessTokenJwtService: IJsonWebTokensGenerator,
+        refreshTokenJwtService: IJsonWebTokensGenerator,
         userLoginsRepository: IUserLoginsRepository,
       ) =>
         new SignInUseCase(

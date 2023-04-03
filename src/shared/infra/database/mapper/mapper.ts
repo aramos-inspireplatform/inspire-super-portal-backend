@@ -1,6 +1,6 @@
 export function Mapper<TIn, TOut>(
-  inClazz: TIn,
+  inClazz: TIn | undefined,
   castFunction: (value: TIn) => TOut,
-): TOut {
-  return castFunction(inClazz);
+): TOut | undefined {
+  return inClazz ? castFunction(inClazz) : undefined;
 }

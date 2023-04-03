@@ -1,6 +1,7 @@
 import { INestApplication } from '@nestjs/common';
 import { NestFastifyApplication } from '@nestjs/platform-fastify';
 import { Test } from '@nestjs/testing';
+import { mock } from 'jest-mock-extended';
 import { DataSource } from 'typeorm';
 import { AppModule } from '~/app.module';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
@@ -13,9 +14,11 @@ import { fastifyMultipartFactory } from '~/shared/infra/nestjs/factories/fastify
 import { swaggerFactory } from '~/shared/infra/nestjs/factories/swagger.factory';
 import { useGlobalInterceptors } from '~/shared/infra/nestjs/factories/use-global-interceptors.factory';
 import { usePipesFactory } from '~/shared/infra/nestjs/factories/use-pipes.factory';
+import { QueueService } from '~/shared/infra/sqs/queue.service';
 
 export let app: INestApplication;
 export let dataSource: DataSource;
+export const mockQueueService = mock<QueueService>();
 
 jest.mock('newrelic', () => jest.fn());
 
@@ -25,7 +28,10 @@ const createApp = async (): Promise<{
 }> => {
   const testModule = await Test.createTestingModule({
     imports: [AppModule],
-  }).compile();
+  })
+    .overrideProvider(QueueService)
+    .useValue(mockQueueService)
+    .compile();
 
   const fastifyAdapter = fastifyAdapterFactory();
 

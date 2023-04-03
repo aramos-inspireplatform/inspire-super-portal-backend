@@ -1,5 +1,5 @@
 import { InvalidCredentialsException } from '~/auth/domain/exceptions/unauthorized.exception';
-import { IJsonWebTokensService } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
+import { IJsonWebTokensGenerator } from '~/auth/infra/contracts/services/json-web-tokens-service.contract';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
 import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';
 import { UserLogin } from '~/users/domain/entities/user-login.entity';
@@ -20,8 +20,8 @@ export class SignInUseCase {
   constructor(
     private readonly userRepository: IUserRepository,
     private readonly passwordHashService: IPasswordHashService,
-    private readonly accessTokenJwtService: IJsonWebTokensService,
-    private readonly refreshTokenJwtService: IJsonWebTokensService,
+    private readonly accessTokenJwtService: IJsonWebTokensGenerator,
+    private readonly refreshTokenJwtService: IJsonWebTokensGenerator,
     private readonly userLoginsRepository: IUserLoginsRepository,
   ) {}
 
@@ -35,26 +35,24 @@ export class SignInUseCase {
       plain: args.password,
     });
     if (!passwordMatches) await this.handleAuthFailed({ user });
-    const [accessToken, refreshToken] = await Promise.all([
-      this.accessTokenJwtService.sign({
-        payload: {
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          id: user.id,
-        },
-        subject: user.id,
-      }),
-      this.refreshTokenJwtService.sign({
-        payload: {
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          id: user.id,
-        },
-        subject: user.id,
-      }),
-    ]);
+    const accessToken = await this.accessTokenJwtService.sign({
+      payload: {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user.id,
+      },
+      subject: user.id,
+    });
+    const refreshToken = await this.refreshTokenJwtService.sign({
+      payload: {
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        id: user.id,
+      },
+      subject: user.id,
+    });
     await this.handleNewUserLogin({
       user,
       ipAddress: args.ipAddress,

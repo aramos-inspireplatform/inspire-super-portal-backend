@@ -1,3 +1,4 @@
+import { Language } from '~/languages/domain/entity/language.entity';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
 
 export class User {
@@ -19,6 +20,10 @@ export class User {
 
   adminBlockedDate: Date | null;
 
+  language?: Language;
+
+  updatedDate?: Date;
+
   constructor(attrs: InstanceProperties<User>) {
     this.id = attrs.id;
     this.firstName = attrs.firstName;
@@ -29,6 +34,7 @@ export class User {
     this.accessFailedCount = attrs.accessFailedCount;
     this.lockoutEndDate = attrs.lockoutEndDate;
     this.adminBlockedDate = attrs.adminBlockedDate;
+    this.language = attrs.language;
   }
 
   /**

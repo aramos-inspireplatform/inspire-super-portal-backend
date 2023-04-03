@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-import { JwtAccessTokenService } from '~/auth/infra/json-web-tokens/jwt-access-token';
+import { ResetPasswordJwtGenerator } from '~/auth/infra/json-web-tokens/reset-password-jwt-generator';
 
 jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(),
@@ -10,7 +10,7 @@ const makeSut = () => {
   const jwtSecret = 'test-secret';
   const jwtExpiration = '1h';
   const jwtIssuer = 'test-issuer';
-  const accessTokenService = new JwtAccessTokenService(
+  const accessTokenService = new ResetPasswordJwtGenerator(
     jwtSecret,
     jwtExpiration,
     jwtIssuer,
@@ -18,7 +18,7 @@ const makeSut = () => {
   return { accessTokenService, jwtSecret, jwtIssuer, jwtExpiration };
 };
 
-describe('JwtAccessTokenService', () => {
+describe('ResetPasswordJwtGenerator', () => {
   const { accessTokenService, jwtSecret, jwtIssuer, jwtExpiration } = makeSut();
 
   afterEach(() => {
@@ -62,23 +62,7 @@ describe('JwtAccessTokenService', () => {
       expect(verify).toHaveBeenCalledWith(token, jwtSecret);
     });
 
-    test('should throw a custom error when a throwableError is provided', async () => {
-      const token = 'test-token';
-      const throwableError = class TestError extends Error {};
-
-      (verify as jest.Mock).mockImplementationOnce(() => {
-        throw new Error('test-error');
-      });
-
-      await expect(
-        accessTokenService.validate({
-          token,
-          throwableError,
-        }),
-      ).rejects.toThrow(throwableError);
-    });
-
-    test('should re-throw the error when no throwableError is provided', async () => {
+    test('should return the error when no throwableError is provided', async () => {
       const token = 'test-token';
 
       (verify as jest.Mock).mockImplementationOnce(() => {
@@ -89,7 +73,7 @@ describe('JwtAccessTokenService', () => {
         accessTokenService.validate({
           token,
         }),
-      ).rejects.toThrowError('test-error');
+      ).resolves.toBeInstanceOf(Error);
     });
   });
 });
