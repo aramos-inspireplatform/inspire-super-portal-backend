@@ -15,13 +15,15 @@ import {
   databaseClearTableFromEntity,
   databaseDeleteFromEntities,
 } from '~/test/helper/database/delete.helper';
-import { AuthProvidersSymbols } from '~/auth/ioc/providers/auth-providers.symbols';
+import { AuthProvidersSymbols } from '~/auth/ioc/auth-providers.symbols';
 import { IPasswordHashService } from '~/auth/infra/contracts/services/password-hash-service.contract';
 
-describe('AuthController', () => {
+describe('AuthController.SignIn', () => {
+  const baseUrl = '/auth/sign-in';
+
   it('should throw when the payload sent is invalid', async () => {
     await request(app.getHttpServer())
-      .post('/auth/sign-in')
+      .post(baseUrl)
       .expect(({ body }) => {
         expect(body).toStrictEqual({
           statusCode: 400,
@@ -41,7 +43,7 @@ describe('AuthController', () => {
 
   it('should throw InvalidCredentialsException when user not exists', async () => {
     await request(app.getHttpServer())
-      .post('/auth/sign-in')
+      .post(baseUrl)
       .send({
         email: faker.internet.email(),
         password: `asdfWSVA123asdf@#$`,
@@ -83,7 +85,7 @@ describe('AuthController', () => {
     });
 
     await request(app.getHttpServer())
-      .post('/auth/sign-in')
+      .post(baseUrl)
       .send({
         email: userEntity.email,
         password,

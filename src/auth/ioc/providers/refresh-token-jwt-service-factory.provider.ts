@@ -1,7 +1,7 @@
 import { FactoryProvider } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { JwtAccessTokenService } from '~/auth/infra/json-web-tokens/jwt-access-token.service';
-import { AuthProvidersSymbols } from '~/auth/ioc/providers/auth-providers.symbols';
+import { JwtAccessTokenService } from '~/auth/infra/json-web-tokens/jwt-access-token';
+import { AuthProvidersSymbols } from '~/auth/ioc/auth-providers.symbols';
 
 export class RefreshTokenJwtServiceProviderFactory {
   static register(): FactoryProvider {

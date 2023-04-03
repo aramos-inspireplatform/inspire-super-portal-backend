@@ -1,6 +1,6 @@
 import { FactoryProvider } from '@nestjs/common';
 import { PasswordHashService } from '~/auth/infra/password-hash/password-hash.service';
-import { AuthProvidersSymbols } from '~/auth/ioc/providers/auth-providers.symbols';
+import { AuthProvidersSymbols } from '~/auth/ioc/auth-providers.symbols';
 
 export class PasswordHashServiceFactoryProvider {
   static register(): FactoryProvider {

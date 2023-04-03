@@ -1,5 +1,5 @@
 import { sign, verify } from 'jsonwebtoken';
-import { JwtRefreshTokenService } from '~/auth/infra/json-web-tokens/jwt-refresh-token.service';
+import { JwtRefreshTokenService } from '~/auth/infra/json-web-tokens/jwt-refresh-token';
 
 jest.mock('jsonwebtoken', () => ({
   sign: jest.fn(),

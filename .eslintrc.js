@@ -17,6 +17,15 @@ module.exports = {
   },
   ignorePatterns: ['.eslintrc.js'],
   rules: {
+    'max-depth': ['error', 3],
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: 'IfStatement > BlockStatement > IfStatement',
+        message:
+          "Use a logical '&&' operator instead of nested 'if' statements.",
+      },
+    ],
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
