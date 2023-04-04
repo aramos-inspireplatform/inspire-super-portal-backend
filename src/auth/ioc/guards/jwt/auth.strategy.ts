@@ -32,7 +32,9 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy, 'inspire-jwt') {
       const user = await this.userRepository.findById({
         id: decodedToken.id,
       });
-      if (+user.logoutDate > +decodedToken.exp)
+      const userLogoutDateUnix = +user.logoutDate;
+      const tokenIssuedDateUnix = +new Date(0).setUTCSeconds(decodedToken.iat);
+      if (userLogoutDateUnix > tokenIssuedDateUnix)
         throw new UnauthorizedException();
       return decodedToken;
     } catch {
