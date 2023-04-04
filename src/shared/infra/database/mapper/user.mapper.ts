@@ -18,5 +18,7 @@ export const UserModelToDomainMapper = (model: Users) =>
         passwordHash: model.passwordHash,
         securityToken: model.securityToken,
         language: LanguageMapperToDomain(model.language),
+        logoutDate: model.logoutDate,
+        updatedDate: model.updatedDate,
       }),
   );

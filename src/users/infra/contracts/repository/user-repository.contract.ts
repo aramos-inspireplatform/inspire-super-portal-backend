@@ -10,6 +10,9 @@ export namespace IUserRepository {
   };
   export type UpdateUserResult = Promise<User>;
 
+  export type FindByIdArgs = { id: string };
+  export type FindByIdResult = Promise<User | undefined>;
+
   export type FindBySecurityTokenAttrs = { securityToken: string };
   export type FindBySecurityTokenResult = Promise<User>;
 }
@@ -18,6 +21,8 @@ export interface IUserRepository {
   findByEmail(
     attrs: IUserRepository.FindByEmailAttrs,
   ): IUserRepository.FindByEmailResult;
+
+  findById(attrs: IUserRepository.FindByIdArgs): IUserRepository.FindByIdResult;
 
   updateUser(
     attrs: IUserRepository.UpdateUserAttrs,

@@ -20,6 +20,8 @@ export class User {
 
   adminBlockedDate: Date | null;
 
+  logoutDate: Date | null;
+
   language?: Language;
 
   updatedDate?: Date;
@@ -34,6 +36,7 @@ export class User {
     this.accessFailedCount = attrs.accessFailedCount;
     this.lockoutEndDate = attrs.lockoutEndDate;
     this.adminBlockedDate = attrs.adminBlockedDate;
+    this.logoutDate = attrs.logoutDate;
     this.language = attrs.language;
   }
 
@@ -51,5 +54,13 @@ export class User {
    */
   resetAccessFailedCount() {
     this.accessFailedCount = 0;
+  }
+
+  /**
+   * Set the `logoutDate` of the user
+   * This flag is used to invalided previously generated access tokens
+   */
+  signOut() {
+    this.logoutDate = new Date();
   }
 }

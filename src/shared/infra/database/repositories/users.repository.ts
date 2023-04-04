@@ -50,4 +50,13 @@ export class UserRepository
       .getOne();
     return UserModelToDomainMapper(user);
   }
+
+  async findById(
+    attrs: IUserRepository.FindByIdArgs,
+  ): IUserRepository.FindByIdResult {
+    const user = await this.createQueryBuilder('users')
+      .where('users.id = :id', { id: attrs.id })
+      .getOne();
+    return UserModelToDomainMapper(user);
+  }
 }

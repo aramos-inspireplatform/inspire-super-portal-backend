@@ -14,6 +14,7 @@ export const makeUserFaker = (attrs?: Partial<InstanceProperties<User>>) => {
     lockoutEndDate: null,
     passwordHash: faker.lorem.word(),
     securityToken: faker.lorem.word(),
+    logoutDate: null,
   };
   const classAttrs = Object.assign({}, fakerInstanceAttrs, attrs);
   const user = new User(classAttrs);
