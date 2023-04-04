@@ -58,7 +58,7 @@ describe('JwtAuthStrategy', () => {
       const mockDecodedToken: DecodedJwtToken = {
         id: '1',
         exp: new Date().getTime() + 3600,
-        iat: new Date().getTime(),
+        iat: 1680622831,
       } as any;
 
       (accessTokenJwtService.validate as jest.Mock).mockResolvedValueOnce(
@@ -80,7 +80,7 @@ describe('JwtAuthStrategy', () => {
       const mockDecodedToken: DecodedJwtToken = {
         id: '1',
         exp: new Date().getTime() - 3600,
-        iat: new Date().getTime(),
+        iat: 1580622831,
       } as any;
 
       (accessTokenJwtService.validate as jest.Mock).mockResolvedValueOnce(
