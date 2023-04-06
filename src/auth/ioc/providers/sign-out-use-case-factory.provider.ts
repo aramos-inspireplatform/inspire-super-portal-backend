@@ -4,7 +4,7 @@ import { AuthProvidersSymbols } from '~/auth/ioc/auth-providers.symbols';
 import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 
-export class SignOutUseCaseFactoryProviderFactory {
+export class SignOutUseCaseFactoryFactoryProvider {
   static register(): FactoryProvider {
     return {
       provide: AuthProvidersSymbols.SIGN_OUT_USE_CASE,

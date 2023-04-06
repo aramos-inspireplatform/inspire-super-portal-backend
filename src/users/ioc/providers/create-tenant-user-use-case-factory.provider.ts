@@ -1,15 +1,15 @@
 import { FactoryProvider } from '@nestjs/common';
-import { RefreshTokenUseCase } from '~/auth/application/use-case/refresh-token.use-case';
-import { AuthProvidersSymbols } from '~/auth/ioc/auth-providers.symbols';
 import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
+import { CreateTenantUserUseCase } from '~/users/application/use-case/create-tenant-user.use-case';
+import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 
-export class RefreshTokenFactoryProvider {
+export class CreateTenantUserUseCaseFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide: AuthProvidersSymbols.REFRESH_TOKEN_USE_CASE,
+      provide: UsersProvidersSymbols.CREATE_TENANT_USER,
       useFactory: (httpClient: IHttpClient) =>
-        new RefreshTokenUseCase(httpClient),
+        new CreateTenantUserUseCase(httpClient),
       inject: [AxiosHttpClientAdapter],
     };
   }

@@ -22,8 +22,9 @@ export class TenantResponseDto extends BaseDto {
   })
   slug: string;
 
-  @Expose()
+  @Expose({ name: 'tenantId' })
   @ApiProperty({
+    name: 'tenantId',
     example: 'description',
   })
   googleTenantId: string;

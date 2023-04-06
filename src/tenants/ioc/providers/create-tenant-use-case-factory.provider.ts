@@ -4,7 +4,7 @@ import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract'
 import { CreateTenantUseCase } from '~/tenants/application/use-case/create-tenant.use-case';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 
-export class CreateTenantUseCaseProviderFactory {
+export class CreateTenantUseCaseFactoryProvider {
   static register(): FactoryProvider {
     return {
       provide: TenantProvidersSymbols.CREATE_TENANT_USE_CASE,
