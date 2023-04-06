@@ -1,19 +1,27 @@
-import { UserNotFoundException } from '~/users/domain/exceptions/user-not-found.exception';
-import { IUserRepository } from '~/users/infra/contracts/repository/user-repository.contract';
+import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 
 export class SignOutUseCase {
-  constructor(private readonly userRepository: IUserRepository) {}
+  private readonly TENANT_SIGN_OUT_URL = `${process.env.TENANT_URL}/auth/logout`;
+
+  constructor(private readonly httpClient: IHttpClient) {}
 
   async signOut(attrs: SignOutUseCase.InputAttrs) {
-    const user = await this.userRepository.findById({ id: attrs.userId });
-    if (!user) throw new UserNotFoundException();
-    user.signOut();
-    await this.userRepository.updateUser({ user });
+    console.log(attrs);
+    const responseOrError = await this.httpClient.post(
+      this.TENANT_SIGN_OUT_URL,
+      null,
+      {
+        headers: {
+          Authorization: attrs.refreshToken,
+        },
+      },
+    );
+    if (responseOrError instanceof Error) throw responseOrError;
   }
 }
 
 export namespace SignOutUseCase {
   export type InputAttrs = {
-    userId: string;
+    refreshToken: string;
   };
 }

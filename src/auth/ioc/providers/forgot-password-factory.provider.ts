@@ -1,14 +1,15 @@
 import { FactoryProvider } from '@nestjs/common';
-import { SignOutUseCase } from '~/auth/application/use-case/sign-out.use-case';
+import { ForgotPasswordResetUseCase } from '~/auth/application/use-case/forgot-password.use-case';
 import { AuthProvidersSymbols } from '~/auth/ioc/auth-providers.symbols';
 import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 
-export class SignOutUseCaseFactoryProviderFactory {
+export class ForgotPasswordProviderFactory {
   static register(): FactoryProvider {
     return {
-      provide: AuthProvidersSymbols.SIGN_OUT_USE_CASE,
-      useFactory: (httpClient: IHttpClient) => new SignOutUseCase(httpClient),
+      provide: AuthProvidersSymbols.FORGOT_PASSWORD_USE_CASE,
+      useFactory: (httpClient: IHttpClient) =>
+        new ForgotPasswordResetUseCase(httpClient),
       inject: [AxiosHttpClientAdapter],
     };
   }

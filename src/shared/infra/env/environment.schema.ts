@@ -68,42 +68,6 @@ export class EnvironmentSchema {
   @IsEnum(NewRelicLogLevel)
   NEW_RELIC_LOGGING_LEVEL: string;
 
-  @IsNotEmpty()
-  @IsString()
-  JWT_ACCESS_TOKEN_SECRET: string;
-
-  @IsNotEmpty()
-  @IsString()
-  JWT_ACCESS_TOKEN_EXPIRES_IN: string;
-
-  @IsNotEmpty()
-  @IsString()
-  JWT_ACCESS_TOKEN_ISSUER: string;
-
-  @IsNotEmpty()
-  @IsString()
-  JWT_REFRESH_TOKEN_SECRET: string;
-
-  @IsNotEmpty()
-  @IsString()
-  JWT_REFRESH_TOKEN_EXPIRES_IN: string;
-
-  @IsNotEmpty()
-  @IsString()
-  JWT_REFRESH_TOKEN_ISSUER: string;
-
-  @IsNotEmpty()
-  @IsString()
-  JWT_RESET_PASSWORD_SECRET: string;
-
-  @IsNotEmpty()
-  @IsString()
-  JWT_RESET_PASSWORD_EXPIRES_IN: string;
-
-  @IsNotEmpty()
-  @IsString()
-  JWT_RESET_PASSWORD_ISSUER: string;
-
   // SQS
   @IsString()
   AWS_SQS_REGION: string;
@@ -122,4 +86,8 @@ export class EnvironmentSchema {
 
   @IsString()
   AWS_SQS_EMAIL_QUEUE: string;
+
+  @IsNotEmpty()
+  @IsString()
+  TENANT_URL: string;
 }

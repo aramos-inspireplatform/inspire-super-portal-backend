@@ -4,9 +4,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '~/auth/ioc/auth.module';
 import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
 import { validateEnvironmentSchema } from '~/shared/infra/env/validate-environment';
+import { HttpModule } from '~/shared/infra/http/ioc/http.module';
 import { QueueModule } from '~/shared/infra/sqs/queue.module';
 import { UsersModule } from '~/users/ioc/users.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -18,6 +18,7 @@ import { UsersModule } from '~/users/ioc/users.module';
     DatabaseModule,
     UsersModule,
     AuthModule,
+    HttpModule,
     // TODO: START SQS need some code review at this point
     SqsModule.forRootAsync({
       useFactory: () => {
