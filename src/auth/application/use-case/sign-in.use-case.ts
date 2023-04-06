@@ -1,4 +1,5 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
+import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 
 export namespace SignInUseCase {
   export type SignInUseCaseAttrs = {
@@ -6,14 +7,10 @@ export namespace SignInUseCase {
     password: string;
   };
 
-  export type TenantSignInResponse = {
-    body: {
-      data: {
-        accessToken: string;
-        refreshToken: string;
-      };
-    };
-  };
+  export type TenantSignInResponse = InspireHttpResponse<{
+    accessToken: string;
+    refreshToken: string;
+  }>;
 }
 
 export class SignInUseCase {

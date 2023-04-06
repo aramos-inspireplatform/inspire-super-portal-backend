@@ -6,6 +6,7 @@ import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
 import { validateEnvironmentSchema } from '~/shared/infra/env/validate-environment';
 import { HttpModule } from '~/shared/infra/http/ioc/http.module';
 import { QueueModule } from '~/shared/infra/sqs/queue.module';
+import { TenantsModule } from '~/tenants/ioc/tenants.module';
 import { UsersModule } from '~/users/ioc/users.module';
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UsersModule } from '~/users/ioc/users.module';
     UsersModule,
     AuthModule,
     HttpModule,
+    TenantsModule,
     // TODO: START SQS need some code review at this point
     SqsModule.forRootAsync({
       useFactory: () => {
