@@ -5,11 +5,12 @@ export type IHttpClient = {
     config?: TConfig,
   ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
+  get<TResponse = any, TConfig = any>(
+    url: string,
+    config?: TConfig,
+  ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
+
   // TODO: implements when need
-  // get<TResponse = any, TConfig = any>(
-  //   url: string,
-  //   config?: TConfig,
-  // ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
   // delete<TResponse = any, TConfig = any>(
   //   url: string,

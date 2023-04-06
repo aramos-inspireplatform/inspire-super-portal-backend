@@ -2,11 +2,14 @@ import { SqsConfig, SqsModule, SqsQueueType } from '@nestjs-packages/sqs';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '~/auth/ioc/auth.module';
+import { CountriesModule } from '~/countries/ioc/countries.module';
+import { LanguagesModule } from '~/languages/ioc/languages.module';
 import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
 import { validateEnvironmentSchema } from '~/shared/infra/env/validate-environment';
 import { HttpModule } from '~/shared/infra/http/ioc/http.module';
 import { QueueModule } from '~/shared/infra/sqs/queue.module';
 import { TenantsModule } from '~/tenants/ioc/tenants.module';
+import { TimeZonesModule } from '~/time-zones/ioc/time-zones.module';
 import { UsersModule } from '~/users/ioc/users.module';
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { UsersModule } from '~/users/ioc/users.module';
     AuthModule,
     HttpModule,
     TenantsModule,
+    LanguagesModule,
+    CountriesModule,
+    TimeZonesModule,
     // TODO: START SQS need some code review at this point
     SqsModule.forRootAsync({
       useFactory: () => {
