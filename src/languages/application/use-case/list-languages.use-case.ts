@@ -1,5 +1,5 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
+import { InspireHttpPaginatedResponse } from '~/shared/types/inspire-http-response.type';
 
 export class ListLanguageUseCase {
   private readonly LANGUAGES_ROUTE = `${process.env.TENANT_URL}/languages`;
@@ -28,9 +28,7 @@ export namespace ListLanguageUseCase {
     isActive: boolean;
   };
 
-  export type LanguagesResponse = InspireHttpResponse<{
-    rows: Language[];
-  }>;
+  export type LanguagesResponse = InspireHttpPaginatedResponse<Language>;
 
   export type InputAttrs = {
     accessToken: string;

@@ -3,6 +3,7 @@ import {
   ClassConstructor,
   ClassTransformOptions,
   Exclude,
+  Expose,
   instanceToInstance,
   plainToClass,
 } from 'class-transformer';
@@ -14,6 +15,7 @@ interface Options extends ClassTransformOptions {
 export class BaseDto {
   static locale: string;
 
+  @Expose()
   id: string;
 
   @ApiHideProperty()
