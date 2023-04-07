@@ -10,6 +10,7 @@ import { HttpModule } from '~/shared/infra/http/ioc/http.module';
 import { QueueModule } from '~/shared/infra/sqs/queue.module';
 import { TenantsModule } from '~/tenants/ioc/tenants.module';
 import { TimeZonesModule } from '~/time-zones/ioc/time-zones.module';
+import { UserTypesModule } from '~/user-types/ioc/user-types.module';
 import { UsersModule } from '~/users/ioc/users.module';
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { UsersModule } from '~/users/ioc/users.module';
     LanguagesModule,
     CountriesModule,
     TimeZonesModule,
+    UserTypesModule,
     // TODO: START SQS need some code review at this point
     SqsModule.forRootAsync({
       useFactory: () => {
