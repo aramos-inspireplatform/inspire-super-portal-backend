@@ -32,8 +32,12 @@ export class ModuleRequests extends BaseEntity {
   @Column('uuid', { name: 'module_request_type_id' })
   moduleRequestTypeId: string;
 
-  @Column('character varying', { name: 'wrapper_integration_id', length: 300 })
-  wrapperIntegrationId: string;
+  @Column('character varying', {
+    name: 'wrapper_integration_id',
+    nullable: true,
+    length: 300,
+  })
+  wrapperIntegrationId: string | null;
 
   @Column('smallint', { name: 'attempts' })
   attempts: number;
@@ -44,11 +48,11 @@ export class ModuleRequests extends BaseEntity {
   @Column('jsonb', { name: 'request_notes', nullable: true })
   requestNotes: object | null;
 
-  @Column('character varying', { name: 'api_request_body', nullable: true })
-  apiRequestBody: string | null;
+  @Column('jsonb', { name: 'api_request_body', nullable: true })
+  apiRequestBody: object | null;
 
-  @Column('character varying', { name: 'api_response_body', nullable: true })
-  apiResponseBody: string | null;
+  @Column('jsonb', { name: 'api_response_body', nullable: true })
+  apiResponseBody: object | null;
 
   @OneToMany(
     () => ModuleRequestModuleProvisionRequests,

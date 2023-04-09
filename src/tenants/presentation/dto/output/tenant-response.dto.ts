@@ -83,4 +83,8 @@ export class GetTenantResponseDto extends BaseDto {
   @ApiProperty({ example: 'https://website.com/terms-of-service' })
   @Expose()
   termsOfService: string;
+
+  @ApiProperty({ example: '643303d0a19029aa893f0f9b' })
+  @Expose()
+  wrapperIntegrationId: string;
 }

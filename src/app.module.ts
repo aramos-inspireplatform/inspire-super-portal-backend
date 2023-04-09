@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '~/auth/ioc/auth.module';
 import { CountriesModule } from '~/countries/ioc/countries.module';
 import { LanguagesModule } from '~/languages/ioc/languages.module';
+import { ModuleRequestsModule } from '~/modules-requests/ioc/module-requests.module';
 import { PaymentMethodsModule } from '~/payment-methods/ioc/payment-methods.module';
 import { ProcessorsModule } from '~/processors/ioc/processors.module';
 import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
@@ -34,6 +35,7 @@ import { VaultsModule } from '~/vaults/ioc/vaults.module';
     VaultsModule,
     ProcessorsModule,
     PaymentMethodsModule,
+    ModuleRequestsModule,
   ],
 })
 export class AppModule {}

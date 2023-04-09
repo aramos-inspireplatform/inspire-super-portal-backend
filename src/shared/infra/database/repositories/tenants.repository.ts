@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Tenants } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
+import { Tenant } from '~/tenants/domain/entity/tenant.entity';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 
 @Injectable()
@@ -25,5 +26,15 @@ export class TenantsRepository implements ITenantRepository {
     attrs.tenant.updatedDate = entity.updatedDate;
     attrs.tenant.deleteDate = entity.deletedDate;
     return attrs.tenant;
+  }
+
+  async findById(
+    attrs: ITenantRepository.FindByIdInputAttrs,
+  ): ITenantRepository.FindByIdResult {
+    const tenant = await this.repository
+      .createQueryBuilder('tenants')
+      .where('tenants.id = :id', { id: attrs.id })
+      .getOne();
+    return tenant ? new Tenant(tenant) : null;
   }
 }

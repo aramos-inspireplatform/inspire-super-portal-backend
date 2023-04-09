@@ -37,7 +37,11 @@ export class CreateTenantUseCase {
       createdByUserId: attrs.currentUser,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
-    return tenant;
+    return {
+      ...tenant,
+      id: storedTenant.id,
+      wrapperIntegrationId: tenant.id,
+    };
   }
 }
 
