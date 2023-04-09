@@ -4,15 +4,13 @@ import { FileHelper } from '~/shared/infra/database/migrations/helpers/handle-fi
 
 export class addSeedSchema1680095939156 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    const createSchemaSql = FileHelper.read(
-      SqlScriptPaths.ADD_SEED_COUNTRIES_TIMEZONES_UP,
-    );
+    const createSchemaSql = FileHelper.read(SqlScriptPaths.ADD_SEED_SCHEMA_UP);
     await queryRunner.query(createSchemaSql);
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     const createSchemaSql = FileHelper.read(
-      SqlScriptPaths.ADD_SEED_COUNTRIES_TIMEZONES_DOWN,
+      SqlScriptPaths.ADD_SEED_SCHEMA_DOWN,
     );
     await queryRunner.query(createSchemaSql);
   }
