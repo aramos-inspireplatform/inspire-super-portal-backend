@@ -14,5 +14,5 @@ export class GeneralDataTypes extends BaseEntity {
     () => SystemConfigurations,
     (systemConfigurations) => systemConfigurations.generalDataType,
   )
-  systemConfigurations: Relation<SystemConfigurations>[];
+  systemConfigurations: Relation<SystemConfigurations[]>;
 }

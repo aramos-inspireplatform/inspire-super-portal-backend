@@ -2,6 +2,9 @@ import {
   BaseEntity as TypeOrmBaseEntity,
   Column,
   PrimaryColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 
 export class BaseEntity extends TypeOrmBaseEntity {
@@ -11,12 +14,20 @@ export class BaseEntity extends TypeOrmBaseEntity {
   @Column({ type: 'bigint', name: 'alternative_id' })
   alternativeId: string;
 
-  @Column('timestamp with time zone', { name: 'created_date' })
+  @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_date' })
   createdDate: Date;
 
-  @Column('timestamp with time zone', { name: 'updated_date', nullable: true })
+  @UpdateDateColumn({
+    type: 'timestamp with time zone',
+    name: 'updated_date',
+    nullable: true,
+  })
   updatedDate: Date | null;
 
-  @Column('timestamp with time zone', { name: 'deleted_date', nullable: true })
+  @DeleteDateColumn({
+    type: 'timestamp with time zone',
+    name: 'deleted_date',
+    nullable: true,
+  })
   deletedDate: Date | null;
 }

@@ -1,0 +1,27 @@
+import { Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm';
+import { BaseEntity } from '~/shared/infra/database/entities/base';
+import { ModuleProvisionRequests } from '~/shared/infra/database/entities/module-provision-requests';
+import { ModuleRequests } from '~/shared/infra/database/entities/module-requests';
+
+@Index('pk__module_request_module_provision_requests', ['id'], { unique: true })
+@Entity('module_request_module_provision_requests', { schema: 'public' })
+export class ModuleRequestModuleProvisionRequests extends BaseEntity {
+  @ManyToOne(
+    () => ModuleProvisionRequests,
+    (moduleProvisionRequests) =>
+      moduleProvisionRequests.moduleRequestModuleProvisionRequests,
+    { onDelete: 'RESTRICT', onUpdate: 'CASCADE' },
+  )
+  @JoinColumn([
+    { name: 'module_provision_request_id', referencedColumnName: 'id' },
+  ])
+  moduleProvisionRequest: Relation<ModuleProvisionRequests>;
+
+  @ManyToOne(
+    () => ModuleRequests,
+    (moduleRequests) => moduleRequests.moduleRequestModuleProvisionRequests,
+    { onDelete: 'RESTRICT', onUpdate: 'CASCADE' },
+  )
+  @JoinColumn([{ name: 'module_request_id', referencedColumnName: 'id' }])
+  moduleRequest: Relation<ModuleRequests>;
+}
