@@ -347,12 +347,12 @@ CREATE TABLE public.module_requests (
 	tenant_id uuid NOT NULL,
 	module_request_status_id uuid NOT NULL,
 	module_request_type_id uuid NOT NULL,
-	wrapper_integration_id varchar(300) NOT NULL,
+	wrapper_integration_id varchar(300),
 	attempts smallint NOT NULL,
 	request_settings jsonb NOT NULL,
 	request_notes jsonb,
-	api_request_body varchar,
-	api_response_body varchar,
+	api_request_body jsonb,
+	api_response_body jsonb,
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
@@ -470,8 +470,8 @@ CREATE TABLE public.module_provision_requests (
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
 	module_provision_request_status_id uuid NOT NULL,
 	created_by_user_id varchar(300) NOT NULL,
-	provision_api_request_body varchar,
-	provision_api_response_body varchar,
+	provision_api_request_body jsonb,
+	provision_api_response_body jsonb,
 	provision_api_response_status_code smallint,
 	wrapper_integration_id varchar(300),
 	created_date timestamp with time zone NOT NULL,
@@ -727,5 +727,4 @@ USING btree
 )
 WHERE (deleted_date is null);
 -- ddl-end --
-
 
