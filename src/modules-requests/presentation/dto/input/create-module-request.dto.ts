@@ -1,5 +1,5 @@
 import { BadRequestException } from '@nestjs/common';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, getSchemaPath } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   IsDefined,
@@ -37,6 +37,13 @@ export class CreateModuleRequestBodyDto {
     if (object.moduleId === ModuleRequestTypes.Payments)
       return PaymentProviderValidatorRequestDto;
     throw new BadRequestException('exception:CANNOT_VALIDATE_THIS_MODULE');
+  })
+  @ApiProperty({
+    oneOf: [
+      {
+        $ref: getSchemaPath(PaymentProviderValidatorRequestDto),
+      },
+    ],
   })
   settings: any;
 }

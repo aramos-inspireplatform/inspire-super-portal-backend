@@ -12,19 +12,19 @@ import { VaultDto } from '~/modules-requests/presentation/dto/input/modules/paym
 import { WebHookDto } from '~/modules-requests/presentation/dto/input/modules/payment/web-hook.dto';
 
 export class PaymentProviderValidatorRequestDto {
-  @ApiProperty({ type: VaultDto })
+  @ApiProperty({ type: VaultDto, example: VaultDto })
   @ValidateNested()
   @IsDefined()
   @Type(() => VaultDto)
   vault: VaultDto;
 
-  @ApiProperty({ type: PaymentProcessorDto })
+  @ApiProperty({ type: PaymentProcessorDto, example: PaymentProcessorDto })
   @ValidateNested()
   @IsDefined()
   @Type(() => PaymentProcessorDto)
   paymentProcessor: PaymentProcessorDto;
 
-  @ApiProperty({ type: WebHookDto, isArray: true })
+  @ApiProperty({ type: WebHookDto, isArray: true, example: WebHookDto })
   @IsNotEmpty()
   @IsDefined()
   @IsArray()
