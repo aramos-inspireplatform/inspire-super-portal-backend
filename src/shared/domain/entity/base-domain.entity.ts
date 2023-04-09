@@ -1,3 +1,4 @@
+import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
 
 /**
@@ -12,6 +13,7 @@ export abstract class BaseDomainEntity {
   deleteDate?: Date;
 
   constructor(attrs: InstanceProperties<BaseDomainEntity>) {
+    this.id = attrs.id ?? RandomUUIDGeneratorAdapter();
     this.createdDate = attrs.createdDate;
     this.deleteDate = attrs.deleteDate;
     this.updatedDate = attrs.updatedDate;

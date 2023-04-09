@@ -11,6 +11,10 @@ import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
+import {
+  GetUserFromRequest,
+  UserFromRequest,
+} from '~/shared/presentation/decorators/get-user-from-request';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { CreateTenantUseCase } from '~/tenants/application/use-case/create-tenant.use-case';
 import { ListAllTenantsUseCase } from '~/tenants/application/use-case/list-all-tenants.use-case';
@@ -36,10 +40,12 @@ export class TenantsController {
   async createTenant(
     @Body() payload: CreateTenantRequestBodyDto,
     @Req() request: FastifyRequest,
+    @GetUserFromRequest() user: UserFromRequest,
   ) {
     const tenant = await this.createTenantUseCase.create({
       accessToken: request.headers.authorization,
       tenant: payload,
+      currentUser: user.claims.userId,
     });
     return GetTenantResponseDto.factory(GetTenantResponseDto, tenant);
   }

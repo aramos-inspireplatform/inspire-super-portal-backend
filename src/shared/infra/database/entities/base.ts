@@ -5,6 +5,9 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  BeforeInsert,
+  BeforeUpdate,
+  BeforeSoftRemove,
 } from 'typeorm';
 
 export class BaseEntity extends TypeOrmBaseEntity {
@@ -30,4 +33,19 @@ export class BaseEntity extends TypeOrmBaseEntity {
     nullable: true,
   })
   deletedDate: Date | null;
+
+  @BeforeInsert()
+  setCreatedDate() {
+    this.createdDate = new Date();
+  }
+
+  @BeforeUpdate()
+  setUpdatedDate() {
+    this.updatedDate = new Date();
+  }
+
+  @BeforeSoftRemove()
+  setDeletedDate() {
+    this.deletedDate = new Date();
+  }
 }

@@ -15,7 +15,7 @@ export class CreateTenantRequestBodyDto {
   @IsNotEmpty()
   @Matches(/^[a-zA-Z][a-zA-Z0-9-]+$/, {
     message:
-      'Should start with a letter and only consist of letters, digits and hyphens.',
+      'name Should start with a letter and only consist of letters, digits and hyphens.',
   })
   @MaxLength(300)
   @MinLength(2)

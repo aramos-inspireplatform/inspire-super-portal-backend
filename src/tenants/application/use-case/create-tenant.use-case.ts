@@ -1,10 +1,18 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
+import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
+import { Tenant } from '~/tenants/domain/entity/tenant.entity';
+import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/tenant-statuses-repository.contract';
 
 export class CreateTenantUseCase {
   private readonly CREATE_TENANT_URL = `${process.env.TENANT_URL}/tenants`;
 
-  constructor(private readonly httpClient: IHttpClient) {}
+  constructor(
+    private readonly httpClient: IHttpClient,
+    private readonly tenantRepository: ITenantRepository,
+    private readonly tenantStatusesRepository: ITenantStatusesRepository,
+  ) {}
 
   async create(attrs: CreateTenantUseCase.InputAttrs) {
     const responseOrError =
@@ -19,6 +27,16 @@ export class CreateTenantUseCase {
       );
     if (responseOrError instanceof Error) throw responseOrError;
     const tenant = responseOrError?.data?.body?.data;
+    const tenantPendingStatuses = await this.tenantStatusesRepository.findById({
+      id: TenantStatusesConstant.Pending,
+    });
+    const storedTenant = new Tenant({
+      name: attrs.tenant.name,
+      wrapperIntegrationId: tenant.id,
+      tenantStatus: tenantPendingStatuses,
+      createdByUserId: attrs.currentUser,
+    });
+    await this.tenantRepository.save({ tenant: storedTenant });
     return tenant;
   }
 }
@@ -40,6 +58,7 @@ export namespace CreateTenantUseCase {
   export type InputAttrs = {
     tenant: Tenant;
     accessToken: string;
+    currentUser: string;
   };
 
   export type CreatedTenant = {
