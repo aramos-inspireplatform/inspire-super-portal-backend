@@ -1,9 +1,6 @@
 import { URL } from 'url';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import {
-  InspireHttpPaginatedResponse,
-  InspireHttpResponse,
-} from '~/shared/types/inspire-http-response.type';
+import { InspireHttpPaginatedResponse } from '~/shared/types/inspire-http-response.type';
 
 export class ListAllTenantsUseCase {
   private readonly TENANTS_ROUTE = `${process.env.TENANT_URL}/tenants`;
