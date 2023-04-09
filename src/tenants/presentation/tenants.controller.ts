@@ -11,15 +11,18 @@ import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
+import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto';
 import { CreateTenantUseCase } from '~/tenants/application/use-case/create-tenant.use-case';
 import { ListAllTenantsUseCase } from '~/tenants/application/use-case/list-all-tenants.use-case';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 import { CreateTenantRequestBodyDto } from '~/tenants/presentation/dto/input/create-tenant-request.dto';
+import { PaginatedTenantsResponseDto } from '~/tenants/presentation/dto/output/paginated-tenants-response.dto';
 import { GetTenantResponseDto } from '~/tenants/presentation/dto/output/tenant-response.dto';
 
 @Controller('tenants')
 @ApiTags('Tenants')
+@CustomApiExtraModels()
 export class TenantsController {
   constructor(
     @Inject(TenantProvidersSymbols.CREATE_TENANT_USE_CASE)
@@ -44,6 +47,7 @@ export class TenantsController {
 
   @Get()
   @AuthenticatedRoute()
+  @ApiDefaultResponse({ type: PaginatedTenantsResponseDto })
   async listAll(
     @Req() request: FastifyRequest,
     @Query() pagination: CommonPaginateDto,
@@ -55,7 +59,7 @@ export class TenantsController {
         pageSize: pagination.pagesize,
       },
     });
-    return new PaginatedResultsDto(
+    return new PaginatedTenantsResponseDto(
       GetTenantResponseDto.factory(GetTenantResponseDto, tenants.rows),
       tenants.count,
       tenants.page,

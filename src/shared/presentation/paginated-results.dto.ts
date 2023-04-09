@@ -1,9 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class PaginatedResultsDto<T = any> {
-  @ApiProperty({
-    example: () => [],
-  })
+export class PaginatedResultsDto<T> {
+  @ApiProperty()
   rows: T[];
 
   @ApiProperty({ example: 0 })
@@ -45,8 +43,7 @@ export class PaginatedResultsDto<T = any> {
   @ApiProperty()
   lastItemOnPage?: number;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  constructor(data: any, count: number, page: number, pageSize: number) {
+  constructor(data: T[], count: number, page: number, pageSize: number) {
     this.rows = data;
     this.count = count ?? 0;
     this.page = page ?? 0;

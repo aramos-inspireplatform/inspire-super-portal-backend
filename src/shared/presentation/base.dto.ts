@@ -1,21 +1,20 @@
-import { ApiHideProperty } from '@nestjs/swagger';
+import { ApiHideProperty, ApiProperty } from '@nestjs/swagger';
 import {
   ClassConstructor,
   ClassTransformOptions,
   Exclude,
   Expose,
   instanceToInstance,
-  plainToClass,
+  plainToInstance,
 } from 'class-transformer';
-
-interface Options extends ClassTransformOptions {
-  locale: string;
-}
 
 export class BaseDto {
   static locale: string;
 
   @Expose()
+  @ApiProperty({
+    example: '0f667734-0a60-4cb6-9356-1aad274fe85e',
+  })
   id: string;
 
   @ApiHideProperty()
@@ -32,22 +31,20 @@ export class BaseDto {
   @Exclude()
   deleteddate: Date;
 
-  public static factory<T, R>(
+  public static factory<T, R, TOut = R extends Array<T> ? T[] : T>(
     ResponseDto: ClassConstructor<T>,
-    plainResponseData: R,
-    options?: Options,
-  ): T {
-    BaseDto.locale = options?.locale;
-
-    const updatedResponseData = plainToClass<T, R>(
+    plainResponseData: R | R[],
+    options?: ClassTransformOptions,
+  ): TOut {
+    const updatedResponseData = plainToInstance<T, R>(
       ResponseDto,
-      plainResponseData,
+      plainResponseData as any,
       {
         ignoreDecorators: true,
       },
     );
 
-    return instanceToInstance(updatedResponseData, {
+    return instanceToInstance<TOut>(updatedResponseData as any, {
       ...options,
       excludeExtraneousValues: true,
     });
