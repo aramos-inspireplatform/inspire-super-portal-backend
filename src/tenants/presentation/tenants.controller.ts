@@ -12,7 +12,6 @@ import { FastifyRequest } from 'fastify';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto';
 import { CreateTenantUseCase } from '~/tenants/application/use-case/create-tenant.use-case';
 import { ListAllTenantsUseCase } from '~/tenants/application/use-case/list-all-tenants.use-case';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
