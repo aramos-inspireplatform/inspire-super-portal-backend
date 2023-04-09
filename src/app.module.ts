@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from '~/auth/ioc/auth.module';
 import { CountriesModule } from '~/countries/ioc/countries.module';
 import { LanguagesModule } from '~/languages/ioc/languages.module';
+import { ProcessorsModule } from '~/processors/ioc/processors.module';
 import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
 import { validateEnvironmentSchema } from '~/shared/infra/env/validate-environment';
 import { HttpModule } from '~/shared/infra/http/ioc/http.module';
@@ -30,6 +31,7 @@ import { VaultsModule } from '~/vaults/ioc/vaults.module';
     TimeZonesModule,
     UserTypesModule,
     VaultsModule,
+    ProcessorsModule,
   ],
 })
 export class AppModule {}
