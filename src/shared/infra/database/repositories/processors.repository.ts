@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { Processor } from '~/processors/domain/entity/processor';
+import { Processor } from '~/processors/domain/entity/processor.entity';
 import { IProcessorsRepository } from '~/processors/infra/contracts/repository/processors-repository.contract';
 import { Processors } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';

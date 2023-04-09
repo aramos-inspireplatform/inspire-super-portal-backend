@@ -1,4 +1,4 @@
-import { Processor } from '~/processors/domain/entity/processor';
+import { Processor } from '~/processors/domain/entity/processor.entity';
 
 export interface IProcessorsRepository {
   findAll(): IProcessorsRepository.FindAllResult;
