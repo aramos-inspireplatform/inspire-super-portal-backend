@@ -10,7 +10,7 @@ export class ListAgenciesUseCase {
     const url = this.buildUrl(attrs);
     const resposneOrError =
       await this.httpClient.get<ListAgenciesUseCase.InspireHttpResponse>(url, {
-        headers: { authorization: attrs.accessToken, tenant: attrs.tenant },
+        headers: { authorization: attrs.accessToken },
       });
     if (resposneOrError instanceof Error) throw resposneOrError;
     return resposneOrError.data.body.data;
@@ -31,7 +31,6 @@ export class ListAgenciesUseCase {
 export namespace ListAgenciesUseCase {
   export type InputAttrs = {
     accessToken: string;
-    tenant: string;
     searchParams?: {
       page?: number;
       pageSize?: number;

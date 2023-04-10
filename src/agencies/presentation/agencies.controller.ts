@@ -1,5 +1,5 @@
 import { Controller, Get, Inject, Query, Req } from '@nestjs/common';
-import { ApiDefaultResponse, ApiHeader, ApiTags } from '@nestjs/swagger';
+import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { ListAgenciesUseCase } from '~/agencies/application/list-agencies.use-case';
 import { AgenciesProvidersSymbols } from '~/agencies/ioc/agencies-providers.symbols';
@@ -18,14 +18,9 @@ export class AgenciesController {
 
   @Get()
   @AuthenticatedRoute()
-  @ApiHeader({
-    name: 'tenant',
-    required: true,
-    allowEmptyValue: false,
-  })
   @ApiDefaultResponse({ type: PaginatedResultsDto<GetAgencyDto> })
   async listAgencies(
-    @Req() request: FastifyRequest<{ Headers: { tenant: string } }>,
+    @Req() request: FastifyRequest,
     @Query() searchParams: CommonPaginateDto,
   ) {
     const agencies = await this.listAgenciesUseCase.execute({
@@ -36,7 +31,6 @@ export class AgenciesController {
         pageSize: searchParams.pagesize,
         sortBy: searchParams.sortby,
       },
-      tenant: request.headers.tenant,
     });
 
     return agencies;
