@@ -10,7 +10,7 @@ export class CreateTenantAdminUserUseCase {
 
   async create(attrs: CreateTenantAdminUserUseCase.InputAttrs) {
     const uuid = RandomUUIDGeneratorAdapter();
-    const randomPassword = `${uuid.charAt(0).toUpperCase()}_***_${uuid}`;
+    const randomPassword = `AAA_***_${uuid}`;
     const responseOrError =
       await this.httpClient.post<CreateTenantAdminUserUseCase.UserRouteResponse>(
         this.CREATE_ADMIN_USER_ROUTE,
