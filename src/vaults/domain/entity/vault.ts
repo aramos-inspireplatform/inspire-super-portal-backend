@@ -12,6 +12,7 @@ export class Vault extends BaseDomainEntity {
   constructor(attrs: InstanceProperties<Vault>) {
     super(attrs);
     this.id = attrs.id ?? RandomUUIDGeneratorAdapter();
+    this.name = attrs.name;
     this.isActive = attrs.isActive;
     this.wrapperIntegrationId = attrs.wrapperIntegrationId;
   }
