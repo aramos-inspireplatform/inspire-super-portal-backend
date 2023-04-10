@@ -70,6 +70,5 @@ export class TenantsController {
       tenants.page,
       tenants.pageSize,
     );
-    return tenants;
   }
 }

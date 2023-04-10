@@ -1,4 +1,13 @@
-import { Body, Controller, Inject, Param, Post, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Inject,
+  Param,
+  Post,
+  Req,
+  Query,
+} from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
@@ -7,6 +16,10 @@ import { LinkTenantUserUseCase } from '~/users/application/use-case/link-tenant-
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 import { CreateTenantUserRequestDto } from '~/users/presentation/dto/input/create-tenant-user-request.dto';
 import { UserResponseDto } from '~/users/presentation/dto/output/user-response.dto';
+import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
+import { ListTenantUsersUseCase } from '~/users/application/use-case/list-tenant-users.use-case';
+import { PaginatedUsersResponseDto } from './dto/output/paginated-users-response.dto';
+import { ListUserResponseDto } from '~/users/presentation/dto/output/list-user-response.dto';
 
 @Controller('tenants/users')
 @ApiTags('Tenant Users')
@@ -16,6 +29,8 @@ export class TenantsUsersController {
     private readonly createTenantUserUseCase: CreateTenantUserUseCase,
     @Inject(UsersProvidersSymbols.LINK_TENANT_USER_USE_CASE)
     private readonly linkTenantUser: LinkTenantUserUseCase,
+    @Inject(UsersProvidersSymbols.LIST_TENANT_USERS_USE_CASE)
+    private readonly listTenantUsersUseCase: ListTenantUsersUseCase,
   ) {}
 
   @Post()
@@ -47,5 +62,29 @@ export class TenantsUsersController {
       userId,
     });
     return UserResponseDto.factory(UserResponseDto, tenantUser);
+  }
+
+  @Get('/:tenantId')
+  @AuthenticatedRoute()
+  @ApiDefaultResponse({ type: UserResponseDto, isArray: true })
+  async list(
+    @Req() request: FastifyRequest,
+    @Query() pagination: CommonPaginateDto,
+    @Param('tenantId') tenantId: string,
+  ) {
+    const users = await this.listTenantUsersUseCase.list({
+      accessToken: request.headers.authorization,
+      tenantId,
+      pagination: {
+        ...pagination,
+        pageSize: pagination.pagesize,
+      },
+    });
+    return new PaginatedUsersResponseDto(
+      ListUserResponseDto.factory(ListUserResponseDto, users.rows),
+      users.count,
+      users.page,
+      users.pageSize,
+    );
   }
 }
