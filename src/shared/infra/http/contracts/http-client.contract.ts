@@ -1,34 +1,41 @@
+type Json = { [property: string]: string | Json | object | Buffer | any };
+export type ReqConfig = {
+  headers?: {
+    authorization?: string;
+  } & Json;
+} & Json;
+
 export type IHttpClient = {
-  post<TResponse, TConfig = any>(
+  post<TResponse, TConfig = ReqConfig>(
     url: string,
     data?: any,
     config?: TConfig,
   ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
-  get<TResponse = any, TConfig = any>(
+  get<TResponse = any, TConfig = ReqConfig>(
     url: string,
     config?: TConfig,
   ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
   // TODO: implements when need
 
-  // delete<TResponse = any, TConfig = any>(
+  // delete<TResponse = any, TConfig = ReqConfig>(
   //   url: string,
   //   config?: TConfig,
   // ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
-  // head<TResponse = any, TConfig = any>(
+  // head<TResponse = any, TConfig = ReqConfig>(
   //   url: string,
   //   config?: TConfig,
   // ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
-  // put<TResponse = any, TConfig = any>(
+  // put<TResponse = any, TConfig = ReqConfig>(
   //   url: string,
   //   data?: any,
   //   config?: TConfig,
   // ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
-  // patch<TResponse = any, TConfig = any>(
+  // patch<TResponse = any, TConfig = ReqConfig>(
   //   url: string,
   //   data?: any,
   //   config?: TConfig,

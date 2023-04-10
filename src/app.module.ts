@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AgenciesModule } from '~/agencies/ioc/agencies.module';
 import { AuthModule } from '~/auth/ioc/auth.module';
 import { CountriesModule } from '~/countries/ioc/countries.module';
 import { LanguagesModule } from '~/languages/ioc/languages.module';
@@ -36,6 +37,7 @@ import { VaultsModule } from '~/vaults/ioc/vaults.module';
     ProcessorsModule,
     PaymentMethodsModule,
     ModuleRequestsModule,
+    AgenciesModule,
   ],
 })
 export class AppModule {}
