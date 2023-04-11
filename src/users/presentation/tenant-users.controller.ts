@@ -20,6 +20,7 @@ import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { ListTenantUsersUseCase } from '~/users/application/use-case/list-tenant-users.use-case';
 import { PaginatedUsersResponseDto } from './dto/output/paginated-users-response.dto';
 import { ListUserResponseDto } from '~/users/presentation/dto/output/list-user-response.dto';
+import { ListTenantUsersFilterDto } from './dto/input/list-tenant-users-filter.dto';
 
 @Controller('tenants/users')
 @ApiTags('Tenant Users')
@@ -69,12 +70,11 @@ export class TenantsUsersController {
   @ApiDefaultResponse({ type: UserResponseDto, isArray: true })
   async list(
     @Req() request: FastifyRequest,
-    @Query() pagination: CommonPaginateDto,
-    @Param('tenantId') tenantId: string,
+    @Query() pagination: ListTenantUsersFilterDto,
   ) {
     const users = await this.listTenantUsersUseCase.list({
       accessToken: request.headers.authorization,
-      tenantId,
+      tenantId: pagination.tenantId,
       pagination: {
         ...pagination,
         pageSize: pagination.pagesize,

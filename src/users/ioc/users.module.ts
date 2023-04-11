@@ -5,6 +5,7 @@ import { LinkTenantUserUseCaseFactoryProvider } from '~/users/ioc/providers/link
 import { TenantAdminUsersController } from '~/users/presentation/tenant-admin-user.controller';
 import { TenantsUsersController } from '~/users/presentation/tenant-users.controller';
 import { ListTenantUsersUseCaseFactoryProvider } from './providers/list-tenant-users-use-case-factory.provider';
+import { ListAdminUsersUseCaseFactoryProvider } from './providers/list-admin-users-use-case-factory.provider';
 
 @Module({
   providers: [
@@ -12,6 +13,7 @@ import { ListTenantUsersUseCaseFactoryProvider } from './providers/list-tenant-u
     LinkTenantUserUseCaseFactoryProvider.register(),
     CreateTenantAdminUserUseCaseFactoryProvider.register(),
     ListTenantUsersUseCaseFactoryProvider.register(),
+    ListAdminUsersUseCaseFactoryProvider.register(),
   ],
   controllers: [TenantsUsersController, TenantAdminUsersController],
 })

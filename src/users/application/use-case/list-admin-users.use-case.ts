@@ -2,8 +2,8 @@ import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract'
 import { InspireHttpPaginatedResponse } from '~/shared/types/inspire-http-response.type';
 import { URL } from 'url';
 
-export class ListTenantUsersUseCase {
-  private readonly USERS_ROUTE = `${process.env.TENANT_URL}/user`;
+export class ListAdminUsersUseCase {
+  private readonly USERS_ROUTE = `${process.env.TENANT_URL}/user/admin-users`;
   constructor(private readonly httpClient: IHttpClient) {}
 
   async list(attrs: ListUsersUseCase.InputAttrs) {
@@ -24,7 +24,6 @@ export class ListTenantUsersUseCase {
         {
           headers: {
             authorization: attrs.accessToken,
-            tenant: attrs.tenantId ?? null,
           },
         },
       );
@@ -41,7 +40,6 @@ export namespace ListUsersUseCase {
       sortby?: string;
       keywords?: string;
     };
-    tenantId?: string;
     accessToken: string;
   };
 
