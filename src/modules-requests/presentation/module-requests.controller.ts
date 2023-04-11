@@ -13,7 +13,7 @@ import {
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 
 @Controller('module-requests')
-@ApiTags('module-requests')
+@ApiTags('Module Requests')
 @CustomApiExtraModels(
   PaymentProviderValidatorRequestDto,
   CreateModuleRequestResponseDto,

@@ -16,7 +16,6 @@ import { LinkTenantUserUseCase } from '~/users/application/use-case/link-tenant-
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 import { CreateTenantUserRequestDto } from '~/users/presentation/dto/input/create-tenant-user-request.dto';
 import { UserResponseDto } from '~/users/presentation/dto/output/user-response.dto';
-import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { ListTenantUsersUseCase } from '~/users/application/use-case/list-tenant-users.use-case';
 import { PaginatedUsersResponseDto } from './dto/output/paginated-users-response.dto';
 import { ListUserResponseDto } from '~/users/presentation/dto/output/list-user-response.dto';
@@ -65,7 +64,7 @@ export class TenantsUsersController {
     return UserResponseDto.factory(UserResponseDto, tenantUser);
   }
 
-  @Get('/:tenantId')
+  @Get()
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: UserResponseDto, isArray: true })
   async list(
