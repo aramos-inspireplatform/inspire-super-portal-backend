@@ -8,6 +8,9 @@ import {
   IsPositive,
   IsString,
   IsArray,
+  ValidateNested,
+  ArrayMinSize,
+  IsDefined,
 } from 'class-validator';
 import { PaymentMethodsDto } from '~/modules-requests/presentation/dto/input/modules/payment/payment-methods.dto';
 
@@ -63,6 +66,11 @@ export class PaymentProcessorDto {
   apiSecretKey: string;
 
   @ApiProperty({ type: PaymentMethodsDto, isArray: true })
+  @IsDefined()
+  @IsArray()
+  @ValidateNested({ each: true })
+  @ArrayMinSize(1)
+  @Type(() => PaymentMethodsDto)
   paymentMethods: PaymentMethodsDto[];
 
   @ApiProperty({

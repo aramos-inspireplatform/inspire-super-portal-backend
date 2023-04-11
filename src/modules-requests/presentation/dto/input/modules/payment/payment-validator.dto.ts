@@ -4,7 +4,7 @@ import {
   ArrayMinSize,
   IsArray,
   IsDefined,
-  IsNotEmpty,
+  IsOptional,
   ValidateNested,
 } from 'class-validator';
 import { PaymentProcessorDto } from '~/modules-requests/presentation/dto/input/modules/payment/payment-processor.dto';
@@ -25,11 +25,11 @@ export class PaymentProviderValidatorRequestDto {
   paymentProcessor: PaymentProcessorDto;
 
   @ApiProperty({ type: WebHookDto, isArray: true, example: WebHookDto })
-  @IsNotEmpty()
+  @IsOptional()
   @IsDefined()
   @IsArray()
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
   @Type(() => WebHookDto)
-  webHooks: WebHookDto[];
+  webHooks?: WebHookDto[];
 }
