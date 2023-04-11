@@ -33,6 +33,7 @@ export class TenantsRepository implements ITenantRepository {
   ): ITenantRepository.FindByIdResult {
     const tenant = await this.repository
       .createQueryBuilder('tenants')
+      .leftJoinAndSelect('tenants.tenantStatus', 'tenantStatus')
       .where('tenants.id = :id', { id: attrs.id })
       .getOne();
     return tenant ? new Tenant(tenant) : null;

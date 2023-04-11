@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Exclude } from 'class-transformer';
 import { BaseDto } from '../../../../shared/presentation/base.dto';
+import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
+import { TenantStatus } from '~/tenants/domain/entity/tenant-statuses.entity';
 export class GetTenantResponseDto extends BaseDto {
   @Expose()
   @ApiProperty({
@@ -83,6 +85,19 @@ export class GetTenantResponseDto extends BaseDto {
   @ApiProperty({ example: 'https://website.com/terms-of-service' })
   @Expose()
   termsOfService: string;
+
+  @Expose({ name: 'status' })
+  @ApiProperty({
+    example: 'Pending',
+    type: 'enum',
+    enum: TenantStatusesConstant,
+  })
+  getTenantStatus() {
+    return this.tenantStatus?.name ?? 'Pending';
+  }
+
+  @Exclude()
+  tenantStatus: TenantStatus;
 
   @ApiProperty({ example: '643303d0a19029aa893f0f9b' })
   @Expose()
