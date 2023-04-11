@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AgenciesModule } from '~/agencies/ioc/agencies.module';
 import { AuthModule } from '~/auth/ioc/auth.module';
 import { CountriesModule } from '~/countries/ioc/countries.module';
 import { LanguagesModule } from '~/languages/ioc/languages.module';
 import { ModuleRequestsModule } from '~/modules-requests/ioc/module-requests.module';
 import { PaymentMethodsModule } from '~/payment-methods/ioc/payment-methods.module';
 import { ProcessorsModule } from '~/processors/ioc/processors.module';
+import { SettlementCurrenciesModule } from '~/settlement-currencies/ioc/settlement-currencies.module';
 import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
 import { validateEnvironmentSchema } from '~/shared/infra/env/validate-environment';
 import { HttpModule } from '~/shared/infra/http/ioc/http.module';
@@ -36,6 +38,8 @@ import { VaultsModule } from '~/vaults/ioc/vaults.module';
     ProcessorsModule,
     PaymentMethodsModule,
     ModuleRequestsModule,
+    AgenciesModule,
+    SettlementCurrenciesModule,
   ],
 })
 export class AppModule {}

@@ -5,3 +5,4 @@ DELETE FROM tenant_statuses;
 DELETE FROM module_request_types;
 DELETE FROM module_provision_request_statuses;
 DELETE FROM module_request_statuses;
+DELETE FROM settlement_currencies;
