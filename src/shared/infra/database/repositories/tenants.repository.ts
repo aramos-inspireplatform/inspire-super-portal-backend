@@ -37,4 +37,16 @@ export class TenantsRepository implements ITenantRepository {
       .getOne();
     return tenant ? new Tenant(tenant) : null;
   }
+
+  async listAndCount(
+    attrs: ITenantRepository.ListAllInputAttrs,
+  ): ITenantRepository.ListAllResult {
+    const [tenants, total] = await this.repository
+      .createQueryBuilder('tenants')
+      .leftJoinAndSelect('tenants.tenantStatus', 'tenantStatus')
+      .skip(attrs.skip)
+      .take(attrs.take)
+      .getManyAndCount();
+    return [tenants.map((tenant) => new Tenant(tenant)), total];
+  }
 }

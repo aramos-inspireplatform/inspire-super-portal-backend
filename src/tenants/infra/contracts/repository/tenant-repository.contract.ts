@@ -5,6 +5,9 @@ export interface ITenantRepository {
   findById(
     attrs: ITenantRepository.FindByIdInputAttrs,
   ): ITenantRepository.FindByIdResult;
+  listAndCount(
+    attrs: ITenantRepository.ListAllInputAttrs,
+  ): ITenantRepository.ListAllResult;
 }
 
 export namespace ITenantRepository {
@@ -18,4 +21,10 @@ export namespace ITenantRepository {
     id: string;
   };
   export type FindByIdResult = Promise<Tenant | null>;
+
+  export type ListAllInputAttrs = {
+    skip: number;
+    take: number;
+  };
+  export type ListAllResult = Promise<[Tenant[], number]>;
 }

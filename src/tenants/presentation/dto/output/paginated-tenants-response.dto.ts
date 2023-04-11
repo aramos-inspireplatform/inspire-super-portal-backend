@@ -1,11 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto';
-import { GetTenantResponseDto } from '~/tenants/presentation/dto/output/tenant-response.dto';
+import { ListTenantsResponseDto } from './list-tenant-response.dto';
 
-export class PaginatedTenantsResponseDto extends PaginatedResultsDto<GetTenantResponseDto> {
+export class PaginatedTenantsResponseDto extends PaginatedResultsDto<ListTenantsResponseDto> {
   @ApiProperty({
-    type: GetTenantResponseDto,
+    type: ListTenantsResponseDto,
     isArray: true,
   })
-  rows: GetTenantResponseDto[];
+  rows: ListTenantsResponseDto[];
 }

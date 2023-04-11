@@ -1,16 +1,16 @@
 import { FactoryProvider } from '@nestjs/common';
-import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
-import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
+import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
 import { ListAllTenantsUseCase } from '~/tenants/application/use-case/list-all-tenants.use-case';
+import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 
 export class ListAlltenantsUseCaseFactoryProvider {
   static register(): FactoryProvider {
     return {
       provide: TenantProvidersSymbols.LIST_TENANTS_USE_CASE,
-      useFactory: (httpClient: IHttpClient) =>
-        new ListAllTenantsUseCase(httpClient),
-      inject: [AxiosHttpClientAdapter],
+      useFactory: (tenantRepository: ITenantRepository) =>
+        new ListAllTenantsUseCase(tenantRepository),
+      inject: [TenantsRepository],
     };
   }
 }

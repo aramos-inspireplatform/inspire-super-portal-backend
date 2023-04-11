@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Inject,
+  Param,
   Post,
   Query,
   Req,
@@ -17,11 +18,13 @@ import {
 } from '~/shared/presentation/decorators/get-user-from-request';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { CreateTenantUseCase } from '~/tenants/application/use-case/create-tenant.use-case';
+import { FindTenantUseCase } from '~/tenants/application/use-case/find-tenant.use-case';
 import { ListAllTenantsUseCase } from '~/tenants/application/use-case/list-all-tenants.use-case';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 import { CreateTenantRequestBodyDto } from '~/tenants/presentation/dto/input/create-tenant-request.dto';
 import { PaginatedTenantsResponseDto } from '~/tenants/presentation/dto/output/paginated-tenants-response.dto';
 import { GetTenantResponseDto } from '~/tenants/presentation/dto/output/tenant-response.dto';
+import { ListTenantsResponseDto } from './dto/output/list-tenant-response.dto';
 
 @Controller('tenants')
 @ApiTags('Tenants')
@@ -32,6 +35,8 @@ export class TenantsController {
     private readonly createTenantUseCase: CreateTenantUseCase,
     @Inject(TenantProvidersSymbols.LIST_TENANTS_USE_CASE)
     private readonly listAllTenantsUseCase: ListAllTenantsUseCase,
+    @Inject(TenantProvidersSymbols.FIND_TENANT_USE_CASE)
+    private readonly findTenantUseCase: FindTenantUseCase,
   ) {}
 
   @Post()
@@ -65,10 +70,21 @@ export class TenantsController {
       },
     });
     return new PaginatedTenantsResponseDto(
-      GetTenantResponseDto.factory(GetTenantResponseDto, tenants.rows),
+      ListTenantsResponseDto.factory(ListTenantsResponseDto, tenants.rows),
       tenants.count,
       tenants.page,
       tenants.pageSize,
     );
+  }
+
+  @Get(':id')
+  @AuthenticatedRoute()
+  @ApiDefaultResponse({ type: GetTenantResponseDto })
+  async findOne(@Req() request: FastifyRequest, @Param('id') id: string) {
+    const tenant = await this.findTenantUseCase.find({
+      accessToken: request.headers.authorization,
+      tenantId: id,
+    });
+    return GetTenantResponseDto.factory(GetTenantResponseDto, tenant);
   }
 }
