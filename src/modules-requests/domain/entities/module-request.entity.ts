@@ -17,14 +17,14 @@ export class ModuleRequest extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<ModuleRequest>) {
     super(attrs);
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
-    this.attempts = attrs.attempts;
-    this.requestSettings = attrs.requestSettings;
-    this.requestNotes = attrs.requestNotes;
-    this.apiRequestBody = attrs.apiRequestBody;
-    this.apiResponseBody = attrs.apiResponseBody;
-    this.moduleRequestStatus = attrs.moduleRequestStatus;
-    this.moduleRequestType = attrs.moduleRequestType;
-    this.tenant = attrs.tenant;
+    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
+    this.attempts = attrs?.attempts;
+    this.requestSettings = attrs?.requestSettings;
+    this.requestNotes = attrs?.requestNotes;
+    this.apiRequestBody = attrs?.apiRequestBody;
+    this.apiResponseBody = attrs?.apiResponseBody;
+    this.moduleRequestStatus = attrs?.moduleRequestStatus;
+    this.moduleRequestType = attrs?.moduleRequestType;
+    this.tenant = attrs?.tenant;
   }
 }

@@ -10,8 +10,8 @@ export class PaymentMethod extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<PaymentMethod>) {
     super(attrs);
-    this.name = attrs.name;
-    this.isActive = attrs.isActive;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
+    this.name = attrs?.name;
+    this.isActive = attrs?.isActive;
+    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
   }
 }

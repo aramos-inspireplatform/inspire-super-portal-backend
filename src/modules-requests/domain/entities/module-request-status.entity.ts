@@ -6,6 +6,6 @@ export class ModuleRequestStatus extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<ModuleRequestStatus>) {
     super(attrs);
-    this.name = attrs.name;
+    this.name = attrs?.name;
   }
 }

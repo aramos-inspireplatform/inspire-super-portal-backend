@@ -12,8 +12,8 @@ export class SettlementCurrency extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<SettlementCurrency>) {
     super(attrs);
-    this.name = attrs.name;
-    this.isActive = attrs.isActive;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
+    this.name = attrs?.name;
+    this.isActive = attrs?.isActive;
+    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
   }
 }

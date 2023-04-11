@@ -10,8 +10,8 @@ export class Processor extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<Processor>) {
     super(attrs);
-    this.name = attrs.name;
-    this.isActive = attrs.isActive;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
+    this.name = attrs?.name;
+    this.isActive = attrs?.isActive;
+    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
   }
 }

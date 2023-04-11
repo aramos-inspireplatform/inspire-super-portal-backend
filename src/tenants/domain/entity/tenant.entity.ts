@@ -13,9 +13,9 @@ export class Tenant extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<Tenant>) {
     super(attrs);
-    this.name = attrs.name;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
-    this.createdByUserId = attrs.createdByUserId;
-    this.tenantStatus = attrs.tenantStatus;
+    this.name = attrs?.name;
+    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
+    this.createdByUserId = attrs?.createdByUserId;
+    this.tenantStatus = attrs?.tenantStatus;
   }
 }

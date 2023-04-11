@@ -1,3 +1,4 @@
 export const ModuleRequestsProvidersSymbols = {
   CREATE_MODULE_REQUEST_USE_CASE: Symbol('CREATE_MODULE_REQUEST_USE_CASE'),
+  LIST_MODULE_REQUEST_USE_CASE: Symbol('LIST_MODULE_REQUEST_USE_CASE'),
 } as const;

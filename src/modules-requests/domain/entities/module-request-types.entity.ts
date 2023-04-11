@@ -8,7 +8,7 @@ export class ModuleRequestType extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<ModuleRequestType>) {
     super(attrs);
-    this.name = attrs.name;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
+    this.name = attrs?.name;
+    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
   }
 }

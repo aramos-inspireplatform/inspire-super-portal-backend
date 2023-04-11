@@ -6,6 +6,6 @@ export class TenantStatus extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<TenantStatus>) {
     super(attrs);
-    this.name = attrs.name;
+    this.name = attrs?.name;
   }
 }

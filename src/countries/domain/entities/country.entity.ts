@@ -10,10 +10,10 @@ export class Country extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<Country>) {
     super(attrs);
-    this.name = attrs.name;
-    this.code = attrs.code;
-    this.nativeName = attrs.nativeName;
-    this.flagSvgUrl = attrs.flagSvgUrl;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
+    this.name = attrs?.name;
+    this.code = attrs?.code;
+    this.nativeName = attrs?.nativeName;
+    this.flagSvgUrl = attrs?.flagSvgUrl;
+    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
   }
 }

@@ -42,7 +42,7 @@ export class PaymentProcessorDto {
 
   @ApiProperty({
     required: true,
-    example: 'aa8501e1-a828-4e94-aff6-b7aab6760039',
+    example: 1,
   })
   @IsNotEmpty()
   @IsNumber()
@@ -78,7 +78,7 @@ export class PaymentProcessorDto {
 
   @ApiProperty({
     required: true,
-    example: '90261c51-ed8a-4859-b193-395a7375b903',
+    example: ['90261c51-ed8a-4859-b193-395a7375b903'],
   })
   @IsNotEmpty()
   @IsArray()

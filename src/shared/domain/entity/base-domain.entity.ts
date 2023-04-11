@@ -13,9 +13,9 @@ export abstract class BaseDomainEntity {
   deleteDate?: Date;
 
   constructor(attrs: InstanceProperties<BaseDomainEntity>) {
-    this.id = attrs.id ?? RandomUUIDGeneratorAdapter();
-    this.createdDate = attrs.createdDate;
-    this.deleteDate = attrs.deleteDate;
-    this.updatedDate = attrs.updatedDate;
+    this.id = attrs?.id ?? RandomUUIDGeneratorAdapter();
+    this.createdDate = attrs?.createdDate ?? new Date();
+    this.deleteDate = attrs?.deleteDate ?? null;
+    this.updatedDate = attrs?.updatedDate ?? null;
   }
 }
