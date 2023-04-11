@@ -728,3 +728,28 @@ USING btree
 WHERE (deleted_date is null);
 -- ddl-end --
 
+-- object: public.countries | type: TABLE --
+CREATE TABLE public.countries (
+	id uuid NOT NULL,
+	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
+	name varchar(200) NOT NULL,
+	flag_svg_url varchar(400) NOT NULL,
+	native_name varchar(200) NOT NULL,
+	code varchar(2) NOT NULL,
+	wrapper_integration_id varchar(300) NOT NULL,
+	created_date timestamp with time zone NOT NULL,
+	updated_date timestamp with time zone,
+	deleted_date timestamp with time zone,
+	CONSTRAINT pk__countries PRIMARY KEY (id)
+);
+-- ddl-end --
+COMMENT ON COLUMN public.countries.id IS E'The unique identifier for the object.';
+-- ddl-end --
+COMMENT ON COLUMN public.countries.alternative_id IS E'The auto generated sequential identifier.';
+-- ddl-end --
+COMMENT ON COLUMN public.countries.created_date IS E'The date of create.';
+-- ddl-end --
+COMMENT ON COLUMN public.countries.updated_date IS E'The date of last update.';
+-- ddl-end --
+COMMENT ON COLUMN public.countries.deleted_date IS E'The date of delete. Used by the soft delete.';
+-- ddl-end --

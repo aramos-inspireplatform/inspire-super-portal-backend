@@ -27,3 +27,5 @@ DROP TABLE IF EXISTS public.module_request_module_provision_requests CASCADE;
 DROP TABLE IF EXISTS public.module_provision_requests CASCADE;
 
 DROP TABLE IF EXISTS public.module_provision_request_statuses CASCADE;
+
+DROP TABLE IF EXISTS public.countries CASCADE;
