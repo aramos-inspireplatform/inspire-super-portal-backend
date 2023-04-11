@@ -7,7 +7,7 @@ export class GetTenantResponseDto extends BaseDto {
   @Expose()
   @ApiProperty({
     name: 'id',
-    example: '62b365de06835f869cf631ed',
+    example: '0c599ab9-f634-49a8-b7cc-c9a5c13a8e44',
   })
   id: string;
 

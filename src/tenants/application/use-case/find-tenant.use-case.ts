@@ -25,6 +25,7 @@ export class FindTenantUseCase {
     if (responseOrError instanceof Error) throw responseOrError;
     return {
       ...responseOrError.data.body.data,
+      id: tenant.id,
       tenantStatus: tenant.tenantStatus,
       wrapperIntegrationId: tenant.wrapperIntegrationId,
     };
