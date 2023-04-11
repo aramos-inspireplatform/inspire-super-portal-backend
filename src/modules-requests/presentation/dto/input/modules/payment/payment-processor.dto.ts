@@ -11,6 +11,7 @@ import {
   ValidateNested,
   ArrayMinSize,
   IsDefined,
+  ValidateIf,
 } from 'class-validator';
 import { PaymentMethodsDto } from '~/modules-requests/presentation/dto/input/modules/payment/payment-methods.dto';
 
@@ -53,6 +54,7 @@ export class PaymentProcessorDto {
     required: true,
     example: 'aa8501e1-a828-4e94-aff6-b7aab6760039',
   })
+  @ValidateIf((obj: PaymentProcessorDto) => !obj.apiSecretKey)
   @IsNotEmpty()
   @IsString()
   apiAccessKey: string;
@@ -61,6 +63,7 @@ export class PaymentProcessorDto {
     required: true,
     example: 'aa8501e1-a828-4e94-aff6-b7aab6760039',
   })
+  @ValidateIf((obj: PaymentProcessorDto) => !obj.apiAccessKey)
   @IsNotEmpty()
   @IsString()
   apiSecretKey: string;

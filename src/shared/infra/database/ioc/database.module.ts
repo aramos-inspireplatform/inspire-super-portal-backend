@@ -1,5 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { databaseProviders } from '~/shared/infra/database/ioc/providers';
+import { CountryRepository } from '~/shared/infra/database/repositories/country.repository';
 import { ModuleRequestStatusesRepository } from '~/shared/infra/database/repositories/module-request-statuses.repository';
 import { ModuleRequestTypesRepository } from '~/shared/infra/database/repositories/module-request-types.repository';
 import { ModuleRequestRepository } from '~/shared/infra/database/repositories/module-request.repository';
@@ -23,6 +24,7 @@ import { VaultsRepository } from '~/shared/infra/database/repositories/vaults.re
     ModuleRequestTypesRepository,
     ModuleRequestRepository,
     SettlementCurrenciesRepository,
+    CountryRepository,
   ],
   exports: [
     ...databaseProviders,
@@ -35,6 +37,7 @@ import { VaultsRepository } from '~/shared/infra/database/repositories/vaults.re
     ModuleRequestTypesRepository,
     ModuleRequestRepository,
     SettlementCurrenciesRepository,
+    CountryRepository,
   ],
 })
 export class DatabaseModule {}
