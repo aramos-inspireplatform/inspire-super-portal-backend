@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 import { SystemConfigurations } from './SystemConfigurations';
@@ -15,5 +15,5 @@ export class GeneralDataTypes extends BaseEntity {
     () => SystemConfigurations,
     (systemConfigurations) => systemConfigurations.generalDataType,
   )
-  systemConfigurations: SystemConfigurations[];
+  systemConfigurations: Relation<SystemConfigurations[]>;
 }

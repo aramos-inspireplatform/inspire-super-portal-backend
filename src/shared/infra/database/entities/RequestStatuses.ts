@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 import { Requests } from './Requests';
@@ -12,5 +12,5 @@ export class RequestStatuses extends BaseEntity {
   name: string;
 
   @OneToMany(() => Requests, (requests) => requests.requestStatus)
-  requests: Requests[];
+  requests: Relation<Requests[]>;
 }

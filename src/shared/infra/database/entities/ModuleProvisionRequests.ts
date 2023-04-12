@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
@@ -45,12 +46,14 @@ export class ModuleProvisionRequests extends BaseEntity {
   @JoinColumn([
     { name: 'module_provision_request_status_id', referencedColumnName: 'id' },
   ])
-  moduleProvisionRequestStatus: ModuleProvisionRequestStatuses;
+  moduleProvisionRequestStatus: Relation<ModuleProvisionRequestStatuses>;
 
   @OneToMany(
     () => ModuleRequestModuleProvisionRequests,
     (moduleRequestModuleProvisionRequests) =>
       moduleRequestModuleProvisionRequests.moduleProvisionRequest,
   )
-  moduleRequestModuleProvisionRequests: ModuleRequestModuleProvisionRequests[];
+  moduleRequestModuleProvisionRequests: Relation<
+    ModuleRequestModuleProvisionRequests[]
+  >;
 }

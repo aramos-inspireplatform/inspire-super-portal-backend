@@ -15,7 +15,9 @@ export interface IModuleRequestRepository {
 }
 
 export namespace IModuleRequestRepository {
-  export type SaveInputAttrs = { moduleRequest: ModuleRequest };
+  export type SaveInputAttrs = {
+    moduleRequest: ModuleRequest;
+  };
   export type SaveResult = Promise<ModuleRequest>;
 
   export type ListInputAttrs = {

@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 import { Tenants } from './Tenants';
@@ -12,5 +12,5 @@ export class TenantStatuses extends BaseEntity {
   name: string;
 
   @OneToMany(() => Tenants, (tenants) => tenants.tenantStatus)
-  tenants: Tenants[];
+  tenants: Relation<Tenants[]>;
 }

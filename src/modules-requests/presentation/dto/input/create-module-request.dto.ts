@@ -18,15 +18,7 @@ export class CreateModuleRequestBodyDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  moduleId: string;
-
-  @ApiProperty({
-    type: String,
-    example: '34ec3e5f-56be-455c-8e6a-2b4472c8d2de',
-  })
-  @IsNotEmpty()
-  @IsUUID()
-  tenantId: string;
+  moduleId: (typeof ModuleRequestTypes)[keyof typeof ModuleRequestTypes];
 
   @ApiProperty()
   @IsNotEmpty()
@@ -45,5 +37,5 @@ export class CreateModuleRequestBodyDto {
       },
     ],
   })
-  settings: any;
+  settings: object;
 }

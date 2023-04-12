@@ -1,4 +1,4 @@
-import { Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, Index, JoinColumn, ManyToOne, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 import { ModuleProvisionRequests } from './ModuleProvisionRequests';
@@ -16,7 +16,7 @@ export class ModuleRequestModuleProvisionRequests extends BaseEntity {
   @JoinColumn([
     { name: 'module_provision_request_id', referencedColumnName: 'id' },
   ])
-  moduleProvisionRequest: ModuleProvisionRequests;
+  moduleProvisionRequest: Relation<ModuleProvisionRequests>;
 
   @ManyToOne(
     () => ModuleRequests,
@@ -24,5 +24,5 @@ export class ModuleRequestModuleProvisionRequests extends BaseEntity {
     { onDelete: 'RESTRICT', onUpdate: 'CASCADE' },
   )
   @JoinColumn([{ name: 'module_request_id', referencedColumnName: 'id' }])
-  moduleRequest: ModuleRequests;
+  moduleRequest: Relation<ModuleRequests>;
 }

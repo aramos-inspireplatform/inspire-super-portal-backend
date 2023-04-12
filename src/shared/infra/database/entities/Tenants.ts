@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
@@ -37,5 +38,5 @@ export class Tenants extends BaseEntity {
     onUpdate: 'CASCADE',
   })
   @JoinColumn([{ name: 'tenant_status_id', referencedColumnName: 'id' }])
-  tenantStatus: TenantStatuses;
+  tenantStatus: Relation<TenantStatuses>;
 }

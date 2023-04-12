@@ -6,6 +6,7 @@ import { ModuleRequestTypesRepository } from '~/shared/infra/database/repositori
 import { ModuleRequestRepository } from '~/shared/infra/database/repositories/module-request.repository';
 import { PaymentMethodsRepository } from '~/shared/infra/database/repositories/payment-methods.repository';
 import { ProcessorsRepository } from '~/shared/infra/database/repositories/processors.repository';
+import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
 import { SettlementCurrenciesRepository } from '~/shared/infra/database/repositories/settlement-currencies.repository';
 import { TenantStatusesRepository } from '~/shared/infra/database/repositories/tenant-statuses.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
@@ -38,6 +39,7 @@ import { VaultsRepository } from '~/shared/infra/database/repositories/vaults.re
     ModuleRequestRepository,
     SettlementCurrenciesRepository,
     CountryRepository,
+    RequestStatusesRepository,
   ],
 })
 export class DatabaseModule {}

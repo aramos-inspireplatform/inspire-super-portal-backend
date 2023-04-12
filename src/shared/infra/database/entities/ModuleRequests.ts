@@ -5,6 +5,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  Relation,
 } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
@@ -43,7 +44,9 @@ export class ModuleRequests extends BaseEntity {
     (moduleRequestModuleProvisionRequests) =>
       moduleRequestModuleProvisionRequests.moduleRequest,
   )
-  moduleRequestModuleProvisionRequests: ModuleRequestModuleProvisionRequests[];
+  moduleRequestModuleProvisionRequests: Relation<
+    ModuleRequestModuleProvisionRequests[]
+  >;
 
   @ManyToOne(
     () => ModuleRequestStatuses,
@@ -53,7 +56,7 @@ export class ModuleRequests extends BaseEntity {
   @JoinColumn([
     { name: 'module_request_status_id', referencedColumnName: 'id' },
   ])
-  moduleRequestStatus: ModuleRequestStatuses;
+  moduleRequestStatus: Relation<ModuleRequestStatuses>;
 
   @ManyToOne(
     () => ModuleRequestTypes,
@@ -61,11 +64,11 @@ export class ModuleRequests extends BaseEntity {
     { onDelete: 'RESTRICT', onUpdate: 'CASCADE' },
   )
   @JoinColumn([{ name: 'module_request_type_id', referencedColumnName: 'id' }])
-  moduleRequestType: ModuleRequestTypes;
+  moduleRequestType: Relation<ModuleRequestTypes>;
 
   @OneToMany(
     () => RequestModuleRequests,
     (requestModuleRequests) => requestModuleRequests.moduleRequest,
   )
-  requestModuleRequests: RequestModuleRequests[];
+  requestModuleRequests: Relation<RequestModuleRequests[]>;
 }

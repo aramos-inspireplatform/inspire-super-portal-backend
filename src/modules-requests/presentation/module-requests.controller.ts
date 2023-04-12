@@ -33,20 +33,20 @@ export class ModuleRequestsController {
     private readonly listModuleRequestUseCase: ListModuleRequestUseCase,
   ) {}
 
-  @Post()
-  @AuthenticatedRoute()
-  @ApiDefaultResponse({ type: CreateModuleRequestResponseDto })
-  async create(@Body() payload: CreateModuleRequestBodyDto) {
-    const moduleRequest = await this.createModuleRequestUseCase.handle({
-      moduleId: payload.moduleId,
-      settings: payload.settings,
-      tenantId: payload.tenantId,
-    });
-    return CreateModuleRequestResponseDto.factory(
-      CreateModuleRequestResponseDto,
-      moduleRequest,
-    );
-  }
+  // @Post()
+  // @AuthenticatedRoute()
+  // @ApiDefaultResponse({ type: CreateModuleRequestResponseDto })
+  // async create(@Body() payload: CreateModuleRequestBodyDto) {
+  //   const moduleRequest = await this.createModuleRequestUseCase.handle({
+  //     moduleId: payload.moduleId,
+  //     settings: payload.settings,
+  //     tenantId: payload.tenantId,
+  //   });
+  //   return CreateModuleRequestResponseDto.factory(
+  //     CreateModuleRequestResponseDto,
+  //     moduleRequest,
+  //   );
+  // }
 
   @Get()
   @AuthenticatedRoute()

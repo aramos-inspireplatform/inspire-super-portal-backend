@@ -1,4 +1,4 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 import { ModuleProvisionRequests } from './ModuleProvisionRequests';
@@ -20,5 +20,5 @@ export class ModuleProvisionRequestStatuses extends BaseEntity {
     (moduleProvisionRequests) =>
       moduleProvisionRequests.moduleProvisionRequestStatus,
   )
-  moduleProvisionRequests: ModuleProvisionRequests[];
+  moduleProvisionRequests: Relation<ModuleProvisionRequests[]>;
 }
