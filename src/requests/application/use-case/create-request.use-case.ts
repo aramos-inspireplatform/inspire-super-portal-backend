@@ -36,7 +36,7 @@ export class CreateRequestUseCase {
       tenant,
       requestModuleRequests,
     });
-    await this.requestRepository.save({ request });
+    return this.requestRepository.save({ request });
   }
 
   private async getUserDetails(attrs: CreateRequestUseCase.InputAttrs) {
