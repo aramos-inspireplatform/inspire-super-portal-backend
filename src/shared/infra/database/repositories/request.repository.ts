@@ -7,7 +7,6 @@ import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/
 import { ModuleRequestRepository } from '~/shared/infra/database/repositories/module-request.repository';
 import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
 import { RequestModuleRequests } from '../entities/RequestModuleRequests';
-import { dataSource } from '~/test/helper/create-application.helper';
 import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { Tenant } from '~/tenants/domain/entity/tenant.entity';
 import { ModuleRequest } from '~/modules-requests/domain/entities/module-request.entity';
@@ -19,7 +18,7 @@ export class RequestRepository implements IRequestRepository {
 
   constructor(
     @Inject(DatabaseProvidersSymbols.DATA_SOURCE)
-    dataSource: DataSource,
+    private readonly dataSource: DataSource,
     private readonly requestStatusesRepository: RequestStatusesRepository,
     private readonly moduleRequestRepository: ModuleRequestRepository,
   ) {
@@ -46,7 +45,7 @@ export class RequestRepository implements IRequestRepository {
           new Request({
             ...request,
             requestStatus: new RequestStatus(request.requestStatus),
-            requestModuleRequests: request.requestModuleRequests.map(
+            requestModuleRequests: request.requestModuleRequests?.map(
               (requestModuleRequests) =>
                 new ModuleRequest(requestModuleRequests.moduleRequest),
             ),
@@ -60,7 +59,7 @@ export class RequestRepository implements IRequestRepository {
   async save(
     attrs: IRequestRepository.SaveInputAttrs,
   ): IRequestRepository.SaveResult {
-    return dataSource.transaction(async () => {
+    return this.dataSource.transaction(async () => {
       const moduleRequests = await this.moduleRequestRepository.saveBatch({
         moduleRequests: attrs.request.requestModuleRequests,
       });

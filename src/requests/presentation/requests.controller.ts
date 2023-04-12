@@ -14,6 +14,8 @@ import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticat
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
 import { CreateRequestBodyDto } from '~/requests/presentation/dtos/inputs/create-request-body.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
+import { PaginatedTenantsResponseDto } from '~/tenants/presentation/dto/output/paginated-tenants-response.dto';
+import { ListTenantsResponseDto } from '../../tenants/presentation/dto/output/list-tenant-response.dto';
 
 @Controller('requests')
 @ApiTags('Requests')
@@ -49,23 +51,18 @@ export class RequestsController {
   @Get()
   @AuthenticatedRoute()
   async findAll(@Query() pagination: CommonPaginateDto) {
-    const [requests, count] = await this.listAllRequestsUseCase.execute({
+    const requests = await this.listAllRequestsUseCase.execute({
       pagination: {
         ...pagination,
         pageSize: pagination.pagesize,
       },
     });
 
-    return {
-      requests,
-      count,
-    };
-
-    // return new PaginatedResultsDto(
-    //   GetRequestResponse.factory(GetRequestResponse, requests),
-    //   count,
-    //   pagination.page,
-    //   pagination.pagesize,
-    // )
+    return new PaginatedTenantsResponseDto(
+      requests.rows,
+      requests.count,
+      requests.page,
+      requests.pageSize,
+    );
   }
 }
