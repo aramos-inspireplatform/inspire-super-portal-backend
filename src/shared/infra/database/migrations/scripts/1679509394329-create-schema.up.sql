@@ -5,6 +5,7 @@
 -- Model Author: ---
 -- object: admin_project | type: ROLE --
 -- DROP ROLE IF EXISTS admin_project;
+-- CREATE ROLE admin_project WITH ;
 -- ddl-end --
 
 
@@ -13,6 +14,7 @@
 -- 
 -- object: "Project" | type: DATABASE --
 -- DROP DATABASE IF EXISTS "Project";
+-- CREATE DATABASE "Project";
 -- ddl-end --
 
 
@@ -734,7 +736,6 @@ CREATE TABLE public.requests (
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
 	request_status uuid NOT NULL,
 	tenant_id uuid NOT NULL,
-	module_request_id uuid NOT NULL,
 	created_by_user_id varchar(300) NOT NULL,
 	created_by_user_email varchar(300) NOT NULL,
 	created_date timestamp with time zone NOT NULL,
@@ -760,13 +761,6 @@ COMMENT ON COLUMN public.requests.deleted_date IS E'The date of delete. Used by 
 -- ALTER TABLE public.requests DROP CONSTRAINT IF EXISTS fk__tenants__requests CASCADE;
 ALTER TABLE public.requests ADD CONSTRAINT fk__tenants__requests FOREIGN KEY (tenant_id)
 REFERENCES public.tenants (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: fk__module_requests__requests | type: CONSTRAINT --
--- ALTER TABLE public.requests DROP CONSTRAINT IF EXISTS fk__module_requests__requests CASCADE;
-ALTER TABLE public.requests ADD CONSTRAINT fk__module_requests__requests FOREIGN KEY (module_request_id)
-REFERENCES public.module_requests (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
@@ -819,6 +813,46 @@ WHERE (deleted_date is null);
 -- ALTER TABLE public.requests DROP CONSTRAINT IF EXISTS fk__request_statuses__requests CASCADE;
 ALTER TABLE public.requests ADD CONSTRAINT fk__request_statuses__requests FOREIGN KEY (request_status)
 REFERENCES public.request_statuses (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: public.request_module_requests | type: TABLE --
+-- DROP TABLE IF EXISTS public.request_module_requests CASCADE;
+CREATE TABLE public.request_module_requests (
+	id uuid NOT NULL,
+	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
+	created_date timestamp with time zone NOT NULL,
+	updated_date timestamp with time zone,
+	deleted_date timestamp with time zone,
+	module_request_id uuid NOT NULL,
+	request_id uuid NOT NULL,
+	CONSTRAINT pk__request_module_requests PRIMARY KEY (id)
+);
+-- ddl-end --
+COMMENT ON COLUMN public.request_module_requests.id IS E'The unique identifier for the object.';
+-- ddl-end --
+COMMENT ON COLUMN public.request_module_requests.alternative_id IS E'The auto generated sequential identifier.';
+-- ddl-end --
+COMMENT ON COLUMN public.request_module_requests.created_date IS E'The date of create.';
+-- ddl-end --
+COMMENT ON COLUMN public.request_module_requests.updated_date IS E'The date of last update.';
+-- ddl-end --
+COMMENT ON COLUMN public.request_module_requests.deleted_date IS E'The date of delete. Used by the soft delete.';
+-- ddl-end --
+-- ALTER TABLE public.request_module_requests OWNER TO admin_project;
+-- ddl-end --
+
+-- object: fk__module_requests__request_module_requests | type: CONSTRAINT --
+-- ALTER TABLE public.request_module_requests DROP CONSTRAINT IF EXISTS fk__module_requests__request_module_requests CASCADE;
+ALTER TABLE public.request_module_requests ADD CONSTRAINT fk__module_requests__request_module_requests FOREIGN KEY (module_request_id)
+REFERENCES public.module_requests (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: fk__requests__request_module_requests | type: CONSTRAINT --
+-- ALTER TABLE public.request_module_requests DROP CONSTRAINT IF EXISTS fk__requests__request_module_requests CASCADE;
+ALTER TABLE public.request_module_requests ADD CONSTRAINT fk__requests__request_module_requests FOREIGN KEY (request_id)
+REFERENCES public.requests (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
