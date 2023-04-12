@@ -1,6 +1,7 @@
-import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
-import { SystemConfigurations } from '~/shared/infra/database/entities/system-configurations';
+
+import { SystemConfigurations } from './SystemConfigurations';
 
 @Index('idx__uq__general_data_types', ['deletedDate', 'name'], { unique: true })
 @Index('pk__general_data_types', ['id'], { unique: true })
@@ -14,5 +15,5 @@ export class GeneralDataTypes extends BaseEntity {
     () => SystemConfigurations,
     (systemConfigurations) => systemConfigurations.generalDataType,
   )
-  systemConfigurations: Relation<SystemConfigurations[]>;
+  systemConfigurations: SystemConfigurations[];
 }

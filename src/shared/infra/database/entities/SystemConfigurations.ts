@@ -1,13 +1,7 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  Relation,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
-import { GeneralDataTypes } from '~/shared/infra/database/entities/general-data-types';
+
+import { GeneralDataTypes } from './GeneralDataTypes';
 
 @Index('idx__uq__system_configurations', ['deletedDate', 'slug'], {
   unique: true,
@@ -59,5 +53,5 @@ export class SystemConfigurations extends BaseEntity {
     { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' },
   )
   @JoinColumn([{ name: 'general_data_type_id', referencedColumnName: 'id' }])
-  generalDataType: Relation<GeneralDataTypes>;
+  generalDataType: GeneralDataTypes;
 }
