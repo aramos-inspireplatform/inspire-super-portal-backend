@@ -25,11 +25,6 @@ export class ModuleRequestRepository implements IModuleRequestRepository {
   async save(
     attrs: IModuleRequestRepository.SaveInputAttrs,
   ): IModuleRequestRepository.SaveResult {
-    if (Array.isArray(attrs.moduleRequest))
-      return this.saveBatch({
-        moduleRequests: attrs.moduleRequest,
-      });
-
     const moduleRequestType = await this.moduleRequestTypeRepository.findById({
       id: attrs.moduleRequest.moduleRequestType.id,
     });
@@ -37,15 +32,12 @@ export class ModuleRequestRepository implements IModuleRequestRepository {
       await this.moduleRequestStatusesRepository.findById({
         id: attrs.moduleRequest.moduleRequestStatus.id,
       });
-
     const entity = this.repository.create({
       ...attrs.moduleRequest,
       moduleRequestType,
       moduleRequestStatus,
     });
-
     await this.repository.save(entity, { reload: true });
-
     attrs.moduleRequest.createdDate = new Date();
     return new ModuleRequest({
       ...entity,
@@ -98,11 +90,9 @@ export class ModuleRequestRepository implements IModuleRequestRepository {
     ];
   }
 
-  private async saveBatch({
+  saveBatch({
     moduleRequests,
-  }: {
-    moduleRequests: ModuleRequest[];
-  }): Promise<IModuleRequestRepository.SaveBatchResult> {
+  }: IModuleRequestRepository.SaveBatchInputAttrs): IModuleRequestRepository.SaveBatchResult {
     return Promise.all(
       moduleRequests.map((moduleRequest) => this.save({ moduleRequest })),
     );
