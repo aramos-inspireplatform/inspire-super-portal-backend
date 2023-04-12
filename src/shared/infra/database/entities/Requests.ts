@@ -1,7 +1,14 @@
-import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+} from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-import { ModuleRequests } from './ModuleRequests';
+import { RequestModuleRequests } from './RequestModuleRequests';
 import { RequestStatuses } from './RequestStatuses';
 import { Tenants } from './Tenants';
 
@@ -14,13 +21,11 @@ export class Requests extends BaseEntity {
   @Column('character varying', { name: 'created_by_user_email', length: 300 })
   createdByUserEmail: string;
 
-  @ManyToOne(
-    () => ModuleRequests,
-    (moduleRequests) => moduleRequests.requests,
-    { onDelete: 'RESTRICT', onUpdate: 'CASCADE' },
+  @OneToMany(
+    () => RequestModuleRequests,
+    (requestModuleRequests) => requestModuleRequests.request,
   )
-  @JoinColumn([{ name: 'module_request_id', referencedColumnName: 'id' }])
-  moduleRequest: ModuleRequests;
+  requestModuleRequests: RequestModuleRequests[];
 
   @ManyToOne(
     () => RequestStatuses,

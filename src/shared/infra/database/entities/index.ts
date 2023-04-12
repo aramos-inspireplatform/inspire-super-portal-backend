@@ -13,6 +13,7 @@ export * from './ModuleRequestStatuses';
 export * from './Vaults';
 export * from './Processors';
 export * from './ModuleProvisionRequests';
+export * from './RequestModuleRequests';
 export * from './Migrations';
 export * from './PaymentMethods';
 export * from './ModuleRequestModuleProvisionRequests';

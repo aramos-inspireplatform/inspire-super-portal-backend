@@ -11,7 +11,7 @@ import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { ModuleRequestModuleProvisionRequests } from './ModuleRequestModuleProvisionRequests';
 import { ModuleRequestStatuses } from './ModuleRequestStatuses';
 import { ModuleRequestTypes } from './ModuleRequestTypes';
-import { Requests } from './Requests';
+import { RequestModuleRequests } from './RequestModuleRequests';
 
 @Index('pk__module_requests', ['id'], { unique: true })
 @Entity('module_requests', { schema: 'public' })
@@ -63,6 +63,9 @@ export class ModuleRequests extends BaseEntity {
   @JoinColumn([{ name: 'module_request_type_id', referencedColumnName: 'id' }])
   moduleRequestType: ModuleRequestTypes;
 
-  @OneToMany(() => Requests, (requests) => requests.moduleRequest)
-  requests: Requests[];
+  @OneToMany(
+    () => RequestModuleRequests,
+    (requestModuleRequests) => requestModuleRequests.moduleRequest,
+  )
+  requestModuleRequests: RequestModuleRequests[];
 }
