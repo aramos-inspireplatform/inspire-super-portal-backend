@@ -4,7 +4,6 @@ import { AgenciesModule } from '~/agencies/ioc/agencies.module';
 import { AuthModule } from '~/auth/ioc/auth.module';
 import { CountriesModule } from '~/countries/ioc/countries.module';
 import { LanguagesModule } from '~/languages/ioc/languages.module';
-import { ModuleRequestsModule } from '~/modules-requests/ioc/module-requests.module';
 import { PaymentMethodsModule } from '~/payment-methods/ioc/payment-methods.module';
 import { ProcessorsModule } from '~/processors/ioc/processors.module';
 import { RequestModule } from '~/requests/ioc/requests.module';
@@ -38,7 +37,6 @@ import { VaultsModule } from '~/vaults/ioc/vaults.module';
     VaultsModule,
     ProcessorsModule,
     PaymentMethodsModule,
-    ModuleRequestsModule,
     AgenciesModule,
     SettlementCurrenciesModule,
     RequestModule,

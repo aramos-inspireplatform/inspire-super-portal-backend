@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { ModuleRequestStatus } from '~/modules-requests/domain/entities/module-request-status.entity';
-import { ModuleRequestType } from '~/modules-requests/domain/entities/module-request-types.entity';
-import { ModuleRequest } from '~/modules-requests/domain/entities/module-request.entity';
-import { IModuleRequestRepository } from '~/modules-requests/infra/contracts/repository/module-request-repository.contract';
+import { ModuleRequestStatus } from '~/requests/domain/entities/module-request-status.entity';
+import { ModuleRequestType } from '~/requests/domain/entities/module-request-types.entity';
+import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
+import { IModuleRequestRepository } from '~/requests/infra/contracts/repository/module-request-repository.contract';
 import { ModuleRequests } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 import { ModuleRequestStatusesRepository } from '~/shared/infra/database/repositories/module-request-statuses.repository';

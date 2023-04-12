@@ -1,4 +1,4 @@
-import { ModuleRequest } from '~/modules-requests/domain/entities/module-request.entity';
+import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
 
 export interface IModuleRequestRepository {
   save(

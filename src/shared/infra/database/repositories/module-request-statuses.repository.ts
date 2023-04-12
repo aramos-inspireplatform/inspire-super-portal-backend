@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { ModuleRequestStatus } from '~/modules-requests/domain/entities/module-request-status.entity';
-import { IModuleRequestStatusesRepository } from '~/modules-requests/infra/contracts/repository/module-request-statuses-repository.contract';
+import { ModuleRequestStatus } from '~/requests/domain/entities/module-request-status.entity';
+import { IModuleRequestStatusesRepository } from '~/requests/infra/contracts/repository/module-request-statuses-repository.contract';
 import { ModuleRequestStatuses } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 

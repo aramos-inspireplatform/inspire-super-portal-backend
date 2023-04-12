@@ -1,4 +1,4 @@
-import { ModuleRequest } from '~/modules-requests/domain/entities/module-request.entity';
+import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
 import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import { InstanceProperties } from '~/shared/types/class-properties.type';

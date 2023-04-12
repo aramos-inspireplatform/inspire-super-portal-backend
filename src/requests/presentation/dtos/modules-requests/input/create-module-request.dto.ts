@@ -8,8 +8,8 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { ModuleRequestTypes } from '~/modules-requests/domain/constants/module-request-types.constant';
-import { PaymentProviderValidatorRequestDto } from '~/modules-requests/presentation/dto/input/modules/payment/payment-validator.dto';
+import { ModuleRequestTypes } from '~/requests/domain/constants/module-request-types.constant';
+import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-validator.dto';
 
 export class CreateModuleRequestBodyDto {
   @ApiProperty({

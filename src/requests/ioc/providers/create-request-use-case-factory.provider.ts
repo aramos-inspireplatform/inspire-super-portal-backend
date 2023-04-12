@@ -1,7 +1,7 @@
 import { FactoryProvider } from '@nestjs/common';
-import { IModuleRequestStatusesRepository } from '~/modules-requests/infra/contracts/repository/module-request-statuses-repository.contract';
-import { IModuleRequestTypeRepository } from '~/modules-requests/infra/contracts/repository/module-request-type-repository.contract';
 import { CreateRequestUseCase } from '~/requests/application/use-case/create-request.use-case';
+import { IModuleRequestStatusesRepository } from '~/requests/infra/contracts/repository/module-request-statuses-repository.contract';
+import { IModuleRequestTypeRepository } from '~/requests/infra/contracts/repository/module-request-type-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';

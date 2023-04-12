@@ -1,4 +1,4 @@
-import { ModuleRequestType } from '~/modules-requests/domain/entities/module-request-types.entity';
+import { ModuleRequestType } from '~/requests/domain/entities/module-request-types.entity';
 
 export interface IModuleRequestTypeRepository {
   findById(

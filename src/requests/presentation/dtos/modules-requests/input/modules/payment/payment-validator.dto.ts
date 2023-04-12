@@ -7,9 +7,9 @@ import {
   IsOptional,
   ValidateNested,
 } from 'class-validator';
-import { PaymentProcessorDto } from '~/modules-requests/presentation/dto/input/modules/payment/payment-processor.dto';
-import { VaultDto } from '~/modules-requests/presentation/dto/input/modules/payment/vault.dto';
-import { WebHookDto } from '~/modules-requests/presentation/dto/input/modules/payment/web-hook.dto';
+import { PaymentProcessorDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-processor.dto';
+import { VaultDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/vault.dto';
+import { WebHookDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/web-hook.dto';
 
 export class PaymentProviderValidatorRequestDto {
   @ApiProperty({ type: VaultDto, example: VaultDto })

@@ -8,7 +8,7 @@ import {
   ArrayMinSize,
   IsUUID,
 } from 'class-validator';
-import { CreateModuleRequestBodyDto } from '~/modules-requests/presentation/dto/input/create-module-request.dto';
+import { CreateModuleRequestBodyDto } from '~/requests/presentation/dtos/modules-requests/input/create-module-request.dto';
 
 export class CreateRequestBodyDto {
   @ApiProperty({

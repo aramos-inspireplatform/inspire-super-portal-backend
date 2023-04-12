@@ -1,5 +1,5 @@
-import { ModuleRequestStatus } from '~/modules-requests/domain/entities/module-request-status.entity';
-import { ModuleRequestType } from '~/modules-requests/domain/entities/module-request-types.entity';
+import { ModuleRequestStatus } from '~/requests/domain/entities/module-request-status.entity';
+import { ModuleRequestType } from '~/requests/domain/entities/module-request-types.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
 

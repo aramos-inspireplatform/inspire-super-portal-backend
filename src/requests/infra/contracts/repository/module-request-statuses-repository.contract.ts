@@ -1,4 +1,4 @@
-import { ModuleRequestStatus } from '~/modules-requests/domain/entities/module-request-status.entity';
+import { ModuleRequestStatus } from '~/requests/domain/entities/module-request-status.entity';
 
 export interface IModuleRequestStatusesRepository {
   findById(

@@ -9,7 +9,7 @@ import { RequestStatusesRepository } from '~/shared/infra/database/repositories/
 import { RequestModuleRequests } from '../entities/RequestModuleRequests';
 import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { Tenant } from '~/tenants/domain/entity/tenant.entity';
-import { ModuleRequest } from '~/modules-requests/domain/entities/module-request.entity';
+import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
 
 @Injectable()
 export class RequestRepository implements IRequestRepository {

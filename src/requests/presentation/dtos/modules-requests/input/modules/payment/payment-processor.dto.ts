@@ -13,7 +13,7 @@ import {
   IsDefined,
   ValidateIf,
 } from 'class-validator';
-import { PaymentMethodsDto } from '~/modules-requests/presentation/dto/input/modules/payment/payment-methods.dto';
+import { PaymentMethodsDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-methods.dto';
 
 export class PaymentProcessorDto {
   @ApiProperty({

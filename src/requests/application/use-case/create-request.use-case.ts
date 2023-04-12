@@ -1,11 +1,11 @@
 import { NotFoundException } from '@nestjs/common';
-import { ModuleRequestStatusesConstant } from '~/modules-requests/domain/constants/module-request-statuses.constant';
-import { ModuleRequestTypes } from '~/modules-requests/domain/constants/module-request-types.constant';
-import { ModuleRequest } from '~/modules-requests/domain/entities/module-request.entity';
-import { IModuleRequestStatusesRepository } from '~/modules-requests/infra/contracts/repository/module-request-statuses-repository.contract';
-import { IModuleRequestTypeRepository } from '~/modules-requests/infra/contracts/repository/module-request-type-repository.contract';
+import { ModuleRequestStatusesConstant } from '~/requests/domain/constants/module-request-statuses.constant';
+import { ModuleRequestTypes } from '~/requests/domain/constants/module-request-types.constant';
 import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses.constant';
+import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
+import { IModuleRequestStatusesRepository } from '~/requests/infra/contracts/repository/module-request-statuses-repository.contract';
+import { IModuleRequestTypeRepository } from '~/requests/infra/contracts/repository/module-request-type-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
