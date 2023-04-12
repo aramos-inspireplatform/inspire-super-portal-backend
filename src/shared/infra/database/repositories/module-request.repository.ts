@@ -83,12 +83,6 @@ export class ModuleRequestRepository implements IModuleRequestRepository {
   ): IModuleRequestRepository.ListResult {
     const [moduleRequests, count] = await this.repository
       .createQueryBuilder('moduleRequest')
-      .leftJoinAndSelect(
-        'moduleRequest.moduleRequestStatus',
-        'moduleRequestStatus',
-      )
-      .leftJoinAndSelect('moduleRequest.moduleRequestType', 'moduleRequestType')
-      .leftJoinAndSelect('moduleRequest.tenant', 'tenant')
       .skip(attrs.skip)
       .take(attrs.take)
       .getManyAndCount();
