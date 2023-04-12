@@ -15,7 +15,6 @@ import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbol
 import { CreateRequestBodyDto } from '~/requests/presentation/dtos/inputs/create-request-body.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { PaginatedTenantsResponseDto } from '~/tenants/presentation/dto/output/paginated-tenants-response.dto';
-import { ListTenantsResponseDto } from '../../tenants/presentation/dto/output/list-tenant-response.dto';
 
 @Controller('requests')
 @ApiTags('Requests')
