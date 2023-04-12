@@ -27,6 +27,7 @@ export class CreateTenantUseCase {
       );
     if (responseOrError instanceof Error) throw responseOrError;
     const tenant = responseOrError?.data?.body?.data;
+
     const tenantPendingStatuses = await this.tenantStatusesRepository.findById({
       id: TenantStatusesConstant.Pending,
     });
@@ -35,7 +36,7 @@ export class CreateTenantUseCase {
       wrapperIntegrationId: tenant.id,
       tenantStatus: tenantPendingStatuses,
       createdByUserId: attrs.currentUser,
-      createdByUserEmail: 'teste@teste.com',
+      createdByUserEmail: tenant.userEmail,
       tenantId: tenant.googleTenantId,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
@@ -88,6 +89,7 @@ export namespace CreateTenantUseCase {
     languages: Languages;
     currencies: any[];
     countries: Countries;
+    userEmail: string;
   };
 
   export type Timezone = {
