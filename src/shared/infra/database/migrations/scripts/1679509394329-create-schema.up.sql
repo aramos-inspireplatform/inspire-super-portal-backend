@@ -735,6 +735,8 @@ CREATE TABLE public.requests (
 	request_status uuid NOT NULL,
 	tenant_id uuid NOT NULL,
 	module_request_id uuid NOT NULL,
+	created_by_user_id varchar(300) NOT NULL,
+	created_by_user_email varchar(300) NOT NULL,
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
