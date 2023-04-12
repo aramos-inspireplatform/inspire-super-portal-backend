@@ -9,6 +9,7 @@ import {
   BeforeUpdate,
   BeforeSoftRemove,
 } from 'typeorm';
+import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';
 
 export class BaseEntity extends TypeOrmBaseEntity {
   @PrimaryColumn('uuid', { primary: true, name: 'id' })
@@ -36,6 +37,7 @@ export class BaseEntity extends TypeOrmBaseEntity {
 
   @BeforeInsert()
   setCreatedDate() {
+    this.id = RandomUUIDGeneratorAdapter();
     this.createdDate = new Date();
   }
 

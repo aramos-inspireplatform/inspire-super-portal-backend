@@ -546,8 +546,8 @@ VALUES ('b7e5e2dd-b12a-4790-82d7-21ad83b4a778', 'Zimbabwe', 'Zimbabwe', 'ZW', 'h
 
 -- Request Statuses
 
-INSERT INTO request_statuses (id, alternative_id, "name", created_date, updated_date, deleted_date) VALUES('78256c0b-cbb2-440b-ae2e-a43c741f1e82'::uuid, 1, 'Sent', '2023-04-12 06:50:28.860', NULL, NULL);
-INSERT INTO request_statuses (id, alternative_id, "name", created_date, updated_date, deleted_date) VALUES('667a6083-9ba8-4822-a50d-22b34e0c08a9'::uuid, 2, 'Pending', '2023-04-12 06:50:28.863', NULL, NULL);
-INSERT INTO request_statuses (id, alternative_id, "name", created_date, updated_date, deleted_date) VALUES('f6a59aa8-d35d-4c68-b92e-c42107af043b'::uuid, 3, 'Completed', '2023-04-12 06:50:28.864', NULL, NULL);
-INSERT INTO request_statuses (id, alternative_id, "name", created_date, updated_date, deleted_date) VALUES('7e1de153-3a2d-4c0b-b432-665298e25b73'::uuid, 4, 'Canceled', '2023-04-12 06:50:28.866', NULL, NULL);
-INSERT INTO request_statuses (id, alternative_id, "name", created_date, updated_date, deleted_date) VALUES('46b6189b-7e7e-45f1-8004-f9f81c2769ed'::uuid, 5, 'Partially Completed', '2023-04-12 06:50:28.867', NULL, NULL);
+INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('78256c0b-cbb2-440b-ae2e-a43c741f1e82'::uuid, 'Sent', '2023-04-12 06:50:28.860', NULL, NULL);
+INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('667a6083-9ba8-4822-a50d-22b34e0c08a9'::uuid, 'Pending', '2023-04-12 06:50:28.863', NULL, NULL);
+INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('f6a59aa8-d35d-4c68-b92e-c42107af043b'::uuid, 'Completed', '2023-04-12 06:50:28.864', NULL, NULL);
+INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('7e1de153-3a2d-4c0b-b432-665298e25b73'::uuid, 'Canceled', '2023-04-12 06:50:28.866', NULL, NULL);
+INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('46b6189b-7e7e-45f1-8004-f9f81c2769ed'::uuid, 'Partially Completed', '2023-04-12 06:50:28.867', NULL, NULL);

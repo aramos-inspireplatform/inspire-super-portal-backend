@@ -6,14 +6,16 @@ import {
   IsArray,
   ValidateNested,
   ArrayMinSize,
+  IsUUID,
 } from 'class-validator';
 import { CreateModuleRequestBodyDto } from '~/modules-requests/presentation/dto/input/create-module-request.dto';
 
 export class CreateRequestBodyDto {
   @ApiProperty({
-    example: '',
+    example: 'e6c846a8-fc6c-43ee-9239-345c6033e22a',
   })
   @IsNotEmpty()
+  @IsUUID()
   tenantId: string;
 
   @ApiProperty({

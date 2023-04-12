@@ -8,6 +8,7 @@ import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbol
 import { ModuleRequestStatusesRepository } from '~/shared/infra/database/repositories/module-request-statuses.repository';
 import { ModuleRequestTypesRepository } from '~/shared/infra/database/repositories/module-request-types.repository';
 import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
+import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
 import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
@@ -39,6 +40,7 @@ export class CreateRequestUseCaseFactoryProvider {
         ModuleRequestTypesRepository,
         TenantsRepository,
         RequestStatusesRepository,
+        RequestRepository,
       ],
     };
   }

@@ -11,6 +11,7 @@ import { SettlementCurrenciesRepository } from '~/shared/infra/database/reposito
 import { TenantStatusesRepository } from '~/shared/infra/database/repositories/tenant-statuses.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
 import { VaultsRepository } from '~/shared/infra/database/repositories/vaults.repository';
+import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
 
 @Global()
 @Module({
@@ -26,6 +27,8 @@ import { VaultsRepository } from '~/shared/infra/database/repositories/vaults.re
     ModuleRequestRepository,
     SettlementCurrenciesRepository,
     CountryRepository,
+    RequestStatusesRepository,
+    RequestRepository,
   ],
   exports: [
     ...databaseProviders,
@@ -40,6 +43,7 @@ import { VaultsRepository } from '~/shared/infra/database/repositories/vaults.re
     SettlementCurrenciesRepository,
     CountryRepository,
     RequestStatusesRepository,
+    RequestRepository,
   ],
 })
 export class DatabaseModule {}
