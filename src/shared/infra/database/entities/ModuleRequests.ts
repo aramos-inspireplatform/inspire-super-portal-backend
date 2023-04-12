@@ -5,33 +5,17 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  Relation,
 } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
-import { ModuleRequestModuleProvisionRequests } from '~/shared/infra/database/entities/module-request-module-provision-requests';
-import { ModuleRequestStatuses } from '~/shared/infra/database/entities/module-request-statuses';
-import { ModuleRequestTypes } from '~/shared/infra/database/entities/module-request-types';
-import { Tenants } from '~/shared/infra/database/entities/tenants';
 
-@Index(
-  'uq__tenant__module_request_type',
-  ['deletedDate', 'moduleRequestTypeId', 'tenantId'],
-  { unique: true },
-)
+import { ModuleRequestModuleProvisionRequests } from './ModuleRequestModuleProvisionRequests';
+import { ModuleRequestStatuses } from './ModuleRequestStatuses';
+import { ModuleRequestTypes } from './ModuleRequestTypes';
+import { Requests } from './Requests';
+
 @Index('pk__module_requests', ['id'], { unique: true })
-@Index(
-  'uq__part__tenant__module_request_type',
-  ['moduleRequestTypeId', 'tenantId'],
-  { unique: true },
-)
 @Entity('module_requests', { schema: 'public' })
 export class ModuleRequests extends BaseEntity {
-  @Column('uuid', { name: 'tenant_id' })
-  tenantId: string;
-
-  @Column('uuid', { name: 'module_request_type_id' })
-  moduleRequestTypeId: string;
-
   @Column('character varying', {
     name: 'wrapper_integration_id',
     nullable: true,
@@ -59,9 +43,7 @@ export class ModuleRequests extends BaseEntity {
     (moduleRequestModuleProvisionRequests) =>
       moduleRequestModuleProvisionRequests.moduleRequest,
   )
-  moduleRequestModuleProvisionRequests: Relation<
-    ModuleRequestModuleProvisionRequests[]
-  >;
+  moduleRequestModuleProvisionRequests: ModuleRequestModuleProvisionRequests[];
 
   @ManyToOne(
     () => ModuleRequestStatuses,
@@ -71,7 +53,7 @@ export class ModuleRequests extends BaseEntity {
   @JoinColumn([
     { name: 'module_request_status_id', referencedColumnName: 'id' },
   ])
-  moduleRequestStatus: Relation<ModuleRequestStatuses>;
+  moduleRequestStatus: ModuleRequestStatuses;
 
   @ManyToOne(
     () => ModuleRequestTypes,
@@ -81,10 +63,6 @@ export class ModuleRequests extends BaseEntity {
   @JoinColumn([{ name: 'module_request_type_id', referencedColumnName: 'id' }])
   moduleRequestType: ModuleRequestTypes;
 
-  @ManyToOne(() => Tenants, (tenants) => tenants.moduleRequests, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'CASCADE',
-  })
-  @JoinColumn([{ name: 'tenant_id', referencedColumnName: 'id' }])
-  tenant: Relation<Tenants>;
+  @OneToMany(() => Requests, (requests) => requests.moduleRequest)
+  requests: Requests[];
 }

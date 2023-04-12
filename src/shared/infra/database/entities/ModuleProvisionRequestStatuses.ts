@@ -1,6 +1,7 @@
-import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
-import { ModuleProvisionRequests } from '~/shared/infra/database/entities/module-provision-requests';
+
+import { ModuleProvisionRequests } from './ModuleProvisionRequests';
 
 @Index('uq__module_provision_request_statuses__name', ['deletedDate', 'name'], {
   unique: true,
@@ -19,5 +20,5 @@ export class ModuleProvisionRequestStatuses extends BaseEntity {
     (moduleProvisionRequests) =>
       moduleProvisionRequests.moduleProvisionRequestStatus,
   )
-  moduleProvisionRequests: Relation<ModuleProvisionRequests[]>;
+  moduleProvisionRequests: ModuleProvisionRequests[];
 }

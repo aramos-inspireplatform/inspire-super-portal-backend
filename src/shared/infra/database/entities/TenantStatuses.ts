@@ -1,6 +1,7 @@
-import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
-import { Tenants } from '~/shared/infra/database/entities/tenants';
+
+import { Tenants } from './Tenants';
 
 @Index('uq__tenant_statuses__name', ['deletedDate', 'name'], { unique: true })
 @Index('pk__tenant_statuses', ['id'], { unique: true })
@@ -11,5 +12,5 @@ export class TenantStatuses extends BaseEntity {
   name: string;
 
   @OneToMany(() => Tenants, (tenants) => tenants.tenantStatus)
-  tenants: Relation<Tenants[]>;
+  tenants: Tenants[];
 }

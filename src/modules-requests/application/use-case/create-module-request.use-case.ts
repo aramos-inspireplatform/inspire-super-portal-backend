@@ -24,7 +24,6 @@ export class CreateModuleRequestUseCase {
       moduleRequestStatus: requestedStatuses,
       moduleRequestType: moduleRequestType,
       requestSettings: attrs.settings,
-      tenant: requestTenant,
     });
     await this.moduleRequestRepository.save({ moduleRequest });
     return moduleRequest;
