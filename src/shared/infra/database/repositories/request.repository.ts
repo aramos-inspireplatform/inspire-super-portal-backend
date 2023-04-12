@@ -8,6 +8,9 @@ import { ModuleRequestRepository } from '~/shared/infra/database/repositories/mo
 import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
 import { RequestModuleRequests } from '../entities/RequestModuleRequests';
 import { dataSource } from '~/test/helper/create-application.helper';
+import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
+import { Tenant } from '~/tenants/domain/entity/tenant.entity';
+import { ModuleRequest } from '~/modules-requests/domain/entities/module-request.entity';
 
 @Injectable()
 export class RequestRepository implements IRequestRepository {
@@ -23,6 +26,35 @@ export class RequestRepository implements IRequestRepository {
     this.repository = dataSource.getRepository<Requests>(Requests);
     this.requestModuleRequestsRepository =
       dataSource.getRepository<RequestModuleRequests>(RequestModuleRequests);
+  }
+  async listAndCount(
+    attrs: IRequestRepository.ListInputAttrs,
+  ): IRequestRepository.ListResult {
+    const [requests, count] = await this.repository.findAndCount({
+      skip: attrs.skip,
+      take: attrs.take,
+      relations: [
+        'requestStatus',
+        'tenant',
+        'requestModuleRequests.moduleRequest',
+      ],
+    });
+
+    return [
+      requests.map(
+        (request) =>
+          new Request({
+            ...request,
+            requestStatus: new RequestStatus(request.requestStatus),
+            requestModuleRequests: request.requestModuleRequests.map(
+              (requestModuleRequests) =>
+                new ModuleRequest(requestModuleRequests.moduleRequest),
+            ),
+            tenant: new Tenant(request.tenant),
+          }),
+      ),
+      count,
+    ];
   }
 
   async save(
