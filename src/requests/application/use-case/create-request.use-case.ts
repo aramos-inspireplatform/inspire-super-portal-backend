@@ -29,6 +29,7 @@ export class CreateRequestUseCase {
     const requestStatus = await this.getRequestStauses();
     const requestModuleRequests = await this.createModuleRequests(attrs);
     const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
+    if (!tenant) throw new NotFoundException('exception:TENANT_NOT_FOUND');
     const request = new Request({
       createdByUserEmail: userRequesterData.email,
       createdByUserId: userRequesterData.id,

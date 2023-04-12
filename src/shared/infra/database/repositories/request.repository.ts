@@ -10,6 +10,7 @@ import { RequestModuleRequests } from '../entities/RequestModuleRequests';
 import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { Tenant } from '~/tenants/domain/entity/tenant.entity';
 import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
+import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';
 
 @Injectable()
 export class RequestRepository implements IRequestRepository {
@@ -76,6 +77,7 @@ export class RequestRepository implements IRequestRepository {
         this.requestModuleRequestsRepository.create(
           moduleRequests.map((moduleRequest) => {
             return {
+              id: RandomUUIDGeneratorAdapter(),
               moduleRequest: <any>moduleRequest.id,
               request: <any>request.id,
             };
