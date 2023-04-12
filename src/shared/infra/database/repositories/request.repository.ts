@@ -7,6 +7,7 @@ import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/
 import { ModuleRequestRepository } from '~/shared/infra/database/repositories/module-request.repository';
 import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
 import { RequestModuleRequests } from '../entities/RequestModuleRequests';
+import { dataSource } from '~/test/helper/create-application.helper';
 
 @Injectable()
 export class RequestRepository implements IRequestRepository {
@@ -27,29 +28,31 @@ export class RequestRepository implements IRequestRepository {
   async save(
     attrs: IRequestRepository.SaveInputAttrs,
   ): IRequestRepository.SaveResult {
-    const moduleRequests = await this.moduleRequestRepository.saveBatch({
-      moduleRequests: attrs.request.requestModuleRequests,
-    });
+    return dataSource.transaction(async () => {
+      const moduleRequests = await this.moduleRequestRepository.saveBatch({
+        moduleRequests: attrs.request.requestModuleRequests,
+      });
 
-    const requestStatus = await this.requestStatusesRepository.findById({
-      id: attrs.request.requestStatus.id,
+      const requestStatus = await this.requestStatusesRepository.findById({
+        id: attrs.request.requestStatus.id,
+      });
+      const entity = this.repository.create({
+        ...attrs.request,
+        requestStatus,
+      });
+      const request = await this.repository.save(entity, { reload: true });
+      await this.requestModuleRequestsRepository.save(
+        this.requestModuleRequestsRepository.create(
+          moduleRequests.map((moduleRequest) => {
+            return {
+              moduleRequest: <any>moduleRequest.id,
+              request: <any>request.id,
+            };
+          }),
+        ),
+      );
+      attrs.request.createdDate = new Date();
+      return new Request(attrs.request);
     });
-    const entity = this.repository.create({
-      ...attrs.request,
-      requestStatus,
-    });
-    const request = await this.repository.save(entity, { reload: true });
-    await this.requestModuleRequestsRepository.save(
-      this.requestModuleRequestsRepository.create(
-        moduleRequests.map((moduleRequest) => {
-          return {
-            moduleRequest: <any>moduleRequest.id,
-            request: <any>request.id,
-          };
-        }),
-      ),
-    );
-    attrs.request.createdDate = new Date();
-    return new Request(attrs.request);
   }
 }
