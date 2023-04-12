@@ -25,6 +25,11 @@ export class ModuleRequestRepository implements IModuleRequestRepository {
   async save(
     attrs: IModuleRequestRepository.SaveInputAttrs,
   ): IModuleRequestRepository.SaveResult {
+    if (Array.isArray(attrs.moduleRequest))
+      return this.saveBatch({
+        moduleRequests: attrs.moduleRequest,
+      });
+
     const moduleRequestType = await this.moduleRequestTypeRepository.findById({
       id: attrs.moduleRequest.moduleRequestType.id,
     });
@@ -91,5 +96,15 @@ export class ModuleRequestRepository implements IModuleRequestRepository {
       moduleRequests.map((moduleRequest) => new ModuleRequest(moduleRequest)),
       count,
     ];
+  }
+
+  private async saveBatch({
+    moduleRequests,
+  }: {
+    moduleRequests: ModuleRequest[];
+  }): Promise<IModuleRequestRepository.SaveBatchResult> {
+    return Promise.all(
+      moduleRequests.map((moduleRequest) => this.save({ moduleRequest })),
+    );
   }
 }

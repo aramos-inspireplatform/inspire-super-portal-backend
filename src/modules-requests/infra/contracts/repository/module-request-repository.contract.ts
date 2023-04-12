@@ -3,7 +3,9 @@ import { ModuleRequest } from '~/modules-requests/domain/entities/module-request
 export interface IModuleRequestRepository {
   save(
     attrs: IModuleRequestRepository.SaveInputAttrs,
-  ): IModuleRequestRepository.SaveResult;
+  ): IModuleRequestRepository.SaveInputAttrs['moduleRequest'] extends Array<ModuleRequest>
+    ? IModuleRequestRepository.SaveBatchResult
+    : IModuleRequestRepository.SaveResult;
 
   findByIdAndTenant(
     atts: IModuleRequestRepository.FindByIdAndTenantInputAttrs,
@@ -16,9 +18,10 @@ export interface IModuleRequestRepository {
 
 export namespace IModuleRequestRepository {
   export type SaveInputAttrs = {
-    moduleRequest: ModuleRequest;
+    moduleRequest: ModuleRequest | ModuleRequest[];
   };
-  export type SaveResult = Promise<ModuleRequest>;
+  export type SaveResult = Promise<ModuleRequest[] | ModuleRequest>;
+  export type SaveBatchResult = Promise<ModuleRequest[]>;
 
   export type ListInputAttrs = {
     skip: number;
