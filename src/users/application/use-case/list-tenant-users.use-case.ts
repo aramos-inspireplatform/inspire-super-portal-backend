@@ -43,7 +43,7 @@ export class ListTenantUsersUseCase {
       id: attrs.tenantId,
     });
     if (!tenant) throw new Error('exception:TENANT_NOT_FOUND');
-    return tenant;
+    return tenant.tenantId;
   }
 }
 

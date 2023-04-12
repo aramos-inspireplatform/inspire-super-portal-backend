@@ -35,6 +35,8 @@ export class CreateTenantUseCase {
       wrapperIntegrationId: tenant.id,
       tenantStatus: tenantPendingStatuses,
       createdByUserId: attrs.currentUser,
+      createdByUserEmail: 'teste@teste.com',
+      tenantId: tenant.googleTenantId,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
     return {

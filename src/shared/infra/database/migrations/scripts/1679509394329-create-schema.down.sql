@@ -20,6 +20,10 @@ DROP TABLE IF EXISTS public.module_requests CASCADE;
 
 DROP TABLE IF EXISTS public.module_request_statuses CASCADE;
 
+DROP TABLE IF EXISTS public.requests CASCADE;
+
+DROP TABLE IF EXISTS public.request_statuses CASCADE;
+
 DROP TABLE IF EXISTS public.module_request_types CASCADE;
 
 DROP TABLE IF EXISTS public.module_request_module_provision_requests CASCADE;

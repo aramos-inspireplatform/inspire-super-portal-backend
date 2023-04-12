@@ -1,10 +1,14 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
+import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 
 export class LinkTenantUserUseCase {
   private readonly LINK_TENANT_USER_ROUTE = `${process.env.TENANT_URL}/user`;
 
-  constructor(private readonly httpClient: IHttpClient) {}
+  constructor(
+    private readonly httpClient: IHttpClient,
+    private readonly tenantRepository: ITenantRepository,
+  ) {}
 
   async link(attrs: LinkTenantUserUseCase.InputAttrs) {
     const url = `${this.LINK_TENANT_USER_ROUTE}/${attrs.userId}/link-tenant`;
@@ -15,12 +19,20 @@ export class LinkTenantUserUseCase {
         {
           headers: {
             authorization: attrs.accessToken,
-            tenant: attrs.tenantId,
+            tenant: await this.getTenantId(attrs),
           },
         },
       );
     if (responseOrError instanceof Error) throw responseOrError;
     return responseOrError.data.body.data;
+  }
+
+  private async getTenantId(attrs: LinkTenantUserUseCase.InputAttrs) {
+    const tenant = await this.tenantRepository.findById({
+      id: attrs.tenantId,
+    });
+    if (!tenant) throw new Error('exception:TENANT_NOT_FOUND');
+    return tenant.tenantId;
   }
 }
 

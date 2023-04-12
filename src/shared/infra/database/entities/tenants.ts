@@ -23,6 +23,12 @@ export class Tenants extends BaseEntity {
   @Column('character varying', { name: 'created_by_user_id', length: 300 })
   createdByUserId: string;
 
+  @Column('character varying', { name: 'tenant_id', length: 300 })
+  tenantId: string;
+
+  @Column('character varying', { name: 'created_by_user_email', length: 300 })
+  createdByUserEmail: string;
+
   @OneToMany(() => ModuleRequests, (moduleRequests) => moduleRequests.tenant)
   moduleRequests: Relation<ModuleRequests[]>;
 

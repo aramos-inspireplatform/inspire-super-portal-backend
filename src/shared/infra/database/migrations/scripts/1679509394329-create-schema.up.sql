@@ -5,7 +5,6 @@
 -- Model Author: ---
 -- object: admin_project | type: ROLE --
 -- DROP ROLE IF EXISTS admin_project;
--- CREATE ROLE admin_project WITH ;
 -- ddl-end --
 
 
@@ -14,7 +13,6 @@
 -- 
 -- object: "Project" | type: DATABASE --
 -- DROP DATABASE IF EXISTS "Project";
--- CREATE DATABASE "Project";
 -- ddl-end --
 
 
@@ -286,8 +284,10 @@ CREATE TABLE public.tenants (
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
 	tenant_status_id uuid NOT NULL,
 	name varchar(200) NOT NULL,
+	tenant_id varchar(300) NOT NULL,
 	wrapper_integration_id varchar(300) NOT NULL,
 	created_by_user_id varchar(300) NOT NULL,
+	created_by_user_email varchar(300) NOT NULL,
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
@@ -344,10 +344,9 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 CREATE TABLE public.module_requests (
 	id uuid NOT NULL,
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
-	tenant_id uuid NOT NULL,
+	wrapper_integration_id varchar(300),
 	module_request_status_id uuid NOT NULL,
 	module_request_type_id uuid NOT NULL,
-	wrapper_integration_id varchar(300),
 	attempts smallint NOT NULL,
 	request_settings jsonb NOT NULL,
 	request_notes jsonb,
@@ -539,35 +538,6 @@ REFERENCES public.module_provision_request_statuses (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: fk__tenants__module_requests | type: CONSTRAINT --
--- ALTER TABLE public.module_requests DROP CONSTRAINT IF EXISTS fk__tenants__module_requests CASCADE;
-ALTER TABLE public.module_requests ADD CONSTRAINT fk__tenants__module_requests FOREIGN KEY (tenant_id)
-REFERENCES public.tenants (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: uq__tenant__module_request_type | type: INDEX --
--- DROP INDEX IF EXISTS public.uq__tenant__module_request_type CASCADE;
-CREATE UNIQUE INDEX uq__tenant__module_request_type ON public.module_requests
-USING btree
-(
-	tenant_id,
-	module_request_type_id,
-	deleted_date ASC NULLS FIRST
-);
--- ddl-end --
-
--- object: uq__part__tenant__module_request_type | type: INDEX --
--- DROP INDEX IF EXISTS public.uq__part__tenant__module_request_type CASCADE;
-CREATE UNIQUE INDEX uq__part__tenant__module_request_type ON public.module_requests
-USING btree
-(
-	tenant_id,
-	module_request_type_id
-)
-WHERE (deleted_date is null);
--- ddl-end --
-
 -- object: uq__vault__name | type: INDEX --
 -- DROP INDEX IF EXISTS public.uq__vault__name CASCADE;
 CREATE UNIQUE INDEX uq__vault__name ON public.vaults
@@ -729,6 +699,7 @@ WHERE (deleted_date is null);
 -- ddl-end --
 
 -- object: public.countries | type: TABLE --
+-- DROP TABLE IF EXISTS public.countries CASCADE;
 CREATE TABLE public.countries (
 	id uuid NOT NULL,
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
@@ -753,3 +724,100 @@ COMMENT ON COLUMN public.countries.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.countries.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
+-- ALTER TABLE public.countries OWNER TO admin_project;
+-- ddl-end --
+
+-- object: public.requests | type: TABLE --
+-- DROP TABLE IF EXISTS public.requests CASCADE;
+CREATE TABLE public.requests (
+	id uuid NOT NULL,
+	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
+	request_status uuid NOT NULL,
+	tenant_id uuid NOT NULL,
+	module_request_id uuid NOT NULL,
+	created_date timestamp with time zone NOT NULL,
+	updated_date timestamp with time zone,
+	deleted_date timestamp with time zone,
+	CONSTRAINT pk__requests PRIMARY KEY (id)
+);
+-- ddl-end --
+COMMENT ON COLUMN public.requests.id IS E'The unique identifier for the object.';
+-- ddl-end --
+COMMENT ON COLUMN public.requests.alternative_id IS E'The auto generated sequential identifier.';
+-- ddl-end --
+COMMENT ON COLUMN public.requests.created_date IS E'The date of create.';
+-- ddl-end --
+COMMENT ON COLUMN public.requests.updated_date IS E'The date of last update.';
+-- ddl-end --
+COMMENT ON COLUMN public.requests.deleted_date IS E'The date of delete. Used by the soft delete.';
+-- ddl-end --
+-- ALTER TABLE public.requests OWNER TO admin_project;
+-- ddl-end --
+
+-- object: fk__tenants__requests | type: CONSTRAINT --
+-- ALTER TABLE public.requests DROP CONSTRAINT IF EXISTS fk__tenants__requests CASCADE;
+ALTER TABLE public.requests ADD CONSTRAINT fk__tenants__requests FOREIGN KEY (tenant_id)
+REFERENCES public.tenants (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: fk__module_requests__requests | type: CONSTRAINT --
+-- ALTER TABLE public.requests DROP CONSTRAINT IF EXISTS fk__module_requests__requests CASCADE;
+ALTER TABLE public.requests ADD CONSTRAINT fk__module_requests__requests FOREIGN KEY (module_request_id)
+REFERENCES public.module_requests (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+-- object: public.request_statuses | type: TABLE --
+-- DROP TABLE IF EXISTS public.request_statuses CASCADE;
+CREATE TABLE public.request_statuses (
+	id uuid NOT NULL,
+	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
+	name varchar(200) NOT NULL,
+	created_date timestamp with time zone NOT NULL,
+	updated_date timestamp with time zone,
+	deleted_date timestamp with time zone,
+	CONSTRAINT pk__request_statuses PRIMARY KEY (id)
+);
+-- ddl-end --
+COMMENT ON COLUMN public.request_statuses.id IS E'The unique identifier for the object.';
+-- ddl-end --
+COMMENT ON COLUMN public.request_statuses.alternative_id IS E'The auto generated sequential identifier.';
+-- ddl-end --
+COMMENT ON COLUMN public.request_statuses.created_date IS E'The date of create.';
+-- ddl-end --
+COMMENT ON COLUMN public.request_statuses.updated_date IS E'The date of last update.';
+-- ddl-end --
+COMMENT ON COLUMN public.request_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
+-- ddl-end --
+-- ALTER TABLE public.request_statuses OWNER TO admin_project;
+-- ddl-end --
+
+-- object: uq__request_statuses__name | type: INDEX --
+-- DROP INDEX IF EXISTS public.uq__request_statuses__name CASCADE;
+CREATE UNIQUE INDEX uq__request_statuses__name ON public.request_statuses
+USING btree
+(
+	name,
+	deleted_date ASC NULLS FIRST
+);
+-- ddl-end --
+
+-- object: uq__part__request_statuses__name | type: INDEX --
+-- DROP INDEX IF EXISTS public.uq__part__request_statuses__name CASCADE;
+CREATE UNIQUE INDEX uq__part__request_statuses__name ON public.request_statuses
+USING btree
+(
+	name
+)
+WHERE (deleted_date is null);
+-- ddl-end --
+
+-- object: fk__request_statuses__requests | type: CONSTRAINT --
+-- ALTER TABLE public.requests DROP CONSTRAINT IF EXISTS fk__request_statuses__requests CASCADE;
+ALTER TABLE public.requests ADD CONSTRAINT fk__request_statuses__requests FOREIGN KEY (request_status)
+REFERENCES public.request_statuses (id) MATCH FULL
+ON DELETE RESTRICT ON UPDATE CASCADE;
+-- ddl-end --
+
+

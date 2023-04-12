@@ -7,7 +7,11 @@ export class Tenant extends BaseDomainEntity {
 
   wrapperIntegrationId: string;
 
+  tenantId: string;
+
   createdByUserId: string;
+
+  createdByUserEmail: string;
 
   tenantStatus: TenantStatus;
 
@@ -15,7 +19,9 @@ export class Tenant extends BaseDomainEntity {
     super(attrs);
     this.name = attrs?.name;
     this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
+    this.tenantId = attrs?.tenantId;
     this.createdByUserId = attrs?.createdByUserId;
+    this.createdByUserEmail = attrs?.createdByUserEmail;
     this.tenantStatus = attrs?.tenantStatus;
   }
 }
