@@ -15,9 +15,12 @@ import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbol
 import { CreateRequestBodyDto } from '~/requests/presentation/dtos/inputs/create-request-body.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { PaginatedTenantsResponseDto } from '~/tenants/presentation/dto/output/paginated-tenants-response.dto';
+import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
+import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-validator.dto';
 
 @Controller('requests')
 @ApiTags('Requests')
+@CustomApiExtraModels(PaymentProviderValidatorRequestDto)
 export class RequestsController {
   constructor(
     @Inject(RequestProviderSymbols.CREATE_REQUEST_USE_CASE)
