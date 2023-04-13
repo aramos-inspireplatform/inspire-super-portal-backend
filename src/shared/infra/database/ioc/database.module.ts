@@ -1,9 +1,6 @@
 import { Global, Module } from '@nestjs/common';
 import { databaseProviders } from '~/shared/infra/database/ioc/providers';
 import { CountryRepository } from '~/shared/infra/database/repositories/country.repository';
-import { ModuleRequestStatusesRepository } from '~/shared/infra/database/repositories/module-request-statuses.repository';
-import { ModuleRequestTypesRepository } from '~/shared/infra/database/repositories/module-request-types.repository';
-import { ModuleRequestRepository } from '~/shared/infra/database/repositories/module-request.repository';
 import { PaymentMethodsRepository } from '~/shared/infra/database/repositories/payment-methods.repository';
 import { ProcessorsRepository } from '~/shared/infra/database/repositories/processors.repository';
 import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
@@ -12,6 +9,9 @@ import { TenantStatusesRepository } from '~/shared/infra/database/repositories/t
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
 import { VaultsRepository } from '~/shared/infra/database/repositories/vaults.repository';
 import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
+import { ModulesRepository } from '~/shared/infra/database/repositories/module-request-types.repository';
+import { RequestModuleAttemptsStatusRepository } from '~/shared/infra/database/repositories/request-module-attempts-statuses.repository';
+import { RequestModuleAttemptsRepository } from '~/shared/infra/database/repositories/request-module-attempts.repository';
 
 @Global()
 @Module({
@@ -22,13 +22,13 @@ import { RequestRepository } from '~/shared/infra/database/repositories/request.
     PaymentMethodsRepository,
     TenantsRepository,
     TenantStatusesRepository,
-    ModuleRequestStatusesRepository,
-    ModuleRequestTypesRepository,
-    ModuleRequestRepository,
+    ModulesRepository,
     SettlementCurrenciesRepository,
     CountryRepository,
     RequestStatusesRepository,
     RequestRepository,
+    RequestModuleAttemptsStatusRepository,
+    RequestModuleAttemptsRepository,
   ],
   exports: [
     ...databaseProviders,
@@ -37,13 +37,13 @@ import { RequestRepository } from '~/shared/infra/database/repositories/request.
     PaymentMethodsRepository,
     TenantsRepository,
     TenantStatusesRepository,
-    ModuleRequestStatusesRepository,
-    ModuleRequestTypesRepository,
-    ModuleRequestRepository,
+    ModulesRepository,
     SettlementCurrenciesRepository,
     CountryRepository,
     RequestStatusesRepository,
     RequestRepository,
+    RequestModuleAttemptsStatusRepository,
+    RequestModuleAttemptsRepository,
   ],
 })
 export class DatabaseModule {}

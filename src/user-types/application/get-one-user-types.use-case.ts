@@ -14,7 +14,6 @@ export class GetOneUserTypesUseCase {
           authorization: attrs.accessToken,
         },
       });
-    console.log({ responseOrError });
     if (responseOrError instanceof Error) return responseOrError;
     return responseOrError.data.body.data;
   }

@@ -1,17 +1,19 @@
 import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
+import { RequestModules } from './RequestModules';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
-
-import { ModuleRequests } from './ModuleRequests';
 
 @Index('uq__module_request_types__name', ['deletedDate', 'name'], {
   unique: true,
 })
-@Index('pk__module_types', ['id'], { unique: true })
+@Index('pk__modules', ['id'], { unique: true })
 @Index('uq__part__module_request_types__name', ['name'], { unique: true })
-@Entity('module_request_types', { schema: 'public' })
-export class ModuleRequestTypes extends BaseEntity {
+@Entity('modules', { schema: 'public' })
+export class Modules extends BaseEntity {
   @Column('character varying', { name: 'name', length: 200 })
   name: string;
+
+  @Column('character varying', { name: 'deploy_url' })
+  deployUrl: string;
 
   @Column('character varying', {
     name: 'wrapper_integration_id',
@@ -21,8 +23,8 @@ export class ModuleRequestTypes extends BaseEntity {
   wrapperIntegrationId: string | null;
 
   @OneToMany(
-    () => ModuleRequests,
-    (moduleRequests) => moduleRequests.moduleRequestType,
+    () => RequestModules,
+    (requestModules) => requestModules.moduleRequestType,
   )
-  moduleRequests: Relation<ModuleRequests[]>;
+  requestModules: Relation<RequestModules[]>;
 }

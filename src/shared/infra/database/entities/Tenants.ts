@@ -7,10 +7,9 @@ import {
   OneToMany,
   Relation,
 } from 'typeorm';
-import { BaseEntity } from '~/shared/infra/database/entities/base';
-
 import { Requests } from './Requests';
 import { TenantStatuses } from './TenantStatuses';
+import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index('pk__tenants', ['id'], { unique: true })
 @Entity('tenants', { schema: 'public' })
@@ -31,7 +30,7 @@ export class Tenants extends BaseEntity {
   createdByUserEmail: string;
 
   @OneToMany(() => Requests, (requests) => requests.tenant)
-  requests: Requests[];
+  requests: Relation<Requests[]>;
 
   @ManyToOne(() => TenantStatuses, (tenantStatuses) => tenantStatuses.tenants, {
     onDelete: 'RESTRICT',

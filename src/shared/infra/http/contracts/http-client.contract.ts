@@ -80,7 +80,7 @@ export namespace IHttpClient {
     [key: string]: HttpHeaderValue;
   }
 
-  export type HttpClientResponse<TResponse> = IHttpResponse<TResponse> | Error;
+  export type HttpClientResponse<TResponse> = IHttpResponse<TResponse>;
 
   export type HttpRequestConfig<D = any> = {
     url?: string;

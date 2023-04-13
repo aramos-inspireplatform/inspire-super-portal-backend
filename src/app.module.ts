@@ -16,6 +16,7 @@ import { TimeZonesModule } from '~/time-zones/ioc/time-zones.module';
 import { UserTypesModule } from '~/user-types/ioc/user-types.module';
 import { UsersModule } from '~/users/ioc/users.module';
 import { VaultsModule } from '~/vaults/ioc/vaults.module';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 @Module({
   imports: [
@@ -40,6 +41,9 @@ import { VaultsModule } from '~/vaults/ioc/vaults.module';
     AgenciesModule,
     SettlementCurrenciesModule,
     RequestModule,
+    EventEmitterModule.forRoot({
+      global: true,
+    }),
   ],
 })
 export class AppModule {}

@@ -1,31 +1,28 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { randomUUID } from 'crypto';
 import { DataSource, Repository } from 'typeorm';
-import { Requests } from '~/shared/infra/database/entities';
+import { ModuleRequestStatusesConstant } from '~/requests/domain/constants/module-request-statuses.constant';
+import { Module } from '~/requests/domain/entities/module.entity';
+import { RequestModule } from '~/requests/domain/entities/request-module.entity';
+import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import {
+  RequestModules as RequestModulesMapper,
+  Requests,
+} from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
-import { ModuleRequestRepository } from '~/shared/infra/database/repositories/module-request.repository';
-import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
-import { RequestModuleRequests } from '../entities/RequestModuleRequests';
-import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { Tenant } from '~/tenants/domain/entity/tenant.entity';
-import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
-import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';
 
 @Injectable()
 export class RequestRepository implements IRequestRepository {
   repository: Repository<Requests>;
-  requestModuleRequestsRepository: Repository<RequestModuleRequests>;
 
   constructor(
     @Inject(DatabaseProvidersSymbols.DATA_SOURCE)
     private readonly dataSource: DataSource,
-    private readonly requestStatusesRepository: RequestStatusesRepository,
-    private readonly moduleRequestRepository: ModuleRequestRepository,
   ) {
     this.repository = dataSource.getRepository<Requests>(Requests);
-    this.requestModuleRequestsRepository =
-      dataSource.getRepository<RequestModuleRequests>(RequestModuleRequests);
   }
   async listAndCount(
     attrs: IRequestRepository.ListInputAttrs,
@@ -36,7 +33,8 @@ export class RequestRepository implements IRequestRepository {
       relations: [
         'requestStatus',
         'tenant',
-        'requestModuleRequests.moduleRequest',
+        'requestModules',
+        'requestModules.moduleRequestType',
       ],
     });
 
@@ -45,12 +43,15 @@ export class RequestRepository implements IRequestRepository {
         (request) =>
           new Request({
             ...request,
-            requestStatus: new RequestStatus(request.requestStatus),
-            requestModuleRequests: request.requestModuleRequests?.map(
-              (requestModuleRequests) =>
-                new ModuleRequest(requestModuleRequests.moduleRequest),
-            ),
             tenant: new Tenant(request.tenant),
+            requestStatus: new RequestStatus(request.requestStatus),
+            requestModules: request.requestModules.map(
+              (rm) =>
+                new RequestModule({
+                  module: new Module(rm.moduleRequestType),
+                  settings: rm.requestSettings,
+                }),
+            ),
           }),
       ),
       count,
@@ -60,32 +61,53 @@ export class RequestRepository implements IRequestRepository {
   async save(
     attrs: IRequestRepository.SaveInputAttrs,
   ): IRequestRepository.SaveResult {
-    return this.dataSource.transaction(async () => {
-      const moduleRequests = await this.moduleRequestRepository.saveBatch({
-        moduleRequests: attrs.request.requestModuleRequests,
-      });
-
-      const requestStatus = await this.requestStatusesRepository.findById({
-        id: attrs.request.requestStatus.id,
-      });
-      const entity = this.repository.create({
+    const entity = await this.repository
+      .create({
         ...attrs.request,
-        requestStatus,
-      });
-      const request = await this.repository.save(entity, { reload: true });
-      await this.requestModuleRequestsRepository.save(
-        this.requestModuleRequestsRepository.create(
-          moduleRequests.map((moduleRequest) => {
-            return {
-              id: RandomUUIDGeneratorAdapter(),
-              moduleRequest: <any>moduleRequest.id,
-              request: <any>request.id,
-            };
-          }),
+        requestStatus: <any>attrs.request.requestStatus.id,
+        requestModules: attrs.request.requestModules.map(
+          (rm) =>
+            <RequestModulesMapper>{
+              id: randomUUID(),
+              request: <any>attrs.request.id,
+              moduleRequestType: <any>rm.module.id,
+              moduleRequestStatus: <any>ModuleRequestStatusesConstant.Requested,
+              requestSettings: rm.settings,
+              attempts: 0,
+            },
         ),
-      );
-      attrs.request.createdDate = new Date();
-      return new Request(attrs.request);
+      })
+      .save();
+
+    const request = await this.findOne({ id: entity.id });
+
+    Object.assign(
+      attrs.request,
+      new Request({
+        ...request,
+        tenant: new Tenant(request.tenant),
+        requestModules: request.requestModules.map(
+          (rm) =>
+            new RequestModule({
+              ...rm,
+              module: new Module(rm.moduleRequestType),
+              settings: rm.requestSettings,
+            }),
+        ),
+      }),
+    );
+    return attrs.request;
+  }
+
+  findOne(attrs: { id: string }) {
+    return this.repository.findOne({
+      where: { id: attrs.id },
+      relations: [
+        'requestStatus',
+        'tenant',
+        'requestModules',
+        'requestModules.moduleRequestType',
+      ],
     });
   }
 }

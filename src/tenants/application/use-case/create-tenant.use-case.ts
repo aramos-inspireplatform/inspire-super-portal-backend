@@ -32,6 +32,7 @@ export class CreateTenantUseCase {
       id: TenantStatusesConstant.Pending,
     });
     const storedTenant = new Tenant({
+      slug: attrs.tenant.slug,
       name: attrs.tenant.name,
       wrapperIntegrationId: tenant.id,
       tenantStatus: tenantPendingStatuses,

@@ -7,11 +7,10 @@ import {
   OneToMany,
   Relation,
 } from 'typeorm';
-import { BaseEntity } from '~/shared/infra/database/entities/base';
-
-import { RequestModuleRequests } from './RequestModuleRequests';
+import { RequestModules } from './RequestModules';
 import { RequestStatuses } from './RequestStatuses';
 import { Tenants } from './Tenants';
+import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index('pk__requests', ['id'], { unique: true })
 @Entity('requests', { schema: 'public' })
@@ -22,11 +21,10 @@ export class Requests extends BaseEntity {
   @Column('character varying', { name: 'created_by_user_email', length: 300 })
   createdByUserEmail: string;
 
-  @OneToMany(
-    () => RequestModuleRequests,
-    (requestModuleRequests) => requestModuleRequests.request,
-  )
-  requestModuleRequests: Relation<RequestModuleRequests[]>;
+  @OneToMany(() => RequestModules, (requestModules) => requestModules.request, {
+    cascade: ['insert'],
+  })
+  requestModules: Relation<RequestModules[]>;
 
   @ManyToOne(
     () => RequestStatuses,

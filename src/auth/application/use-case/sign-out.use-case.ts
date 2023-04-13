@@ -6,7 +6,6 @@ export class SignOutUseCase {
   constructor(private readonly httpClient: IHttpClient) {}
 
   async signOut(attrs: SignOutUseCase.InputAttrs) {
-    console.log(attrs);
     const responseOrError = await this.httpClient.post(
       this.TENANT_SIGN_OUT_URL,
       null,

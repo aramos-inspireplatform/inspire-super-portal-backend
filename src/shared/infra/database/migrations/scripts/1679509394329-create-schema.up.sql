@@ -39,7 +39,7 @@ COMMENT ON COLUMN public.templates.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.templates.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.templates OWNER TO admin_project;
+ALTER TABLE public.templates OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.system_configurations | type: TABLE --
@@ -94,7 +94,7 @@ COMMENT ON COLUMN public.system_configurations.updated_date IS E'The date of las
 -- ddl-end --
 COMMENT ON COLUMN public.system_configurations.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.system_configurations OWNER TO admin_project;
+ALTER TABLE public.system_configurations OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.general_data_types | type: TABLE --
@@ -121,7 +121,7 @@ COMMENT ON COLUMN public.general_data_types.updated_date IS E'The date of last u
 -- ddl-end --
 COMMENT ON COLUMN public.general_data_types.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.general_data_types OWNER TO admin_project;
+ALTER TABLE public.general_data_types OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__general_data_types__system_configurations | type: CONSTRAINT --
@@ -195,7 +195,7 @@ COMMENT ON COLUMN public.vaults.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.vaults.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.vaults OWNER TO admin_project;
+ALTER TABLE public.vaults OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.processors | type: TABLE --
@@ -222,7 +222,7 @@ COMMENT ON COLUMN public.processors.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.processors.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.processors OWNER TO admin_project;
+ALTER TABLE public.processors OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.payment_methods | type: TABLE --
@@ -249,7 +249,7 @@ COMMENT ON COLUMN public.payment_methods.updated_date IS E'The date of last upda
 -- ddl-end --
 COMMENT ON COLUMN public.payment_methods.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.payment_methods OWNER TO admin_project;
+ALTER TABLE public.payment_methods OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.settlement_currencies | type: TABLE --
@@ -276,7 +276,7 @@ COMMENT ON COLUMN public.settlement_currencies.updated_date IS E'The date of las
 -- ddl-end --
 COMMENT ON COLUMN public.settlement_currencies.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.settlement_currencies OWNER TO admin_project;
+ALTER TABLE public.settlement_currencies OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.tenants | type: TABLE --
@@ -306,7 +306,7 @@ COMMENT ON COLUMN public.tenants.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.tenants.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.tenants OWNER TO admin_project;
+ALTER TABLE public.tenants OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.tenant_statuses | type: TABLE --
@@ -331,7 +331,7 @@ COMMENT ON COLUMN public.tenant_statuses.updated_date IS E'The date of last upda
 -- ddl-end --
 COMMENT ON COLUMN public.tenant_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.tenant_statuses OWNER TO admin_project;
+ALTER TABLE public.tenant_statuses OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__tenant_statuses__tenants | type: CONSTRAINT --
@@ -341,11 +341,12 @@ REFERENCES public.tenant_statuses (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: public.module_requests | type: TABLE --
--- DROP TABLE IF EXISTS public.module_requests CASCADE;
-CREATE TABLE public.module_requests (
+-- object: public.request_modules | type: TABLE --
+-- DROP TABLE IF EXISTS public.request_modules CASCADE;
+CREATE TABLE public.request_modules (
 	id uuid NOT NULL,
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
+	request_id uuid NOT NULL,
 	wrapper_integration_id varchar(300),
 	module_request_status_id uuid NOT NULL,
 	module_request_type_id uuid NOT NULL,
@@ -357,20 +358,20 @@ CREATE TABLE public.module_requests (
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
-	CONSTRAINT pk__module_requests PRIMARY KEY (id)
+	CONSTRAINT pk__request_module PRIMARY KEY (id)
 );
 -- ddl-end --
-COMMENT ON COLUMN public.module_requests.id IS E'The unique identifier for the object.';
+COMMENT ON COLUMN public.request_modules.id IS E'The unique identifier for the object.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_requests.alternative_id IS E'The auto generated sequential identifier.';
+COMMENT ON COLUMN public.request_modules.alternative_id IS E'The auto generated sequential identifier.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_requests.created_date IS E'The date of create.';
+COMMENT ON COLUMN public.request_modules.created_date IS E'The date of create.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_requests.updated_date IS E'The date of last update.';
+COMMENT ON COLUMN public.request_modules.updated_date IS E'The date of last update.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_requests.deleted_date IS E'The date of delete. Used by the soft delete.';
+COMMENT ON COLUMN public.request_modules.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.module_requests OWNER TO admin_project;
+ALTER TABLE public.request_modules OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.module_request_statuses | type: TABLE --
@@ -395,148 +396,111 @@ COMMENT ON COLUMN public.module_request_statuses.updated_date IS E'The date of l
 -- ddl-end --
 COMMENT ON COLUMN public.module_request_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.module_request_statuses OWNER TO admin_project;
+ALTER TABLE public.module_request_statuses OWNER TO admin_project;
 -- ddl-end --
 
--- object: fk__module_request_statuses__module_requests | type: CONSTRAINT --
--- ALTER TABLE public.module_requests DROP CONSTRAINT IF EXISTS fk__module_request_statuses__module_requests CASCADE;
-ALTER TABLE public.module_requests ADD CONSTRAINT fk__module_request_statuses__module_requests FOREIGN KEY (module_request_status_id)
+-- object: fk__module_request_statuses__request_modules | type: CONSTRAINT --
+-- ALTER TABLE public.request_modules DROP CONSTRAINT IF EXISTS fk__module_request_statuses__request_modules CASCADE;
+ALTER TABLE public.request_modules ADD CONSTRAINT fk__module_request_statuses__request_modules FOREIGN KEY (module_request_status_id)
 REFERENCES public.module_request_statuses (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: public.module_request_types | type: TABLE --
--- DROP TABLE IF EXISTS public.module_request_types CASCADE;
-CREATE TABLE public.module_request_types (
+-- object: public.modules | type: TABLE --
+-- DROP TABLE IF EXISTS public.modules CASCADE;
+CREATE TABLE public.modules (
 	id uuid NOT NULL,
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
 	name varchar(200) NOT NULL,
+	deploy_url varchar NOT NULL,
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
 	wrapper_integration_id varchar(300),
-	CONSTRAINT pk__module_types PRIMARY KEY (id)
+	CONSTRAINT pk__modules PRIMARY KEY (id)
 );
 -- ddl-end --
-COMMENT ON COLUMN public.module_request_types.id IS E'The unique identifier for the object.';
+COMMENT ON COLUMN public.modules.id IS E'The unique identifier for the object.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_request_types.alternative_id IS E'The auto generated sequential identifier.';
+COMMENT ON COLUMN public.modules.alternative_id IS E'The auto generated sequential identifier.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_request_types.created_date IS E'The date of create.';
+COMMENT ON COLUMN public.modules.created_date IS E'The date of create.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_request_types.updated_date IS E'The date of last update.';
+COMMENT ON COLUMN public.modules.updated_date IS E'The date of last update.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_request_types.deleted_date IS E'The date of delete. Used by the soft delete.';
+COMMENT ON COLUMN public.modules.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.module_request_types OWNER TO admin_project;
+ALTER TABLE public.modules OWNER TO admin_project;
 -- ddl-end --
 
--- object: fk__module_request_types__module_requests | type: CONSTRAINT --
--- ALTER TABLE public.module_requests DROP CONSTRAINT IF EXISTS fk__module_request_types__module_requests CASCADE;
-ALTER TABLE public.module_requests ADD CONSTRAINT fk__module_request_types__module_requests FOREIGN KEY (module_request_type_id)
-REFERENCES public.module_request_types (id) MATCH FULL
+-- object: fk__modules__request_modules | type: CONSTRAINT --
+-- ALTER TABLE public.request_modules DROP CONSTRAINT IF EXISTS fk__modules__request_modules CASCADE;
+ALTER TABLE public.request_modules ADD CONSTRAINT fk__modules__request_modules FOREIGN KEY (module_request_type_id)
+REFERENCES public.modules (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: public.module_request_module_provision_requests | type: TABLE --
--- DROP TABLE IF EXISTS public.module_request_module_provision_requests CASCADE;
-CREATE TABLE public.module_request_module_provision_requests (
+-- object: public.request_module_attempts | type: TABLE --
+-- DROP TABLE IF EXISTS public.request_module_attempts CASCADE;
+CREATE TABLE public.request_module_attempts (
 	id uuid NOT NULL,
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
-	created_date timestamp with time zone NOT NULL,
-	updated_date timestamp with time zone,
-	deleted_date timestamp with time zone,
-	module_provision_request_id uuid NOT NULL,
+	request_module_attempt_status_id uuid NOT NULL,
 	module_request_id uuid NOT NULL,
-	CONSTRAINT pk__module_request_module_provision_requests PRIMARY KEY (id)
-);
--- ddl-end --
-COMMENT ON COLUMN public.module_request_module_provision_requests.id IS E'The unique identifier for the object.';
--- ddl-end --
-COMMENT ON COLUMN public.module_request_module_provision_requests.alternative_id IS E'The auto generated sequential identifier.';
--- ddl-end --
-COMMENT ON COLUMN public.module_request_module_provision_requests.created_date IS E'The date of create.';
--- ddl-end --
-COMMENT ON COLUMN public.module_request_module_provision_requests.updated_date IS E'The date of last update.';
--- ddl-end --
-COMMENT ON COLUMN public.module_request_module_provision_requests.deleted_date IS E'The date of delete. Used by the soft delete.';
--- ddl-end --
--- ALTER TABLE public.module_request_module_provision_requests OWNER TO admin_project;
--- ddl-end --
-
--- object: public.module_provision_requests | type: TABLE --
--- DROP TABLE IF EXISTS public.module_provision_requests CASCADE;
-CREATE TABLE public.module_provision_requests (
-	id uuid NOT NULL,
-	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
-	module_provision_request_status_id uuid NOT NULL,
 	created_by_user_id varchar(300) NOT NULL,
 	provision_api_request_body jsonb,
 	provision_api_response_body jsonb,
 	provision_api_response_status_code smallint,
 	wrapper_integration_id varchar(300),
+	webhook_response_body jsonb,
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
-	CONSTRAINT pk__module_provision_requests PRIMARY KEY (id)
+	CONSTRAINT pk__module_request_attempts PRIMARY KEY (id)
 );
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_requests.id IS E'The unique identifier for the object.';
+COMMENT ON COLUMN public.request_module_attempts.id IS E'The unique identifier for the object.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_requests.alternative_id IS E'The auto generated sequential identifier.';
+COMMENT ON COLUMN public.request_module_attempts.alternative_id IS E'The auto generated sequential identifier.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_requests.created_date IS E'The date of create.';
+COMMENT ON COLUMN public.request_module_attempts.created_date IS E'The date of create.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_requests.updated_date IS E'The date of last update.';
+COMMENT ON COLUMN public.request_module_attempts.updated_date IS E'The date of last update.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_requests.deleted_date IS E'The date of delete. Used by the soft delete.';
+COMMENT ON COLUMN public.request_module_attempts.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.module_provision_requests OWNER TO admin_project;
--- ddl-end --
-
--- object: fk__module_provision_requests__module_request_module_p_d41d8c | type: CONSTRAINT --
--- ALTER TABLE public.module_request_module_provision_requests DROP CONSTRAINT IF EXISTS fk__module_provision_requests__module_request_module_p_d41d8c CASCADE;
-ALTER TABLE public.module_request_module_provision_requests ADD CONSTRAINT fk__module_provision_requests__module_request_module_p_d41d8c FOREIGN KEY (module_provision_request_id)
-REFERENCES public.module_provision_requests (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE public.request_module_attempts OWNER TO admin_project;
 -- ddl-end --
 
--- object: fk__module_requests__module_request_module_provision_d41d8c | type: CONSTRAINT --
--- ALTER TABLE public.module_request_module_provision_requests DROP CONSTRAINT IF EXISTS fk__module_requests__module_request_module_provision_d41d8c CASCADE;
-ALTER TABLE public.module_request_module_provision_requests ADD CONSTRAINT fk__module_requests__module_request_module_provision_d41d8c FOREIGN KEY (module_request_id)
-REFERENCES public.module_requests (id) MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public.module_provision_request_statuses | type: TABLE --
--- DROP TABLE IF EXISTS public.module_provision_request_statuses CASCADE;
-CREATE TABLE public.module_provision_request_statuses (
+-- object: public.request_module_attempt_statuses | type: TABLE --
+-- DROP TABLE IF EXISTS public.request_module_attempt_statuses CASCADE;
+CREATE TABLE public.request_module_attempt_statuses (
 	id uuid NOT NULL,
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
 	name varchar(200) NOT NULL,
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
-	CONSTRAINT pk__module_provision_request_statuses PRIMARY KEY (id)
+	CONSTRAINT pk__request_module_attempt_statuses PRIMARY KEY (id)
 );
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_request_statuses.id IS E'The unique identifier for the object.';
+COMMENT ON COLUMN public.request_module_attempt_statuses.id IS E'The unique identifier for the object.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_request_statuses.alternative_id IS E'The auto generated sequential identifier.';
+COMMENT ON COLUMN public.request_module_attempt_statuses.alternative_id IS E'The auto generated sequential identifier.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_request_statuses.created_date IS E'The date of create.';
+COMMENT ON COLUMN public.request_module_attempt_statuses.created_date IS E'The date of create.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_request_statuses.updated_date IS E'The date of last update.';
+COMMENT ON COLUMN public.request_module_attempt_statuses.updated_date IS E'The date of last update.';
 -- ddl-end --
-COMMENT ON COLUMN public.module_provision_request_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
+COMMENT ON COLUMN public.request_module_attempt_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.module_provision_request_statuses OWNER TO admin_project;
+ALTER TABLE public.request_module_attempt_statuses OWNER TO admin_project;
 -- ddl-end --
 
--- object: fk__module_provision_request_statuses__module_provisio_d41d8c | type: CONSTRAINT --
--- ALTER TABLE public.module_provision_requests DROP CONSTRAINT IF EXISTS fk__module_provision_request_statuses__module_provisio_d41d8c CASCADE;
-ALTER TABLE public.module_provision_requests ADD CONSTRAINT fk__module_provision_request_statuses__module_provisio_d41d8c FOREIGN KEY (module_provision_request_status_id)
-REFERENCES public.module_provision_request_statuses (id) MATCH FULL
+-- object: fk__request_module_attempt_statuses__request_module_d41d8c | type: CONSTRAINT --
+-- ALTER TABLE public.request_module_attempts DROP CONSTRAINT IF EXISTS fk__request_module_attempt_statuses__request_module_d41d8c CASCADE;
+ALTER TABLE public.request_module_attempts ADD CONSTRAINT fk__request_module_attempt_statuses__request_module_d41d8c FOREIGN KEY (request_module_attempt_status_id)
+REFERENCES public.request_module_attempt_statuses (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
@@ -662,7 +626,7 @@ WHERE (deleted_date is null);
 
 -- object: uq__module_request_types__name | type: INDEX --
 -- DROP INDEX IF EXISTS public.uq__module_request_types__name CASCADE;
-CREATE UNIQUE INDEX uq__module_request_types__name ON public.module_request_types
+CREATE UNIQUE INDEX uq__module_request_types__name ON public.modules
 USING btree
 (
 	name,
@@ -672,7 +636,7 @@ USING btree
 
 -- object: uq__part__module_request_types__name | type: INDEX --
 -- DROP INDEX IF EXISTS public.uq__part__module_request_types__name CASCADE;
-CREATE UNIQUE INDEX uq__part__module_request_types__name ON public.module_request_types
+CREATE UNIQUE INDEX uq__part__module_request_types__name ON public.modules
 USING btree
 (
 	name
@@ -682,7 +646,7 @@ WHERE (deleted_date is null);
 
 -- object: uq__module_provision_request_statuses__name | type: INDEX --
 -- DROP INDEX IF EXISTS public.uq__module_provision_request_statuses__name CASCADE;
-CREATE UNIQUE INDEX uq__module_provision_request_statuses__name ON public.module_provision_request_statuses
+CREATE UNIQUE INDEX uq__module_provision_request_statuses__name ON public.request_module_attempt_statuses
 USING btree
 (
 	name,
@@ -692,7 +656,7 @@ USING btree
 
 -- object: uq__part__module_provision_request_statuses__name | type: INDEX --
 -- DROP INDEX IF EXISTS public.uq__part__module_provision_request_statuses__name CASCADE;
-CREATE UNIQUE INDEX uq__part__module_provision_request_statuses__name ON public.module_provision_request_statuses
+CREATE UNIQUE INDEX uq__part__module_provision_request_statuses__name ON public.request_module_attempt_statuses
 USING btree
 (
 	name
@@ -726,7 +690,7 @@ COMMENT ON COLUMN public.countries.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.countries.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.countries OWNER TO admin_project;
+ALTER TABLE public.countries OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.requests | type: TABLE --
@@ -754,7 +718,7 @@ COMMENT ON COLUMN public.requests.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.requests.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.requests OWNER TO admin_project;
+ALTER TABLE public.requests OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__tenants__requests | type: CONSTRAINT --
@@ -786,7 +750,7 @@ COMMENT ON COLUMN public.request_statuses.updated_date IS E'The date of last upd
 -- ddl-end --
 COMMENT ON COLUMN public.request_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
--- ALTER TABLE public.request_statuses OWNER TO admin_project;
+ALTER TABLE public.request_statuses OWNER TO admin_project;
 -- ddl-end --
 
 -- object: uq__request_statuses__name | type: INDEX --
@@ -816,43 +780,17 @@ REFERENCES public.request_statuses (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: public.request_module_requests | type: TABLE --
--- DROP TABLE IF EXISTS public.request_module_requests CASCADE;
-CREATE TABLE public.request_module_requests (
-	id uuid NOT NULL,
-	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
-	created_date timestamp with time zone NOT NULL,
-	updated_date timestamp with time zone,
-	deleted_date timestamp with time zone,
-	module_request_id uuid NOT NULL,
-	request_id uuid NOT NULL,
-	CONSTRAINT pk__request_module_requests PRIMARY KEY (id)
-);
--- ddl-end --
-COMMENT ON COLUMN public.request_module_requests.id IS E'The unique identifier for the object.';
--- ddl-end --
-COMMENT ON COLUMN public.request_module_requests.alternative_id IS E'The auto generated sequential identifier.';
--- ddl-end --
-COMMENT ON COLUMN public.request_module_requests.created_date IS E'The date of create.';
--- ddl-end --
-COMMENT ON COLUMN public.request_module_requests.updated_date IS E'The date of last update.';
--- ddl-end --
-COMMENT ON COLUMN public.request_module_requests.deleted_date IS E'The date of delete. Used by the soft delete.';
--- ddl-end --
--- ALTER TABLE public.request_module_requests OWNER TO admin_project;
--- ddl-end --
-
--- object: fk__module_requests__request_module_requests | type: CONSTRAINT --
--- ALTER TABLE public.request_module_requests DROP CONSTRAINT IF EXISTS fk__module_requests__request_module_requests CASCADE;
-ALTER TABLE public.request_module_requests ADD CONSTRAINT fk__module_requests__request_module_requests FOREIGN KEY (module_request_id)
-REFERENCES public.module_requests (id) MATCH FULL
+-- object: fk__requests__request_modules | type: CONSTRAINT --
+-- ALTER TABLE public.request_modules DROP CONSTRAINT IF EXISTS fk__requests__request_modules CASCADE;
+ALTER TABLE public.request_modules ADD CONSTRAINT fk__requests__request_modules FOREIGN KEY (request_id)
+REFERENCES public.requests (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 
--- object: fk__requests__request_module_requests | type: CONSTRAINT --
--- ALTER TABLE public.request_module_requests DROP CONSTRAINT IF EXISTS fk__requests__request_module_requests CASCADE;
-ALTER TABLE public.request_module_requests ADD CONSTRAINT fk__requests__request_module_requests FOREIGN KEY (request_id)
-REFERENCES public.requests (id) MATCH FULL
+-- object: fk__request_modules__request_module_attempts | type: CONSTRAINT --
+-- ALTER TABLE public.request_module_attempts DROP CONSTRAINT IF EXISTS fk__request_modules__request_module_attempts CASCADE;
+ALTER TABLE public.request_module_attempts ADD CONSTRAINT fk__request_modules__request_module_attempts FOREIGN KEY (module_request_id)
+REFERENCES public.request_modules (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
 

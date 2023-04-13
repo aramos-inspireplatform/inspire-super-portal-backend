@@ -1,4 +1,4 @@
-import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
+import { RequestModule } from '~/requests/domain/entities/request-module.entity';
 import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
@@ -9,7 +9,7 @@ export class Request extends BaseDomainEntity {
   createdByUserEmail: string;
   requestStatus: RequestStatus;
   tenant: Tenant;
-  requestModuleRequests: ModuleRequest[];
+  requestModules: RequestModule[];
 
   constructor(attrs: InstanceProperties<Request>) {
     super(attrs);
@@ -17,6 +17,6 @@ export class Request extends BaseDomainEntity {
     this.createdByUserEmail = attrs?.createdByUserEmail;
     this.requestStatus = attrs?.requestStatus;
     this.tenant = attrs?.tenant;
-    this.requestModuleRequests = attrs?.requestModuleRequests;
+    this.requestModules = attrs?.requestModules;
   }
 }

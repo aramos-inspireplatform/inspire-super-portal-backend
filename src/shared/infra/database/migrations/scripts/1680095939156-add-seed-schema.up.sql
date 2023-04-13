@@ -16,23 +16,6 @@ INSERT INTO payment_methods (id, "name", is_active, wrapper_integration_id, crea
 INSERT INTO tenant_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('8e119286-dd47-4430-aec1-77fe50c6766b'::uuid, 'Pending', '2023-04-09 10:35:51.170', NULL, NULL);
 INSERT INTO tenant_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('a217e218-a723-4659-8f3d-9f218310655b'::uuid, 'Active', '2023-04-09 10:35:51.181', NULL, NULL);
 
--- Module Request Types
-INSERT INTO module_request_types (id, "name", created_date, updated_date, deleted_date, wrapper_integration_id) VALUES('bbf8b5ce-d2fe-43ba-8144-f510c1ed3f49'::uuid, 'Payments', '2023-04-09 10:36:35.960', NULL, NULL, NULL);
-
--- Module Provision Request Statuses
-INSERT INTO module_provision_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('9a3e164a-5a59-4dfd-939e-0c39dc74a70e'::uuid, 'Completed', '2023-04-09 10:39:02.769', NULL, NULL);
-INSERT INTO module_provision_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('b303d14a-5791-40d8-a339-0bf6ffd1bfbb'::uuid, 'Sent', '2023-04-09 10:39:02.780', NULL, NULL);
-INSERT INTO module_provision_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('75cdebcd-5c89-4b78-9376-3920a7bd009b'::uuid, 'Pending', '2023-04-09 10:39:02.784', NULL, NULL);
-INSERT INTO module_provision_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('1be22e2e-8ac3-412c-a08e-2d4fde9e0375'::uuid, 'Partially', '2023-04-09 10:39:02.786', NULL, NULL);
-INSERT INTO module_provision_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('1f60b12f-8d9d-4309-865a-1d6c91c7f6b8'::uuid, 'Canceled', '2023-04-09 10:39:02.788', NULL, NULL);
-
--- Module Request Statuses
-INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('f6a1b4ff-cfcc-4996-ab8d-b22412593a7a'::uuid, 'Requested', '2023-04-09 10:42:24.093', NULL, NULL);
-INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('18fc912b-893c-4639-9462-d3f44f7084d1'::uuid, 'Provisioning', '2023-04-09 10:42:24.099', NULL, NULL);
-INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('d82588e4-f046-47f9-be56-fa453fc65a8b'::uuid, 'Completed', '2023-04-09 10:42:24.102', NULL, NULL);
-INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('79f5c885-b401-435c-8a4f-2826f7664cfd'::uuid, 'Failed', '2023-04-09 10:42:24.103', NULL, NULL);
-INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('9044aeff-3418-49fb-9fae-918192b3e727'::uuid, 'Canceled', '2023-04-09 07:42:24.103 -0300', NULL, NULL);
-
 INSERT INTO settlement_currencies (id, "name", wrapper_integration_id, is_active, created_date) VALUES('ef579caf-a6da-4d53-80cb-a67bf4742a3e'::uuid, 'United States dollar', 'ef579caf-a6da-4d53-80cb-a67bf4742a3e'::uuid, true, '2021-10-05 14:56:57.859');
 INSERT INTO settlement_currencies (id, "name", wrapper_integration_id, is_active, created_date) VALUES('bb2d5ae7-e161-4f24-a0fc-435b1f5f6ac2'::uuid, 'Brazilian Real', 'bb2d5ae7-e161-4f24-a0fc-435b1f5f6ac2'::uuid, true, '2021-10-05 14:56:57.859');
 INSERT INTO settlement_currencies (id, "name", wrapper_integration_id, is_active, created_date) VALUES('0cea1993-1b24-41e7-88dc-5a330f1f5af1'::uuid, 'Algerian dinar', '0cea1993-1b24-41e7-88dc-5a330f1f5af1'::uuid, false, '2021-10-05 14:56:57.859');
@@ -551,3 +534,20 @@ INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_da
 INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('f6a59aa8-d35d-4c68-b92e-c42107af043b'::uuid, 'Completed', '2023-04-12 06:50:28.864', NULL, NULL);
 INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('7e1de153-3a2d-4c0b-b432-665298e25b73'::uuid, 'Canceled', '2023-04-12 06:50:28.866', NULL, NULL);
 INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('46b6189b-7e7e-45f1-8004-f9f81c2769ed'::uuid, 'Partially Completed', '2023-04-12 06:50:28.867', NULL, NULL);
+
+-- Module Request Types
+INSERT INTO modules (id, "name", created_date, updated_date, deleted_date, wrapper_integration_id, deploy_url) VALUES('bbf8b5ce-d2fe-43ba-8144-f510c1ed3f49'::uuid, 'Payments', '2023-04-09 10:36:35.960', NULL, NULL, NULL, 'https://www.google.com');
+
+-- Module Provision Request Statuses
+INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('9a3e164a-5a59-4dfd-939e-0c39dc74a70e'::uuid, 'Completed', '2023-04-09 10:39:02.769', NULL, NULL);
+INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('b303d14a-5791-40d8-a339-0bf6ffd1bfbb'::uuid, 'Sent', '2023-04-09 10:39:02.780', NULL, NULL);
+INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('75cdebcd-5c89-4b78-9376-3920a7bd009b'::uuid, 'Pending', '2023-04-09 10:39:02.784', NULL, NULL);
+INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('1be22e2e-8ac3-412c-a08e-2d4fde9e0375'::uuid, 'Partially', '2023-04-09 10:39:02.786', NULL, NULL);
+INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('1f60b12f-8d9d-4309-865a-1d6c91c7f6b8'::uuid, 'Canceled', '2023-04-09 10:39:02.788', NULL, NULL);
+
+-- Module Request Statuses
+INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('f6a1b4ff-cfcc-4996-ab8d-b22412593a7a'::uuid, 'Requested', '2023-04-09 10:42:24.093', NULL, NULL);
+INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('18fc912b-893c-4639-9462-d3f44f7084d1'::uuid, 'Provisioning', '2023-04-09 10:42:24.099', NULL, NULL);
+INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('d82588e4-f046-47f9-be56-fa453fc65a8b'::uuid, 'Completed', '2023-04-09 10:42:24.102', NULL, NULL);
+INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('79f5c885-b401-435c-8a4f-2826f7664cfd'::uuid, 'Failed', '2023-04-09 10:42:24.103', NULL, NULL);
+INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('9044aeff-3418-49fb-9fae-918192b3e727'::uuid, 'Canceled', '2023-04-09 07:42:24.103 -0300', NULL, NULL);

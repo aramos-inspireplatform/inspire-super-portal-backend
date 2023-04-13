@@ -38,7 +38,7 @@ export class RequestsController {
     const request = await this.createRequestUseCase.execute({
       accessToken: req.headers.authorization,
       tenantId: payload.tenantId,
-      moduleRequests: payload.moduleRequests.map((moduleRequest) => {
+      requestModules: payload.moduleRequests.map((moduleRequest) => {
         return {
           moduleId: moduleRequest.moduleId,
           moduleSettings: moduleRequest.settings,

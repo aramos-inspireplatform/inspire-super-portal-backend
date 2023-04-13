@@ -1,13 +1,15 @@
 import { NotFoundException } from '@nestjs/common';
-import { ModuleRequestStatusesConstant } from '~/requests/domain/constants/module-request-statuses.constant';
 import { ModuleRequestTypes } from '~/requests/domain/constants/module-request-types.constant';
 import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses.constant';
-import { ModuleRequest } from '~/requests/domain/entities/module-request.entity';
+import { Module } from '~/requests/domain/entities/module.entity';
+import { RequestModule } from '~/requests/domain/entities/request-module.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
-import { IModuleRequestStatusesRepository } from '~/requests/infra/contracts/repository/module-request-statuses-repository.contract';
-import { IModuleRequestTypeRepository } from '~/requests/infra/contracts/repository/module-request-type-repository.contract';
+import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
+import { RequestCreatedEventHandler } from '~/requests/infra/events/request-created-event.handler';
+import { IEventEmitter } from '~/shared/application/contracts/event-emitter.contract';
+import { RequestEvents } from '~/shared/domain/events/request.events';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
@@ -17,27 +19,46 @@ export class CreateRequestUseCase {
 
   constructor(
     private readonly httpClient: IHttpClient,
-    private readonly moduleRequestStatusesRepository: IModuleRequestStatusesRepository,
-    private readonly moduleRequestTypeRepository: IModuleRequestTypeRepository,
     private readonly tenantRepository: ITenantRepository,
-    private readonly requestStatusesRepository: IRequestStatusesRepository,
+    private readonly requestStatusRepository: IRequestStatusesRepository,
+    private readonly moduleRepository: IModuleRepository,
     private readonly requestRepository: IRequestRepository,
+    private readonly eventEmitter: IEventEmitter,
   ) {}
 
   async execute(attrs: CreateRequestUseCase.InputAttrs) {
     const userRequesterData = await this.getUserDetails(attrs);
-    const requestStatus = await this.getRequestStauses();
-    const requestModuleRequests = await this.createModuleRequests(attrs);
-    const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
-    if (!tenant) throw new NotFoundException('exception:TENANT_NOT_FOUND');
+    const tenant = await this.getTenant(attrs);
+    const requestStatus = await this.getSentRequestStatuses();
+    const requestModules = await this.createRequestModules(attrs);
+
     const request = new Request({
       createdByUserEmail: userRequesterData.email,
       createdByUserId: userRequesterData.id,
+      requestModules,
       requestStatus,
-      tenant,
-      requestModuleRequests,
+      tenant: tenant,
     });
-    return this.requestRepository.save({ request });
+
+    await this.requestRepository.save({ request });
+
+    this.eventEmitter.emit<RequestCreatedEventHandler.InputAttrs>(
+      RequestEvents.Created,
+      {
+        accessToken: attrs.accessToken,
+        tenant,
+        request,
+        createdByUserId: userRequesterData.id,
+      },
+    );
+
+    return request;
+  }
+
+  private async getTenant(attrs: CreateRequestUseCase.InputAttrs) {
+    const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
+    if (!tenant) throw new NotFoundException('exception:TENANT_NOT_FOUND');
+    return tenant;
   }
 
   private async getUserDetails(attrs: CreateRequestUseCase.InputAttrs) {
@@ -50,38 +71,22 @@ export class CreateRequestUseCase {
     return responseOrError.data.body.data;
   }
 
-  private async createModuleRequests(attrs: CreateRequestUseCase.InputAttrs) {
-    const moduleRequestStatus = await this.getModuleRequestStatuses();
-    const modules = await Promise.all(
-      attrs.moduleRequests.map(async (request) => {
-        const moduleRequestType = await this.getModuleRequestType({
-          moduleId: request.moduleId,
+  async createRequestModules(attrs: CreateRequestUseCase.InputAttrs) {
+    return Promise.all(
+      attrs.requestModules.map(async (requestModule) => {
+        const module = await this.getModule({
+          moduleId: requestModule.moduleId,
         });
-        const moduleRequest = new ModuleRequest({
-          attempts: 0,
-          moduleRequestStatus,
-          moduleRequestType,
-          requestSettings: request.moduleSettings,
+        return new RequestModule({
+          module: new Module(module),
+          settings: requestModule.moduleSettings,
         });
-        return moduleRequest;
       }),
     );
-    return modules;
   }
 
-  private async getModuleRequestStatuses() {
-    const requestStatuses = await this.moduleRequestStatusesRepository.findById(
-      {
-        id: ModuleRequestStatusesConstant.Requested,
-      },
-    );
-    if (!requestStatuses)
-      throw new NotFoundException('exception:REQUEST_STATUSES_NOT_FOUND'); // TODO: colocar isso numa classe especifica para esse erro
-    return requestStatuses;
-  }
-
-  private async getModuleRequestType(attrs: { moduleId: string }) {
-    const requestType = await this.moduleRequestTypeRepository.findById({
+  private async getModule(attrs: { moduleId: string }) {
+    const requestType = await this.moduleRepository.findById({
       id: attrs.moduleId,
     });
     if (!requestType)
@@ -89,8 +94,8 @@ export class CreateRequestUseCase {
     return requestType;
   }
 
-  private async getRequestStauses() {
-    return this.requestStatusesRepository.findById({
+  private async getSentRequestStatuses() {
+    return this.requestStatusRepository.findById({
       id: RequestStatusesIds.Sent,
     });
   }
@@ -107,7 +112,7 @@ export namespace CreateRequestUseCase {
 
   export type GetUserDetailsResponse = InspireHttpResponse<UserDetails>;
 
-  type ModuleRequest = {
+  type RequestModules = {
     moduleId: (typeof ModuleRequestTypes)[keyof typeof ModuleRequestTypes];
     moduleSettings: object;
   };
@@ -115,7 +120,7 @@ export namespace CreateRequestUseCase {
   export type InputAttrs = {
     tenantId: string; //UUID
     accessToken: string; // Com isso pegamos o user id e o email no projeto de tenant. Primeira coisa a se fazer.
-    moduleRequests: ModuleRequest[];
+    requestModules: RequestModules[];
   };
 }
 

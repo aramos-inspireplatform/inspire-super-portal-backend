@@ -6,9 +6,8 @@ import {
   ManyToOne,
   Relation,
 } from 'typeorm';
-import { BaseEntity } from '~/shared/infra/database/entities/base';
-
 import { GeneralDataTypes } from './GeneralDataTypes';
+import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index('idx__uq__system_configurations', ['deletedDate', 'slug'], {
   unique: true,

@@ -15,6 +15,8 @@ export class Tenant extends BaseDomainEntity {
 
   tenantStatus: TenantStatus;
 
+  slug?: string;
+
   constructor(attrs: InstanceProperties<Tenant>) {
     super(attrs);
     this.name = attrs?.name;
@@ -23,5 +25,6 @@ export class Tenant extends BaseDomainEntity {
     this.createdByUserId = attrs?.createdByUserId;
     this.createdByUserEmail = attrs?.createdByUserEmail;
     this.tenantStatus = attrs?.tenantStatus;
+    this.slug = attrs?.slug;
   }
 }
