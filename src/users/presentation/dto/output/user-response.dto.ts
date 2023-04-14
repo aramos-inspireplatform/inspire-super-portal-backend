@@ -26,4 +26,8 @@ export class UserResponseDto extends BaseDto {
   @Expose({ name: 'tenantId' })
   @ApiProperty({ example: 'teste-hnmkt', name: 'tenantId' })
   googleTenantId: string;
+
+  @Expose()
+  @ApiProperty({ example: '6153611e2daa238fc1f67ac4' })
+  phoneNumberCountryId: string;
 }

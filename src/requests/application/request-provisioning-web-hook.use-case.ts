@@ -7,6 +7,9 @@ import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/
 import { IRequestModuleStatusRepository } from '~/requests/infra/contracts/repository/request-module-status-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
+import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
+import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/tenant-statuses-repository.contract';
 
 export class RequestProvisioningWebHookUseCase {
   constructor(
@@ -16,6 +19,8 @@ export class RequestProvisioningWebHookUseCase {
     private readonly requestStautusRepository: IRequestStatusesRepository,
     private readonly requestModuleRepository: IRequestModuleRepository,
     private readonly requestModuleStatusRepository: IRequestModuleStatusRepository,
+    private readonly tenantRepository: ITenantRepository,
+    private readonly tenantStatusRepository: ITenantStatusesRepository,
   ) {}
 
   async handle(attrs: FailedRequestProvisioningUseCase.InputAttrs) {
@@ -88,6 +93,13 @@ export class RequestProvisioningWebHookUseCase {
       request.requestStatus = await this.requestStautusRepository.findById({
         id: RequestStatusesIds.Completed,
       });
+      const tenant = await this.tenantRepository.findById({
+        id: request.tenant.id,
+      });
+      tenant.tenantStatus = await this.tenantStatusRepository.findById({
+        id: TenantStatusesConstant.Active,
+      });
+      await this.tenantRepository.save({ tenant });
     } else if (
       allCompleted.length + allFailed.length ===
       allRequestModulesFromRequest.length

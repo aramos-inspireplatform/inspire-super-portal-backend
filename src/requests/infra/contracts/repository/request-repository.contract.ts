@@ -4,4 +4,8 @@ export interface IRequestRepository {
   create(request: Request): Promise<void>;
   findById(id: string): Promise<Request>;
   updateStatus(id: string, statusId: string): Promise<void>;
+  findAll(attrs: {
+    page: number;
+    pageSize: number;
+  }): Promise<[Request[], number]>;
 }

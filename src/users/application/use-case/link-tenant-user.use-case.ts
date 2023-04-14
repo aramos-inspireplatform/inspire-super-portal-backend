@@ -28,7 +28,7 @@ export class LinkTenantUserUseCase {
   }
 
   private async getTenantId(attrs: LinkTenantUserUseCase.InputAttrs) {
-    const tenant = await this.tenantRepository.findById({
+    const tenant = await this.tenantRepository.findByWrapperIntegrationId({
       id: attrs.tenantId,
     });
     if (!tenant) throw new Error('exception:TENANT_NOT_FOUND');

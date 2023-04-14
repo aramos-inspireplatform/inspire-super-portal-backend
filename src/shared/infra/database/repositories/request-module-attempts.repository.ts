@@ -84,6 +84,7 @@ export class RequestModuleAttemptsRepository
       ...entity,
       moduleRequest: new RequestModules({
         ...entity.moduleRequest,
+        requestModuleAttempts: undefined,
         request: new Request({
           id: entity.moduleRequest.request.id,
           createdDate: entity.moduleRequest.request.createdDate,

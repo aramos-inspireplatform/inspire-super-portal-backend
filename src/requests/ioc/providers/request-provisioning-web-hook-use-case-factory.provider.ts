@@ -13,6 +13,10 @@ import { RequestModuleStatusRepository } from '~/shared/infra/database/repositor
 import { RequestModulesRepository } from '~/shared/infra/database/repositories/request-modules.repository';
 import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
 import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
+import { TenantStatusesRepository } from '~/shared/infra/database/repositories/tenant-statuses.repository';
+import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
+import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/tenant-statuses-repository.contract';
 
 export class RequestProvisioningWebHookUseCaseFactoryProvider {
   static register(): FactoryProvider {
@@ -25,6 +29,8 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
         requestStautusRepository: IRequestStatusesRepository,
         requestModuleRepository: IRequestModuleRepository,
         requestModuleStatusRepository: IRequestModuleStatusRepository,
+        tenantRepository: ITenantRepository,
+        tenantStatusRepository: ITenantStatusesRepository,
       ) =>
         new RequestProvisioningWebHookUseCase(
           requestModuleAttemptsRepository,
@@ -33,6 +39,8 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
           requestStautusRepository,
           requestModuleRepository,
           requestModuleStatusRepository,
+          tenantRepository,
+          tenantStatusRepository,
         ),
       inject: [
         RequestModuleAttemptsRepository,
@@ -41,6 +49,8 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
         RequestStatusesRepository,
         RequestModulesRepository,
         RequestModuleStatusRepository,
+        TenantsRepository,
+        TenantStatusesRepository,
       ],
     };
   }

@@ -59,7 +59,7 @@ export class RequestRepository implements IRequestRepository {
       requestModules: request.requestModules.map(
         (rm) =>
           new RequestModules({
-            ...rm.moduleRequestType,
+            ...(rm as any),
             module: new Module(rm.moduleRequestType),
             moduleRequestStatus: new RequestModuleStatus(
               rm.moduleRequestStatus,
@@ -74,5 +74,47 @@ export class RequestRepository implements IRequestRepository {
 
   async updateStatus(id: string, statusId: string): Promise<void> {
     await this.repository.update({ id }, { requestStatus: <any>statusId });
+  }
+
+  async findAll(attrs: {
+    page: number;
+    pageSize: number;
+  }): Promise<[Request[], number]> {
+    const [requests, count] = await this.repository.findAndCount({
+      relations: [
+        'requestStatus',
+        'tenant',
+        'requestModules',
+        'requestModules.moduleRequestType',
+        'requestModules.moduleRequestStatus',
+      ],
+      skip: attrs.page * attrs.pageSize,
+      take: attrs.pageSize,
+    });
+
+    return [
+      requests.map(
+        (request) =>
+          new Request({
+            ...request,
+            createdByUserEmail: request.createdByUserEmail,
+            createdByUserId: request.createdByUserId,
+            requestModules: request.requestModules.map(
+              (rm) =>
+                new RequestModules({
+                  ...(rm as any),
+                  module: new Module(rm.moduleRequestType),
+                  moduleRequestStatus: new RequestModuleStatus(
+                    rm.moduleRequestStatus,
+                  ),
+                  requestSettings: rm.requestSettings,
+                }),
+            ),
+            requestStatus: new RequestStatus(request.requestStatus),
+            tenant: new Tenant(request.tenant),
+          }),
+      ),
+      count,
+    ];
   }
 }

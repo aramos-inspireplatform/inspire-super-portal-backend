@@ -48,7 +48,7 @@ export class PaymentProcessorDto {
   @IsNumber()
   @IsPositive()
   @Type(() => Number)
-  minimunRequiredAmount: number;
+  minimumRequiredAmount: number;
 
   @ApiProperty({
     required: true,
@@ -58,6 +58,14 @@ export class PaymentProcessorDto {
   @IsNotEmpty()
   @IsString()
   apiAccessKey: string;
+
+  @ApiProperty({
+    required: true,
+    example: false,
+  })
+  @IsNotEmpty()
+  @IsBoolean()
+  allowInstallments: boolean;
 
   @ApiProperty({
     required: true,

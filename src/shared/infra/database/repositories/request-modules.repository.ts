@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { Module } from '~/requests/domain/entities/module.entity';
+import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-module-attempts-status.entity';
+import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
 import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
 import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
 import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
@@ -47,7 +49,12 @@ export class RequestModulesRepository implements IRequestModuleRepository {
   async findById(id: string): Promise<RequestModules> {
     const rm = await this.repository.findOne({
       where: { id },
-      relations: ['moduleRequestType', 'moduleRequestStatus'],
+      relations: [
+        'moduleRequestType',
+        'moduleRequestStatus',
+        'requestModuleAttempts',
+        'requestModuleAttempts.requestModuleAttemptStatus',
+      ],
     });
 
     if (!rm) return undefined;
@@ -61,7 +68,18 @@ export class RequestModulesRepository implements IRequestModuleRepository {
       apiRequestBody: rm.apiRequestBody,
       apiResponseBody: rm.apiRequestBody,
       request: undefined,
-      attempts: undefined,
+      attempts: rm.requestModuleAttempts.length,
+      requestModuleAttempts: rm.requestModuleAttempts.map(
+        (rma) =>
+          new RequestModuleAttempts({
+            ...rma,
+            createdByUserId: rma.createdByUserId,
+            moduleRequest: undefined,
+            requestModuleAttemptStatus: new RequestModuleAttemptStatus(
+              rma.requestModuleAttemptStatus,
+            ),
+          }),
+      ),
       createdDate: rm.createdDate,
       updatedDate: rm.updatedDate,
       deleteDate: rm.deletedDate,

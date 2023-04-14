@@ -1,4 +1,5 @@
 import { Module } from '~/requests/domain/entities/module.entity';
+import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
 import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
@@ -13,6 +14,7 @@ export class RequestModules extends BaseDomainEntity {
   apiRequestBody?: object;
   apiResponseBody?: object;
   attempts?: number;
+  requestModuleAttempts?: RequestModuleAttempts[];
 
   constructor(attrs: InstanceProperties<RequestModules>) {
     super(attrs);
@@ -24,5 +26,6 @@ export class RequestModules extends BaseDomainEntity {
     this.apiRequestBody = attrs.apiRequestBody;
     this.apiResponseBody = attrs.apiResponseBody;
     this.attempts = attrs.attempts ?? 0;
+    this.requestModuleAttempts = attrs.requestModuleAttempts;
   }
 }

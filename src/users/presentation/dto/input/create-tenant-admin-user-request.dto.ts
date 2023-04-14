@@ -64,4 +64,9 @@ export class CreateTenantAdminUserRequestBodyDto {
   @IsOptional()
   @IsMongoId({ each: true })
   agencies?: string[];
+
+  @ApiProperty({ example: '61b0dbd5ec727212cd6e2e21', required: false })
+  @IsOptional()
+  @IsMongoId()
+  phoneNumberCountryId?: string;
 }

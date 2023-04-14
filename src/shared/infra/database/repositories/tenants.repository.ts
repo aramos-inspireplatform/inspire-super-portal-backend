@@ -50,4 +50,15 @@ export class TenantsRepository implements ITenantRepository {
       .getManyAndCount();
     return [tenants.map((tenant) => new Tenant(tenant)), total];
   }
+
+  async findByWrapperIntegrationId(
+    attrs: ITenantRepository.FindByWrapperIntegrationIdInputAttrs,
+  ): ITenantRepository.FindByWrapperIntegrationIdResult {
+    const tenant = await this.repository
+      .createQueryBuilder('tenants')
+      .leftJoinAndSelect('tenants.tenantStatus', 'tenantStatus')
+      .where('tenants.wrapperIntegrationId = :id', { id: attrs.id })
+      .getOne();
+    return tenant ? new Tenant(tenant) : null;
+  }
 }

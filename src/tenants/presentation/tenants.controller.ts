@@ -4,6 +4,7 @@ import {
   Get,
   Inject,
   Param,
+  ParseUUIDPipe,
   Post,
   Query,
   Req,
@@ -80,7 +81,10 @@ export class TenantsController {
   @Get(':id')
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: GetTenantResponseDto })
-  async findOne(@Req() request: FastifyRequest, @Param('id') id: string) {
+  async findOne(
+    @Req() request: FastifyRequest,
+    @Param('id', ParseUUIDPipe) id: string,
+  ) {
     const tenant = await this.findTenantUseCase.find({
       accessToken: request.headers.authorization,
       tenantId: id,

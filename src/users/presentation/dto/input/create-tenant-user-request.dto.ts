@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
+  IsMongoId,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -89,4 +90,9 @@ export class CreateTenantUserRequestDto {
   })
   @IsString()
   tenantId: string;
+
+  @ApiProperty({ example: '61b0dbd5ec727212cd6e2e21', required: false })
+  @IsOptional()
+  @IsMongoId()
+  phoneNumberCountryId?: string;
 }
