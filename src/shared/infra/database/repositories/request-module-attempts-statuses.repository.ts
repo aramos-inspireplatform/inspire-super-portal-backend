@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-module-attempt-status.entity';
+import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-module-attempts-status.entity';
 import { IRequestModuleAttemptsStatusRepository } from '~/requests/infra/contracts/repository/request-module-attempts-status-repository.contract';
 import { RequestModuleAttemptStatuses } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';

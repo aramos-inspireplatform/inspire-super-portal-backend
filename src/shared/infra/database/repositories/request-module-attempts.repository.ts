@@ -1,13 +1,15 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Module } from '~/requests/domain/entities/module.entity';
-import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-module-attempt-status.entity';
-import { RequestModuleAttempt } from '~/requests/domain/entities/request-module-attempt.entity';
-import { RequestModule } from '~/requests/domain/entities/request-module.entity';
+import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
+import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
+import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
+import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
 import { RequestModuleAttempts as RequestModuleAttemptsMapper } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
+import { Tenant } from '~/tenants/domain/entity/tenant.entity';
 
 @Injectable()
 export class RequestModuleAttemptsRepository
@@ -17,77 +19,110 @@ export class RequestModuleAttemptsRepository
 
   constructor(
     @Inject(DatabaseProvidersSymbols.DATA_SOURCE)
-    dataSource: DataSource,
+    private readonly dataSource: DataSource,
   ) {
     this.repository = dataSource.getRepository<RequestModuleAttemptsMapper>(
       RequestModuleAttemptsMapper,
     );
   }
 
-  async save(
-    attrs: IRequestModuleAttemptsRepository.SaveInputAttrs,
-  ): IRequestModuleAttemptsRepository.SaveResult {
-    const entity = await this.repository
-      .create({
-        ...attrs.requestModuleAttempt,
-        requestModuleAttemptStatus: <any>(
-          attrs.requestModuleAttempt.requestModuleAttemptStatus.id
-        ),
-        moduleRequest: <any>attrs.requestModuleAttempt.moduleRequest.id,
-      })
-      .save();
-
-    const savedEntity = await this.repository.findOne({
-      where: { id: entity.id },
-      relations: ['requestModuleAttemptStatus'],
-    });
-
-    return Object.assign(
-      attrs.requestModuleAttempt,
-      new RequestModuleAttempt({
-        ...savedEntity,
-        moduleRequest: attrs.requestModuleAttempt.moduleRequest,
-        requestModuleAttemptStatus: new RequestModuleAttemptStatus(
-          savedEntity.requestModuleAttemptStatus,
-        ),
-      }),
+  async createMultiple(
+    requestModuleAttempts: RequestModuleAttempts[],
+  ): Promise<void> {
+    await this.dataSource.manager.transaction(
+      async (entityManager: EntityManager) => {
+        await entityManager.save(
+          RequestModuleAttemptsMapper,
+          requestModuleAttempts.map(
+            (requestModuleAttempt) =>
+              <any>{
+                ...requestModuleAttempt,
+                id: requestModuleAttempt.id,
+                createdByUserId: requestModuleAttempt.createdByUserId,
+                provisionApiRequestBody:
+                  requestModuleAttempt.provisionApiRequestBody,
+                moduleRequest: <any>requestModuleAttempt.moduleRequest.id,
+                requestModuleAttemptStatus: <any>(
+                  requestModuleAttempt.requestModuleAttemptStatus.id
+                ),
+              },
+          ),
+        );
+      },
     );
   }
 
-  async findById(
-    attrs: IRequestModuleAttemptsRepository.FindByIdAttrs,
-  ): IRequestModuleAttemptsRepository.FindByIdResult {
-    const savedEntity = await this.repository.findOne({
-      where: { id: attrs.id },
+  async updateStatus(id: string, entity: RequestModuleAttempts): Promise<void> {
+    await this.repository.update(
+      {
+        id,
+      },
+      {
+        requestModuleAttemptStatus: <any>entity.requestModuleAttemptStatus.id,
+      },
+    );
+
+    const storedEntity = await this.repository.findOneBy({
+      id,
+    });
+    entity.updatedDate = storedEntity.updatedDate;
+  }
+
+  async findById(id: string): Promise<RequestModuleAttempts> {
+    const entity = await this.repository.findOne({
+      where: { id },
       relations: [
         'requestModuleAttemptStatus',
         'moduleRequest',
+        'moduleRequest.moduleRequestType',
         'moduleRequest.request',
+        'moduleRequest.request.requestStatus',
       ],
     });
 
-    return new RequestModuleAttempt({
-      ...savedEntity,
-      moduleRequest: new RequestModule({
-        module: new Module(savedEntity.moduleRequest.moduleRequestType),
-        settings: savedEntity.moduleRequest.requestSettings,
+    return new RequestModuleAttempts({
+      ...entity,
+      moduleRequest: new RequestModules({
+        ...entity.moduleRequest,
         request: new Request({
-          ...savedEntity.moduleRequest.request,
-          requestModules: [],
+          id: entity.moduleRequest.request.id,
+          createdDate: entity.moduleRequest.request.createdDate,
+          updatedDate: entity.moduleRequest.request.updatedDate,
+          deleteDate: entity.moduleRequest.request.deletedDate,
+          createdByUserEmail: entity.moduleRequest.request.createdByUserEmail,
+          createdByUserId: entity.moduleRequest.request.createdByUserId,
+          requestModules: undefined,
+          requestStatus: new RequestStatus(
+            entity.moduleRequest.request.requestStatus,
+          ),
+          tenant: new Tenant(entity.moduleRequest.request.tenant),
         }),
+        requestSettings: entity.moduleRequest.requestSettings,
+        wrapperIntegrationId: entity.moduleRequest.wrapperIntegrationId,
+        module: new Module(entity.moduleRequest.moduleRequestType),
+        moduleRequestStatus: new RequestModuleStatus(
+          entity.requestModuleAttemptStatus,
+        ),
       }),
-      requestModuleAttemptStatus: new RequestModuleAttemptStatus(
-        savedEntity.requestModuleAttemptStatus,
-      ),
     });
   }
 
-  async updateStatus(attrs: { statusId: string; id: string }): Promise<void> {
+  async updateWebhookResponse(
+    id: string,
+    entity: RequestModuleAttempts,
+  ): Promise<void> {
     await this.repository.update(
       {
-        id: attrs.id,
+        id,
       },
-      { requestModuleAttemptStatus: <any>attrs.statusId },
+      {
+        webhookResponseBody: <any>entity.webhookResponseBody,
+      },
     );
+
+    const storedEntity = await this.repository.findOneBy({
+      id,
+    });
+    entity.updatedDate = storedEntity.updatedDate;
   }
 }

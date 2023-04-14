@@ -1,24 +1,26 @@
-import { RequestModuleAttemptsStatus } from '~/requests/domain/entities/request-module-attempts-status.entity';
+import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-module-attempts-status.entity';
+import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
-import { RequestModules } from '~/shared/infra/database/entities';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
 
 export class RequestModuleAttempts extends BaseDomainEntity {
-  requestModuleAttempsStatus: RequestModuleAttemptsStatus;
+  requestModuleAttemptStatus: RequestModuleAttemptStatus;
   moduleRequest: RequestModules;
+  createdByUserId: string;
   provisionApiRequestBody?: object;
+  provisionApiResponseStatusCode?: number;
   provisionApiResponseBody?: object;
-  provisionApiResponseStatusCode?: string;
   wrapperIntegrationId?: string;
-  webhookResponseBody?: string;
+  webhookResponseBody?: object;
 
   constructor(attrs: InstanceProperties<RequestModuleAttempts>) {
     super(attrs);
-    this.requestModuleAttempsStatus = attrs.requestModuleAttempsStatus;
+    this.requestModuleAttemptStatus = attrs.requestModuleAttemptStatus;
     this.moduleRequest = attrs.moduleRequest;
+    this.createdByUserId = attrs.createdByUserId;
     this.provisionApiRequestBody = attrs.provisionApiRequestBody;
-    this.provisionApiResponseBody = attrs.provisionApiResponseBody;
     this.provisionApiResponseStatusCode = attrs.provisionApiResponseStatusCode;
+    this.provisionApiResponseBody = attrs.provisionApiResponseBody;
     this.wrapperIntegrationId = attrs.wrapperIntegrationId;
     this.webhookResponseBody = attrs.webhookResponseBody;
   }

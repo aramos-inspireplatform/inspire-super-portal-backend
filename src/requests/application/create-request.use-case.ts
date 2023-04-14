@@ -1,13 +1,13 @@
 import { NotFoundException } from '@nestjs/common';
-import { ModuleRequestTypes } from '~/requests/domain/constants/module-request-types.constant';
-import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses.constant';
+import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
+import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses-ids.constant';
 import { Module } from '~/requests/domain/entities/module.entity';
-import { RequestModule } from '~/requests/domain/entities/request-module.entity';
+import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
+import { IRequestModuleStatusRepository } from '~/requests/infra/contracts/repository/request-module-status-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
-import { RequestCreatedEventHandler } from '~/requests/infra/events/request-created-event.handler';
 import { IEventEmitter } from '~/shared/application/contracts/event-emitter.contract';
 import { RequestEvents } from '~/shared/domain/events/request.events';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
@@ -22,11 +22,12 @@ export class CreateRequestUseCase {
     private readonly tenantRepository: ITenantRepository,
     private readonly requestStatusRepository: IRequestStatusesRepository,
     private readonly moduleRepository: IModuleRepository,
+    private readonly requestModulesStautusRepository: IRequestModuleStatusRepository,
     private readonly requestRepository: IRequestRepository,
     private readonly eventEmitter: IEventEmitter,
   ) {}
 
-  async execute(attrs: CreateRequestUseCase.InputAttrs) {
+  async handle(attrs: CreateRequestUseCase.InputAttrs) {
     const userRequesterData = await this.getUserDetails(attrs);
     const tenant = await this.getTenant(attrs);
     const requestStatus = await this.getSentRequestStatuses();
@@ -35,30 +36,21 @@ export class CreateRequestUseCase {
     const request = new Request({
       createdByUserEmail: userRequesterData.email,
       createdByUserId: userRequesterData.id,
-      requestModules,
+      tenant,
       requestStatus,
-      tenant: tenant,
+      requestModules,
     });
 
-    await this.requestRepository.save({ request });
+    await this.requestRepository.create(request);
 
-    this.eventEmitter.emit<RequestCreatedEventHandler.InputAttrs>(
-      RequestEvents.Created,
-      {
-        accessToken: attrs.accessToken,
-        tenant,
-        request,
-        createdByUserId: userRequesterData.id,
-      },
-    );
+    this.eventEmitter.emit(RequestEvents.Created, {
+      request,
+      tenant,
+      accessToken: attrs.accessToken,
+      createdByUserId: userRequesterData.id,
+    });
 
     return request;
-  }
-
-  private async getTenant(attrs: CreateRequestUseCase.InputAttrs) {
-    const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
-    if (!tenant) throw new NotFoundException('exception:TENANT_NOT_FOUND');
-    return tenant;
   }
 
   private async getUserDetails(attrs: CreateRequestUseCase.InputAttrs) {
@@ -71,15 +63,32 @@ export class CreateRequestUseCase {
     return responseOrError.data.body.data;
   }
 
+  private async getTenant(attrs: CreateRequestUseCase.InputAttrs) {
+    const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
+    if (!tenant) throw new NotFoundException('exception:TENANT_NOT_FOUND');
+    return tenant;
+  }
+
+  private async getSentRequestStatuses() {
+    return this.requestStatusRepository.findById({
+      id: RequestStatusesIds.Sent,
+    });
+  }
+
   async createRequestModules(attrs: CreateRequestUseCase.InputAttrs) {
+    const moduleRequestStatus =
+      await this.requestModulesStautusRepository.findById({
+        id: ModuleRequestStatusesIds.Requested,
+      });
     return Promise.all(
-      attrs.requestModules.map(async (requestModule) => {
+      attrs.modules.map(async (requestModule) => {
         const module = await this.getModule({
           moduleId: requestModule.moduleId,
         });
-        return new RequestModule({
+        return new RequestModules({
           module: new Module(module),
-          settings: requestModule.moduleSettings,
+          requestSettings: requestModule.requestSettings,
+          moduleRequestStatus: moduleRequestStatus,
         });
       }),
     );
@@ -93,12 +102,6 @@ export class CreateRequestUseCase {
       throw new NotFoundException('exception:REQUEST_TYPE_NOT_FOUND'); // TODO: colocar isso numa classe especifica para esse erro
     return requestType;
   }
-
-  private async getSentRequestStatuses() {
-    return this.requestStatusRepository.findById({
-      id: RequestStatusesIds.Sent,
-    });
-  }
 }
 
 export namespace CreateRequestUseCase {
@@ -111,22 +114,14 @@ export namespace CreateRequestUseCase {
   };
 
   export type GetUserDetailsResponse = InspireHttpResponse<UserDetails>;
-
-  type RequestModules = {
-    moduleId: (typeof ModuleRequestTypes)[keyof typeof ModuleRequestTypes];
-    moduleSettings: object;
+  export type RequestModule = {
+    moduleId: string;
+    requestSettings: object;
   };
 
   export type InputAttrs = {
-    tenantId: string; //UUID
-    accessToken: string; // Com isso pegamos o user id e o email no projeto de tenant. Primeira coisa a se fazer.
-    requestModules: RequestModules[];
+    modules: RequestModule[];
+    tenantId: string;
+    accessToken: string;
   };
 }
-
-/**
- * 1 - Pegar os dados do user na aplicação de tenant, rota /me usando o token.
- * 2 - Criar todos os module requests (Como já criamos)
- * 3 - Criar o registro de request (Com o status de `Sent`)
- * 4 - Criar os registros em request_module_requests (Lista de todos os `module requests` com o `request`)
- */

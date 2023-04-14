@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { OnEvent } from '@nestjs/event-emitter';
-import { RequestCreatedEventUseCase } from '~/requests/application/use-case/request-created-event-use-case';
+import { RequestCreatedEventUseCase } from '~/requests/application/request-created-event.use-case';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
 import { RequestEvents } from '~/shared/domain/events/request.events';

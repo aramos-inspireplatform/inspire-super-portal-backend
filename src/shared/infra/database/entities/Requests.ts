@@ -21,9 +21,7 @@ export class Requests extends BaseEntity {
   @Column('character varying', { name: 'created_by_user_email', length: 300 })
   createdByUserEmail: string;
 
-  @OneToMany(() => RequestModules, (requestModules) => requestModules.request, {
-    cascade: ['insert'],
-  })
+  @OneToMany(() => RequestModules, (requestModules) => requestModules.request)
   requestModules: Relation<RequestModules[]>;
 
   @ManyToOne(

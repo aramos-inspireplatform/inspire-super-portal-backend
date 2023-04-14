@@ -1,12 +1,14 @@
 import { FactoryProvider } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
-import { CreateRequestUseCase } from '~/requests/application/use-case/create-request.use-case';
+import { CreateRequestUseCase } from '~/requests/application/create-request.use-case';
 import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
+import { IRequestModuleStatusRepository } from '~/requests/infra/contracts/repository/request-module-status-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
 import { IEventEmitter } from '~/shared/application/contracts/event-emitter.contract';
-import { ModulesRepository } from '~/shared/infra/database/repositories/module-request-types.repository';
+import { ModulesRepository } from '~/shared/infra/database/repositories/modules.repository';
+import { RequestModuleStatusRepository } from '~/shared/infra/database/repositories/request-modules-status.repository';
 import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
 import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
@@ -23,6 +25,7 @@ export class CreateRequestUseCaseFactoryProvider {
         tenantRepository: ITenantRepository,
         requestStatusRepository: IRequestStatusesRepository,
         moduleRepository: IModuleRepository,
+        requestModulesStautusRepository: IRequestModuleStatusRepository,
         requestRepository: IRequestRepository,
         eventEmitter: IEventEmitter,
       ) =>
@@ -31,6 +34,7 @@ export class CreateRequestUseCaseFactoryProvider {
           tenantRepository,
           requestStatusRepository,
           moduleRepository,
+          requestModulesStautusRepository,
           requestRepository,
           eventEmitter,
         ),
@@ -39,6 +43,7 @@ export class CreateRequestUseCaseFactoryProvider {
         TenantsRepository,
         RequestStatusesRepository,
         ModulesRepository,
+        RequestModuleStatusRepository,
         RequestRepository,
         EventEmitter2,
       ],

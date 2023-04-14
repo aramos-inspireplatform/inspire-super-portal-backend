@@ -1,4 +1,4 @@
-import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-module-attempt-status.entity';
+import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-module-attempts-status.entity';
 
 export interface IRequestModuleAttemptsStatusRepository {
   findById(

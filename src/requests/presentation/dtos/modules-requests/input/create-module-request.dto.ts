@@ -8,7 +8,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { ModuleRequestTypes } from '~/requests/domain/constants/module-request-types.constant';
+import { ModulesIds } from '~/requests/domain/constants/modules-ids.constant';
 import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-validator.dto';
 
 export class CreateModuleRequestBodyDto {
@@ -18,7 +18,7 @@ export class CreateModuleRequestBodyDto {
   })
   @IsNotEmpty()
   @IsUUID()
-  moduleId: (typeof ModuleRequestTypes)[keyof typeof ModuleRequestTypes];
+  moduleId: (typeof ModulesIds)[keyof typeof ModulesIds];
 
   @ApiProperty()
   @IsNotEmpty()
@@ -26,7 +26,7 @@ export class CreateModuleRequestBodyDto {
   @ValidateNested()
   @IsDefined()
   @Type(({ object }) => {
-    if (object.moduleId === ModuleRequestTypes.Payments)
+    if (object.moduleId === ModulesIds.Payments)
       return PaymentProviderValidatorRequestDto;
     throw new BadRequestException('exception:CANNOT_VALIDATE_THIS_MODULE');
   })

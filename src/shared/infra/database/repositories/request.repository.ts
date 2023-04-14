@@ -1,9 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { randomUUID } from 'crypto';
-import { DataSource, Repository } from 'typeorm';
-import { ModuleRequestStatusesConstant } from '~/requests/domain/constants/module-request-statuses.constant';
+import { DataSource, EntityManager, Repository } from 'typeorm';
 import { Module } from '~/requests/domain/entities/module.entity';
-import { RequestModule } from '~/requests/domain/entities/request-module.entity';
+import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
+import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
 import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
@@ -25,126 +24,55 @@ export class RequestRepository implements IRequestRepository {
     this.repository = dataSource.getRepository<Requests>(Requests);
   }
 
-  async listAndCount(
-    attrs: IRequestRepository.ListInputAttrs,
-  ): IRequestRepository.ListResult {
-    const [requests, count] = await this.repository.findAndCount({
-      skip: attrs.skip,
-      take: attrs.take,
+  async create(request: Request): Promise<void> {
+    await this.dataSource.manager.transaction(
+      async (entityManager: EntityManager) => {
+        await entityManager.save(Requests, request as any);
+        await entityManager.save(
+          RequestModulesMapper,
+          request.requestModules.map((rm) => ({
+            ...rm,
+            request: <any>request.id,
+            moduleRequestType: <any>rm.module.id,
+          })),
+        );
+      },
+    );
+  }
+
+  async findById(id: string): Promise<Request> {
+    const request = await this.repository.findOne({
+      where: { id },
       relations: [
         'requestStatus',
         'tenant',
         'requestModules',
-        'requestModules.request',
         'requestModules.moduleRequestType',
+        'requestModules.moduleRequestStatus',
       ],
     });
-
-    return [
-      requests.map(
-        (request) =>
-          new Request({
-            ...request,
-            tenant: new Tenant(request.tenant),
-            requestStatus: new RequestStatus(request.requestStatus),
-            requestModules: request.requestModules.map(
-              (rm) =>
-                new RequestModule({
-                  module: new Module(rm.moduleRequestType),
-                  settings: rm.requestSettings,
-                  request: new Request({
-                    ...rm.request,
-                    requestModules: [],
-                  }),
-                }),
-            ),
-          }),
-      ),
-      count,
-    ];
-  }
-
-  async save(
-    attrs: IRequestRepository.SaveInputAttrs,
-  ): IRequestRepository.SaveResult {
-    const entity = await this.repository
-      .create({
-        ...attrs.request,
-        requestStatus: <any>attrs.request.requestStatus.id,
-        requestModules: attrs.request.requestModules.map(
-          (rm) =>
-            <RequestModulesMapper>{
-              id: randomUUID(),
-              request: <any>attrs.request.id,
-              moduleRequestType: <any>rm.module.id,
-              moduleRequestStatus: <any>ModuleRequestStatusesConstant.Requested,
-              requestSettings: rm.settings,
-              attempts: 0,
-            },
-        ),
-      })
-      .save();
-
-    const request = await this.findOne({ id: entity.id });
-
-    Object.assign(
-      attrs.request,
-      new Request({
-        ...request,
-        tenant: new Tenant(request.tenant),
-        requestModules: request.requestModules.map(
-          (rm) =>
-            new RequestModule({
-              ...rm,
-              module: new Module(rm.moduleRequestType),
-              settings: rm.requestSettings,
-              request: new Request({
-                ...rm.request,
-                requestModules: [],
-              }),
-            }),
-        ),
-      }),
-    );
-    return attrs.request;
-  }
-
-  async updateStatus({ id, statusId }: { id: string; statusId: string }) {
-    await this.repository.update({ id }, { requestStatus: <any>statusId });
-  }
-
-  async findById(
-    attrs: IRequestRepository.FindByIdInputAttrs,
-  ): IRequestRepository.FindByIdResult {
-    const request = await this.findOne(attrs);
 
     return new Request({
       ...request,
-      tenant: new Tenant(request.tenant),
+      createdByUserEmail: request.createdByUserEmail,
+      createdByUserId: request.createdByUserId,
       requestModules: request.requestModules.map(
         (rm) =>
-          new RequestModule({
-            ...rm,
+          new RequestModules({
+            ...rm.moduleRequestType,
             module: new Module(rm.moduleRequestType),
-            settings: rm.requestSettings,
-            request: new Request({
-              ...rm.request,
-              requestModules: [],
-            }),
+            moduleRequestStatus: new RequestModuleStatus(
+              rm.moduleRequestStatus,
+            ),
+            requestSettings: rm.requestSettings,
           }),
       ),
+      requestStatus: new RequestStatus(request.requestStatus),
+      tenant: new Tenant(request.tenant),
     });
   }
 
-  findOne(attrs: { id: string }) {
-    return this.repository.findOne({
-      where: { id: attrs.id },
-      relations: [
-        'requestStatus',
-        'tenant',
-        'requestModules',
-        'requestModules.moduleRequestType',
-      ],
-    });
+  async updateStatus(id: string, statusId: string): Promise<void> {
+    await this.repository.update({ id }, { requestStatus: <any>statusId });
   }
 }

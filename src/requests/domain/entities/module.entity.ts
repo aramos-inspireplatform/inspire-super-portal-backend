@@ -4,14 +4,11 @@ import { InstanceProperties } from '~/shared/types/class-properties.type';
 export class Module extends BaseDomainEntity {
   name: string;
 
-  wrapperIntegrationId?: string;
-
-  deployUrl?: string;
+  deployUrl: string;
 
   constructor(attrs: InstanceProperties<Module>) {
     super(attrs);
-    this.name = attrs?.name;
-    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
-    this.deployUrl = attrs?.deployUrl;
+    this.name = attrs.name;
+    this.deployUrl = attrs.deployUrl;
   }
 }

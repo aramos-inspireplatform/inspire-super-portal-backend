@@ -1,4 +1,4 @@
-export const RequestModuleAttemptStatusesConstant = {
+export const RequestModuleAttemptStatusesIds = {
   Requested: '9a3e164a-5a59-4dfd-939e-0c39dc74a70e',
   Provisioning: 'b303d14a-5791-40d8-a339-0bf6ffd1bfbb',
   Completed: '75cdebcd-5c89-4b78-9376-3920a7bd009b',

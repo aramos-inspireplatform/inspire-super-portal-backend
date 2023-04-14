@@ -1,11 +1,8 @@
-import { RequestModuleAttemptStatusesConstant } from '~/requests/domain/constants/request-module-attempt-statuses.constant';
-import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses.constant';
-import { RequestModuleAttempt } from '~/requests/domain/entities/request-module-attempt.entity';
+import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
+import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
 import { IRequestModuleAttemptsStatusRepository } from '~/requests/infra/contracts/repository/request-module-attempts-status-repository.contract';
-import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
-import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 import { Tenant } from '~/tenants/domain/entity/tenant.entity';
@@ -17,98 +14,63 @@ export class RequestCreatedEventUseCase {
     private readonly httpClient: IHttpClient,
     private readonly requestModuleAttemptsStatusRepository: IRequestModuleAttemptsStatusRepository,
     private readonly requestModuleAttemptsRepository: IRequestModuleAttemptsRepository,
-    private readonly requestStatusRepository: IRequestStatusesRepository,
-    private readonly requestRepository: IRequestRepository,
   ) {}
 
   async handle(attrs: RequestCreatedEventUseCase.InputAttrs) {
     const tenantDetails = await this.getTenantDetails(attrs);
     const requestModuleAttemptStatus =
-      await this.getRequestModuleAttemptStatuses();
-    const requestModuleAttempts = attrs.request.requestModules.map(
-      (rm) =>
-        new RequestModuleAttempt({
+      await this.getRequestModuleAttemptStatuses('Provisioning');
+
+    const requestModuleAttempts = await Promise.all(
+      attrs.request.requestModules.map(async (requestModule) => {
+        const requestModuleAttempt = new RequestModuleAttempts({
           createdByUserId: attrs.createdByUserId,
-          moduleRequest: rm,
+          moduleRequest: requestModule,
           requestModuleAttemptStatus,
-        }),
-    );
-
-    const requestModuleAttemptsResolved = await Promise.all(
-      requestModuleAttempts.map((requestModuleAttempt) =>
-        this.requestModuleAttemptsRepository.save({ requestModuleAttempt }),
-      ),
-    );
-
-    const sentModules = await Promise.all(
-      requestModuleAttemptsResolved.map(async (requestModuleAttempt) => {
+        });
         const payload = {
           callbackId: requestModuleAttempt.id,
-          requestSettings: requestModuleAttempt.moduleRequest.settings,
-
+          requestSettings: requestModule.requestSettings,
           tenant: attrs.tenant,
           tenantId: tenantDetails.googleTenantId,
           tenantSlug: tenantDetails.slug,
         };
-
+        const url = requestModule.module.deployUrl;
         try {
-          const responseOrError = await this.httpClient.post<
-            InspireHttpResponse<any>
-          >(requestModuleAttempt.moduleRequest.module.deployUrl, payload, {
-            headers: {
-              authorization: attrs.accessToken,
+          const response = await this.httpClient.post<InspireHttpResponse<any>>(
+            url,
+            payload,
+            {
+              headers: {
+                authorization: attrs.accessToken,
+              },
             },
-          });
-
+          );
           requestModuleAttempt.provisionApiRequestBody = payload;
-          requestModuleAttempt.provisionApiResponseBody =
-            responseOrError.data.body;
-          requestModuleAttempt.provisionApiResponseStatusCode =
-            responseOrError.status;
+          requestModuleAttempt.provisionApiResponseBody = response.data;
+          requestModuleAttempt.provisionApiResponseStatusCode = response.status;
         } catch (error) {
-          requestModuleAttempt.provisionApiRequestBody = payload;
+          const errorStatus = await this.getRequestModuleAttemptStatuses(
+            'Failed',
+          );
           requestModuleAttempt.provisionApiResponseBody = error;
-          requestModuleAttempt.requestModuleAttemptStatus =
-            await this.getRequestModuleAttemptFailedStatus();
+          requestModuleAttempt.requestModuleAttemptStatus = errorStatus;
         }
-
-        await this.requestModuleAttemptsRepository.save({
-          requestModuleAttempt,
-        });
 
         return requestModuleAttempt;
       }),
     );
 
-    const requestStatuses = sentModules.filter(
-      (module) =>
-        module.requestModuleAttemptStatus.id ===
-        RequestModuleAttemptStatusesConstant.Failed,
-    ).length
-      ? await this.requestStatusRepository.findById({
-          id: RequestStatusesIds.Canceled,
-        })
-      : await this.requestStatusRepository.findById({
-          id: RequestStatusesIds.Pending,
-        });
-
-    await this.requestRepository.updateStatus({
-      id: attrs.request.id,
-      statusId: requestStatuses.id,
-    });
-
-    return requestModuleAttemptsResolved;
+    await this.requestModuleAttemptsRepository.createMultiple(
+      requestModuleAttempts,
+    );
   }
 
-  private async getRequestModuleAttemptStatuses() {
+  private async getRequestModuleAttemptStatuses(
+    id: keyof typeof RequestModuleAttemptStatusesIds,
+  ) {
     return this.requestModuleAttemptsStatusRepository.findById({
-      id: RequestModuleAttemptStatusesConstant.Provisioning,
-    });
-  }
-
-  private getRequestModuleAttemptFailedStatus() {
-    return this.requestModuleAttemptsStatusRepository.findById({
-      id: RequestModuleAttemptStatusesConstant.Failed,
+      id: RequestModuleAttemptStatusesIds[id],
     });
   }
 
