@@ -24,6 +24,7 @@ export class RequestRepository implements IRequestRepository {
   ) {
     this.repository = dataSource.getRepository<Requests>(Requests);
   }
+
   async listAndCount(
     attrs: IRequestRepository.ListInputAttrs,
   ): IRequestRepository.ListResult {
@@ -34,6 +35,7 @@ export class RequestRepository implements IRequestRepository {
         'requestStatus',
         'tenant',
         'requestModules',
+        'requestModules.request',
         'requestModules.moduleRequestType',
       ],
     });
@@ -50,6 +52,10 @@ export class RequestRepository implements IRequestRepository {
                 new RequestModule({
                   module: new Module(rm.moduleRequestType),
                   settings: rm.requestSettings,
+                  request: new Request({
+                    ...rm.request,
+                    requestModules: [],
+                  }),
                 }),
             ),
           }),
@@ -92,11 +98,42 @@ export class RequestRepository implements IRequestRepository {
               ...rm,
               module: new Module(rm.moduleRequestType),
               settings: rm.requestSettings,
+              request: new Request({
+                ...rm.request,
+                requestModules: [],
+              }),
             }),
         ),
       }),
     );
     return attrs.request;
+  }
+
+  async updateStatus({ id, statusId }: { id: string; statusId: string }) {
+    await this.repository.update({ id }, { requestStatus: <any>statusId });
+  }
+
+  async findById(
+    attrs: IRequestRepository.FindByIdInputAttrs,
+  ): IRequestRepository.FindByIdResult {
+    const request = await this.findOne(attrs);
+
+    return new Request({
+      ...request,
+      tenant: new Tenant(request.tenant),
+      requestModules: request.requestModules.map(
+        (rm) =>
+          new RequestModule({
+            ...rm,
+            module: new Module(rm.moduleRequestType),
+            settings: rm.requestSettings,
+            request: new Request({
+              ...rm.request,
+              requestModules: [],
+            }),
+          }),
+      ),
+    });
   }
 
   findOne(attrs: { id: string }) {

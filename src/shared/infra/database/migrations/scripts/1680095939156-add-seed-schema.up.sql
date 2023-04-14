@@ -539,11 +539,11 @@ INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_da
 INSERT INTO modules (id, "name", created_date, updated_date, deleted_date, wrapper_integration_id, deploy_url) VALUES('bbf8b5ce-d2fe-43ba-8144-f510c1ed3f49'::uuid, 'Payments', '2023-04-09 10:36:35.960', NULL, NULL, NULL, 'https://www.google.com');
 
 -- Module Provision Request Statuses
-INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('9a3e164a-5a59-4dfd-939e-0c39dc74a70e'::uuid, 'Completed', '2023-04-09 10:39:02.769', NULL, NULL);
-INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('b303d14a-5791-40d8-a339-0bf6ffd1bfbb'::uuid, 'Sent', '2023-04-09 10:39:02.780', NULL, NULL);
-INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('75cdebcd-5c89-4b78-9376-3920a7bd009b'::uuid, 'Pending', '2023-04-09 10:39:02.784', NULL, NULL);
-INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('1be22e2e-8ac3-412c-a08e-2d4fde9e0375'::uuid, 'Partially', '2023-04-09 10:39:02.786', NULL, NULL);
-INSERT INTO request_module_attempt_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('1f60b12f-8d9d-4309-865a-1d6c91c7f6b8'::uuid, 'Canceled', '2023-04-09 10:39:02.788', NULL, NULL);
+INSERT INTO request_module_attempt_statuses ("name", id, created_date, updated_date, deleted_date) VALUES('Requested', '9a3e164a-5a59-4dfd-939e-0c39dc74a70e'::uuid, '2023-04-09 07:39:02.769', NULL, NULL);
+INSERT INTO request_module_attempt_statuses ("name", id, created_date, updated_date, deleted_date) VALUES('Provisioning', 'b303d14a-5791-40d8-a339-0bf6ffd1bfbb'::uuid, '2023-04-09 07:39:02.780', NULL, NULL);
+INSERT INTO request_module_attempt_statuses ("name", id, created_date, updated_date, deleted_date) VALUES('Completed', '75cdebcd-5c89-4b78-9376-3920a7bd009b'::uuid, '2023-04-09 07:39:02.784', NULL, NULL);
+INSERT INTO request_module_attempt_statuses ("name", id, created_date, updated_date, deleted_date) VALUES('Failed', '1be22e2e-8ac3-412c-a08e-2d4fde9e0375'::uuid, '2023-04-09 07:39:02.786', NULL, NULL);
+INSERT INTO request_module_attempt_statuses ("name", id, created_date, updated_date, deleted_date) VALUES('Canceled', '1f60b12f-8d9d-4309-865a-1d6c91c7f6b8'::uuid, '2023-04-09 07:39:02.788', NULL, NULL);
 
 -- Module Request Statuses
 INSERT INTO module_request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('f6a1b4ff-cfcc-4996-ab8d-b22412593a7a'::uuid, 'Requested', '2023-04-09 10:42:24.093', NULL, NULL);

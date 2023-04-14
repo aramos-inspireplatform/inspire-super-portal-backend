@@ -1,8 +1,11 @@
 import { RequestModuleAttemptStatusesConstant } from '~/requests/domain/constants/request-module-attempt-statuses.constant';
+import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses.constant';
 import { RequestModuleAttempt } from '~/requests/domain/entities/request-module-attempt.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
 import { IRequestModuleAttemptsStatusRepository } from '~/requests/infra/contracts/repository/request-module-attempts-status-repository.contract';
+import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 import { Tenant } from '~/tenants/domain/entity/tenant.entity';
@@ -14,6 +17,8 @@ export class RequestCreatedEventUseCase {
     private readonly httpClient: IHttpClient,
     private readonly requestModuleAttemptsStatusRepository: IRequestModuleAttemptsStatusRepository,
     private readonly requestModuleAttemptsRepository: IRequestModuleAttemptsRepository,
+    private readonly requestStatusRepository: IRequestStatusesRepository,
+    private readonly requestRepository: IRequestRepository,
   ) {}
 
   async handle(attrs: RequestCreatedEventUseCase.InputAttrs) {
@@ -35,7 +40,7 @@ export class RequestCreatedEventUseCase {
       ),
     );
 
-    await Promise.all(
+    const sentModules = await Promise.all(
       requestModuleAttemptsResolved.map(async (requestModuleAttempt) => {
         const payload = {
           callbackId: requestModuleAttempt.id,
@@ -63,20 +68,47 @@ export class RequestCreatedEventUseCase {
         } catch (error) {
           requestModuleAttempt.provisionApiRequestBody = payload;
           requestModuleAttempt.provisionApiResponseBody = error;
+          requestModuleAttempt.requestModuleAttemptStatus =
+            await this.getRequestModuleAttemptFailedStatus();
         }
 
         await this.requestModuleAttemptsRepository.save({
           requestModuleAttempt,
         });
+
+        return requestModuleAttempt;
       }),
     );
+
+    const requestStatuses = sentModules.filter(
+      (module) =>
+        module.requestModuleAttemptStatus.id ===
+        RequestModuleAttemptStatusesConstant.Failed,
+    ).length
+      ? await this.requestStatusRepository.findById({
+          id: RequestStatusesIds.Canceled,
+        })
+      : await this.requestStatusRepository.findById({
+          id: RequestStatusesIds.Pending,
+        });
+
+    await this.requestRepository.updateStatus({
+      id: attrs.request.id,
+      statusId: requestStatuses.id,
+    });
 
     return requestModuleAttemptsResolved;
   }
 
   private async getRequestModuleAttemptStatuses() {
     return this.requestModuleAttemptsStatusRepository.findById({
-      id: RequestModuleAttemptStatusesConstant.Sent,
+      id: RequestModuleAttemptStatusesConstant.Provisioning,
+    });
+  }
+
+  private getRequestModuleAttemptFailedStatus() {
+    return this.requestModuleAttemptsStatusRepository.findById({
+      id: RequestModuleAttemptStatusesConstant.Failed,
     });
   }
 

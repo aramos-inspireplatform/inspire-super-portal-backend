@@ -6,6 +6,8 @@ import {
   Inject,
   Get,
   Query,
+  Param,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
@@ -17,6 +19,7 @@ import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { PaginatedTenantsResponseDto } from '~/tenants/presentation/dto/output/paginated-tenants-response.dto';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-validator.dto';
+import { RequestProvisioningWebHookUseCase } from '~/requests/application/use-case/request-provisioning-web-hook.use-case';
 
 @Controller('requests')
 @ApiTags('Requests')
@@ -27,6 +30,8 @@ export class RequestsController {
     private readonly createRequestUseCase: CreateRequestUseCase,
     @Inject(RequestProviderSymbols.LIST_ALL_REQUESTS_USE_CASE)
     private readonly listAllRequestsUseCase: any,
+    @Inject(RequestProviderSymbols.REQUEST_PROVISIONING_WEB_HOOK_USE_CASE)
+    private readonly requestProvisioningWebHookUseCase: RequestProvisioningWebHookUseCase,
   ) {}
 
   @Post()
@@ -66,5 +71,17 @@ export class RequestsController {
       requests.page,
       requests.pageSize,
     );
+  }
+
+  @Post('/webhook/:id')
+  async provisioningWebhook(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() payload: any,
+  ) {
+    console.log(JSON.stringify(payload, null, 2));
+    return this.requestProvisioningWebHookUseCase.execute({
+      requestModuleAttemptsId: id,
+      status: payload.status,
+    });
   }
 }

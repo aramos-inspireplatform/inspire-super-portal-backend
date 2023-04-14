@@ -5,6 +5,12 @@ export interface IRequestRepository {
   listAndCount(
     attrs: IRequestRepository.ListInputAttrs,
   ): IRequestRepository.ListResult;
+  updateStatus(
+    attrs: IRequestRepository.UpdateStatusInputAttrs,
+  ): IRequestRepository.UpdateStatusResult;
+  findById(
+    attrs: IRequestRepository.FindByIdInputAttrs,
+  ): IRequestRepository.FindByIdResult;
 }
 
 export namespace IRequestRepository {
@@ -16,4 +22,10 @@ export namespace IRequestRepository {
     take: number;
   };
   export type ListResult = Promise<[Request[], number]>;
+
+  export type UpdateStatusInputAttrs = { id: string; statusId: string };
+  export type UpdateStatusResult = Promise<void>;
+
+  export type FindByIdInputAttrs = { id: string };
+  export type FindByIdResult = Promise<Request>;
 }
