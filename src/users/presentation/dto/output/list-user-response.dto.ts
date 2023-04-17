@@ -42,4 +42,16 @@ export class ListUserResponseDto extends BaseDto {
   @Expose()
   @ApiProperty({ example: '21998989898' })
   phoneNumber: string;
+
+  @Expose({ name: 'userType' })
+  @ApiProperty({ example: 'system_admin' })
+  userType: string;
+
+  @Expose()
+  @ApiProperty({ example: '2023-04-06T00:31:02.465Z', nullable: true })
+  adminBlockedDate: Date;
+
+  @Expose()
+  @ApiProperty({ example: 0 })
+  agencyCount: string;
 }
