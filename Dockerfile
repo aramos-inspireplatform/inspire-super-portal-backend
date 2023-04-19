@@ -1,6 +1,7 @@
 FROM 280813755867.dkr.ecr.us-east-1.amazonaws.com/super-portal-base:node19alpine
 
-ENV SECRET_ID="$SECRET_ID"
+ARG SECRET_ID
+ENV SECRET_ID=$SECRET_ID
 
 COPY --from=280813755867.dkr.ecr.us-east-1.amazonaws.com/node-base-image:devopscorner-awscli /usr/local/aws-cli/ /usr/local/aws-cli/
 COPY --from=280813755867.dkr.ecr.us-east-1.amazonaws.com/node-base-image:devopscorner-awscli /usr/local/bin/ /usr/local/bin/
