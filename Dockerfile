@@ -16,6 +16,8 @@ RUN npm i -g @nestjs/cli
 
 RUN npm run build
 
+RUN npm migration:run
+
 RUN apk --update add postgresql-client
 
 RUN apk add jq bash
