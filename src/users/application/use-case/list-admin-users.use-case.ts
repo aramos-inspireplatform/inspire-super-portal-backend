@@ -4,6 +4,7 @@ import { URL } from 'url';
 
 export class ListAdminUsersUseCase {
   private readonly USERS_ROUTE = `${process.env.TENANT_URL}/user/admin-users`;
+
   constructor(private readonly httpClient: IHttpClient) {}
 
   async list(attrs: ListUsersUseCase.InputAttrs) {

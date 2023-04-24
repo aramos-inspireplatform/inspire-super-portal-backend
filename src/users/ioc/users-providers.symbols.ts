@@ -6,4 +6,5 @@ export const UsersProvidersSymbols = {
   ),
   LIST_TENANT_USERS_USE_CASE: Symbol('LIST_TENANT_USERS_USE_CASE'),
   LIST_ADMIN_USERS_USE_CASE: Symbol('LIST_ADMIN_USERS_USE_CASE'),
+  LIST_ONE_USER_USE_CASE: Symbol('LIST_ONE_USER_USE_CASE'),
 } as const;

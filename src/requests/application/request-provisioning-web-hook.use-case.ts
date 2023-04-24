@@ -1,3 +1,7 @@
+import {
+  RequestEmailTemplates,
+  RequestEmailTemplatesSubject,
+} from '~/requests/domain/constants/email-templates.constant';
 import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
 import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses-ids.constant';
@@ -7,11 +11,21 @@ import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/
 import { IRequestModuleStatusRepository } from '~/requests/infra/contracts/repository/request-module-status-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
+import { IQueueService } from '~/shared/application/contracts/queue-service.contract';
+import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
+import {
+  InspireHttpPaginatedResponse,
+  InspireHttpResponse,
+} from '~/shared/types/inspire-http-response.type';
 import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/tenant-statuses-repository.contract';
 
 export class RequestProvisioningWebHookUseCase {
+  private EMAIL_QUEUE = `${process.env.AWS_SQS_EMAIL_QUEUE}`;
+  private TENANT_DETAILS_URL = `${process.env.TENANT_URL}/tenants`;
+  private USERS_TENANT_URL = `${process.env.TENANT_URL}/user`;
+
   constructor(
     private readonly requestModuleAttemptsRepository: IRequestModuleAttemptsRepository,
     private readonly requestModuleAttemptsStatusRepository: IRequestModuleAttemptsStatusRepository,
@@ -21,9 +35,11 @@ export class RequestProvisioningWebHookUseCase {
     private readonly requestModuleStatusRepository: IRequestModuleStatusRepository,
     private readonly tenantRepository: ITenantRepository,
     private readonly tenantStatusRepository: ITenantStatusesRepository,
+    private readonly queueService: IQueueService,
+    private readonly httpClient: IHttpClient,
   ) {}
 
-  async handle(attrs: FailedRequestProvisioningUseCase.InputAttrs) {
+  async handle(attrs: RequestProvisioningWebHookUseCase.InputAttrs) {
     const requestModuleAttempt =
       await this.requestModuleAttemptsRepository.findById(
         attrs.requestModuleAttemptsId,
@@ -74,6 +90,30 @@ export class RequestProvisioningWebHookUseCase {
       requestModuleAttempt.moduleRequest.request.id,
     );
 
+    const tenantDetailsResponse =
+      await this.httpClient.get<RequestProvisioningWebHookUseCase.InspireTenantDetailsResponse>(
+        `${this.TENANT_DETAILS_URL}/${request.tenant.wrapperIntegrationId}`,
+        {
+          headers: {
+            authorization: attrs.accessToken,
+          },
+        },
+      );
+    const inspireTenantDetails = tenantDetailsResponse.data.body.data;
+
+    const userReponse =
+      await this.httpClient.get<RequestProvisioningWebHookUseCase.InspireUserResponse>(
+        `${this.USERS_TENANT_URL}?isPaginated=true`,
+        {
+          headers: {
+            authorization: attrs.accessToken,
+            tenant: inspireTenantDetails.googleTenantId,
+          },
+        },
+      );
+
+    const tenantUserDetails = userReponse.data.body.data.rows?.[0];
+
     const allRequestModulesFromRequest =
       await this.requestModuleRepository.findByRequestId(request.id);
 
@@ -85,11 +125,32 @@ export class RequestProvisioningWebHookUseCase {
       (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Completed,
     );
 
-    if (allFailed.length === allRequestModulesFromRequest.length) {
-      request.requestStatus = await this.requestStautusRepository.findById({
-        id: RequestStatusesIds.Canceled,
+    const allModulesProvided =
+      allCompleted.length === allRequestModulesFromRequest.length;
+    const allModulesProvidedFailed =
+      allFailed.length === allRequestModulesFromRequest.length;
+    const allModulesProvidedContainingErrors =
+      allCompleted.length + allFailed.length ===
+      allRequestModulesFromRequest.length;
+
+    if (allModulesProvided) {
+      const welcomeSubject =
+        RequestEmailTemplatesSubject.SuperPortalWelcomeInspire[
+          inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
+        ] ?? RequestEmailTemplatesSubject.SuperPortalWelcomeInspire['en-us'];
+      await this.queueService.sendMessage({
+        body: {
+          to: tenantUserDetails.email,
+          subject: welcomeSubject,
+          tenant: request.tenant.tenantId,
+          dynamicTemplateData: {
+            accessUrl: process.env.TENANT_FRONTEND_URL,
+          },
+          templateLanguage: inspireTenantDetails.languages.id,
+          templateName: RequestEmailTemplates.SuperPortalWelcomeInspire,
+        },
+        queueName: this.EMAIL_QUEUE,
       });
-    } else if (allCompleted.length === allRequestModulesFromRequest.length) {
       request.requestStatus = await this.requestStautusRepository.findById({
         id: RequestStatusesIds.Completed,
       });
@@ -100,12 +161,40 @@ export class RequestProvisioningWebHookUseCase {
         id: TenantStatusesConstant.Active,
       });
       await this.tenantRepository.save({ tenant });
-    } else if (
-      allCompleted.length + allFailed.length ===
-      allRequestModulesFromRequest.length
-    ) {
+    } else if (allModulesProvidedFailed) {
+      request.requestStatus = await this.requestStautusRepository.findById({
+        id: RequestStatusesIds.Canceled,
+      });
+      await this.queueService.sendMessage({
+        body: {
+          to: tenantUserDetails.email,
+          subject:
+            RequestEmailTemplatesSubject.AlmostThere[
+              inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
+            ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'],
+          tenant: request.tenant.tenantId,
+          templateLanguage: inspireTenantDetails.languages.id,
+          templateName: RequestEmailTemplates.AlmostThere,
+        },
+        queueName: this.EMAIL_QUEUE,
+      });
+    } else if (allModulesProvidedContainingErrors) {
       request.requestStatus = await this.requestStautusRepository.findById({
         id: RequestStatusesIds.PartiallyCompleted,
+      });
+      const almostThereEmailSubject =
+        RequestEmailTemplatesSubject.AlmostThere[
+          inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
+        ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'];
+      await this.queueService.sendMessage({
+        body: {
+          to: tenantUserDetails.email,
+          subject: almostThereEmailSubject,
+          tenant: request.tenant.tenantId,
+          templateLanguage: inspireTenantDetails.languages.id,
+          templateName: RequestEmailTemplates.AlmostThere,
+        },
+        queueName: this.EMAIL_QUEUE,
       });
     }
 
@@ -116,10 +205,42 @@ export class RequestProvisioningWebHookUseCase {
   }
 }
 
-export namespace FailedRequestProvisioningUseCase {
+export namespace RequestProvisioningWebHookUseCase {
   export type InputAttrs = {
     requestModuleAttemptsId: string;
     status: 'success' | 'error';
     webhookResponseBody: object;
+    accessToken: string;
   };
+
+  export type InspireTenantDetails = {
+    id: string;
+
+    googleTenantId: string;
+    languages: Languages;
+  };
+
+  export type Languages = {
+    id: string;
+    name: string;
+    isoCode: string;
+  };
+
+  export type InspireTenantDetailsResponse =
+    InspireHttpResponse<InspireTenantDetails>;
+
+  export type InspireUser = {
+    id: string;
+    name: string;
+    firstName: string;
+    lastName: string;
+    title: string;
+    email: string;
+    status: string;
+    adminBlockedDate: any;
+    createdAt: string;
+    phoneNumber: string;
+  };
+
+  export type InspireUserResponse = InspireHttpPaginatedResponse<InspireUser>;
 }

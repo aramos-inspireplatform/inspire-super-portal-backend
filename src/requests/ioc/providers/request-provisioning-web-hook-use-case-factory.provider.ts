@@ -1,4 +1,4 @@
-import { FactoryProvider } from '@nestjs/common';
+import { FactoryProvider, Scope } from '@nestjs/common';
 import { RequestProvisioningWebHookUseCase } from '~/requests/application/request-provisioning-web-hook.use-case';
 import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
 import { IRequestModuleAttemptsStatusRepository } from '~/requests/infra/contracts/repository/request-module-attempts-status-repository.contract';
@@ -7,6 +7,7 @@ import { IRequestModuleStatusRepository } from '~/requests/infra/contracts/repos
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
+import { IQueueService } from '~/shared/application/contracts/queue-service.contract';
 import { RequestModuleAttemptsStatusRepository } from '~/shared/infra/database/repositories/request-module-attempts-statuses.repository';
 import { RequestModuleAttemptsRepository } from '~/shared/infra/database/repositories/request-module-attempts.repository';
 import { RequestModuleStatusRepository } from '~/shared/infra/database/repositories/request-modules-status.repository';
@@ -15,6 +16,9 @@ import { RequestStatusesRepository } from '~/shared/infra/database/repositories/
 import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
 import { TenantStatusesRepository } from '~/shared/infra/database/repositories/tenant-statuses.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
+import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
+import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
+import { QueueService } from '~/shared/infra/sqs/queue.service';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/tenant-statuses-repository.contract';
 
@@ -31,6 +35,8 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
         requestModuleStatusRepository: IRequestModuleStatusRepository,
         tenantRepository: ITenantRepository,
         tenantStatusRepository: ITenantStatusesRepository,
+        queueService: IQueueService,
+        httpClient: IHttpClient,
       ) =>
         new RequestProvisioningWebHookUseCase(
           requestModuleAttemptsRepository,
@@ -41,6 +47,8 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
           requestModuleStatusRepository,
           tenantRepository,
           tenantStatusRepository,
+          queueService,
+          httpClient,
         ),
       inject: [
         RequestModuleAttemptsRepository,
@@ -51,7 +59,10 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
         RequestModuleStatusRepository,
         TenantsRepository,
         TenantStatusesRepository,
+        QueueService,
+        AxiosHttpClientAdapter,
       ],
+      scope: Scope.REQUEST,
     };
   }
 }

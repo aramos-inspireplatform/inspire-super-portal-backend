@@ -17,6 +17,7 @@ import { UserTypesModule } from '~/user-types/ioc/user-types.module';
 import { UsersModule } from '~/users/ioc/users.module';
 import { VaultsModule } from '~/vaults/ioc/vaults.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
+import { SqsConfig, SqsModule, SqsQueueType } from '@nestjs-packages/sqs';
 
 @Module({
   imports: [
@@ -43,6 +44,23 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
     RequestModule,
     EventEmitterModule.forRoot({
       global: true,
+    }),
+    SqsModule.forRootAsync({
+      useFactory: () => {
+        return new SqsConfig({
+          region: process.env.AWS_SQS_REGION,
+          endpoint: process.env.AWS_SQS_ENDPOINT,
+          accountNumber: process.env.AWS_SQS_ACCOUNT_NUMBER,
+          credentials: {
+            accessKeyId: process.env.AWS_SQS_ACCESS_KEY_ID,
+            secretAccessKey: process.env.AWS_SQS_SECRET_ACCESS_KEY,
+          },
+        });
+      },
+    }),
+    SqsModule.registerQueue({
+      name: process.env.AWS_SQS_EMAIL_QUEUE,
+      type: SqsQueueType.Producer,
     }),
   ],
 })

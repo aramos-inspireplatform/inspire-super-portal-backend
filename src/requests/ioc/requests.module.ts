@@ -7,6 +7,7 @@ import { ListOneRequestUseCaseFactoryProvider } from '~/requests/ioc/providers/l
 import { RequestCreatedEventUseCaseFactoryProvider } from '~/requests/ioc/providers/request-created-event-use-case-factory.provider';
 import { RequestProvisioningWebHookUseCaseFactoryProvider } from '~/requests/ioc/providers/request-provisioning-web-hook-use-case-factory.provider';
 import { RequestsController } from '~/requests/presentation/requests.controller';
+import { QueueModule } from '~/shared/infra/sqs/queue.module';
 
 @Module({
   providers: [
@@ -19,5 +20,6 @@ import { RequestsController } from '~/requests/presentation/requests.controller'
     RequestCreatedEventHandler,
   ],
   controllers: [RequestsController],
+  imports: [QueueModule],
 })
 export class RequestModule {}

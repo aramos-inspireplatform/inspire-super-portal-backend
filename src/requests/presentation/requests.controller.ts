@@ -66,14 +66,17 @@ export class RequestsController {
   }
 
   @Post('/webhook/:id')
+  @AuthenticatedRoute()
   async provisioningWebhook(
     @Param('id', ParseUUIDPipe) id: string,
     @Body() payload: any,
+    @Req() request: FastifyRequest,
   ) {
     return this.requestProvisioningWebHookUseCase.handle({
       requestModuleAttemptsId: id,
       status: payload.status,
       webhookResponseBody: payload,
+      accessToken: request.headers.authorization,
     });
   }
 

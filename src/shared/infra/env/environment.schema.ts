@@ -90,4 +90,8 @@ export class EnvironmentSchema {
   @IsNotEmpty()
   @IsString()
   TENANT_URL: string;
+
+  @IsNotEmpty()
+  @IsString()
+  TENANT_FRONTEND_URL: string;
 }
