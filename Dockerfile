@@ -10,7 +10,11 @@ RUN apk --update add --no-cache git curl wget vim openssh
 
 RUN npm config set cache .npm-cache --global
 
+RUN npm i
+
 RUN npm i -g @nestjs/cli
+
+RUN npm run build
 
 RUN apk --update add postgresql-client
 
@@ -19,6 +23,10 @@ RUN apk add jq bash
 COPY get_secrets_and_start_app.sh .
 
 RUN chmod +x get_secrets_and_start_app.sh
+
+RUN nvm install
+
+RUN nvm use
 
 EXPOSE 3336
 
