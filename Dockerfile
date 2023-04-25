@@ -9,9 +9,6 @@ RUN apk add git curl wget vim openssh postgresql-client
 
 COPY . .
 
-RUN nvm install
-RUN nvm use
-
 RUN rm -f .env
 RUN npm config set cache .npm-cache --global
 RUN npm remove @swc/core-darwin-x64
