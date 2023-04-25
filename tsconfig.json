@@ -1,8 +1,5 @@
 {
   "compilerOptions": {
-    "typeRoots": [
-      "./src/index.d.ts"
-    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
