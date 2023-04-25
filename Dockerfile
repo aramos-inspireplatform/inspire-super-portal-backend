@@ -12,7 +12,7 @@ RUN npm config set cache .npm-cache --global
 
 RUN npm i -g @nestjs/cli
 
-RUN npm migration:run
+RUN npm rum migration:run
 
 RUN apk --update add postgresql-client
 
