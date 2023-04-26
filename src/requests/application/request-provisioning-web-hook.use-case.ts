@@ -24,6 +24,8 @@ import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/
 export class RequestProvisioningWebHookUseCase {
   private EMAIL_QUEUE = `${process.env.AWS_SQS_EMAIL_QUEUE}`;
   private TENANT_DETAILS_URL = `${process.env.TENANT_URL}/tenants`;
+  private TENANT_MODULE_URL = `${process.env.TENANT_URL}/modules`;
+  private TENANT_TENANT_MODULE_URL = `${process.env.TENANT_URL}/tenant-modules`;
   private USERS_TENANT_URL = `${process.env.TENANT_URL}/user`;
 
   constructor(
@@ -40,6 +42,7 @@ export class RequestProvisioningWebHookUseCase {
   ) {}
 
   async handle(attrs: RequestProvisioningWebHookUseCase.InputAttrs) {
+    console.log(attrs);
     const requestModuleAttempt =
       await this.requestModuleAttemptsRepository.findById(
         attrs.requestModuleAttemptsId,
@@ -198,6 +201,39 @@ export class RequestProvisioningWebHookUseCase {
       });
     }
 
+    if (succeeded) {
+      const moduleResponse = await this.httpClient.post<InspireHttpResponse>(
+        `${this.TENANT_MODULE_URL}`,
+        {
+          name: requestModule.module.name,
+          slug: requestModule.module.name.toLowerCase(),
+          isActive: true,
+        },
+        {
+          headers: {
+            authorization: attrs.accessToken,
+            tenant: inspireTenantDetails.googleTenantId,
+          },
+        },
+      );
+      await this.httpClient.post(
+        `${this.TENANT_TENANT_MODULE_URL}`,
+        {
+          tenantId: inspireTenantDetails.id,
+          moduleId: moduleResponse.data.body.data.id,
+          name: requestModule.module.name,
+          link: attrs.moduleUrl,
+          isActive: true,
+        },
+        {
+          headers: {
+            authorization: attrs.accessToken,
+            tenant: inspireTenantDetails.googleTenantId,
+          },
+        },
+      );
+    }
+
     await this.requestRepository.updateStatus(
       request.id,
       request.requestStatus.id,
@@ -207,6 +243,7 @@ export class RequestProvisioningWebHookUseCase {
 
 export namespace RequestProvisioningWebHookUseCase {
   export type InputAttrs = {
+    moduleUrl: string;
     requestModuleAttemptsId: string;
     status: 'success' | 'error';
     webhookResponseBody: object;

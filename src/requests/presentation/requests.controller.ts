@@ -77,6 +77,7 @@ export class RequestsController {
       status: payload.status,
       webhookResponseBody: payload,
       accessToken: request.headers.authorization,
+      moduleUrl: payload.moduleUrl,
     });
   }
 
