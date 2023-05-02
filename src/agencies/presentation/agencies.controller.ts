@@ -28,7 +28,7 @@ export class AgenciesController {
     @Req() request: FastifyRequest,
     @Query() searchParams: CommonPaginateDto,
   ) {
-    const agencies = await this.listAgenciesUseCase.execute({
+    const agencies = await this.listAgenciesUseCase.handle({
       accessToken: request.headers.authorization,
       searchParams: {
         keywords: searchParams.keywords,

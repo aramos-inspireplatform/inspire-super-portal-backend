@@ -89,6 +89,7 @@ export class CreateRequestUseCase {
           module: new Module(module),
           requestSettings: requestModule.requestSettings,
           moduleRequestStatus: moduleRequestStatus,
+          attempts: 1,
         });
       }),
     );

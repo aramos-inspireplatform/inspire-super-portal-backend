@@ -6,7 +6,7 @@ export class ListAgenciesUseCase {
 
   constructor(private readonly httpClient: IHttpClient) {}
 
-  async execute(attrs: ListAgenciesUseCase.InputAttrs) {
+  async handle(attrs: ListAgenciesUseCase.InputAttrs) {
     const url = this.buildUrl(attrs);
     const resposneOrError =
       await this.httpClient.get<ListAgenciesUseCase.InspireHttpResponse>(url, {

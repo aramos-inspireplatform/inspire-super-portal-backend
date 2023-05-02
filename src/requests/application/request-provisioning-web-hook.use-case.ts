@@ -42,7 +42,6 @@ export class RequestProvisioningWebHookUseCase {
   ) {}
 
   async handle(attrs: RequestProvisioningWebHookUseCase.InputAttrs) {
-    console.log(attrs);
     const requestModuleAttempt =
       await this.requestModuleAttemptsRepository.findById(
         attrs.requestModuleAttemptsId,

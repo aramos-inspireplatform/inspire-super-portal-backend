@@ -4,4 +4,5 @@ export interface IRequestModuleRepository {
   findByRequestId(requestId: string): Promise<RequestModules[]>;
   findById(id: string): Promise<RequestModules>;
   updateStatus(id: string, statusId: string): Promise<void>;
+  updateAttempts(id: string, count: number): Promise<void>;
 }

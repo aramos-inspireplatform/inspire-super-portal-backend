@@ -3,7 +3,7 @@ import { IVaultsRepository } from '~/vaults/infra/contracts/repository/vaults-re
 export class ListAllVaultsUseCase {
   constructor(private readonly vaultsRepository: IVaultsRepository) {}
 
-  async execute() {
+  async handle() {
     const vaults = await this.vaultsRepository.findAll();
     return vaults;
   }

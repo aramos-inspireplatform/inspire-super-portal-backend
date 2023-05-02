@@ -78,7 +78,7 @@ export class TenantAdminUsersController {
     @Req() request: FastifyRequest,
     @Param('id', IsMongoIdPipe) userId: string,
   ) {
-    const users = await this.listOneUserUseCase.execute({
+    const users = await this.listOneUserUseCase.handle({
       accessToken: request.headers.authorization,
       userId,
     });

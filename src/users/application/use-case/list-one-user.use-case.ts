@@ -6,7 +6,7 @@ export class ListOneUserUseCase {
 
   constructor(private readonly httpClient: IHttpClient) {}
 
-  async execute(attrs: ListOneUserUseCase.ListUserAttrs) {
+  async handle(attrs: ListOneUserUseCase.ListUserAttrs) {
     const url = `${this.USERS_ROUTE}/${attrs.userId}`;
     const response =
       await this.httpClient.get<ListOneUserUseCase.UsersResponse>(url, {

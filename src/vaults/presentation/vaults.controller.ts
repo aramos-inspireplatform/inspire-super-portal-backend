@@ -19,7 +19,7 @@ export class VaultsController {
   @ApiResponse({ type: GetVaultsResponseDto, isArray: true })
   @AuthenticatedRoute()
   async listAll() {
-    const [vaults] = await this.listAllVaultsUseCase.execute();
+    const [vaults] = await this.listAllVaultsUseCase.handle();
     return GetVaultsResponseDto.factory(GetVaultsResponseDto, vaults);
   }
 }

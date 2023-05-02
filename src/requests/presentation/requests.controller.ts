@@ -15,6 +15,7 @@ import { CreateRequestUseCase } from '~/requests/application/create-request.use-
 import { ListAllRequestsUseCase } from '~/requests/application/list-all-requests.use-case';
 import { ListOneRequestModuleUseCase } from '~/requests/application/list-one-request-modules.use-case';
 import { ListOneRequestUseCase } from '~/requests/application/list-one-request.use-case';
+import { ReAttemptRequestModuleUseCase } from '~/requests/application/re-attempt-request-module.use-case';
 import { RequestProvisioningWebHookUseCase } from '~/requests/application/request-provisioning-web-hook.use-case';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
 import { CreateRequestBodyDto } from '~/requests/presentation/dtos/inputs/create-request-body.dto';
@@ -44,6 +45,8 @@ export class RequestsController {
     private readonly listOneRequestUseCase: ListOneRequestUseCase,
     @Inject(RequestProviderSymbols.LIST_ONE_REQUEST_MODULE_USE_CASE)
     private readonly listOneRequestModuleUseCase: ListOneRequestModuleUseCase,
+    @Inject(RequestProviderSymbols.RE_ATTEMPT_MODULE_REQUEST_USE_CASE)
+    private readonly reAttemptRequestModuleUseCase: ReAttemptRequestModuleUseCase,
   ) {}
 
   @Post()
@@ -112,5 +115,17 @@ export class RequestsController {
     @Param('requestModuleId', ParseUUIDPipe) requestModuleId: string,
   ) {
     return this.listOneRequestModuleUseCase.handle({ requestModuleId });
+  }
+
+  @Post('re-attempt/:requestModuleId')
+  @AuthenticatedRoute()
+  async reAttemptRequestModule(
+    @Param('requestModuleId', ParseUUIDPipe) requestModuleId: string,
+    @Req() request: FastifyRequest,
+  ) {
+    await this.reAttemptRequestModuleUseCase.handle({
+      requestModuleId,
+      accessToken: request.headers.authorization,
+    });
   }
 }

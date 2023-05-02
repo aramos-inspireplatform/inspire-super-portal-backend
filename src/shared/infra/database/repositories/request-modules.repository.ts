@@ -5,9 +5,11 @@ import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-m
 import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
 import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
 import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
+import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
 import { RequestModules as RequestModulesMapper } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
+import { Tenant } from '~/tenants/domain/entity/tenant.entity';
 
 @Injectable()
 export class RequestModulesRepository implements IRequestModuleRepository {
@@ -50,6 +52,8 @@ export class RequestModulesRepository implements IRequestModuleRepository {
     const rm = await this.repository.findOne({
       where: { id },
       relations: [
+        'request',
+        'request.tenant',
         'moduleRequestType',
         'moduleRequestStatus',
         'requestModuleAttempts',
@@ -67,7 +71,11 @@ export class RequestModulesRepository implements IRequestModuleRepository {
       requestSettings: rm.requestSettings,
       apiRequestBody: rm.apiRequestBody,
       apiResponseBody: rm.apiRequestBody,
-      request: undefined,
+      request: new Request({
+        ...rm.request,
+        tenant: new Tenant(rm.request.tenant),
+        requestModules: undefined,
+      }),
       attempts: rm.requestModuleAttempts.length,
       requestModuleAttempts: rm.requestModuleAttempts.map(
         (rma) =>
@@ -91,5 +99,9 @@ export class RequestModulesRepository implements IRequestModuleRepository {
       { id },
       { moduleRequestStatus: <any>statusId },
     );
+  }
+
+  async updateAttempts(id: string, count: number): Promise<void> {
+    await this.repository.update({ id }, { attempts: count });
   }
 }
