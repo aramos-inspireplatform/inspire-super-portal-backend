@@ -1,5 +1,6 @@
 import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses-ids.constant';
+import { TenantStatusesIds } from '~/requests/domain/constants/tenant-statuses-ids.constant';
 import { Module } from '~/requests/domain/entities/module.entity';
 import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
 import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
@@ -65,5 +66,48 @@ export class Request extends BaseDomainEntity {
     });
     this.requestModules.push(requestModule);
     return requestModule;
+  }
+
+  updateRequestStatusFromModules() {
+    const allFailed = this.requestModules.filter(
+      (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Failed,
+    );
+    const allCompleted = this.requestModules.filter(
+      (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Completed,
+    );
+    const allModulesProvided =
+      allCompleted.length === this.requestModules.length;
+    const allModulesProvidedFailed =
+      allFailed.length === this.requestModules.length;
+    const allModulesProvidedContainingErrors =
+      allCompleted.length + allFailed.length === this.requestModules.length;
+    if (allModulesProvided) {
+      this.requestStatus = <any>{ id: RequestStatusesIds.Completed };
+      this.tenant.tenantStatus = <any>{ id: TenantStatusesIds.Active };
+    }
+    if (allModulesProvidedFailed) {
+      this.requestStatus = <any>{ id: RequestStatusesIds.Canceled };
+      this.tenant.tenantStatus = <any>{ id: TenantStatusesIds.Pending };
+    }
+    if (allModulesProvidedContainingErrors) {
+      this.requestStatus = <any>{ id: RequestStatusesIds.PartiallyCompleted };
+      this.tenant.tenantStatus = <any>{ id: TenantStatusesIds.Pending };
+    }
+
+    return {
+      allModulesProvided,
+      allModulesProvidedFailed,
+      allModulesProvidedContainingErrors,
+    };
+  }
+
+  getRequestModuleAttempt(requestAttemptId: string) {
+    for (const requestModule of this.requestModules) {
+      for (const requestModuleAttempt of requestModule.requestModuleAttempts) {
+        if (requestModuleAttempt.id === requestAttemptId) {
+          return requestModuleAttempt;
+        }
+      }
+    }
   }
 }

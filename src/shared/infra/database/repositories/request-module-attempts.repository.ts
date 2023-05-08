@@ -69,41 +69,24 @@ export class RequestModuleAttemptsRepository
   async findById(id: string): Promise<RequestModuleAttempts> {
     const entity = await this.repository.findOne({
       where: { id },
-      relations: [
-        'requestModuleAttemptStatus',
-        'moduleRequest',
-        'moduleRequest.moduleRequestType',
-        'moduleRequest.request',
-        'moduleRequest.request.requestStatus',
-      ],
     });
-    return undefined;
-    // return new RequestModuleAttempts({
-    //   ...entity,
-    //   moduleRequest: new RequestModules({
-    //     ...entity.moduleRequest,
-    //     requestModuleAttempts: undefined,
-    //     // request: new Request({
-    //     //   id: entity.moduleRequest.request.id,
-    //     //   createdDate: entity.moduleRequest.request.createdDate,
-    //     //   updatedDate: entity.moduleRequest.request.updatedDate,
-    //     //   deleteDate: entity.moduleRequest.request.deletedDate,
-    //     //   createdByUserEmail: entity.moduleRequest.request.createdByUserEmail,
-    //     //   createdByUserId: entity.moduleRequest.request.createdByUserId,
-    //     //   requestModules: undefined,
-    //     //   requestStatus: new RequestStatus(
-    //     //     entity.moduleRequest.request.requestStatus,
-    //     //   ),
-    //     //   tenant: new Tenant(entity.moduleRequest.request.tenant),
-    //     // }),
-    //     requestSettings: entity.moduleRequest.requestSettings,
-    //     wrapperIntegrationId: entity.moduleRequest.wrapperIntegrationId,
-    //     module: new Module(entity.moduleRequest.moduleRequestType),
-    //     moduleRequestStatus: new RequestModuleStatus(
-    //       entity.requestModuleAttemptStatus,
-    //     ),
-    //   }),
-    // });
+    if (!entity) return undefined;
+    return new RequestModuleAttempts({
+      createdByUserId: entity.createdByUserId,
+      id: entity.id,
+      createdDate: entity.createdDate,
+      deletedDate: entity.deletedDate,
+      provisionApiRequestBody: entity.provisionApiRequestBody,
+      provisionApiResponseBody: entity.provisionApiResponseBody,
+      provisionApiResponseStatusCode: entity.provisionApiResponseStatusCode,
+      requestModuleAttemptStatus: new RequestModuleStatus({
+        id: entity.requestModuleAttemptStatus.id,
+        name: entity.requestModuleAttemptStatus.name,
+      }),
+      updatedDate: entity.updatedDate,
+      webhookResponseBody: entity.webhookResponseBody,
+      wrapperIntegrationId: entity.wrapperIntegrationId,
+    });
   }
 
   async updateWebhookResponse(
@@ -123,5 +106,36 @@ export class RequestModuleAttemptsRepository
       id,
     });
     entity.updatedDate = storedEntity.updatedDate;
+  }
+
+  async update(attempt: RequestModuleAttempts): Promise<RequestModuleAttempts> {
+    await this.repository.update(
+      {
+        id: attempt.id,
+      },
+      attempt,
+    );
+
+    const entity = await this.repository.findOne({ where: { id: attempt.id } });
+
+    return new RequestModuleAttempts({
+      id: entity.id,
+      requestModuleAttemptStatus: new RequestModuleStatus({
+        id: entity.requestModuleAttemptStatus.id,
+        name: entity.requestModuleAttemptStatus.name,
+        createdDate: entity.requestModuleAttemptStatus.createdDate,
+        updatedDate: entity.requestModuleAttemptStatus.updatedDate,
+        deletedDate: entity.requestModuleAttemptStatus.deletedDate,
+      }),
+      provisionApiRequestBody: entity.provisionApiRequestBody,
+      provisionApiResponseBody: entity.provisionApiResponseBody,
+      provisionApiResponseStatusCode: entity.provisionApiResponseStatusCode,
+      webhookResponseBody: entity.webhookResponseBody,
+      wrapperIntegrationId: entity.wrapperIntegrationId,
+      createdByUserId: entity.createdByUserId,
+      createdDate: entity.createdDate,
+      updatedDate: entity.updatedDate,
+      deletedDate: entity.deletedDate,
+    });
   }
 }

@@ -1,11 +1,8 @@
 import { NotFoundException } from '@nestjs/common';
 import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
-import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses-ids.constant';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
-import { IRequestModuleStatusRepository } from '~/requests/infra/contracts/repository/request-module-status-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
-import { IRequestStatusesRepository } from '~/requests/infra/contracts/repository/request-statuses-repository.contract';
 import { IEventEmitter } from '~/shared/application/contracts/event-emitter.contract';
 import { RequestEvents } from '~/shared/domain/events/request.events';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
@@ -14,9 +11,7 @@ import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-r
 export class CreateRequestUseCase {
   constructor(
     private readonly tenantRepository: ITenantRepository,
-    private readonly requestStatusRepository: IRequestStatusesRepository,
     private readonly moduleRepository: IModuleRepository,
-    private readonly requestModulesStautusRepository: IRequestModuleStatusRepository,
     private readonly requestRepository: IRequestRepository,
     private readonly eventEmitter: IEventEmitter,
     private readonly inspireTenantService: IInspireTenantService,
@@ -24,7 +19,7 @@ export class CreateRequestUseCase {
 
   async handle(attrs: CreateRequestUseCase.InputAttrs) {
     const userRequesterData =
-      await this.inspireTenantService.getTenantUserDetails(attrs);
+      await this.inspireTenantService.getTenantJwtTokenUserDetails(attrs);
     const tenant = await this.getTenant(attrs);
 
     const request = new Request({
@@ -62,12 +57,6 @@ export class CreateRequestUseCase {
     const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
     if (!tenant) throw new NotFoundException('exception:TENANT_NOT_FOUND'); // TODO: colocar isso numa classe especifica para esse erro
     return tenant;
-  }
-
-  private async getSentRequestStatuses() {
-    return this.requestStatusRepository.findById({
-      id: RequestStatusesIds.Sent,
-    });
   }
 
   private async getModule(attrs: { moduleId: string }) {

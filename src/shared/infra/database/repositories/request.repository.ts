@@ -94,6 +94,16 @@ export class RequestRepository implements IRequestRepository {
             requestModuleAttempts: rm.requestModuleAttempts.map(
               (rma) =>
                 new RequestModuleAttempts({
+                  id: rma.id,
+                  createdDate: rma.createdDate,
+                  deletedDate: rma.deletedDate,
+                  provisionApiRequestBody: rma.provisionApiRequestBody,
+                  provisionApiResponseBody: rma.provisionApiResponseBody,
+                  provisionApiResponseStatusCode:
+                    rma.provisionApiResponseStatusCode,
+                  updatedDate: rma.updatedDate,
+                  webhookResponseBody: rma.webhookResponseBody,
+                  wrapperIntegrationId: rma.wrapperIntegrationId,
                   createdByUserId: rma.createdByUserId,
                   requestModuleAttemptStatus: new RequestModuleAttemptStatus(
                     rma.requestModuleAttemptStatus,
@@ -194,7 +204,9 @@ export class RequestRepository implements IRequestRepository {
     await this.repository.save(request);
   }
 
-  async findByRequestModuleId(requestModuleId: string): Promise<Request> {
+  async findByRequestModuleId(
+    requestModuleId: string,
+  ): Promise<Request | null> {
     const storedRequestEntity = await this.repository.findOne({
       where: {
         requestModules: {
@@ -202,6 +214,8 @@ export class RequestRepository implements IRequestRepository {
         },
       },
     });
+
+    if (!storedRequestEntity) return null;
 
     return new Request({
       id: storedRequestEntity.id,
@@ -236,6 +250,78 @@ export class RequestRepository implements IRequestRepository {
             requestModuleAttempts: rm.requestModuleAttempts.map(
               (rma) =>
                 new RequestModuleAttempts({
+                  createdByUserId: rma.createdByUserId,
+                  requestModuleAttemptStatus: new RequestModuleAttemptStatus(
+                    rma.requestModuleAttemptStatus,
+                  ),
+                }),
+            ),
+          }),
+      ),
+      tenant: new Tenant(storedRequestEntity.tenant),
+      requestStatus: storedRequestEntity.requestStatus,
+      createdDate: storedRequestEntity.createdDate,
+      deletedDate: storedRequestEntity.deletedDate,
+      updatedDate: storedRequestEntity.updatedDate,
+    });
+  }
+
+  async findByAttemptId(attemptId: string): Promise<Request | null> {
+    const storedRequestEntity = await this.repository.findOne({
+      where: {
+        requestModules: {
+          requestModuleAttempts: {
+            id: attemptId,
+          },
+        },
+      },
+    });
+
+    if (!storedRequestEntity) return null;
+
+    return new Request({
+      id: storedRequestEntity.id,
+      createdByUserEmail: storedRequestEntity.createdByUserEmail,
+      createdByUserId: storedRequestEntity.createdByUserId,
+      requestModules: storedRequestEntity.requestModules.map(
+        (rm) =>
+          new RequestModules({
+            module: new Module({
+              id: rm.moduleRequestType.id,
+              deployUrl: rm.moduleRequestType.deployUrl,
+              name: rm.moduleRequestType.name,
+              createdDate: rm.moduleRequestType.createdDate,
+              updatedDate: rm.moduleRequestType.updatedDate,
+              deletedDate: rm.moduleRequestType.deletedDate,
+            }),
+            moduleRequestStatus: new RequestModuleStatus({
+              id: rm.moduleRequestStatus.id,
+              name: rm.moduleRequestStatus.name,
+              createdDate: rm.moduleRequestStatus.createdDate,
+              updatedDate: rm.moduleRequestStatus.updatedDate,
+              deletedDate: rm.moduleRequestStatus.deletedDate,
+            }),
+            requestSettings: rm.requestSettings,
+            apiRequestBody: rm.apiRequestBody,
+            apiResponseBody: rm.apiResponseBody,
+            attempts: rm.attempts,
+            createdDate: rm.createdDate,
+            updatedDate: rm.updatedDate,
+            deletedDate: rm.deletedDate,
+            id: rm.id,
+            requestModuleAttempts: rm.requestModuleAttempts.map(
+              (rma) =>
+                new RequestModuleAttempts({
+                  id: rma.id,
+                  createdDate: rma.createdDate,
+                  deletedDate: rma.deletedDate,
+                  provisionApiRequestBody: rma.provisionApiRequestBody,
+                  provisionApiResponseBody: rma.provisionApiResponseBody,
+                  provisionApiResponseStatusCode:
+                    rma.provisionApiResponseStatusCode,
+                  updatedDate: rma.updatedDate,
+                  webhookResponseBody: rma.webhookResponseBody,
+                  wrapperIntegrationId: rma.wrapperIntegrationId,
                   createdByUserId: rma.createdByUserId,
                   requestModuleAttemptStatus: new RequestModuleAttemptStatus(
                     rma.requestModuleAttemptStatus,

@@ -9,5 +9,6 @@ export interface IRequestRepository {
     pageSize: number;
   }): Promise<[Request[], number]>;
   update(request: Request): Promise<void>;
-  findByRequestModuleId(requestModuleId: string): Promise<Request>;
+  findByRequestModuleId(requestModuleId: string): Promise<Request | null>;
+  findByAttemptId(attemptId: string): Promise<Request | null>;
 }

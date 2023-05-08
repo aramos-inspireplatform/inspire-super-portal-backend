@@ -25,4 +25,19 @@ export class ModulesRepository implements IModuleRepository {
       .getOne();
     return moduleRequestType ? new Module(moduleRequestType) : null;
   }
+
+  async findByAttemptId(
+    attrs: IModuleRepository.FindByAttemptIdInputAttrs,
+  ): IModuleRepository.FindByAttemptIdResult {
+    const moduleRequestType = await this.repository.findOne({
+      where: {
+        requestModules: {
+          requestModuleAttempts: {
+            id: attrs.requestModuleAttemptId,
+          },
+        },
+      },
+    });
+    return moduleRequestType ? new Module(moduleRequestType) : null;
+  }
 }

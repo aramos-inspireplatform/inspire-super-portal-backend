@@ -1,20 +1,47 @@
+import { Module } from '~/requests/domain/entities/module.entity';
+
 export interface IInspireTenantService {
-  getTenantUserDetails(
+  getTenantJwtTokenUserDetails(
     attrs: IInspireTenantService.GetTenantUserDetailsInputAttrs,
   ): IInspireTenantService.UserDetailsResult;
 
   getTenantDetails(
     attrs: IInspireTenantService.GetTenantDetailsInputAttrs,
   ): IInspireTenantService.TenantDetailsResult;
+
+  linkTenantModule(attrs: {
+    moduleType: Module;
+    attrs: {
+      accessToken: string;
+      moduleUrl: string;
+    };
+    tenant: {
+      id: string;
+      googleTenantId: string;
+    };
+  }): Promise<void>;
+
+  getTenantAndUserDetails(attrs: {
+    tenantWrapperIntegrationId: string;
+    accessToken: string;
+  }): Promise<{
+    tenant: IInspireTenantService.TenantDetails;
+    user: IInspireTenantService.TenantUserUserDetails;
+  }>;
 }
 
 export namespace IInspireTenantService {
-  export type UserDetails = {
+  export type TenantUserUserDetails = {
     id: string;
+    name: string;
     firstName: string;
     lastName: string;
+    title: string;
     email: string;
-    googleTenantId: any;
+    status: string;
+    adminBlockedDate: any;
+    createdAt: string;
+    phoneNumber: string;
   };
 
   export type TenantDetails = {
@@ -54,7 +81,7 @@ export namespace IInspireTenantService {
   };
 
   export type GetTenantUserDetailsInputAttrs = { accessToken: string };
-  export type UserDetailsResult = Promise<UserDetails>;
+  export type UserDetailsResult = Promise<TenantUserUserDetails>;
 
   export type GetTenantDetailsInputAttrs = {
     accessToken: string;
