@@ -27,29 +27,27 @@ export class RequestModuleAttemptsRepository
   }
 
   async createMultiple(
-    requestModuleAttempts: RequestModuleAttempts[],
+    attrs: {
+      moduleId: string;
+      requestModuleAttempt: RequestModuleAttempts;
+    }[],
   ): Promise<void> {
-    await this.dataSource.manager.transaction(
-      async (entityManager: EntityManager) => {
-        await entityManager.save(
-          RequestModuleAttemptsMapper,
-          requestModuleAttempts.map(
-            (requestModuleAttempt) =>
-              <any>{
-                ...requestModuleAttempt,
-                id: requestModuleAttempt.id,
-                createdByUserId: requestModuleAttempt.createdByUserId,
-                provisionApiRequestBody:
-                  requestModuleAttempt.provisionApiRequestBody,
-                moduleRequest: <any>requestModuleAttempt.moduleRequest.id,
-                requestModuleAttemptStatus: <any>(
-                  requestModuleAttempt.requestModuleAttemptStatus.id
-                ),
-              },
-          ),
-        );
-      },
-    );
+    await this.dataSource.transaction(async (em: EntityManager) => {
+      em.save(
+        attrs.map(({ requestModuleAttempt: rma, moduleId: moduleRequestId }) =>
+          this.repository.create({
+            id: rma.id,
+            moduleRequest: <any>{ id: moduleRequestId },
+            requestModuleAttemptStatus: <any>{
+              id: rma.requestModuleAttemptStatus.id,
+            },
+            provisionApiRequestBody: rma.provisionApiRequestBody,
+            createdByUserId: rma.createdByUserId,
+            ...rma,
+          }),
+        ),
+      );
+    });
   }
 
   async updateStatus(id: string, entity: RequestModuleAttempts): Promise<void> {
@@ -79,33 +77,33 @@ export class RequestModuleAttemptsRepository
         'moduleRequest.request.requestStatus',
       ],
     });
-
-    return new RequestModuleAttempts({
-      ...entity,
-      moduleRequest: new RequestModules({
-        ...entity.moduleRequest,
-        requestModuleAttempts: undefined,
-        request: new Request({
-          id: entity.moduleRequest.request.id,
-          createdDate: entity.moduleRequest.request.createdDate,
-          updatedDate: entity.moduleRequest.request.updatedDate,
-          deleteDate: entity.moduleRequest.request.deletedDate,
-          createdByUserEmail: entity.moduleRequest.request.createdByUserEmail,
-          createdByUserId: entity.moduleRequest.request.createdByUserId,
-          requestModules: undefined,
-          requestStatus: new RequestStatus(
-            entity.moduleRequest.request.requestStatus,
-          ),
-          tenant: new Tenant(entity.moduleRequest.request.tenant),
-        }),
-        requestSettings: entity.moduleRequest.requestSettings,
-        wrapperIntegrationId: entity.moduleRequest.wrapperIntegrationId,
-        module: new Module(entity.moduleRequest.moduleRequestType),
-        moduleRequestStatus: new RequestModuleStatus(
-          entity.requestModuleAttemptStatus,
-        ),
-      }),
-    });
+    return undefined;
+    // return new RequestModuleAttempts({
+    //   ...entity,
+    //   moduleRequest: new RequestModules({
+    //     ...entity.moduleRequest,
+    //     requestModuleAttempts: undefined,
+    //     // request: new Request({
+    //     //   id: entity.moduleRequest.request.id,
+    //     //   createdDate: entity.moduleRequest.request.createdDate,
+    //     //   updatedDate: entity.moduleRequest.request.updatedDate,
+    //     //   deleteDate: entity.moduleRequest.request.deletedDate,
+    //     //   createdByUserEmail: entity.moduleRequest.request.createdByUserEmail,
+    //     //   createdByUserId: entity.moduleRequest.request.createdByUserId,
+    //     //   requestModules: undefined,
+    //     //   requestStatus: new RequestStatus(
+    //     //     entity.moduleRequest.request.requestStatus,
+    //     //   ),
+    //     //   tenant: new Tenant(entity.moduleRequest.request.tenant),
+    //     // }),
+    //     requestSettings: entity.moduleRequest.requestSettings,
+    //     wrapperIntegrationId: entity.moduleRequest.wrapperIntegrationId,
+    //     module: new Module(entity.moduleRequest.moduleRequestType),
+    //     moduleRequestStatus: new RequestModuleStatus(
+    //       entity.requestModuleAttemptStatus,
+    //     ),
+    //   }),
+    // });
   }
 
   async updateWebhookResponse(

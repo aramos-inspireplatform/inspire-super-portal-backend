@@ -42,201 +42,183 @@ export class RequestProvisioningWebHookUseCase {
   ) {}
 
   async handle(attrs: RequestProvisioningWebHookUseCase.InputAttrs) {
-    const requestModuleAttempt =
-      await this.requestModuleAttemptsRepository.findById(
-        attrs.requestModuleAttemptsId,
-      );
-    if (!requestModuleAttempt) return;
-    const succeeded = attrs.status === 'success';
-    const requestModuleAttemptStatus = succeeded
-      ? await this.requestModuleAttemptsStatusRepository.findById({
-          id: RequestModuleAttemptStatusesIds.Completed,
-        })
-      : await this.requestModuleAttemptsStatusRepository.findById({
-          id: RequestModuleAttemptStatusesIds.Failed,
-        });
-
-    requestModuleAttempt.requestModuleAttemptStatus =
-      requestModuleAttemptStatus;
-
-    requestModuleAttempt.webhookResponseBody = attrs.webhookResponseBody;
-
-    await this.requestModuleAttemptsRepository.updateStatus(
-      requestModuleAttempt.id,
-      requestModuleAttempt,
-    );
-
-    await this.requestModuleAttemptsRepository.updateWebhookResponse(
-      requestModuleAttempt.id,
-      requestModuleAttempt,
-    );
-
-    const requestModule = await this.requestModuleRepository.findById(
-      requestModuleAttempt.moduleRequest.id,
-    );
-
-    requestModule.moduleRequestStatus = succeeded
-      ? await this.requestModuleStatusRepository.findById({
-          id: ModuleRequestStatusesIds.Completed,
-        })
-      : await this.requestModuleStatusRepository.findById({
-          id: ModuleRequestStatusesIds.Failed,
-        });
-
-    await this.requestModuleRepository.updateStatus(
-      requestModule.id,
-      requestModule.moduleRequestStatus.id,
-    );
-
-    const request = await this.requestRepository.findById(
-      requestModuleAttempt.moduleRequest.request.id,
-    );
-
-    const tenantDetailsResponse =
-      await this.httpClient.get<RequestProvisioningWebHookUseCase.InspireTenantDetailsResponse>(
-        `${this.TENANT_DETAILS_URL}/${request.tenant.wrapperIntegrationId}`,
-        {
-          headers: {
-            authorization: attrs.accessToken,
-          },
-        },
-      );
-    const inspireTenantDetails = tenantDetailsResponse.data.body.data;
-
-    const userReponse =
-      await this.httpClient.get<RequestProvisioningWebHookUseCase.InspireUserResponse>(
-        `${this.USERS_TENANT_URL}?isPaginated=true`,
-        {
-          headers: {
-            authorization: attrs.accessToken,
-            tenant: inspireTenantDetails.googleTenantId,
-          },
-        },
-      );
-
-    const tenantUserDetails = userReponse.data.body.data.rows?.[0];
-
-    const allRequestModulesFromRequest =
-      await this.requestModuleRepository.findByRequestId(request.id);
-
-    const allFailed = allRequestModulesFromRequest.filter(
-      (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Failed,
-    );
-
-    const allCompleted = allRequestModulesFromRequest.filter(
-      (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Completed,
-    );
-
-    const allModulesProvided =
-      allCompleted.length === allRequestModulesFromRequest.length;
-    const allModulesProvidedFailed =
-      allFailed.length === allRequestModulesFromRequest.length;
-    const allModulesProvidedContainingErrors =
-      allCompleted.length + allFailed.length ===
-      allRequestModulesFromRequest.length;
-
-    if (allModulesProvided) {
-      const welcomeSubject =
-        RequestEmailTemplatesSubject.SuperPortalWelcomeInspire[
-          inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
-        ] ?? RequestEmailTemplatesSubject.SuperPortalWelcomeInspire['en-us'];
-      await this.queueService.sendMessage({
-        body: {
-          to: tenantUserDetails.email,
-          subject: welcomeSubject,
-          tenant: request.tenant.tenantId,
-          dynamicTemplateData: {
-            accessUrl: process.env.TENANT_FRONTEND_URL,
-          },
-          templateLanguage: inspireTenantDetails.languages.id,
-          templateName: RequestEmailTemplates.SuperPortalWelcomeInspire,
-        },
-        queueName: this.EMAIL_QUEUE,
-      });
-      request.requestStatus = await this.requestStautusRepository.findById({
-        id: RequestStatusesIds.Completed,
-      });
-      const tenant = await this.tenantRepository.findById({
-        id: request.tenant.id,
-      });
-      tenant.tenantStatus = await this.tenantStatusRepository.findById({
-        id: TenantStatusesConstant.Active,
-      });
-      await this.tenantRepository.save({ tenant });
-    } else if (allModulesProvidedFailed) {
-      request.requestStatus = await this.requestStautusRepository.findById({
-        id: RequestStatusesIds.Canceled,
-      });
-      await this.queueService.sendMessage({
-        body: {
-          to: tenantUserDetails.email,
-          subject:
-            RequestEmailTemplatesSubject.AlmostThere[
-              inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
-            ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'],
-          tenant: request.tenant.tenantId,
-          templateLanguage: inspireTenantDetails.languages.id,
-          templateName: RequestEmailTemplates.AlmostThere,
-        },
-        queueName: this.EMAIL_QUEUE,
-      });
-    } else if (allModulesProvidedContainingErrors) {
-      request.requestStatus = await this.requestStautusRepository.findById({
-        id: RequestStatusesIds.PartiallyCompleted,
-      });
-      const almostThereEmailSubject =
-        RequestEmailTemplatesSubject.AlmostThere[
-          inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
-        ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'];
-      await this.queueService.sendMessage({
-        body: {
-          to: tenantUserDetails.email,
-          subject: almostThereEmailSubject,
-          tenant: request.tenant.tenantId,
-          templateLanguage: inspireTenantDetails.languages.id,
-          templateName: RequestEmailTemplates.AlmostThere,
-        },
-        queueName: this.EMAIL_QUEUE,
-      });
-    }
-
-    if (succeeded) {
-      const moduleResponse = await this.httpClient.post<InspireHttpResponse>(
-        `${this.TENANT_MODULE_URL}`,
-        {
-          name: requestModule.module.name,
-          slug: requestModule.module.name.toLowerCase(),
-          isActive: true,
-        },
-        {
-          headers: {
-            authorization: attrs.accessToken,
-            tenant: inspireTenantDetails.googleTenantId,
-          },
-        },
-      );
-      await this.httpClient.post(
-        `${this.TENANT_TENANT_MODULE_URL}`,
-        {
-          tenantId: inspireTenantDetails.id,
-          moduleId: moduleResponse.data.body.data.id,
-          name: requestModule.module.name,
-          link: attrs.moduleUrl,
-          isActive: true,
-        },
-        {
-          headers: {
-            authorization: attrs.accessToken,
-            tenant: inspireTenantDetails.googleTenantId,
-          },
-        },
-      );
-    }
-
-    await this.requestRepository.updateStatus(
-      request.id,
-      request.requestStatus.id,
-    );
+    // const requestModuleAttempt =
+    //   await this.requestModuleAttemptsRepository.findById(
+    //     attrs.requestModuleAttemptsId,
+    //   );
+    // if (!requestModuleAttempt) return;
+    // const succeeded = attrs.status === 'success';
+    // const requestModuleAttemptStatus = succeeded
+    //   ? await this.requestModuleAttemptsStatusRepository.findById({
+    //       id: RequestModuleAttemptStatusesIds.Completed,
+    //     })
+    //   : await this.requestModuleAttemptsStatusRepository.findById({
+    //       id: RequestModuleAttemptStatusesIds.Failed,
+    //     });
+    // requestModuleAttempt.requestModuleAttemptStatus =
+    //   requestModuleAttemptStatus;
+    // requestModuleAttempt.webhookResponseBody = attrs.webhookResponseBody;
+    // await this.requestModuleAttemptsRepository.updateStatus(
+    //   requestModuleAttempt.id,
+    //   requestModuleAttempt,
+    // );
+    // await this.requestModuleAttemptsRepository.updateWebhookResponse(
+    //   requestModuleAttempt.id,
+    //   requestModuleAttempt,
+    // );
+    // const requestModule = await this.requestModuleRepository.findById(
+    //   requestModuleAttempt.moduleRequest.id,
+    // );
+    // requestModule.moduleRequestStatus = succeeded
+    //   ? await this.requestModuleStatusRepository.findById({
+    //       id: ModuleRequestStatusesIds.Completed,
+    //     })
+    //   : await this.requestModuleStatusRepository.findById({
+    //       id: ModuleRequestStatusesIds.Failed,
+    //     });
+    // await this.requestModuleRepository.updateStatus(
+    //   requestModule.id,
+    //   requestModule.moduleRequestStatus.id,
+    // );
+    // const request = await this.requestRepository.findById(
+    //   requestModuleAttempt.moduleRequest.request.id,
+    // );
+    // const tenantDetailsResponse =
+    //   await this.httpClient.get<RequestProvisioningWebHookUseCase.InspireTenantDetailsResponse>(
+    //     `${this.TENANT_DETAILS_URL}/${request.tenant.wrapperIntegrationId}`,
+    //     {
+    //       headers: {
+    //         authorization: attrs.accessToken,
+    //       },
+    //     },
+    //   );
+    // const inspireTenantDetails = tenantDetailsResponse.data.body.data;
+    // const userReponse =
+    //   await this.httpClient.get<RequestProvisioningWebHookUseCase.InspireUserResponse>(
+    //     `${this.USERS_TENANT_URL}?isPaginated=true`,
+    //     {
+    //       headers: {
+    //         authorization: attrs.accessToken,
+    //         tenant: inspireTenantDetails.googleTenantId,
+    //       },
+    //     },
+    //   );
+    // const tenantUserDetails = userReponse.data.body.data.rows?.[0];
+    // const allRequestModulesFromRequest =
+    //   await this.requestModuleRepository.findByRequestId(request.id);
+    // const allFailed = allRequestModulesFromRequest.filter(
+    //   (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Failed,
+    // );
+    // const allCompleted = allRequestModulesFromRequest.filter(
+    //   (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Completed,
+    // );
+    // const allModulesProvided =
+    //   allCompleted.length === allRequestModulesFromRequest.length;
+    // const allModulesProvidedFailed =
+    //   allFailed.length === allRequestModulesFromRequest.length;
+    // const allModulesProvidedContainingErrors =
+    //   allCompleted.length + allFailed.length ===
+    //   allRequestModulesFromRequest.length;
+    // if (allModulesProvided) {
+    //   const welcomeSubject =
+    //     RequestEmailTemplatesSubject.SuperPortalWelcomeInspire[
+    //       inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
+    //     ] ?? RequestEmailTemplatesSubject.SuperPortalWelcomeInspire['en-us'];
+    //   await this.queueService.sendMessage({
+    //     body: {
+    //       to: tenantUserDetails.email,
+    //       subject: welcomeSubject,
+    //       tenant: request.tenant.tenantId,
+    //       dynamicTemplateData: {
+    //         accessUrl: process.env.TENANT_FRONTEND_URL,
+    //       },
+    //       templateLanguage: inspireTenantDetails.languages.id,
+    //       templateName: RequestEmailTemplates.SuperPortalWelcomeInspire,
+    //     },
+    //     queueName: this.EMAIL_QUEUE,
+    //   });
+    //   request.requestStatus = await this.requestStautusRepository.findById({
+    //     id: RequestStatusesIds.Completed,
+    //   });
+    //   const tenant = await this.tenantRepository.findById({
+    //     id: request.tenant.id,
+    //   });
+    //   tenant.tenantStatus = await this.tenantStatusRepository.findById({
+    //     id: TenantStatusesConstant.Active,
+    //   });
+    //   await this.tenantRepository.save({ tenant });
+    // } else if (allModulesProvidedFailed) {
+    //   request.requestStatus = await this.requestStautusRepository.findById({
+    //     id: RequestStatusesIds.Canceled,
+    //   });
+    //   await this.queueService.sendMessage({
+    //     body: {
+    //       to: tenantUserDetails.email,
+    //       subject:
+    //         RequestEmailTemplatesSubject.AlmostThere[
+    //           inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
+    //         ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'],
+    //       tenant: request.tenant.tenantId,
+    //       templateLanguage: inspireTenantDetails.languages.id,
+    //       templateName: RequestEmailTemplates.AlmostThere,
+    //     },
+    //     queueName: this.EMAIL_QUEUE,
+    //   });
+    // } else if (allModulesProvidedContainingErrors) {
+    //   request.requestStatus = await this.requestStautusRepository.findById({
+    //     id: RequestStatusesIds.PartiallyCompleted,
+    //   });
+    //   const almostThereEmailSubject =
+    //     RequestEmailTemplatesSubject.AlmostThere[
+    //       inspireTenantDetails.languages.isoCode.toLocaleLowerCase()
+    //     ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'];
+    //   await this.queueService.sendMessage({
+    //     body: {
+    //       to: tenantUserDetails.email,
+    //       subject: almostThereEmailSubject,
+    //       tenant: request.tenant.tenantId,
+    //       templateLanguage: inspireTenantDetails.languages.id,
+    //       templateName: RequestEmailTemplates.AlmostThere,
+    //     },
+    //     queueName: this.EMAIL_QUEUE,
+    //   });
+    // }
+    // if (succeeded) {
+    //   const moduleResponse = await this.httpClient.post<InspireHttpResponse>(
+    //     `${this.TENANT_MODULE_URL}`,
+    //     {
+    //       name: requestModule.module.name,
+    //       slug: requestModule.module.name.toLowerCase(),
+    //       isActive: true,
+    //     },
+    //     {
+    //       headers: {
+    //         authorization: attrs.accessToken,
+    //         tenant: inspireTenantDetails.googleTenantId,
+    //       },
+    //     },
+    //   );
+    //   await this.httpClient.post(
+    //     `${this.TENANT_TENANT_MODULE_URL}`,
+    //     {
+    //       tenantId: inspireTenantDetails.id,
+    //       moduleId: moduleResponse.data.body.data.id,
+    //       name: requestModule.module.name,
+    //       link: attrs.moduleUrl,
+    //       isActive: true,
+    //     },
+    //     {
+    //       headers: {
+    //         authorization: attrs.accessToken,
+    //         tenant: inspireTenantDetails.googleTenantId,
+    //       },
+    //     },
+    //   );
+    // }
+    // await this.requestRepository.updateStatus(
+    //   request.id,
+    //   request.requestStatus.id,
+    // );
   }
 }
 

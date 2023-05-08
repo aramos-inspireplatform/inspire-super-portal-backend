@@ -10,12 +10,12 @@ export abstract class BaseDomainEntity {
   id: string;
   createdDate?: Date;
   updatedDate?: Date;
-  deleteDate?: Date;
+  deletedDate?: Date;
 
   constructor(attrs: InstanceProperties<BaseDomainEntity>) {
     this.id = attrs?.id ?? RandomUUIDGeneratorAdapter();
     this.createdDate = attrs?.createdDate ?? new Date();
-    this.deleteDate = attrs?.deleteDate ?? null;
+    this.deletedDate = attrs?.deletedDate ?? null;
     this.updatedDate = attrs?.updatedDate ?? null;
   }
 }

@@ -15,6 +15,7 @@ export class CreateTenantUseCase {
   ) {}
 
   async create(attrs: CreateTenantUseCase.InputAttrs) {
+    // TODO: move this to the InspireTenantService (wrapper for all tenant-api calls)
     const responseOrError =
       await this.httpClient.post<CreateTenantUseCase.TenantRouteResponse>(
         this.CREATE_TENANT_URL,

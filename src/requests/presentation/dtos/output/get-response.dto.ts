@@ -24,5 +24,5 @@ export class GetRequestResponseDto extends BaseDto {
 
   @ApiProperty({ type: RequestModules, isArray: true })
   @Expose()
-  requestModules: RequestModules[];
+  requestModules: any[];
 }

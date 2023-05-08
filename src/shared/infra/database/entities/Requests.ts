@@ -21,7 +21,10 @@ export class Requests extends BaseEntity {
   @Column('character varying', { name: 'created_by_user_email', length: 300 })
   createdByUserEmail: string;
 
-  @OneToMany(() => RequestModules, (requestModules) => requestModules.request)
+  @OneToMany(() => RequestModules, (requestModules) => requestModules.request, {
+    eager: true,
+    cascade: ['update'],
+  })
   requestModules: Relation<RequestModules[]>;
 
   @ManyToOne(
@@ -35,6 +38,7 @@ export class Requests extends BaseEntity {
   @ManyToOne(() => Tenants, (tenants) => tenants.requests, {
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
+    eager: true,
   })
   @JoinColumn([{ name: 'tenant_id', referencedColumnName: 'id' }])
   tenant: Relation<Tenants>;

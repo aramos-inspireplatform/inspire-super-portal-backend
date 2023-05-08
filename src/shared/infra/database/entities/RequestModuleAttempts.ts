@@ -50,7 +50,12 @@ export class RequestModuleAttempts extends BaseEntity {
     () => RequestModuleAttemptStatuses,
     (requestModuleAttemptStatuses) =>
       requestModuleAttemptStatuses.requestModuleAttempts,
-    { onDelete: 'RESTRICT', onUpdate: 'CASCADE' },
+    {
+      onDelete: 'RESTRICT',
+      onUpdate: 'CASCADE',
+      cascade: ['update'],
+      eager: true,
+    },
   )
   @JoinColumn([
     { name: 'request_module_attempt_status_id', referencedColumnName: 'id' },

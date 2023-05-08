@@ -24,7 +24,7 @@ export class TenantsRepository implements ITenantRepository {
       .save({ reload: true });
     attrs.tenant.createdDate = entity.createdDate;
     attrs.tenant.updatedDate = entity.updatedDate;
-    attrs.tenant.deleteDate = entity.deletedDate;
+    attrs.tenant.deletedDate = entity.deletedDate;
     return attrs.tenant;
   }
 

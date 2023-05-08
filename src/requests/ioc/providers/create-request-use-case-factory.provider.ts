@@ -1,5 +1,7 @@
 import { FactoryProvider } from '@nestjs/common';
 import { EventEmitter2 } from '@nestjs/event-emitter';
+import { InspireTenantProvidersSymbols } from '~/inspire-tenant/ioc/inspire-tenant-providers.symbols';
+import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
 import { CreateRequestUseCase } from '~/requests/application/create-request.use-case';
 import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
 import { IRequestModuleStatusRepository } from '~/requests/infra/contracts/repository/request-module-status-repository.contract';
@@ -12,8 +14,7 @@ import { RequestModuleStatusRepository } from '~/shared/infra/database/repositor
 import { RequestStatusesRepository } from '~/shared/infra/database/repositories/request-statuses.repository';
 import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
-import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
-import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
+
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 
 export class CreateRequestUseCaseFactoryProvider {
@@ -21,31 +22,31 @@ export class CreateRequestUseCaseFactoryProvider {
     return {
       provide: RequestProviderSymbols.CREATE_REQUEST_USE_CASE,
       useFactory: (
-        httpClient: IHttpClient,
         tenantRepository: ITenantRepository,
         requestStatusRepository: IRequestStatusesRepository,
         moduleRepository: IModuleRepository,
         requestModulesStautusRepository: IRequestModuleStatusRepository,
         requestRepository: IRequestRepository,
         eventEmitter: IEventEmitter,
+        inspireTenantService: IInspireTenantService,
       ) =>
         new CreateRequestUseCase(
-          httpClient,
           tenantRepository,
           requestStatusRepository,
           moduleRepository,
           requestModulesStautusRepository,
           requestRepository,
           eventEmitter,
+          inspireTenantService,
         ),
       inject: [
-        AxiosHttpClientAdapter,
         TenantsRepository,
         RequestStatusesRepository,
         ModulesRepository,
         RequestModuleStatusRepository,
         RequestRepository,
         EventEmitter2,
+        InspireTenantProvidersSymbols.INSPIRE_TENANT_SERVICE,
       ],
     };
   }
