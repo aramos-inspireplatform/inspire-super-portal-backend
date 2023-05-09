@@ -37,7 +37,6 @@ export class RequestModulesRepository implements IRequestModuleRepository {
           requestSettings: rm.requestSettings,
           apiRequestBody: rm.apiRequestBody,
           apiResponseBody: rm.apiRequestBody,
-          // request: undefined,
           attempts: undefined,
           createdDate: rm.createdDate,
           updatedDate: rm.updatedDate,
@@ -109,49 +108,6 @@ export class RequestModulesRepository implements IRequestModuleRepository {
       ),
       wrapperIntegrationId: requestModule.wrapperIntegrationId,
     });
-
-    // const rm = await this.repository.findOne({
-    //   where: { id },
-    //   relations: [
-    //     'request',
-    //     'request.tenant',
-    //     'moduleRequestType',
-    //     'moduleRequestStatus',
-    //     'requestModuleAttempts',
-    //     'requestModuleAttempts.requestModuleAttemptStatus',
-    //   ],
-    // });
-
-    // if (!rm) return undefined;
-
-    // return new RequestModules({
-    //   id: rm.id,
-    //   wrapperIntegrationId: rm.wrapperIntegrationId,
-    //   module: new Module(rm.moduleRequestType),
-    //   moduleRequestStatus: new RequestModuleStatus(rm.moduleRequestStatus),
-    //   requestSettings: rm.requestSettings,
-    //   apiRequestBody: rm.apiRequestBody,
-    //   apiResponseBody: rm.apiRequestBody,
-    //   // request: new Request({
-    //   //   ...rm.request,
-    //   //   tenant: new Tenant(rm.request.tenant),
-    //   //   requestModules: undefined,
-    //   // }),
-    //   attempts: rm.requestModuleAttempts.length,
-    //   requestModuleAttempts: rm.requestModuleAttempts.map(
-    //     (rma) =>
-    //       new RequestModuleAttempts({
-    //         ...rma,
-    //         createdByUserId: rma.createdByUserId,
-    //         requestModuleAttemptStatus: new RequestModuleAttemptStatus(
-    //           rma.requestModuleAttemptStatus,
-    //         ),
-    //       }),
-    //   ),
-    //   createdDate: rm.createdDate,
-    //   updatedDate: rm.updatedDate,
-    //   deletedDate: rm.deletedDate,
-    // });
   }
 
   async updateStatus(id: string, statusId: string): Promise<void> {
