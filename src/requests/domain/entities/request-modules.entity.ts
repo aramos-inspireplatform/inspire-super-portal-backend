@@ -1,3 +1,4 @@
+import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { Module } from '~/requests/domain/entities/module.entity';
 import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
 import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
@@ -36,6 +37,14 @@ export class RequestModules extends BaseDomainEntity {
     const requestModuleAttemp = new RequestModuleAttempts(attrs);
     this.requestModuleAttempts.push(requestModuleAttemp);
     return requestModuleAttemp;
+  }
+
+  isFailed() {
+    return this.moduleRequestStatus.id === ModuleRequestStatusesIds.Failed;
+  }
+
+  isCompleted() {
+    return this.moduleRequestStatus.id === ModuleRequestStatusesIds.Completed;
   }
 }
 

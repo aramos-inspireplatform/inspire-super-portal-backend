@@ -69,12 +69,8 @@ export class Request extends BaseDomainEntity {
   }
 
   updateRequestStatusFromModules() {
-    const allFailed = this.requestModules.filter(
-      (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Failed,
-    );
-    const allCompleted = this.requestModules.filter(
-      (rm) => rm.moduleRequestStatus.id === ModuleRequestStatusesIds.Completed,
-    );
+    const allFailed = this.requestModules.filter((rm) => rm.isFailed());
+    const allCompleted = this.requestModules.filter((rm) => rm.isCompleted());
     const allModulesProvided =
       allCompleted.length === this.requestModules.length;
     const allModulesProvidedFailed =
