@@ -1,11 +1,12 @@
-import { NotFoundException } from '@nestjs/common';
 import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
 import { Request } from '~/requests/domain/entities/request.entity';
+import { RequestModuleNotFoundException } from '~/requests/domain/exceptions/request-module-not-found.exception';
 import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IEventEmitter } from '~/shared/application/contracts/event-emitter.contract';
 import { RequestEvents } from '~/shared/domain/events/request.events';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
+import { TenantNotFoundException } from '~/tenants/domain/exceptions/tenant-not-found.exception';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 
 export class CreateRequestUseCase {
@@ -55,7 +56,7 @@ export class CreateRequestUseCase {
 
   private async getTenant(attrs: CreateRequestUseCase.InputAttrs) {
     const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
-    if (!tenant) throw new NotFoundException('exception:TENANT_NOT_FOUND'); // TODO: colocar isso numa classe especifica para esse erro
+    if (!tenant) throw new TenantNotFoundException();
     return tenant;
   }
 
@@ -63,8 +64,7 @@ export class CreateRequestUseCase {
     const requestType = await this.moduleRepository.findById({
       id: attrs.moduleId,
     });
-    if (!requestType)
-      throw new NotFoundException('exception:REQUEST_TYPE_NOT_FOUND'); // TODO: colocar isso numa classe especifica para esse erro
+    if (!requestType) throw new RequestModuleNotFoundException();
     return requestType;
   }
 }
