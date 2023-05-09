@@ -1,6 +1,4 @@
-export function Mapper<TIn, TOut>(
-  inClazz: TIn | undefined,
-  castFunction: (value: TIn) => TOut,
-): TOut | undefined {
-  return inClazz ? castFunction(inClazz) : undefined;
-}
+export type IMapper<TDomain = any, Model = any> = {
+  domainToModel(domain: TDomain): Model;
+  modelToDomain(model: Model): TDomain;
+};

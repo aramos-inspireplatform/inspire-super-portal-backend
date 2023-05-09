@@ -1,31 +1,66 @@
+import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { Module } from '~/requests/domain/entities/module.entity';
 import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
 import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
-import { Request } from '~/requests/domain/entities/request.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
-import { InstanceProperties } from '~/shared/types/class-properties.type';
 
 export class RequestModules extends BaseDomainEntity {
   module: Module;
+
   moduleRequestStatus: RequestModuleStatus;
+
   requestSettings: object;
-  request?: Request;
+
   wrapperIntegrationId?: string;
+
   apiRequestBody?: object;
+
   apiResponseBody?: object;
-  attempts?: number;
+
+  attempts: number;
+
   requestModuleAttempts?: RequestModuleAttempts[];
 
-  constructor(attrs: InstanceProperties<RequestModules>) {
+  constructor(attrs: RequestModules.Constructor) {
     super(attrs);
     this.module = attrs.module;
-    this.request = attrs.request;
     this.moduleRequestStatus = attrs.moduleRequestStatus;
     this.wrapperIntegrationId = attrs.wrapperIntegrationId;
     this.requestSettings = attrs.requestSettings;
     this.apiRequestBody = attrs.apiRequestBody;
     this.apiResponseBody = attrs.apiResponseBody;
     this.attempts = attrs.attempts ?? 0;
-    this.requestModuleAttempts = attrs.requestModuleAttempts;
+    this.requestModuleAttempts = attrs.requestModuleAttempts ?? [];
   }
+
+  createAttempt(attrs: RequestModuleAttempts.Constructor) {
+    const requestModuleAttemp = new RequestModuleAttempts(attrs);
+    this.requestModuleAttempts.push(requestModuleAttemp);
+    return requestModuleAttemp;
+  }
+
+  isFailed() {
+    return this.moduleRequestStatus.id === ModuleRequestStatusesIds.Failed;
+  }
+
+  isCompleted() {
+    return this.moduleRequestStatus.id === ModuleRequestStatusesIds.Completed;
+  }
+}
+
+export namespace RequestModules {
+  export type Constructor = {
+    id?: string;
+    module: Module;
+    moduleRequestStatus: RequestModuleStatus;
+    requestSettings: object;
+    wrapperIntegrationId?: string;
+    apiRequestBody?: object;
+    apiResponseBody?: object;
+    attempts?: number;
+    requestModuleAttempts?: RequestModuleAttempts[];
+    createdDate?: Date;
+    updatedDate?: Date;
+    deletedDate?: Date;
+  };
 }

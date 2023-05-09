@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { InspireTenantModule } from '~/inspire-tenant/ioc/inspire-tenant.module';
 import { RequestCreatedEventHandler } from '~/requests/infra/events/request-created-event.handler';
 import { CreateRequestUseCaseFactoryProvider } from '~/requests/ioc/providers/create-request-use-case-factory.provider';
 import { ListAllRequestsUseCaseFactoryProvider } from '~/requests/ioc/providers/list-all-requests-use-case-factory.provider';
@@ -22,6 +23,6 @@ import { QueueModule } from '~/shared/infra/sqs/queue.module';
     RequestCreatedEventHandler,
   ],
   controllers: [RequestsController],
-  imports: [QueueModule],
+  imports: [QueueModule, InspireTenantModule],
 })
 export class RequestModule {}
