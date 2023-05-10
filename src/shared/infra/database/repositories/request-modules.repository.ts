@@ -62,6 +62,10 @@ export class RequestModulesRepository implements IRequestModuleRepository {
         createdDate: requestModule.moduleRequestType.createdDate,
         deletedDate: requestModule.moduleRequestType.deletedDate,
         updatedDate: requestModule.moduleRequestType.updatedDate,
+        integrationKey: requestModule.moduleRequestType.integrationKey,
+        minimumTimeSpan: requestModule.moduleRequestType.minimumTimeSpan,
+        statusUrl: requestModule.moduleRequestType.statusUrl,
+        timeSpan: requestModule.moduleRequestType.timeSpan,
       }),
       moduleRequestStatus: new RequestModuleStatus({
         id: requestModule.moduleRequestStatus.id,

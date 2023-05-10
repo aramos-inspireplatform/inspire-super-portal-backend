@@ -3,6 +3,8 @@ import {
   RequestEmailTemplates,
   RequestEmailTemplatesSubject,
 } from '~/requests/domain/constants/email-templates.constant';
+import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
+import { WebHookStatusEnum } from '~/requests/domain/enums/web-hook-status.enum';
 import { RequestModuleAttemptNotFound } from '~/requests/domain/exceptions/request-module-attempt-not-found.exception';
 import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
 import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
@@ -25,11 +27,18 @@ export class RequestProvisioningWebHookUseCase {
   ) {}
 
   async handle(attrs: RequestProvisioningWebHookUseCase.InputAttrs) {
+    // TODO: precisa definir o requestModule como falhado se a requisição falhar, caso o numero de tentativas seja maior que o permitido (3) precisa definir o requestModule
     const requestModuleAttemptOld =
       await this.requestModuleAttemptsRepository.findById(
         attrs.requestModuleAttemptsId,
       );
     if (!requestModuleAttemptOld) throw new RequestModuleAttemptNotFound();
+
+    if (
+      requestModuleAttemptOld.requestModuleAttemptStatus.id !==
+      RequestModuleAttemptStatusesIds.Provisioning
+    )
+      return;
 
     const request = await this.requestRepository.findByAttemptId(
       requestModuleAttemptOld.id,
@@ -39,7 +48,7 @@ export class RequestProvisioningWebHookUseCase {
       requestModuleAttemptOld.id,
     );
 
-    const attemptHasSucceeded = attrs.status === 'success';
+    const attemptHasSucceeded = attrs.status === WebHookStatusEnum.success;
 
     attemptHasSucceeded
       ? requestModuleAttempt.succeededAttempt()
@@ -124,9 +133,7 @@ export class RequestProvisioningWebHookUseCase {
       });
     }
 
-    const updatedRequest = await this.requestRepository.update(request);
-
-    return updatedRequest;
+    await this.requestRepository.update(request);
   }
 }
 
@@ -134,7 +141,7 @@ export namespace RequestProvisioningWebHookUseCase {
   export type InputAttrs = {
     moduleUrl: string;
     requestModuleAttemptsId: string;
-    status: 'success' | 'error';
+    status: WebHookStatusEnum;
     webhookResponseBody: object;
     accessToken: string;
   };

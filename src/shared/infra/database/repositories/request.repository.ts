@@ -75,6 +75,10 @@ export class RequestRepository implements IRequestRepository {
               createdDate: rm.moduleRequestType.createdDate,
               updatedDate: rm.moduleRequestType.updatedDate,
               deletedDate: rm.moduleRequestType.deletedDate,
+              integrationKey: rm.moduleRequestType.integrationKey,
+              minimumTimeSpan: rm.moduleRequestType.minimumTimeSpan,
+              statusUrl: rm.moduleRequestType.statusUrl,
+              timeSpan: rm.moduleRequestType.timeSpan,
             }),
             moduleRequestStatus: new RequestModuleStatus({
               id: rm.moduleRequestStatus.id,
@@ -231,6 +235,10 @@ export class RequestRepository implements IRequestRepository {
               createdDate: rm.moduleRequestType.createdDate,
               updatedDate: rm.moduleRequestType.updatedDate,
               deletedDate: rm.moduleRequestType.deletedDate,
+              integrationKey: rm.moduleRequestType.integrationKey,
+              minimumTimeSpan: rm.moduleRequestType.minimumTimeSpan,
+              statusUrl: rm.moduleRequestType.statusUrl,
+              timeSpan: rm.moduleRequestType.timeSpan,
             }),
             moduleRequestStatus: new RequestModuleStatus({
               id: rm.moduleRequestStatus.id,
@@ -293,6 +301,10 @@ export class RequestRepository implements IRequestRepository {
               createdDate: rm.moduleRequestType.createdDate,
               updatedDate: rm.moduleRequestType.updatedDate,
               deletedDate: rm.moduleRequestType.deletedDate,
+              integrationKey: rm.moduleRequestType.integrationKey,
+              minimumTimeSpan: rm.moduleRequestType.minimumTimeSpan,
+              statusUrl: rm.moduleRequestType.statusUrl,
+              timeSpan: rm.moduleRequestType.timeSpan,
             }),
             moduleRequestStatus: new RequestModuleStatus({
               id: rm.moduleRequestStatus.id,

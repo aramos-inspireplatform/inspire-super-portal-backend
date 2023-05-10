@@ -20,6 +20,10 @@ export const ModuleTypeormMapper: IMapper<Module, ModulesTypeOrm> = {
       createdDate: model.createdDate,
       updatedDate: model.updatedDate,
       deletedDate: model.deletedDate,
+      integrationKey: model.integrationKey,
+      minimumTimeSpan: model.minimumTimeSpan,
+      statusUrl: model.statusUrl,
+      timeSpan: model.timeSpan,
     });
   },
 };

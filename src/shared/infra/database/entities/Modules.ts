@@ -22,6 +22,18 @@ export class Modules extends BaseEntity {
   })
   wrapperIntegrationId: string | null;
 
+  @Column('character varying', { name: 'status_url' })
+  statusUrl: string;
+
+  @Column('integer', { name: 'time_span' })
+  timeSpan: number;
+
+  @Column('integer', { name: 'minimum_time_span' })
+  minimumTimeSpan: number;
+
+  @Column('character varying', { name: 'integration_key' })
+  integrationKey: string;
+
   @OneToMany(
     () => RequestModules,
     (requestModules) => requestModules.moduleRequestType,

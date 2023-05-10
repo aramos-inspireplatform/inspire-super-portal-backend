@@ -19,6 +19,7 @@ import { ReAttemptRequestModuleUseCase } from '~/requests/application/re-attempt
 import { RequestProvisioningWebHookUseCase } from '~/requests/application/request-provisioning-web-hook.use-case';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
 import { CreateRequestBodyDto } from '~/requests/presentation/dtos/inputs/create-request-body.dto';
+import { WebHookRequestBodyDto } from '~/requests/presentation/dtos/inputs/web-hook-request-body.dto';
 import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-validator.dto';
 import { GetRequestResponseDto } from '~/requests/presentation/dtos/output/get-response.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
@@ -72,10 +73,10 @@ export class RequestsController {
   @AuthenticatedRoute()
   async provisioningWebhook(
     @Param('id', ParseUUIDPipe) id: string,
-    @Body() payload: any,
+    @Body() payload: WebHookRequestBodyDto,
     @Req() request: FastifyRequest,
   ) {
-    return this.requestProvisioningWebHookUseCase.handle({
+    await this.requestProvisioningWebHookUseCase.handle({
       requestModuleAttemptsId: id,
       status: payload.status,
       webhookResponseBody: payload,

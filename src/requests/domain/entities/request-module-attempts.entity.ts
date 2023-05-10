@@ -3,7 +3,7 @@ import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-m
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 
 export class RequestModuleAttempts extends BaseDomainEntity {
-  requestModuleAttemptStatus?: RequestModuleAttemptStatus;
+  requestModuleAttemptStatus: RequestModuleAttemptStatus;
   createdByUserId: string;
   provisionApiRequestBody?: object;
   provisionApiResponseStatusCode?: number;

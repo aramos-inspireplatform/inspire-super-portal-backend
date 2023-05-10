@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ForgotPasswordFactoryProvider } from '~/auth/ioc/providers/forgot-password-factory.provider';
 import { JwtAuthStrategyFactoryProvider } from '~/auth/ioc/providers/jwt-auth-strategy-factory.provider';
@@ -7,6 +8,7 @@ import { SignOutUseCaseFactoryFactoryProvider } from '~/auth/ioc/providers/sign-
 import { AuthController } from '~/auth/presentation/auth.controller';
 
 @Module({
+  imports: [HttpModule.register({})],
   providers: [
     ForgotPasswordFactoryProvider.register(),
     SignInUseCaseFactoryProvider.register(),
