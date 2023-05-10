@@ -11,7 +11,7 @@ export class Module extends BaseDomainEntity {
 
   minimumTimeSpan: number;
 
-  integrationKey: string;
+  integrationKey?: string;
 
   constructor(attrs: {
     id?: string;
@@ -20,7 +20,7 @@ export class Module extends BaseDomainEntity {
     statusUrl: string;
     timeSpan: number;
     minimumTimeSpan: number;
-    integrationKey: string;
+    integrationKey?: string;
     createdDate?: Date;
     updatedDate?: Date;
     deletedDate?: Date;

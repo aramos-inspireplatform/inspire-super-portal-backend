@@ -21,6 +21,8 @@ export class RequestModules extends BaseDomainEntity {
 
   requestModuleAttempts?: RequestModuleAttempts[];
 
+  requestNotes?: object;
+
   constructor(attrs: RequestModules.Constructor) {
     super(attrs);
     this.module = attrs.module;
