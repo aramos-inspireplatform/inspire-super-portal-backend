@@ -1,6 +1,7 @@
 import { Request } from '~/requests/domain/entities/request.entity';
 import { Requests } from '~/shared/infra/database/entities';
 import { IMapper } from '~/shared/infra/database/mapper/mapper';
+import { RequestModulesMapper } from '~/shared/infra/database/mapper/request-modules.mapper';
 import { RequestStatusesMapper } from '~/shared/infra/database/mapper/request-statuses.mapper';
 import { TenantMapper } from '~/shared/infra/database/mapper/tenant.mapper';
 
@@ -14,7 +15,9 @@ export const RequestMapper: IMapper<Request, Requests> = {
     model.requestStatus = RequestStatusesMapper.domainToModel(
       domain.requestStatus,
     );
-    model.requestModules = []; // TODO: Missing mapping
+    model.requestModules = domain.requestModules.map((value) =>
+      RequestModulesMapper.domainToModel(value),
+    );
     model.createdDate = domain.createdDate;
     model.updatedDate = domain.updatedDate;
     model.deletedDate = domain.deletedDate;
@@ -26,7 +29,9 @@ export const RequestMapper: IMapper<Request, Requests> = {
       createdByUserEmail: model.createdByUserEmail,
       createdByUserId: model.createdByUserId,
       tenant: TenantMapper.modelToDomain(model.tenant),
-      requestModules: [], // TODO: Missing mapping
+      requestModules: model.requestModules.map((value) =>
+        RequestModulesMapper.modelToDomain(value),
+      ),
       requestStatus: RequestStatusesMapper.modelToDomain(model.requestStatus),
       createdDate: model.createdDate,
       updatedDate: model.updatedDate,

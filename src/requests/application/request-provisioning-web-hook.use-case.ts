@@ -27,45 +27,45 @@ export class RequestProvisioningWebHookUseCase {
   ) {}
 
   async handle(attrs: RequestProvisioningWebHookUseCase.InputAttrs) {
-    // TODO: precisa definir o requestModule como falhado se a requisição falhar, caso o numero de tentativas seja maior que o permitido (3) precisa definir o requestModule
     const requestModuleAttemptOld =
       await this.requestModuleAttemptsRepository.findById(
         attrs.requestModuleAttemptsId,
       );
     if (!requestModuleAttemptOld) throw new RequestModuleAttemptNotFound();
-
     if (
       requestModuleAttemptOld.requestModuleAttemptStatus.id !==
       RequestModuleAttemptStatusesIds.Provisioning
     )
       return;
-
     const request = await this.requestRepository.findByAttemptId(
       requestModuleAttemptOld.id,
     );
-
     const requestModuleAttempt = request.getRequestModuleAttempt(
       requestModuleAttemptOld.id,
     );
-
     const attemptHasSucceeded = attrs.status === WebHookStatusEnum.success;
-
-    attemptHasSucceeded
-      ? requestModuleAttempt.succeededAttempt()
-      : requestModuleAttempt.failedAttempt();
-
+    const requestModule = request.getRequestModuleFromModuleAttempt(
+      requestModuleAttempt.id,
+    );
+    if (attemptHasSucceeded) {
+      requestModule.setCompleted();
+      requestModuleAttempt.succeededAttempt();
+    } else {
+      requestModule.setFailed();
+      requestModuleAttempt.failedAttempt();
+    }
+    if (requestModule.requestModuleAttempts.length >= 3) {
+      requestModule.setCanceled();
+    }
     requestModuleAttempt.webhookResponseBody = attrs.webhookResponseBody;
-
     const moduleType = await this.moduleRepository.findByAttemptId({
       requestModuleAttemptId: requestModuleAttempt.id,
     });
-
     const { tenant, user } =
       await this.inspireTenantService.getTenantAndUserDetails({
         accessToken: attrs.accessToken,
         tenantWrapperIntegrationId: request.tenant.wrapperIntegrationId,
       });
-
     if (attemptHasSucceeded) {
       await this.inspireTenantService.linkTenantModule({
         moduleType,
@@ -73,13 +73,11 @@ export class RequestProvisioningWebHookUseCase {
         tenant,
       });
     }
-
     const {
       allModulesProvided,
       allModulesProvidedContainingErrors,
       allModulesProvidedFailed,
     } = request.updateRequestStatusFromModules();
-
     if (allModulesProvided) {
       const welcomeSubject =
         RequestEmailTemplatesSubject.SuperPortalWelcomeInspire[
@@ -99,7 +97,6 @@ export class RequestProvisioningWebHookUseCase {
         queueName: this.EMAIL_QUEUE,
       });
     }
-
     if (allModulesProvidedFailed) {
       await this.queueService.sendMessage({
         body: {
@@ -115,7 +112,6 @@ export class RequestProvisioningWebHookUseCase {
         queueName: this.EMAIL_QUEUE,
       });
     }
-
     if (allModulesProvidedContainingErrors) {
       const almostThereEmailSubject =
         RequestEmailTemplatesSubject.AlmostThere[
@@ -132,7 +128,6 @@ export class RequestProvisioningWebHookUseCase {
         queueName: this.EMAIL_QUEUE,
       });
     }
-
     await this.requestRepository.update(request);
   }
 }

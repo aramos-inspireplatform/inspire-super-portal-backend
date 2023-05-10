@@ -30,7 +30,7 @@ export class Requests extends BaseEntity {
   @ManyToOne(
     () => RequestStatuses,
     (requestStatuses) => requestStatuses.requests,
-    { onDelete: 'RESTRICT', onUpdate: 'CASCADE' },
+    { onDelete: 'RESTRICT', onUpdate: 'CASCADE', eager: true },
   )
   @JoinColumn([{ name: 'request_status', referencedColumnName: 'id' }])
   requestStatus: Relation<RequestStatuses>;

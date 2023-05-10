@@ -48,6 +48,24 @@ export class RequestModules extends BaseDomainEntity {
   isCompleted() {
     return this.moduleRequestStatus.id === ModuleRequestStatusesIds.Completed;
   }
+
+  setCompleted() {
+    this.moduleRequestStatus = <any>{
+      id: ModuleRequestStatusesIds.Completed,
+    };
+  }
+
+  setFailed() {
+    this.moduleRequestStatus = <any>{
+      id: ModuleRequestStatusesIds.Failed,
+    };
+  }
+
+  setCanceled() {
+    this.moduleRequestStatus = <any>{
+      id: ModuleRequestStatusesIds.Canceled,
+    };
+  }
 }
 
 export namespace RequestModules {
