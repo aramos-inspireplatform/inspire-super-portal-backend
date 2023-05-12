@@ -11,30 +11,22 @@ export class InspireTenantService implements IInspireTenantService {
   private readonly TENANT_DETAILS_URL = `${process.env.TENANT_URL}/tenants`;
   private readonly TENANT_MODULE_URL = `${process.env.TENANT_URL}/modules`;
   private readonly TENANT_TENANT_MODULE_URL = `${process.env.TENANT_URL}/tenant-modules`;
-  private USERS_TENANT_URL = `${process.env.TENANT_URL}/user`;
+  private readonly TENANT_INTEGRATION_ROUTE = `${process.env.TENANT_URL}/tenants`;
+  private readonly TENANT_INTEGRATION_KEY = `${process.env.TENANT_INTEGRATION_KEY}`;
 
   constructor(private readonly httpClient: IHttpClient) {}
-
-  async getTenantJwtTokenUserDetails({
-    accessToken,
-  }: IInspireTenantService.GetTenantUserDetailsInputAttrs): IInspireTenantService.UserDetailsResult {
-    const responseOrError =
-      await this.httpClient.get<InspireTenantService.UserDetailsHttpResponse>(
-        this.GET_USER_DETAILS_URL,
-        { headers: { authorization: accessToken } },
-      );
-    return responseOrError.data.body.data;
-  }
 
   async getTenantDetails(
     attrs: IInspireTenantService.GetTenantDetailsInputAttrs,
   ): IInspireTenantService.TenantDetailsResult {
-    const url = `${this.TENANT_DETAILS_URL}/${attrs.wrapperIntegrationId}`;
+    const url = `${this.TENANT_DETAILS_URL}/${attrs.wrapperIntegrationId}/integration-data`;
     const responseOrError =
       await this.httpClient.get<InspireTenantService.TenantDetailsHttpResponse>(
         url,
         {
-          headers: { authorization: attrs.accessToken },
+          headers: {
+            'x-integration-key': this.TENANT_INTEGRATION_KEY,
+          },
         },
       );
     return responseOrError.data.body.data;
@@ -47,7 +39,7 @@ export class InspireTenantService implements IInspireTenantService {
   }: {
     moduleType: Module;
     attrs: {
-      accessToken: string;
+      tenantIntegrationKey: string;
       moduleUrl: string;
     };
     tenant: {
@@ -56,7 +48,7 @@ export class InspireTenantService implements IInspireTenantService {
     };
   }) {
     const moduleResponse = await this.httpClient.post<InspireHttpResponse>(
-      `${this.TENANT_MODULE_URL}`,
+      `${this.TENANT_MODULE_URL}/integration`,
       {
         name: moduleType.name,
         slug: moduleType.name.toLowerCase(),
@@ -64,7 +56,7 @@ export class InspireTenantService implements IInspireTenantService {
       },
       {
         headers: {
-          authorization: attrs.accessToken,
+          'x-integration-key': attrs.tenantIntegrationKey,
           tenant: tenant.googleTenantId,
         },
       },
@@ -81,7 +73,7 @@ export class InspireTenantService implements IInspireTenantService {
       },
       {
         headers: {
-          authorization: attrs.accessToken,
+          'x-integration-key': attrs.tenantIntegrationKey,
           tenant: tenant.googleTenantId,
         },
       },
@@ -89,34 +81,32 @@ export class InspireTenantService implements IInspireTenantService {
   }
 
   async getTenantAndUserDetails(attrs: {
-    tenantWrapperIntegrationId: string;
-    accessToken: string;
-  }): Promise<{
-    tenant: IInspireTenantService.TenantDetails;
-    user: IInspireTenantService.TenantUserUserDetails;
-  }> {
-    const tenantDetailsResponse = await this.getTenantDetails({
-      accessToken: attrs.accessToken,
-      wrapperIntegrationId: attrs.tenantWrapperIntegrationId,
-    });
-    if (tenantDetailsResponse instanceof Error) throw tenantDetailsResponse;
-    const userReponse =
-      await this.httpClient.get<InspireTenantService.InspireUserResponse>(
-        `${this.USERS_TENANT_URL}?isPaginated=true`,
-        {
-          headers: {
-            authorization: attrs.accessToken,
-            tenant: tenantDetailsResponse.googleTenantId,
-          },
+    googleTenantId: string;
+    tenantIntegrationKey: string;
+  }): Promise<IInspireTenantService.TenantDetails> {
+    const response = await this.httpClient.get<
+      InspireHttpResponse<IInspireTenantService.TenantDetails>
+    >(
+      `${this.TENANT_INTEGRATION_ROUTE}/${attrs.googleTenantId}/integration-data`,
+      {
+        headers: {
+          'x-integration-key': this.TENANT_INTEGRATION_KEY,
         },
+      },
+    );
+
+    return response.data.body.data;
+  }
+
+  async getTenantJwtTokenUserDetails({
+    accessToken,
+  }: IInspireTenantService.GetTenantUserDetailsInputAttrs): IInspireTenantService.UserDetailsResult {
+    const responseOrError =
+      await this.httpClient.get<InspireTenantService.UserDetailsHttpResponse>(
+        this.GET_USER_DETAILS_URL,
+        { headers: { authorization: accessToken } },
       );
-
-    const tenantUserDetails = userReponse.data.body.data.rows[0];
-
-    return {
-      tenant: tenantDetailsResponse,
-      user: tenantUserDetails,
-    };
+    return responseOrError.data.body.data;
   }
 }
 

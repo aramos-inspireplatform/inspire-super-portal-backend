@@ -4,7 +4,8 @@ import {
   IsNotEmpty,
   IsObject,
   IsOptional,
-  IsUrl,
+  IsString,
+  ValidateIf,
 } from 'class-validator';
 import { WebHookStatusEnum } from '~/requests/domain/enums/web-hook-status.enum';
 
@@ -21,9 +22,27 @@ export class WebHookRequestBodyDto {
     example: 'https://inspire.io',
     required: true,
   })
+  @ValidateIf(({ status }) => status === WebHookStatusEnum.success)
   @IsNotEmpty()
-  @IsUrl()
+  @IsString()
   moduleUrl: string;
+
+  @ApiProperty({
+    example: 'teste-asdf2',
+    required: true,
+  })
+  @ValidateIf(({ status }) => status === WebHookStatusEnum.success)
+  @IsNotEmpty()
+  @IsString()
+  tenantId: string;
+
+  @ApiProperty({
+    example: 'teste-asdf2',
+    required: true,
+  })
+  @ValidateIf(({ status }) => status !== WebHookStatusEnum.success)
+  @IsNotEmpty()
+  reason: any;
 
   @ApiProperty({
     example: {

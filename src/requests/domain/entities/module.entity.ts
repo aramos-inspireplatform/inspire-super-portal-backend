@@ -11,7 +11,7 @@ export class Module extends BaseDomainEntity {
 
   minimumTimeSpan: number;
 
-  integrationKey?: string;
+  integrationKey: string;
 
   constructor(attrs: {
     id?: string;
@@ -32,5 +32,11 @@ export class Module extends BaseDomainEntity {
     this.timeSpan = attrs.timeSpan;
     this.minimumTimeSpan = attrs.minimumTimeSpan;
     this.integrationKey = attrs.integrationKey;
+  }
+
+  calculateAvgTime(timeSpentMinutes: number) {
+    const timeAvg = Math.ceil((this.timeSpan + timeSpentMinutes) / 2);
+    this.timeSpan =
+      timeAvg < this.minimumTimeSpan ? this.minimumTimeSpan : timeAvg;
   }
 }

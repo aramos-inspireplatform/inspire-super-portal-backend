@@ -75,7 +75,8 @@ export class Request extends BaseDomainEntity {
       allFailed.length === this.requestModules.length;
     const allModulesProvidedContainingErrors =
       allCompleted.length + allFailed.length === this.requestModules.length &&
-      !allModulesProvided;
+      !allModulesProvided &&
+      !allModulesProvidedFailed;
     if (allModulesProvided) {
       this.requestStatus = <any>{ id: RequestStatusesIds.Completed };
       this.tenant.tenantStatus = <any>{ id: TenantStatusesIds.Active };

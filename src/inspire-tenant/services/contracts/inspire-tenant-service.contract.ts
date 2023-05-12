@@ -12,7 +12,7 @@ export interface IInspireTenantService {
   linkTenantModule(attrs: {
     moduleType: Module;
     attrs: {
-      accessToken: string;
+      tenantIntegrationKey: string;
       moduleUrl: string;
     };
     tenant: {
@@ -22,12 +22,9 @@ export interface IInspireTenantService {
   }): Promise<void>;
 
   getTenantAndUserDetails(attrs: {
-    tenantWrapperIntegrationId: string;
-    accessToken: string;
-  }): Promise<{
-    tenant: IInspireTenantService.TenantDetails;
-    user: IInspireTenantService.TenantUserUserDetails;
-  }>;
+    tenantIntegrationKey: string;
+    googleTenantId: string;
+  }): Promise<IInspireTenantService.TenantDetails>;
 }
 
 export namespace IInspireTenantService {
@@ -45,39 +42,46 @@ export namespace IInspireTenantService {
   };
 
   export type TenantDetails = {
-    id: string;
+    _id: string;
     name: string;
     slug: string;
     googleTenantId: string;
     settings: Settings;
+    timezoneId: TimezoneId;
+    languageId: LanguageId;
+    currencyId: string;
+    agencyId: AgencyId;
+    logoUploadedAt1: string;
+    id: string;
     logo: any;
-    timezone: Timezone;
-    languages: Languages;
-    currencies: any[];
-    agencies: Agencies;
+    firstUserEmail: string;
   };
 
-  type Settings = {
+  export type Settings = {
     teste: string;
   };
 
-  type Timezone = {
-    id: string;
+  export type TimezoneId = {
+    _id: string;
     name: string;
     countryIsoCode: string;
     utcOffset: string;
     utcDstOffset: string;
+    id: string;
   };
 
-  type Languages = {
-    id: string;
+  export type LanguageId = {
+    _id: string;
     name: string;
     isoCode: string;
+    id: string;
   };
 
-  type Agencies = {
-    id: string;
+  export type AgencyId = {
+    _id: string;
     name: string;
+    logo: string;
+    id: string;
   };
 
   export type GetTenantUserDetailsInputAttrs = { accessToken: string };

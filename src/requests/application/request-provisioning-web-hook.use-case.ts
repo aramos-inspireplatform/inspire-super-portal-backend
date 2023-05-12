@@ -10,6 +10,7 @@ import { IModuleRepository } from '~/requests/infra/contracts/repository/module-
 import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IQueueService } from '~/shared/application/contracts/queue-service.contract';
+import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import {
   InspireHttpPaginatedResponse,
   InspireHttpResponse,
@@ -17,6 +18,7 @@ import {
 
 export class RequestProvisioningWebHookUseCase {
   private EMAIL_QUEUE = `${process.env.AWS_SQS_EMAIL_QUEUE}`;
+  private TENANT_INTEGRATION_KEY = `${process.env.TENANT_INTEGRATION_KEY}`;
 
   constructor(
     private readonly requestModuleAttemptsRepository: IRequestModuleAttemptsRepository,
@@ -24,6 +26,7 @@ export class RequestProvisioningWebHookUseCase {
     private readonly queueService: IQueueService,
     private readonly moduleRepository: IModuleRepository,
     private readonly inspireTenantService: IInspireTenantService,
+    private readonly httpClient: IHttpClient,
   ) {}
 
   async handle(attrs: RequestProvisioningWebHookUseCase.InputAttrs) {
@@ -31,46 +34,77 @@ export class RequestProvisioningWebHookUseCase {
       await this.requestModuleAttemptsRepository.findById(
         attrs.requestModuleAttemptsId,
       );
+
     if (!requestModuleAttemptOld) throw new RequestModuleAttemptNotFound();
+
     if (
       requestModuleAttemptOld.requestModuleAttemptStatus.id !==
       RequestModuleAttemptStatusesIds.Provisioning
     )
       return;
+
+    const moduleType = await this.moduleRepository.findByAttemptId({
+      requestModuleAttemptId: requestModuleAttemptOld.id,
+    });
+
     const request = await this.requestRepository.findByAttemptId(
       requestModuleAttemptOld.id,
     );
+
+    const moduleStatus = await this.getModuleStatus(
+      moduleType.statusUrl,
+      request.tenant.tenantId,
+      moduleType.integrationKey,
+    );
+
+    if (moduleStatus.status !== attrs.status) return;
+
     const requestModuleAttempt = request.getRequestModuleAttempt(
       requestModuleAttemptOld.id,
     );
+
+    requestModuleAttempt.webhookResponseBody = attrs.webhookResponseBody;
+
     const attemptHasSucceeded = attrs.status === WebHookStatusEnum.success;
+
     const requestModule = request.getRequestModuleFromModuleAttempt(
       requestModuleAttempt.id,
     );
+
     if (attemptHasSucceeded) {
       requestModule.setCompleted();
+      requestModule.module.calculateAvgTime(
+        this.minutesDiff(new Date(), requestModuleAttempt.createdDate),
+      );
       requestModuleAttempt.succeededAttempt();
     } else {
       requestModule.setFailed();
       requestModuleAttempt.failedAttempt();
     }
-    if (requestModule.requestModuleAttempts.length >= 3) {
+
+    if (
+      requestModule.requestModuleAttempts.length >= 3 &&
+      !attemptHasSucceeded
+    ) {
       requestModule.setCanceled();
     }
-    requestModuleAttempt.webhookResponseBody = attrs.webhookResponseBody;
-    const moduleType = await this.moduleRepository.findByAttemptId({
-      requestModuleAttemptId: requestModuleAttempt.id,
-    });
-    const { tenant, user } =
+
+    const tenantDetails =
       await this.inspireTenantService.getTenantAndUserDetails({
-        accessToken: attrs.accessToken,
-        tenantWrapperIntegrationId: request.tenant.wrapperIntegrationId,
+        tenantIntegrationKey: this.TENANT_INTEGRATION_KEY,
+        googleTenantId: request.tenant.tenantId,
       });
     if (attemptHasSucceeded) {
       await this.inspireTenantService.linkTenantModule({
         moduleType,
-        attrs,
-        tenant,
+        attrs: {
+          moduleUrl: attrs.moduleUrl,
+          tenantIntegrationKey: this.TENANT_INTEGRATION_KEY,
+        },
+        tenant: {
+          googleTenantId: tenantDetails.googleTenantId,
+          id: tenantDetails.id,
+        },
       });
     }
     const {
@@ -81,54 +115,70 @@ export class RequestProvisioningWebHookUseCase {
     if (allModulesProvided) {
       const welcomeSubject =
         RequestEmailTemplatesSubject.SuperPortalWelcomeInspire[
-          tenant.languages.isoCode.toLocaleLowerCase()
+          tenantDetails.languageId.isoCode.toLocaleLowerCase()
         ] ?? RequestEmailTemplatesSubject.SuperPortalWelcomeInspire['en-us'];
       await this.queueService.sendMessage({
         body: {
-          to: user.email,
+          to: tenantDetails.firstUserEmail,
           subject: welcomeSubject,
           tenant: request.tenant.tenantId,
           dynamicTemplateData: {
             accessUrl: process.env.TENANT_FRONTEND_URL,
           },
-          templateLanguage: tenant.languages.id,
+          templateLanguage: tenantDetails.languageId.id,
           templateName: RequestEmailTemplates.SuperPortalWelcomeInspire,
         },
         queueName: this.EMAIL_QUEUE,
       });
-    }
-    if (allModulesProvidedFailed) {
+    } else if (allModulesProvidedContainingErrors) {
+      const almostThereEmailSubject =
+        RequestEmailTemplatesSubject.AlmostThere[
+          tenantDetails.languageId.isoCode.toLocaleLowerCase()
+        ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'];
       await this.queueService.sendMessage({
         body: {
-          to: user.email,
-          subject:
-            RequestEmailTemplatesSubject.AlmostThere[
-              tenant.languages.isoCode.toLocaleLowerCase()
-            ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'],
+          to: tenantDetails.firstUserEmail,
+          subject: almostThereEmailSubject,
           tenant: request.tenant.tenantId,
-          templateLanguage: tenant.languages.id,
+          templateLanguage: tenantDetails.languageId.id,
           templateName: RequestEmailTemplates.AlmostThere,
         },
         queueName: this.EMAIL_QUEUE,
       });
-    }
-    if (allModulesProvidedContainingErrors) {
-      const almostThereEmailSubject =
-        RequestEmailTemplatesSubject.AlmostThere[
-          tenant.languages.isoCode.toLocaleLowerCase()
-        ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'];
+    } else if (allModulesProvidedFailed) {
       await this.queueService.sendMessage({
         body: {
-          to: user.email,
-          subject: almostThereEmailSubject,
+          to: tenantDetails.firstUserEmail,
+          subject:
+            RequestEmailTemplatesSubject.AlmostThere[
+              tenantDetails.languageId.isoCode.toLocaleLowerCase()
+            ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'],
           tenant: request.tenant.tenantId,
-          templateLanguage: tenant.languages.id,
+          templateLanguage: tenantDetails.languageId.id,
           templateName: RequestEmailTemplates.AlmostThere,
         },
         queueName: this.EMAIL_QUEUE,
       });
     }
     await this.requestRepository.update(request);
+  }
+
+  async getModuleStatus(
+    url: string,
+    tenantId: string,
+    integrationKey: string,
+  ): Promise<{ reason: string; status: 'error' } | { status: 'success' }> {
+    const { data } = await this.httpClient.get(`${url}/${tenantId}`, {
+      headers: { 'x-integration-key': integrationKey },
+    });
+
+    return data;
+  }
+
+  minutesDiff(dateTimeValue1: Date, dateTimeValue2: Date) {
+    const differenceValue =
+      (dateTimeValue1.getTime() - dateTimeValue2.getTime()) / 1000;
+    return Math.abs(Math.round(differenceValue / 60));
   }
 }
 
@@ -138,7 +188,6 @@ export namespace RequestProvisioningWebHookUseCase {
     requestModuleAttemptsId: string;
     status: WebHookStatusEnum;
     webhookResponseBody: object;
-    accessToken: string;
   };
 
   export type InspireTenantDetails = {

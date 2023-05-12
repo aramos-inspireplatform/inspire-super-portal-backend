@@ -10,6 +10,8 @@ import { IQueueService } from '~/shared/application/contracts/queue-service.cont
 import { ModulesRepository } from '~/shared/infra/database/repositories/modules.repository';
 import { RequestModuleAttemptsRepository } from '~/shared/infra/database/repositories/request-module-attempts.repository';
 import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
+import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
+import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { QueueService } from '~/shared/infra/sqs/queue.service';
 
 export class RequestProvisioningWebHookUseCaseFactoryProvider {
@@ -22,6 +24,7 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
         queueService: IQueueService,
         moduleRepository: IModuleRepository,
         inspireTenantService: IInspireTenantService,
+        httpClient: IHttpClient,
       ) =>
         new RequestProvisioningWebHookUseCase(
           requestModuleAttemptsRepository,
@@ -29,6 +32,7 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
           queueService,
           moduleRepository,
           inspireTenantService,
+          httpClient,
         ),
       inject: [
         RequestModuleAttemptsRepository,
@@ -36,6 +40,7 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
         QueueService,
         ModulesRepository,
         InspireTenantProvidersSymbols.INSPIRE_TENANT_SERVICE,
+        AxiosHttpClientAdapter,
       ],
       scope: Scope.REQUEST,
     };

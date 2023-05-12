@@ -38,6 +38,9 @@ export class RequestModules extends BaseDomainEntity {
   createAttempt(attrs: RequestModuleAttempts.Constructor) {
     const requestModuleAttemp = new RequestModuleAttempts(attrs);
     this.requestModuleAttempts.push(requestModuleAttemp);
+    this.moduleRequestStatus = <any>{
+      id: ModuleRequestStatusesIds.Provisioning,
+    };
     return requestModuleAttemp;
   }
 
