@@ -20,6 +20,7 @@ async function bootstrap() {
     fastifyAdapter,
     {
       snapshot: true,
+      logger: ['error', 'warn', 'log', 'debug', 'verbose'],
     },
   );
 
