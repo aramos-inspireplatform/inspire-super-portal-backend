@@ -36,6 +36,4 @@ COPY get_secrets_and_start_app.sh .
 
 RUN chmod +x get_secrets_and_start_app.sh
 
-EXPOSE 3336
-
 ENTRYPOINT [/bin/bash]
