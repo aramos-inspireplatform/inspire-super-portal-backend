@@ -4,7 +4,7 @@ import * as migrations from '~/shared/infra/database/migrations';
 import * as entities from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 
-export class DataSourceProviderFactory {
+export class DataSourceFactoryProvider {
   static register() {
     return {
       provide: DatabaseProvidersSymbols.DATA_SOURCE,

@@ -1,5 +1,11 @@
 {
   "compilerOptions": {
+    "typeRoots": [
+      "./src/index.d.ts"
+    ],
+    "types": [
+      "node"
+    ],
     "module": "commonjs",
     "declaration": true,
     "removeComments": true,
