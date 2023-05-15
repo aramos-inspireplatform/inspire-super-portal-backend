@@ -35,6 +35,7 @@ export class Tenants extends BaseEntity {
   @ManyToOne(() => TenantStatuses, (tenantStatuses) => tenantStatuses.tenants, {
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
+    eager: true,
   })
   @JoinColumn([{ name: 'tenant_status_id', referencedColumnName: 'id' }])
   tenantStatus: Relation<TenantStatuses>;

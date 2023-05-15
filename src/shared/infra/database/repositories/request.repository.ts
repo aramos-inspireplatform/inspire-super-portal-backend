@@ -1,11 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { Module } from '~/requests/domain/entities/module.entity';
-import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-module-attempts-status.entity';
-import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
-import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
-import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
-import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import {
@@ -13,7 +7,7 @@ import {
   Requests,
 } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
-import { Tenant } from '~/tenants/domain/entity/tenant.entity';
+import { RequestMapper } from '~/shared/infra/database/mapper/request.mapper';
 
 @Injectable()
 export class RequestRepository implements IRequestRepository {
@@ -61,63 +55,7 @@ export class RequestRepository implements IRequestRepository {
       where: { id: requestEntity.id },
     });
 
-    return new Request({
-      id: storedRequestEntity.id,
-      createdByUserEmail: storedRequestEntity.createdByUserEmail,
-      createdByUserId: storedRequestEntity.createdByUserId,
-      requestModules: storedRequestEntity.requestModules.map(
-        (rm) =>
-          new RequestModules({
-            module: new Module({
-              id: rm.moduleRequestType.id,
-              deployUrl: rm.moduleRequestType.deployUrl,
-              name: rm.moduleRequestType.name,
-              createdDate: rm.moduleRequestType.createdDate,
-              updatedDate: rm.moduleRequestType.updatedDate,
-              deletedDate: rm.moduleRequestType.deletedDate,
-            }),
-            moduleRequestStatus: new RequestModuleStatus({
-              id: rm.moduleRequestStatus.id,
-              name: rm.moduleRequestStatus.name,
-              createdDate: rm.moduleRequestStatus.createdDate,
-              updatedDate: rm.moduleRequestStatus.updatedDate,
-              deletedDate: rm.moduleRequestStatus.deletedDate,
-            }),
-            requestSettings: rm.requestSettings,
-            apiRequestBody: rm.apiRequestBody,
-            apiResponseBody: rm.apiResponseBody,
-            attempts: rm.attempts,
-            createdDate: rm.createdDate,
-            updatedDate: rm.updatedDate,
-            deletedDate: rm.deletedDate,
-            id: rm.id,
-            requestModuleAttempts: rm.requestModuleAttempts.map(
-              (rma) =>
-                new RequestModuleAttempts({
-                  id: rma.id,
-                  createdDate: rma.createdDate,
-                  deletedDate: rma.deletedDate,
-                  provisionApiRequestBody: rma.provisionApiRequestBody,
-                  provisionApiResponseBody: rma.provisionApiResponseBody,
-                  provisionApiResponseStatusCode:
-                    rma.provisionApiResponseStatusCode,
-                  updatedDate: rma.updatedDate,
-                  webhookResponseBody: rma.webhookResponseBody,
-                  wrapperIntegrationId: rma.wrapperIntegrationId,
-                  createdByUserId: rma.createdByUserId,
-                  requestModuleAttemptStatus: new RequestModuleAttemptStatus(
-                    rma.requestModuleAttemptStatus,
-                  ),
-                }),
-            ),
-          }),
-      ),
-      tenant: request.tenant,
-      requestStatus: requestEntity.requestStatus,
-      createdDate: requestEntity.createdDate,
-      deletedDate: requestEntity.deletedDate,
-      updatedDate: requestEntity.updatedDate,
-    });
+    return RequestMapper.modelToDomain(storedRequestEntity);
   }
 
   async findById(id: string): Promise<Request> {
@@ -134,24 +72,7 @@ export class RequestRepository implements IRequestRepository {
 
     if (!request) return null;
 
-    return new Request({
-      ...request,
-      createdByUserEmail: request.createdByUserEmail,
-      createdByUserId: request.createdByUserId,
-      requestModules: request.requestModules.map(
-        (rm) =>
-          new RequestModules({
-            ...(rm as any),
-            module: new Module(rm.moduleRequestType),
-            moduleRequestStatus: new RequestModuleStatus(
-              rm.moduleRequestStatus,
-            ),
-            requestSettings: rm.requestSettings,
-          }),
-      ),
-      requestStatus: new RequestStatus(request.requestStatus),
-      tenant: new Tenant(request.tenant),
-    });
+    return RequestMapper.modelToDomain(request);
   }
 
   async updateStatus(id: string, statusId: string): Promise<void> {
@@ -175,27 +96,7 @@ export class RequestRepository implements IRequestRepository {
     });
 
     return [
-      requests.map(
-        (request) =>
-          new Request({
-            ...request,
-            createdByUserEmail: request.createdByUserEmail,
-            createdByUserId: request.createdByUserId,
-            requestModules: request.requestModules.map(
-              (rm) =>
-                new RequestModules({
-                  ...(rm as any),
-                  module: new Module(rm.moduleRequestType),
-                  moduleRequestStatus: new RequestModuleStatus(
-                    rm.moduleRequestStatus,
-                  ),
-                  requestSettings: rm.requestSettings,
-                }),
-            ),
-            requestStatus: new RequestStatus(request.requestStatus),
-            tenant: new Tenant(request.tenant),
-          }),
-      ),
+      requests.map((request) => RequestMapper.modelToDomain(request)),
       count,
     ];
   }
@@ -217,53 +118,7 @@ export class RequestRepository implements IRequestRepository {
 
     if (!storedRequestEntity) return null;
 
-    return new Request({
-      id: storedRequestEntity.id,
-      createdByUserEmail: storedRequestEntity.createdByUserEmail,
-      createdByUserId: storedRequestEntity.createdByUserId,
-      requestModules: storedRequestEntity.requestModules.map(
-        (rm) =>
-          new RequestModules({
-            module: new Module({
-              id: rm.moduleRequestType.id,
-              deployUrl: rm.moduleRequestType.deployUrl,
-              name: rm.moduleRequestType.name,
-              createdDate: rm.moduleRequestType.createdDate,
-              updatedDate: rm.moduleRequestType.updatedDate,
-              deletedDate: rm.moduleRequestType.deletedDate,
-            }),
-            moduleRequestStatus: new RequestModuleStatus({
-              id: rm.moduleRequestStatus.id,
-              name: rm.moduleRequestStatus.name,
-              createdDate: rm.moduleRequestStatus.createdDate,
-              updatedDate: rm.moduleRequestStatus.updatedDate,
-              deletedDate: rm.moduleRequestStatus.deletedDate,
-            }),
-            requestSettings: rm.requestSettings,
-            apiRequestBody: rm.apiRequestBody,
-            apiResponseBody: rm.apiResponseBody,
-            attempts: rm.attempts,
-            createdDate: rm.createdDate,
-            updatedDate: rm.updatedDate,
-            deletedDate: rm.deletedDate,
-            id: rm.id,
-            requestModuleAttempts: rm.requestModuleAttempts.map(
-              (rma) =>
-                new RequestModuleAttempts({
-                  createdByUserId: rma.createdByUserId,
-                  requestModuleAttemptStatus: new RequestModuleAttemptStatus(
-                    rma.requestModuleAttemptStatus,
-                  ),
-                }),
-            ),
-          }),
-      ),
-      tenant: new Tenant(storedRequestEntity.tenant),
-      requestStatus: storedRequestEntity.requestStatus,
-      createdDate: storedRequestEntity.createdDate,
-      deletedDate: storedRequestEntity.deletedDate,
-      updatedDate: storedRequestEntity.updatedDate,
-    });
+    return RequestMapper.modelToDomain(storedRequestEntity);
   }
 
   async findByAttemptId(attemptId: string): Promise<Request | null> {
@@ -279,62 +134,6 @@ export class RequestRepository implements IRequestRepository {
 
     if (!storedRequestEntity) return null;
 
-    return new Request({
-      id: storedRequestEntity.id,
-      createdByUserEmail: storedRequestEntity.createdByUserEmail,
-      createdByUserId: storedRequestEntity.createdByUserId,
-      requestModules: storedRequestEntity.requestModules.map(
-        (rm) =>
-          new RequestModules({
-            module: new Module({
-              id: rm.moduleRequestType.id,
-              deployUrl: rm.moduleRequestType.deployUrl,
-              name: rm.moduleRequestType.name,
-              createdDate: rm.moduleRequestType.createdDate,
-              updatedDate: rm.moduleRequestType.updatedDate,
-              deletedDate: rm.moduleRequestType.deletedDate,
-            }),
-            moduleRequestStatus: new RequestModuleStatus({
-              id: rm.moduleRequestStatus.id,
-              name: rm.moduleRequestStatus.name,
-              createdDate: rm.moduleRequestStatus.createdDate,
-              updatedDate: rm.moduleRequestStatus.updatedDate,
-              deletedDate: rm.moduleRequestStatus.deletedDate,
-            }),
-            requestSettings: rm.requestSettings,
-            apiRequestBody: rm.apiRequestBody,
-            apiResponseBody: rm.apiResponseBody,
-            attempts: rm.attempts,
-            createdDate: rm.createdDate,
-            updatedDate: rm.updatedDate,
-            deletedDate: rm.deletedDate,
-            id: rm.id,
-            requestModuleAttempts: rm.requestModuleAttempts.map(
-              (rma) =>
-                new RequestModuleAttempts({
-                  id: rma.id,
-                  createdDate: rma.createdDate,
-                  deletedDate: rma.deletedDate,
-                  provisionApiRequestBody: rma.provisionApiRequestBody,
-                  provisionApiResponseBody: rma.provisionApiResponseBody,
-                  provisionApiResponseStatusCode:
-                    rma.provisionApiResponseStatusCode,
-                  updatedDate: rma.updatedDate,
-                  webhookResponseBody: rma.webhookResponseBody,
-                  wrapperIntegrationId: rma.wrapperIntegrationId,
-                  createdByUserId: rma.createdByUserId,
-                  requestModuleAttemptStatus: new RequestModuleAttemptStatus(
-                    rma.requestModuleAttemptStatus,
-                  ),
-                }),
-            ),
-          }),
-      ),
-      tenant: new Tenant(storedRequestEntity.tenant),
-      requestStatus: storedRequestEntity.requestStatus,
-      createdDate: storedRequestEntity.createdDate,
-      deletedDate: storedRequestEntity.deletedDate,
-      updatedDate: storedRequestEntity.updatedDate,
-    });
+    return RequestMapper.modelToDomain(storedRequestEntity);
   }
 }

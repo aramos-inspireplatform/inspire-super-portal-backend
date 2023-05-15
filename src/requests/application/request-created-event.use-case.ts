@@ -10,8 +10,6 @@ import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract'
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 
 export class RequestCreatedEventUseCase {
-  private readonly TENANT_DETAILS_URL = `${process.env.TENANT_URL}/tenants`;
-
   constructor(
     private readonly httpClient: IHttpClient,
     private readonly requestRepository: IRequestRepository,
@@ -22,7 +20,7 @@ export class RequestCreatedEventUseCase {
     const request = await this.requestRepository.findById(attrs.requestId);
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
       accessToken: attrs.accessToken,
-      wrapperIntegrationId: request.tenant.wrapperIntegrationId,
+      wrapperIntegrationId: request.tenant.tenantId,
     });
     if (tenantDetails instanceof Error) return;
     const requestModuleAttemptStatus = <any>{
@@ -74,6 +72,7 @@ export class RequestCreatedEventUseCase {
         {
           headers: {
             authorization: attrs.accessToken,
+            'x-integration-key': requestModule.module.integrationKey,
           },
         },
       );

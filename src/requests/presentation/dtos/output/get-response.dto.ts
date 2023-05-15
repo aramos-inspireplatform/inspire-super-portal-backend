@@ -1,6 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
+import { RequestModulesResponseBodyDto } from '~/requests/presentation/dtos/output/request-modules-response-body.dto';
 import { RequestModules } from '~/shared/infra/database/entities';
 import { BaseDto } from '~/shared/presentation/base.dto';
 import { Tenant } from '~/tenants/domain/entity/tenant.entity';
@@ -22,7 +23,8 @@ export class GetRequestResponseDto extends BaseDto {
   @Expose()
   requestStatus: RequestStatus;
 
-  @ApiProperty({ type: RequestModules, isArray: true })
+  @ApiProperty({ type: RequestModulesResponseBodyDto, isArray: true })
   @Expose()
-  requestModules: any[];
+  @Type(() => RequestModulesResponseBodyDto)
+  requestModules: RequestModules[];
 }

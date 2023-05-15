@@ -37,7 +37,7 @@ export class ReAttemptRequestModuleUseCase {
     requestModule.attempts += 1;
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
       accessToken: attrs.accessToken,
-      wrapperIntegrationId: request.tenant.wrapperIntegrationId,
+      wrapperIntegrationId: request.tenant.tenantId,
     });
     if (tenantDetails instanceof Error) throw tenantDetails;
     await this.callDeployUrl({
@@ -81,12 +81,16 @@ export class ReAttemptRequestModuleUseCase {
         {
           headers: {
             authorization: accessToken,
+            'x-integration-key': requestModule.module.integrationKey,
           },
         },
       );
       requestModuleAttempt.provisionApiRequestBody = payload;
       requestModuleAttempt.provisionApiResponseBody = response.data;
       requestModuleAttempt.provisionApiResponseStatusCode = response.status;
+      requestModuleAttempt.requestModuleAttemptStatus = <any>{
+        id: RequestModuleAttemptStatusesIds.Provisioning,
+      };
       requestModule.moduleRequestStatus = <any>{
         id: ModuleRequestStatusesIds.Provisioning,
       };

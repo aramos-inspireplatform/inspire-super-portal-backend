@@ -2,26 +2,24 @@ import { RequestStatus } from '~/requests/domain/entities/request-status.entity'
 import { RequestStatuses } from '~/shared/infra/database/entities';
 import { IMapper } from '~/shared/infra/database/mapper/mapper';
 
-export const RequestStatusTypeOrmMapper: IMapper<
-  RequestStatus,
-  RequestStatuses
-> = {
+export const RequestStatusesMapper: IMapper<RequestStatus, RequestStatuses> = {
   domainToModel: (domain: RequestStatus): RequestStatuses => {
-    return <RequestStatuses>{
-      id: domain.id,
-      name: domain.name,
-      createdDate: domain.createdDate,
-      updatedDate: domain.updatedDate,
-      deletedDate: domain.deletedDate,
-    };
+    const model = new RequestStatuses();
+    model.id = domain.id;
+    model.name = domain.name;
+    model.createdDate = domain.createdDate;
+    model.updatedDate = domain.updatedDate;
+    model.deletedDate = domain.deletedDate;
+    return model;
   },
   modelToDomain: (model: RequestStatuses): RequestStatus => {
-    return new RequestStatus({
+    const domain = new RequestStatus({
       id: model.id,
       name: model.name,
       createdDate: model.createdDate,
       updatedDate: model.updatedDate,
       deletedDate: model.deletedDate,
     });
+    return domain;
   },
 };

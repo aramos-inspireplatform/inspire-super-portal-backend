@@ -36,9 +36,7 @@ export class Request extends BaseDomainEntity {
     this.tenant = attrs.tenant;
     this.createdByUserId = attrs.createdByUserId;
     this.createdByUserEmail = attrs.createdByUserEmail;
-
     this.requestModules = attrs.requestModules ?? [];
-
     this.requestStatus =
       attrs.requestStatus ??
       <any>{
@@ -76,7 +74,9 @@ export class Request extends BaseDomainEntity {
     const allModulesProvidedFailed =
       allFailed.length === this.requestModules.length;
     const allModulesProvidedContainingErrors =
-      allCompleted.length + allFailed.length === this.requestModules.length;
+      allCompleted.length + allFailed.length === this.requestModules.length &&
+      !allModulesProvided &&
+      !allModulesProvidedFailed;
     if (allModulesProvided) {
       this.requestStatus = <any>{ id: RequestStatusesIds.Completed };
       this.tenant.tenantStatus = <any>{ id: TenantStatusesIds.Active };
@@ -89,7 +89,6 @@ export class Request extends BaseDomainEntity {
       this.requestStatus = <any>{ id: RequestStatusesIds.PartiallyCompleted };
       this.tenant.tenantStatus = <any>{ id: TenantStatusesIds.Pending };
     }
-
     return {
       allModulesProvided,
       allModulesProvidedFailed,
@@ -102,6 +101,16 @@ export class Request extends BaseDomainEntity {
       for (const requestModuleAttempt of requestModule.requestModuleAttempts) {
         if (requestModuleAttempt.id === requestAttemptId) {
           return requestModuleAttempt;
+        }
+      }
+    }
+  }
+
+  getRequestModuleFromModuleAttempt(requestAttemptId: string) {
+    for (const requestModule of this.requestModules) {
+      for (const requestModuleAttempt of requestModule.requestModuleAttempts) {
+        if (requestModuleAttempt.id === requestAttemptId) {
+          return requestModule;
         }
       }
     }

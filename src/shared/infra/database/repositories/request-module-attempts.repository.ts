@@ -1,15 +1,10 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, EntityManager, Repository } from 'typeorm';
-import { Module } from '~/requests/domain/entities/module.entity';
 import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
 import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-status.entity';
-import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
-import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
-import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
 import { RequestModuleAttempts as RequestModuleAttemptsMapper } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
-import { Tenant } from '~/tenants/domain/entity/tenant.entity';
 
 @Injectable()
 export class RequestModuleAttemptsRepository
