@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
+import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
 import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
 import { RequestModules as TypeOrmRequestModules } from '~/shared/infra/database/entities';
@@ -9,6 +10,7 @@ import { RequestModulesMapper } from '~/shared/infra/database/mapper/request-mod
 @Injectable()
 export class RequestModulesRepository implements IRequestModuleRepository {
   repository: Repository<TypeOrmRequestModules>;
+  MAX_ATTEMPTS_BATCH = 3;
 
   constructor(
     @Inject(DatabaseProvidersSymbols.DATA_SOURCE)
@@ -58,5 +60,41 @@ export class RequestModulesRepository implements IRequestModuleRepository {
       },
     });
     return RequestModulesMapper.modelToDomain(requestModuleEntity);
+  }
+
+  async findBatch(): Promise<RequestModules[]> {
+    const requestModules = await this.repository
+      .createQueryBuilder('requestModules')
+      .leftJoinAndSelect(
+        'requestModules.moduleRequestType',
+        'moduleRequestType',
+      )
+      .leftJoinAndSelect(
+        'requestModules.moduleRequestStatus',
+        'moduleRequestStatus',
+      )
+      .leftJoinAndSelect(
+        'requestModules.requestModuleAttempts',
+        'requestModuleAttempts',
+      )
+      .leftJoinAndSelect(
+        'requestModuleAttempts.requestModuleAttemptStatus',
+        'requestModuleAttemptStatus',
+      )
+      .where(
+        `(
+            (moduleRequestStatus.id = :failedStatus and requestModules.attempts < :maxAttempts and requestModuleAttempts.deletedDate is null)
+            or
+            (moduleRequestStatus.id = :provisioningStatus and (requestModuleAttempts.createdDate + (moduleRequestType.time_span || 'minutes')::interval)::timestamp <= now() and requestModuleAttempts.deletedDate is null)
+          )`,
+        {
+          provisioningStatus: ModuleRequestStatusesIds.Provisioning,
+          failedStatus: ModuleRequestStatusesIds.Failed,
+          maxAttempts: this.MAX_ATTEMPTS_BATCH,
+        },
+      )
+      .getMany();
+
+    return requestModules.map(RequestModulesMapper.modelToDomain);
   }
 }

@@ -5,9 +5,11 @@ import { CreateRequestUseCaseFactoryProvider } from '~/requests/ioc/providers/cr
 import { ListAllRequestsUseCaseFactoryProvider } from '~/requests/ioc/providers/list-all-requests-use-case-factory.provider';
 import { ListOneRequestModuleUseCaseFactoryProvider } from '~/requests/ioc/providers/list-one-request-module-use-case-factory.provider';
 import { ListOneRequestUseCaseFactoryProvider } from '~/requests/ioc/providers/list-one-request-use-case-factory.provider';
+import { ModuleRequestBatchUseCaseFactoryProvider } from '~/requests/ioc/providers/module-request-batch-use-case-factory.provider';
 import { ReAttemptRequestModuleUseCaseFactoryProvider } from '~/requests/ioc/providers/re-attempt-request-module-use-case-factory.provider';
 import { RequestCreatedEventUseCaseFactoryProvider } from '~/requests/ioc/providers/request-created-event-use-case-factory.provider';
 import { RequestProvisioningWebHookUseCaseFactoryProvider } from '~/requests/ioc/providers/request-provisioning-web-hook-use-case-factory.provider';
+import { TesteController } from '~/requests/ioc/teste.controller';
 import { RequestsController } from '~/requests/presentation/requests.controller';
 import { QueueModule } from '~/shared/infra/sqs/queue.module';
 
@@ -20,9 +22,10 @@ import { QueueModule } from '~/shared/infra/sqs/queue.module';
     ListOneRequestUseCaseFactoryProvider.register(),
     ListOneRequestModuleUseCaseFactoryProvider.register(),
     ReAttemptRequestModuleUseCaseFactoryProvider.register(),
+    ModuleRequestBatchUseCaseFactoryProvider.register(),
     RequestCreatedEventHandler,
   ],
-  controllers: [RequestsController],
+  controllers: [RequestsController, TesteController],
   imports: [QueueModule, InspireTenantModule],
 })
 export class RequestModule {}

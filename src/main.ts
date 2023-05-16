@@ -21,7 +21,6 @@ async function bootstrap() {
     {
       logger: ['error', 'warn', 'log', 'debug', 'verbose'],
       snapshot: true,
-      logger: ['error', 'warn', 'log', 'debug', 'verbose'],
     },
   );
 
