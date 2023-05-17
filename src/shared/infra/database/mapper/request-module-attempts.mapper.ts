@@ -5,10 +5,12 @@ import { RequestModuleAttemptsStatusesMapper } from '~/shared/infra/database/map
 
 export const RequestModuleAttemptsMapper: IMapper<
   RequestModuleAttempts,
-  TypeOrmRequestModuleAttempts
+  TypeOrmRequestModuleAttempts,
+  { moduleRequestId: string }
 > = {
   domainToModel: (
     domain: RequestModuleAttempts,
+    additionalData: { moduleRequestId: string },
   ): TypeOrmRequestModuleAttempts => {
     const model = new TypeOrmRequestModuleAttempts();
     model.id = domain.id;
@@ -26,6 +28,7 @@ export const RequestModuleAttemptsMapper: IMapper<
     model.createdDate = domain.createdDate;
     model.updatedDate = domain.updatedDate;
     model.deletedDate = domain.deletedDate;
+    model.moduleRequest = <any>additionalData.moduleRequestId;
     return model;
   },
   modelToDomain: (

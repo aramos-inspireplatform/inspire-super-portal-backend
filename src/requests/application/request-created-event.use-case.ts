@@ -78,6 +78,9 @@ export class RequestCreatedEventUseCase {
       requestModuleAttempt.provisionApiRequestBody = payload;
       requestModuleAttempt.provisionApiResponseBody = response.data;
       requestModuleAttempt.provisionApiResponseStatusCode = response.status;
+      requestModuleAttempt.requestModuleAttemptStatus = <any>{
+        id: RequestModuleAttemptStatusesIds.Provisioning,
+      };
       requestModule.moduleRequestStatus = <any>{
         id: ModuleRequestStatusesIds.Provisioning,
       };

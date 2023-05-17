@@ -1,6 +1,7 @@
 import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
 import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
 import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
+import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
 import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
@@ -20,32 +21,22 @@ export class ModuleRequestBatchUseCase {
     const requestModules = await this.requestModuleRepository.findBatch();
     if (!requestModules.length) return;
     const requestModules$ = requestModules.map(async (requestModule) => {
-      if (
-        requestModule.moduleRequestStatus.id !== ModuleRequestStatusesIds.Failed
-      ) {
-        requestModule.requestModuleAttempts.forEach((attempt) => {
-          if (!attempt.isFailed()) attempt.setFailed();
-        });
-        return this.callDeployUrl(requestModule.id);
-      }
-      if (
-        requestModule.moduleRequestStatus.id ===
-          ModuleRequestStatusesIds.Failed &&
-        requestModule.attempts > this.MAX_ATTEMPTS_BATCH
-      ) {
+      requestModule.requestModuleAttempts.forEach((attempt) => {
+        if (!attempt.isFailed()) attempt.setFailed();
+      });
+      if (requestModule.attempts >= this.MAX_ATTEMPTS_BATCH) {
         requestModule.setCanceled();
         return this.requestModuleRepository.update(requestModule);
       }
-      return this.callDeployUrl(requestModule.id);
+      return this.callDeployUrl(requestModule);
     });
     await Promise.all(requestModules$);
   }
 
-  private async callDeployUrl(requestModuleId: string) {
+  private async callDeployUrl(requestModule: RequestModules) {
     const request = await this.requestRepository.findByRequestModuleId(
-      requestModuleId,
+      requestModule.id,
     );
-    const requestModule = request.getRequestModule(requestModuleId);
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
       wrapperIntegrationId: request.tenant.tenantId,
     });
@@ -79,8 +70,8 @@ export class ModuleRequestBatchUseCase {
       requestModuleAttempt.provisionApiRequestBody = payload;
       requestModuleAttempt.provisionApiResponseBody = response.data;
       requestModuleAttempt.provisionApiResponseStatusCode = response.status;
-      requestModule.moduleRequestStatus = <any>{
-        id: ModuleRequestStatusesIds.Provisioning,
+      requestModuleAttempt.requestModuleAttemptStatus = <any>{
+        id: RequestModuleAttemptStatusesIds.Provisioning,
       };
     } catch (error) {
       requestModule.moduleRequestStatus = <any>{
@@ -91,6 +82,6 @@ export class ModuleRequestBatchUseCase {
         id: RequestModuleAttemptStatusesIds.Failed,
       };
     }
-    return this.requestRepository.update(request);
+    return this.requestModuleRepository.update(requestModule);
   }
 }

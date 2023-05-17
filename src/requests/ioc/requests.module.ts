@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { DiscoveryModule } from '@nestjs/core';
 import { InspireTenantModule } from '~/inspire-tenant/ioc/inspire-tenant.module';
 import { RequestCreatedEventHandler } from '~/requests/infra/events/request-created-event.handler';
 import { CreateRequestUseCaseFactoryProvider } from '~/requests/ioc/providers/create-request-use-case-factory.provider';
@@ -9,7 +10,7 @@ import { ModuleRequestBatchUseCaseFactoryProvider } from '~/requests/ioc/provide
 import { ReAttemptRequestModuleUseCaseFactoryProvider } from '~/requests/ioc/providers/re-attempt-request-module-use-case-factory.provider';
 import { RequestCreatedEventUseCaseFactoryProvider } from '~/requests/ioc/providers/request-created-event-use-case-factory.provider';
 import { RequestProvisioningWebHookUseCaseFactoryProvider } from '~/requests/ioc/providers/request-provisioning-web-hook-use-case-factory.provider';
-import { TesteController } from '~/requests/ioc/teste.controller';
+import { RequestTasksService } from '~/requests/presentation/bach-runner.cron';
 import { RequestsController } from '~/requests/presentation/requests.controller';
 import { QueueModule } from '~/shared/infra/sqs/queue.module';
 
@@ -24,8 +25,10 @@ import { QueueModule } from '~/shared/infra/sqs/queue.module';
     ReAttemptRequestModuleUseCaseFactoryProvider.register(),
     ModuleRequestBatchUseCaseFactoryProvider.register(),
     RequestCreatedEventHandler,
+    RequestTasksService,
   ],
-  controllers: [RequestsController, TesteController],
-  imports: [QueueModule, InspireTenantModule],
+  exports: [ModuleRequestBatchUseCaseFactoryProvider.register()],
+  controllers: [RequestsController],
+  imports: [QueueModule, InspireTenantModule, DiscoveryModule],
 })
 export class RequestModule {}

@@ -36,13 +36,13 @@ export class RequestModules extends BaseDomainEntity {
   }
 
   createAttempt(attrs: RequestModuleAttempts.Constructor) {
-    const requestModuleAttemp = new RequestModuleAttempts(attrs);
-    this.requestModuleAttempts.push(requestModuleAttemp);
+    const requestModuleAttempt = new RequestModuleAttempts(attrs);
+    this.requestModuleAttempts.push(requestModuleAttempt);
     this.attempts += 1;
     this.moduleRequestStatus = <any>{
       id: ModuleRequestStatusesIds.Provisioning,
     };
-    return requestModuleAttemp;
+    return requestModuleAttempt;
   }
 
   isFailed() {
@@ -66,8 +66,17 @@ export class RequestModules extends BaseDomainEntity {
   }
 
   setCanceled() {
+    this.requestModuleAttempts.forEach((attempt) => {
+      if (!attempt.isFailed()) attempt.setFailed();
+    });
     this.moduleRequestStatus = <any>{
       id: ModuleRequestStatusesIds.Canceled,
+    };
+  }
+
+  setProvisioning() {
+    this.moduleRequestStatus = <any>{
+      id: ModuleRequestStatusesIds.Provisioning,
     };
   }
 }

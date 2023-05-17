@@ -41,7 +41,11 @@ export class RequestModuleAttempts extends BaseEntity {
   @ManyToOne(
     () => RequestModules,
     (requestModules) => requestModules.requestModuleAttempts,
-    { onDelete: 'RESTRICT', onUpdate: 'CASCADE' },
+    {
+      onDelete: 'RESTRICT',
+      onUpdate: 'CASCADE',
+      cascade: ['insert', 'update'],
+    },
   )
   @JoinColumn([{ name: 'module_request_id', referencedColumnName: 'id' }])
   moduleRequest: Relation<RequestModules>;
@@ -53,7 +57,7 @@ export class RequestModuleAttempts extends BaseEntity {
     {
       onDelete: 'RESTRICT',
       onUpdate: 'CASCADE',
-      cascade: ['update'],
+      cascade: ['update', 'insert'],
       eager: true,
     },
   )
