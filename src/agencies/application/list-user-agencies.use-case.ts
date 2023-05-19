@@ -17,6 +17,7 @@ export class ListUserAgenciesUseCase {
           },
         },
       );
+
     return response.data.body.data;
   }
 }

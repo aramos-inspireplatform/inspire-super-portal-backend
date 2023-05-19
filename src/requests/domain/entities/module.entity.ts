@@ -5,10 +5,22 @@ export class Module extends BaseDomainEntity {
 
   deployUrl: string;
 
+  statusUrl: string;
+
+  timeSpan: number;
+
+  minimumTimeSpan: number;
+
+  integrationKey: string;
+
   constructor(attrs: {
     id?: string;
     name: string;
     deployUrl: string;
+    statusUrl: string;
+    timeSpan: number;
+    minimumTimeSpan: number;
+    integrationKey?: string;
     createdDate?: Date;
     updatedDate?: Date;
     deletedDate?: Date;
@@ -16,5 +28,15 @@ export class Module extends BaseDomainEntity {
     super(attrs);
     this.name = attrs.name;
     this.deployUrl = attrs.deployUrl;
+    this.statusUrl = attrs.statusUrl;
+    this.timeSpan = attrs.timeSpan;
+    this.minimumTimeSpan = attrs.minimumTimeSpan;
+    this.integrationKey = attrs.integrationKey;
+  }
+
+  calculateAvgTime(timeSpentMinutes: number) {
+    const timeAvg = Math.ceil((this.timeSpan + timeSpentMinutes) / 2);
+    this.timeSpan =
+      timeAvg < this.minimumTimeSpan ? this.minimumTimeSpan : timeAvg;
   }
 }

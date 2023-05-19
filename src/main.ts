@@ -20,7 +20,6 @@ async function bootstrap() {
     fastifyAdapter,
     {
       snapshot: true,
-      logger: ['error', 'warn', 'log', 'debug', 'verbose'],
     },
   );
 
@@ -36,7 +35,7 @@ async function bootstrap() {
   const configService: ConfigService = app.get<ConfigService>(ConfigService);
   const httpPort = configService.getOrThrow<number>('PORT');
   await app
-    .listen(httpPort)
+    .listen(httpPort, '0.0.0.0')
     .then(async () =>
       Logger.log(
         `Application running at: ${await app.getUrl()}`,

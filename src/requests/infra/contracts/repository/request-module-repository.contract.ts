@@ -6,4 +6,6 @@ export interface IRequestModuleRepository {
   updateStatus(id: string, statusId: string): Promise<void>;
   updateAttempts(id: string, count: number): Promise<void>;
   update(requestModule: RequestModules): Promise<RequestModules>;
+
+  findBatch(): Promise<RequestModules[]>;
 }

@@ -10,4 +10,5 @@ export const RequestProviderSymbols = {
   RE_ATTEMPT_MODULE_REQUEST_USE_CASE: Symbol(
     'RE_ATTEMPT_MODULE_REQUEST_USE_CASE',
   ),
+  MODULE_REQUEST_BATCH_USE_CASE: Symbol('MODULE_REQUEST_BATCH_USE_CASE'),
 } as const;

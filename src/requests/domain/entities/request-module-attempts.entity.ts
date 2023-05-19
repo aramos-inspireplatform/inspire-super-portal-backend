@@ -3,7 +3,7 @@ import { RequestModuleAttemptStatus } from '~/requests/domain/entities/request-m
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 
 export class RequestModuleAttempts extends BaseDomainEntity {
-  requestModuleAttemptStatus?: RequestModuleAttemptStatus;
+  requestModuleAttemptStatus: RequestModuleAttemptStatus;
   createdByUserId: string;
   provisionApiRequestBody?: object;
   provisionApiResponseStatusCode?: number;
@@ -24,13 +24,13 @@ export class RequestModuleAttempts extends BaseDomainEntity {
     this.webhookResponseBody = attrs.webhookResponseBody;
   }
 
-  succeededAttempt() {
+  setSucceeded() {
     this.requestModuleAttemptStatus = <any>{
       id: RequestModuleAttemptStatusesIds.Completed,
     };
   }
 
-  failedAttempt() {
+  setFailed() {
     this.requestModuleAttemptStatus = <any>{
       id: RequestModuleAttemptStatusesIds.Failed,
     };
@@ -40,6 +40,13 @@ export class RequestModuleAttempts extends BaseDomainEntity {
     return (
       this.requestModuleAttemptStatus.id ===
       RequestModuleAttemptStatusesIds.Completed
+    );
+  }
+
+  isFailed() {
+    return (
+      this.requestModuleAttemptStatus.id ===
+      RequestModuleAttemptStatusesIds.Failed
     );
   }
 }

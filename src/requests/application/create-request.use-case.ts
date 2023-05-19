@@ -22,13 +22,11 @@ export class CreateRequestUseCase {
     const userRequesterData =
       await this.inspireTenantService.getTenantJwtTokenUserDetails(attrs);
     const tenant = await this.getTenant(attrs);
-
     const request = new Request({
       createdByUserEmail: userRequesterData.email,
       createdByUserId: userRequesterData.id,
       tenant,
     });
-
     for await (const module of attrs.modules) {
       const storedModule = await this.getModule(module);
       if (!storedModule) continue;
@@ -41,9 +39,7 @@ export class CreateRequestUseCase {
         ...attrs,
       });
     }
-
     const storedRequest = await this.requestRepository.create(request);
-
     this.eventEmitter.emit(RequestEvents.Created, {
       requestId: storedRequest.id,
       tenantId: tenant.id,
