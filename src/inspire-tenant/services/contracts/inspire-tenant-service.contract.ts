@@ -88,7 +88,6 @@ export namespace IInspireTenantService {
   export type UserDetailsResult = Promise<TenantUserUserDetails>;
 
   export type GetTenantDetailsInputAttrs = {
-    accessToken: string;
     wrapperIntegrationId: string;
   };
   export type TenantDetailsResult = Promise<TenantDetails | Error>;

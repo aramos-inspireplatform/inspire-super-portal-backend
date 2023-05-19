@@ -1,12 +1,10 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpException, Injectable, Logger, Scope } from '@nestjs/common';
+import { HttpException, Injectable, Logger } from '@nestjs/common';
 import { AxiosError } from 'axios';
 import { firstValueFrom } from 'rxjs';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 
-@Injectable({
-  scope: Scope.REQUEST,
-})
+@Injectable()
 export class AxiosHttpClientAdapter implements IHttpClient {
   constructor(private readonly httpService: HttpService) {}
 

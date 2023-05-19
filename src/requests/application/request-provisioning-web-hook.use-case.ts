@@ -76,10 +76,10 @@ export class RequestProvisioningWebHookUseCase {
       requestModule.module.calculateAvgTime(
         this.minutesDiff(new Date(), requestModuleAttempt.createdDate),
       );
-      requestModuleAttempt.succeededAttempt();
+      requestModuleAttempt.setSucceeded();
     } else {
       requestModule.setFailed();
-      requestModuleAttempt.failedAttempt();
+      requestModuleAttempt.setFailed();
     }
 
     if (

@@ -1,3 +1,4 @@
+import { IsCron } from '@kovalenko/is-cron';
 import {
   IsBooleanString,
   IsEnum,
@@ -98,4 +99,8 @@ export class EnvironmentSchema {
   @IsNotEmpty()
   @IsString()
   TENANT_INTEGRATION_KEY: string;
+
+  @IsNotEmpty()
+  @IsCron()
+  REQUEST_BATCH_CRON: string;
 }

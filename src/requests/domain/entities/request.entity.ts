@@ -115,4 +115,12 @@ export class Request extends BaseDomainEntity {
       }
     }
   }
+
+  getRequestModule(requestModuleId: string) {
+    for (const requestModule of this.requestModules) {
+      if (requestModule.id === requestModuleId) {
+        return requestModule;
+      }
+    }
+  }
 }

@@ -18,6 +18,7 @@ import { UsersModule } from '~/users/ioc/users.module';
 import { VaultsModule } from '~/vaults/ioc/vaults.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SqsConfig, SqsModule, SqsQueueType } from '@nestjs-packages/sqs';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { SqsConfig, SqsModule, SqsQueueType } from '@nestjs-packages/sqs';
       name: process.env.AWS_SQS_EMAIL_QUEUE,
       type: SqsQueueType.Producer,
     }),
+    ScheduleModule.forRoot(),
   ],
 })
 export class AppModule {}

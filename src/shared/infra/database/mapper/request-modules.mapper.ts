@@ -19,7 +19,12 @@ export const RequestModulesMapper: IMapper<
     model.apiRequestBody = domain.apiRequestBody;
     model.apiResponseBody = domain.apiResponseBody;
     model.requestModuleAttempts = domain.requestModuleAttempts.map((value) =>
-      RequestModuleAttemptsMapper.domainToModel(value),
+      RequestModuleAttemptsMapper.domainToModel(value, {
+        moduleRequestId: domain.id,
+      }),
+    );
+    model.moduleRequestStatus = RequestModuleStatusesMapper.domainToModel(
+      domain.moduleRequestStatus,
     );
     model.moduleRequestType = ModulesMapper.domainToModel(domain.module);
     model.createdDate = domain.createdDate;

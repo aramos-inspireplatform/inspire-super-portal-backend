@@ -36,7 +36,6 @@ export class ReAttemptRequestModuleUseCase {
     });
     requestModule.attempts += 1;
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
-      accessToken: attrs.accessToken,
       wrapperIntegrationId: request.tenant.tenantId,
     });
     if (tenantDetails instanceof Error) throw tenantDetails;
