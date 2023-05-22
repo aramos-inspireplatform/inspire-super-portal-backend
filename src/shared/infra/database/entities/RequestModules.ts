@@ -67,8 +67,8 @@ export class RequestModules extends BaseEntity {
     onUpdate: 'CASCADE',
     eager: true,
   })
-  @JoinColumn([{ name: 'module_request_type_id', referencedColumnName: 'id' }])
-  moduleRequestType: Relation<Modules>;
+  @JoinColumn([{ name: 'module_id', referencedColumnName: 'id' }])
+  module: Modules;
 
   @ManyToOne(() => Requests, (requests) => requests.requestModules, {
     onDelete: 'RESTRICT',

@@ -34,9 +34,6 @@ export class Modules extends BaseEntity {
   @Column('character varying', { name: 'integration_key' })
   integrationKey: string;
 
-  @OneToMany(
-    () => RequestModules,
-    (requestModules) => requestModules.moduleRequestType,
-  )
+  @OneToMany(() => RequestModules, (requestModules) => requestModules.module)
   requestModules: Relation<RequestModules[]>;
 }
