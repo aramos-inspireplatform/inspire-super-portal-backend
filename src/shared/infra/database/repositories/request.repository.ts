@@ -65,7 +65,7 @@ export class RequestRepository implements IRequestRepository {
         'requestStatus',
         'tenant',
         'requestModules',
-        'requestModules.moduleRequestType',
+        'requestModules.module',
         'requestModules.moduleRequestStatus',
       ],
     });
@@ -88,7 +88,7 @@ export class RequestRepository implements IRequestRepository {
         'requestStatus',
         'tenant',
         'requestModules',
-        'requestModules.moduleRequestType',
+        'requestModules.module',
         'requestModules.moduleRequestStatus',
       ],
       skip: attrs.page * attrs.pageSize,
