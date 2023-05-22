@@ -34,7 +34,6 @@
     "@fastify/helmet": "^10.1.0",
     "@fastify/multipart": "^7.5.0",
     "@fastify/static": "^6.9.0",
-    "@kovalenko/is-cron": "^1.0.10",
     "@nestjs-packages/sqs": "^1.0.2",
     "@nestjs/axios": "^2.0.0",
     "@nestjs/common": "^9.0.0",
