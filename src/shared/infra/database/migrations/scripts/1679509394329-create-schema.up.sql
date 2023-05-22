@@ -94,7 +94,7 @@ COMMENT ON COLUMN public.system_configurations.updated_date IS E'The date of las
 -- ddl-end --
 COMMENT ON COLUMN public.system_configurations.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.system_configurations OWNER TO admin_project;
+-- ALTER TABLE public.system_configurations OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.general_data_types | type: TABLE --
@@ -121,7 +121,7 @@ COMMENT ON COLUMN public.general_data_types.updated_date IS E'The date of last u
 -- ddl-end --
 COMMENT ON COLUMN public.general_data_types.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.general_data_types OWNER TO admin_project;
+-- ALTER TABLE public.general_data_types OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__general_data_types__system_configurations | type: CONSTRAINT --
@@ -195,7 +195,7 @@ COMMENT ON COLUMN public.vaults.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.vaults.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.vaults OWNER TO admin_project;
+-- ALTER TABLE public.vaults OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.processors | type: TABLE --
@@ -222,7 +222,7 @@ COMMENT ON COLUMN public.processors.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.processors.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.processors OWNER TO admin_project;
+-- ALTER TABLE public.processors OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.payment_methods | type: TABLE --
@@ -249,7 +249,7 @@ COMMENT ON COLUMN public.payment_methods.updated_date IS E'The date of last upda
 -- ddl-end --
 COMMENT ON COLUMN public.payment_methods.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.payment_methods OWNER TO admin_project;
+-- ALTER TABLE public.payment_methods OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.settlement_currencies | type: TABLE --
@@ -276,7 +276,7 @@ COMMENT ON COLUMN public.settlement_currencies.updated_date IS E'The date of las
 -- ddl-end --
 COMMENT ON COLUMN public.settlement_currencies.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.settlement_currencies OWNER TO admin_project;
+-- ALTER TABLE public.settlement_currencies OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.tenants | type: TABLE --
@@ -306,7 +306,7 @@ COMMENT ON COLUMN public.tenants.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.tenants.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.tenants OWNER TO admin_project;
+-- ALTER TABLE public.tenants OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.tenant_statuses | type: TABLE --
@@ -331,7 +331,7 @@ COMMENT ON COLUMN public.tenant_statuses.updated_date IS E'The date of last upda
 -- ddl-end --
 COMMENT ON COLUMN public.tenant_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.tenant_statuses OWNER TO admin_project;
+-- ALTER TABLE public.tenant_statuses OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__tenant_statuses__tenants | type: CONSTRAINT --
@@ -371,7 +371,7 @@ COMMENT ON COLUMN public.request_modules.updated_date IS E'The date of last upda
 -- ddl-end --
 COMMENT ON COLUMN public.request_modules.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.request_modules OWNER TO admin_project;
+-- ALTER TABLE public.request_modules OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.module_request_statuses | type: TABLE --
@@ -396,7 +396,7 @@ COMMENT ON COLUMN public.module_request_statuses.updated_date IS E'The date of l
 -- ddl-end --
 COMMENT ON COLUMN public.module_request_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.module_request_statuses OWNER TO admin_project;
+-- ALTER TABLE public.module_request_statuses OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__module_request_statuses__request_modules | type: CONSTRAINT --
@@ -442,7 +442,7 @@ COMMENT ON COLUMN public.modules.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.modules.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.modules OWNER TO admin_project;
+-- ALTER TABLE public.modules OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__modules__request_modules | type: CONSTRAINT --
@@ -481,7 +481,7 @@ COMMENT ON COLUMN public.request_module_attempts.updated_date IS E'The date of l
 -- ddl-end --
 COMMENT ON COLUMN public.request_module_attempts.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.request_module_attempts OWNER TO admin_project;
+-- ALTER TABLE public.request_module_attempts OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.request_module_attempt_statuses | type: TABLE --
@@ -506,7 +506,7 @@ COMMENT ON COLUMN public.request_module_attempt_statuses.updated_date IS E'The d
 -- ddl-end --
 COMMENT ON COLUMN public.request_module_attempt_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.request_module_attempt_statuses OWNER TO admin_project;
+-- ALTER TABLE public.request_module_attempt_statuses OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__request_module_attempt_statuses__request_module_d41d8c | type: CONSTRAINT --
@@ -702,7 +702,7 @@ COMMENT ON COLUMN public.countries.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.countries.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.countries OWNER TO admin_project;
+-- ALTER TABLE public.countries OWNER TO admin_project;
 -- ddl-end --
 
 -- object: public.requests | type: TABLE --
@@ -730,7 +730,7 @@ COMMENT ON COLUMN public.requests.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.requests.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.requests OWNER TO admin_project;
+-- ALTER TABLE public.requests OWNER TO admin_project;
 -- ddl-end --
 
 -- object: fk__tenants__requests | type: CONSTRAINT --
@@ -762,7 +762,7 @@ COMMENT ON COLUMN public.request_statuses.updated_date IS E'The date of last upd
 -- ddl-end --
 COMMENT ON COLUMN public.request_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.request_statuses OWNER TO admin_project;
+-- ALTER TABLE public.request_statuses OWNER TO admin_project;
 -- ddl-end --
 
 -- object: uq__request_statuses__name | type: INDEX --
