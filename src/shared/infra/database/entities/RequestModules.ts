@@ -66,6 +66,7 @@ export class RequestModules extends BaseEntity {
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
     eager: true,
+    cascade: ['insert'],
   })
   @JoinColumn([{ name: 'module_id', referencedColumnName: 'id' }])
   module: Modules;
