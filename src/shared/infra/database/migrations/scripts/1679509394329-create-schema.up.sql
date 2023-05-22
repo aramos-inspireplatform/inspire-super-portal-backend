@@ -14,7 +14,7 @@
 -- 
 -- object: "Project" | type: DATABASE --
 -- DROP DATABASE IF EXISTS "Project";
-CREATE DATABASE "Project";
+-- CREATE DATABASE "Project";
 -- ddl-end --
 
 
