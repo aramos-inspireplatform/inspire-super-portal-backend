@@ -43,7 +43,7 @@ export class RequestModules extends BaseEntity {
     (requestModuleAttempts) => requestModuleAttempts.moduleRequest,
     {
       eager: true,
-      cascade: ['insert'],
+      cascade: ['insert', 'update'],
     },
   )
   requestModuleAttempts: Relation<RequestModuleAttempts[]>;
