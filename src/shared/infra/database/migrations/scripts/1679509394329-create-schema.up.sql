@@ -347,9 +347,8 @@ CREATE TABLE public.request_modules (
 	id uuid NOT NULL,
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
 	request_id uuid NOT NULL,
-	wrapper_integration_id varchar(300),
 	module_request_status_id uuid NOT NULL,
-	module_request_type_id uuid NOT NULL,
+	wrapper_integration_id varchar(300),
 	attempts smallint NOT NULL,
 	request_settings jsonb NOT NULL,
 	request_notes jsonb,
@@ -358,6 +357,7 @@ CREATE TABLE public.request_modules (
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
+	module_id uuid NOT NULL,
 	CONSTRAINT pk__request_module PRIMARY KEY (id)
 );
 -- ddl-end --
@@ -413,16 +413,28 @@ CREATE TABLE public.modules (
 	alternative_id bigint NOT NULL GENERATED ALWAYS AS IDENTITY ,
 	name varchar(200) NOT NULL,
 	deploy_url varchar NOT NULL,
+	status_url varchar NOT NULL,
+	time_span integer NOT NULL,
+	wrapper_integration_id varchar(300),
+	integration_key varchar,
+	minimum_time_span integer NOT NULL,
 	created_date timestamp with time zone NOT NULL,
 	updated_date timestamp with time zone,
 	deleted_date timestamp with time zone,
-	wrapper_integration_id varchar(300),
 	CONSTRAINT pk__modules PRIMARY KEY (id)
 );
 -- ddl-end --
 COMMENT ON COLUMN public.modules.id IS E'The unique identifier for the object.';
 -- ddl-end --
 COMMENT ON COLUMN public.modules.alternative_id IS E'The auto generated sequential identifier.';
+-- ddl-end --
+COMMENT ON COLUMN public.modules.status_url IS E'The url that will be called when it needs to check the status of a module';
+-- ddl-end --
+COMMENT ON COLUMN public.modules.time_span IS E'The time interval in minutes that the module takes to provision. Cannot be processed before created_at + time_span < now; It will always be an average value between what we have and the time it was received after processing';
+-- ddl-end --
+COMMENT ON COLUMN public.modules.integration_key IS E'key that needs to be sent to the server that will deploy, it is the security key between the super portal and the application server';
+-- ddl-end --
+COMMENT ON COLUMN public.modules.minimum_time_span IS E'When the time_span field becomes less than the minimum_time_span, the time_span value must be equal to the minimum_time_span value. Because it is the minimum possible value stipulated';
 -- ddl-end --
 COMMENT ON COLUMN public.modules.created_date IS E'The date of create.';
 -- ddl-end --
@@ -435,7 +447,7 @@ COMMENT ON COLUMN public.modules.deleted_date IS E'The date of delete. Used by t
 
 -- object: fk__modules__request_modules | type: CONSTRAINT --
 -- ALTER TABLE public.request_modules DROP CONSTRAINT IF EXISTS fk__modules__request_modules CASCADE;
-ALTER TABLE public.request_modules ADD CONSTRAINT fk__modules__request_modules FOREIGN KEY (module_request_type_id)
+ALTER TABLE public.request_modules ADD CONSTRAINT fk__modules__request_modules FOREIGN KEY (module_id)
 REFERENCES public.modules (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
@@ -793,5 +805,4 @@ ALTER TABLE public.request_module_attempts ADD CONSTRAINT fk__request_modules__r
 REFERENCES public.request_modules (id) MATCH FULL
 ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ddl-end --
-
 

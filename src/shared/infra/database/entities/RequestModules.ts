@@ -43,7 +43,7 @@ export class RequestModules extends BaseEntity {
     (requestModuleAttempts) => requestModuleAttempts.moduleRequest,
     {
       eager: true,
-      cascade: ['insert'],
+      cascade: ['insert', 'update'],
     },
   )
   requestModuleAttempts: Relation<RequestModuleAttempts[]>;
@@ -66,9 +66,10 @@ export class RequestModules extends BaseEntity {
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
     eager: true,
+    cascade: ['insert'],
   })
-  @JoinColumn([{ name: 'module_request_type_id', referencedColumnName: 'id' }])
-  moduleRequestType: Relation<Modules>;
+  @JoinColumn([{ name: 'module_id', referencedColumnName: 'id' }])
+  module: Modules;
 
   @ManyToOne(() => Requests, (requests) => requests.requestModules, {
     onDelete: 'RESTRICT',

@@ -26,7 +26,7 @@ export const RequestModulesMapper: IMapper<
     model.moduleRequestStatus = RequestModuleStatusesMapper.domainToModel(
       domain.moduleRequestStatus,
     );
-    model.moduleRequestType = ModulesMapper.domainToModel(domain.module);
+    model.module = ModulesMapper.domainToModel(domain.module);
     model.createdDate = domain.createdDate;
     model.updatedDate = domain.updatedDate;
     model.deletedDate = domain.deletedDate;
@@ -36,7 +36,7 @@ export const RequestModulesMapper: IMapper<
     const domain = new RequestModules({
       id: model.id,
       wrapperIntegrationId: model.wrapperIntegrationId,
-      module: ModulesMapper.modelToDomain(model.moduleRequestType),
+      module: ModulesMapper.modelToDomain(model.module),
       attempts: model.attempts,
       moduleRequestStatus: RequestModuleStatusesMapper.modelToDomain(
         model.moduleRequestStatus,

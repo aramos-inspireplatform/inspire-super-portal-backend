@@ -31,7 +31,7 @@ export class RequestModulesRepository implements IRequestModuleRepository {
   async findByRequestId(requestId: string): Promise<RequestModules[]> {
     const requestModules = await this.repository.find({
       where: { request: { id: requestId } },
-      relations: ['moduleRequestType', 'moduleRequestStatus'],
+      relations: ['module', 'moduleRequestStatus'],
     });
     return requestModules.map((rm) => RequestModulesMapper.modelToDomain(rm));
   }
@@ -79,10 +79,7 @@ export class RequestModulesRepository implements IRequestModuleRepository {
   async findBatch(): Promise<RequestModules[]> {
     const requestModules = await this.repository
       .createQueryBuilder('requestModules')
-      .leftJoinAndSelect(
-        'requestModules.moduleRequestType',
-        'moduleRequestType',
-      )
+      .leftJoinAndSelect('requestModules.module', 'module')
       .leftJoinAndSelect(
         'requestModules.moduleRequestStatus',
         'moduleRequestStatus',
@@ -99,7 +96,7 @@ export class RequestModulesRepository implements IRequestModuleRepository {
         `(
             (moduleRequestStatus.id = :failedStatus and requestModules.attempts <= :maxAttempts and requestModuleAttempts.deletedDate is null)
             or
-            (moduleRequestStatus.id = :provisioningStatus and (requestModuleAttempts.createdDate + (moduleRequestType.time_span || 'minutes')::interval)::timestamp <= now() and requestModuleAttempts.deletedDate is null)
+            (moduleRequestStatus.id = :provisioningStatus and (requestModuleAttempts.createdDate + (module.time_span || 'minutes')::interval)::timestamp <= now() and requestModuleAttempts.deletedDate is null)
           )`,
         {
           provisioningStatus: ModuleRequestStatusesIds.Provisioning,
