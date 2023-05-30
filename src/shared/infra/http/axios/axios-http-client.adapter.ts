@@ -22,11 +22,11 @@ export class AxiosHttpClientAdapter implements IHttpClient {
       const axiosError = error as AxiosError;
       this.logError(axiosError, 'post');
       throw new HttpException(
-        (axiosError.response.data as any).body,
-        axiosError.response.status,
+        (axiosError?.response?.data as any).body,
+        axiosError?.response?.status,
         {
-          cause: axiosError.cause,
-          description: axiosError.name,
+          cause: axiosError?.cause,
+          description: axiosError?.name,
         },
       );
     }
