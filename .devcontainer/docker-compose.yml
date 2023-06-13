@@ -1,26 +1,96 @@
-version: '3.8'
+version: '3'
 
 services:
-  inspire_super_portal_dev:
-    build: 
-      context: .
-      dockerfile: Dockerfile
+  inspire_superportal_nestjs:
+    container_name: inspire_superportal_nestjs
+    build: .
+    command: dockerize -wait tcp://inspire_superportal_postgres:5432 -timeout 40s ./.devcontainer/entrypoint.sh
+    ports:
+      - 3336:3336
     volumes:
-      - ../..:/workspaces:cached
-    command: sleep infinity
-    network_mode: service:inspire_super_portal_postgres
+      - ../:/inspire_superportal:cached
+      - ../:/home/node/app:delegated
+      - inspire_superportal:/inspire_superportal/node_modules
+      - inspire_superportal_dist:/inspire_superportal/dist
 
-  inspire_super_portal_postgres:
-    container_name: inspire_super_portal_postgres
-    image: postgres
+  inspire_superportal_postgres:
+    build: ./postgres
+    container_name: inspire_superportal_postgres
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=inspire_super_portal
+      - POSTGRES_DB=inspire_superportal
     ports:
       - 5434:5432
     volumes:
-      - ./pgdata:/var/lib/postgresql
+      - pgdata-superportal:/var/lib/postgresql/data:delegated
 
 volumes:
-  postgres-data:
+  inspire_superportal:
+  inspire_superportal_dist:
+  pgdata-superportal:
+
+networks:
+  default:
+    name: inspire-network
+    external: true
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# version: '3'
+#
+# services:
+#   inspire_superportal_nestjs:
+#     container_name: inspire_superportal_nestjs
+#     build: .
+#     command: dockerize -wait tcp://inspire_superportal_postgres:5432 -timeout 40s ./.devcontainer/entrypoint.sh
+#     ports:
+#       - 3336:3336
+#     volumes:
+#       - ../:/inspire_superportal:cached
+#       - ../:/home/node/app:delegated
+#       - inspire_superportal:/inspire_superportal/node_modules
+#       - inspire_superportal_dist:/inspire_superportal/dist
+
+#   inspire_superportal_nestjs:
+#     container_name: inspire_superportal_nestjs
+#     build:
+#       context: .
+#       dockerfile: Dockerfile
+#     volumes:
+#       - ../..:/workspaces:cached
+#     command: sleep infinity
+#     ports:
+#       - 3336:3336
+#     network_mode: service:inspire_superportal_postgres
+
+#   inspire_superportal_postgres:
+#     container_name: inspire_superportal_postgres
+#     image: postgres
+#     environment:
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=postgres
+#       - POSTGRES_DB=inspire_super_portal
+#     ports:
+#       - 5434:5432
+#     volumes:
+#       - ./pgdata:/var/lib/postgresql
+
+# volumes:
+#   postgres-data:
+
+# networks:
+#   default:
+#     external: true
+#     name: inspire-tenant-backend_devcontainer_app-network
