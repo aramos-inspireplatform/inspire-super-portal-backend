@@ -1,17 +1,17 @@
 version: '3.8'
 
 services:
-  inspire_super_portal_dev:
+  inspire_superportal_nestjs:
     build: 
       context: .
       dockerfile: Dockerfile
     volumes:
       - ../..:/workspaces:cached
     command: sleep infinity
-    network_mode: service:inspire_super_portal_postgres
+    network_mode: service:inspire_superportal_postgres
 
-  inspire_super_portal_postgres:
-    container_name: inspire_super_portal_postgres
+  inspire_superportal_postgres:
+    container_name: inspire_superportal_postgres
     image: postgres
     environment:
       - POSTGRES_USER=postgres
@@ -24,3 +24,8 @@ services:
 
 volumes:
   postgres-data:
+
+networks:
+  default:
+    external: true
+    name: inspire-tenant-backend_devcontainer_app-network

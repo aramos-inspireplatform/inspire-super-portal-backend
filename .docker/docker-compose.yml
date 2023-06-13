@@ -1,8 +1,8 @@
 version: '3'
 
 services:
-  inspire_super_portal_postgres:
-    container_name: inspire_super_portal_postgres
+  inspire_superportal_postgres:
+    container_name: inspire_superportal_postgres
     image: postgres
     environment:
       - POSTGRES_USER=postgres

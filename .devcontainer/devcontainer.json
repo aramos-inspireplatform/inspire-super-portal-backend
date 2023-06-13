@@ -1,11 +1,12 @@
 {
 	"name": "Inspire Super Portal",
 	"dockerComposeFile": "docker-compose.yml",
-	"service": "inspire_super_portal_dev",
+	"service": "inspire_superportal_nestjs",
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"forwardPorts": [
 		3336,
-		5434
+		9229,
+		7001
 	],
 	"customizations": {
 		"extensions": [
@@ -23,6 +24,9 @@
 			"github.copilot",
 			"wallabyjs.wallaby-vscode"
 		]
+	},
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/zsh"
 	}
 	// "mounts": [
 	// 	"source=try-node-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
