@@ -1,34 +1,34 @@
 {
 	"name": "Inspire Super Portal",
-	"dockerComposeFile": "docker-compose.yml",
+	"dockerComposeFile": [
+		"docker-compose.yml"
+	],
 	"service": "inspire_superportal_nestjs",
-	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+	"workspaceFolder": "/inspire_superportal",
+	"extensions": [
+		"dbaeumer.vscode-eslint",
+		"esbenp.prettier-vscode",
+		"editorconfig.editorconfig",
+		"donjayamanne.githistory",
+		"eamodio.gitlens",
+		"rbbit.typescript-hero",
+		"gruntfuggly.todo-tree",
+		"mhutchie.git-graph",
+		"firsttris.vscode-jest-runner",
+		"streetsidesoftware.code-spell-checker",
+		"streetsidesoftware.code-spell-checker-portuguese",
+		"github.copilot",
+		"wallabyjs.wallaby-vscode"
+	],
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/zsh"
+	},
+	"mounts": [
+		"source=try-node-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
+	],
 	"forwardPorts": [
 		3336,
 		9229,
 		7001
-	],
-	"customizations": {
-		"extensions": [
-			"dbaeumer.vscode-eslint",
-			"esbenp.prettier-vscode",
-			"editorconfig.editorconfig",
-			"donjayamanne.githistory",
-			"eamodio.gitlens",
-			"rbbit.typescript-hero",
-			"gruntfuggly.todo-tree",
-			"mhutchie.git-graph",
-			"firsttris.vscode-jest-runner",
-			"streetsidesoftware.code-spell-checker",
-			"streetsidesoftware.code-spell-checker-portuguese",
-			"github.copilot",
-			"wallabyjs.wallaby-vscode"
-		]
-	},
-	"settings": {
-		"terminal.integrated.shell.linux": "/bin/zsh"
-	}
-	// "mounts": [
-	// 	"source=try-node-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
-	// ]
+	]
 }

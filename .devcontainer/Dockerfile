@@ -1,4 +1,4 @@
-FROM node:19-alpine
+FROM node:19.9.0-alpine3.18
 
 RUN apk --update add --no-cache zsh zsh-vcs git curl wget vim openssh
 
@@ -21,6 +21,11 @@ RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh
 COPY ./terminal/.zshrc ${HOME}/.zshrc
 
 RUN npm config set cache ${APP}/.npm-cache --global
+
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+  && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+  && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 RUN npm i -g @nestjs/cli
 
