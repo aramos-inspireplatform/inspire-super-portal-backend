@@ -32,9 +32,8 @@ volumes:
 
 networks:
   default:
+    name: inspire-network
     external: true
-    name: inspire-tenant-backend_devcontainer_app-network
-
 
 
 
