@@ -13,5 +13,5 @@ export class GetProcessorResponseDto extends BaseDto {
 
   @Expose()
   @ApiProperty({ example: 'e273ad87-988e-4051-9d76-5f756cee4923' })
-  wrapperIntegrationId: string;
+  integrationCode: string;
 }

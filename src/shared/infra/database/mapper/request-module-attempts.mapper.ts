@@ -19,7 +19,6 @@ export const RequestModuleAttemptsMapper: IMapper<
     model.provisionApiResponseBody = domain.provisionApiResponseBody;
     model.provisionApiResponseStatusCode =
       domain.provisionApiResponseStatusCode;
-    model.wrapperIntegrationId = domain.wrapperIntegrationId;
     model.webhookResponseBody = domain.webhookResponseBody;
     model.requestModuleAttemptStatus =
       RequestModuleAttemptsStatusesMapper.domainToModel(
@@ -40,7 +39,6 @@ export const RequestModuleAttemptsMapper: IMapper<
       provisionApiRequestBody: model.provisionApiRequestBody,
       provisionApiResponseBody: model.provisionApiResponseBody,
       provisionApiResponseStatusCode: model.provisionApiResponseStatusCode,
-      wrapperIntegrationId: model.wrapperIntegrationId,
       webhookResponseBody: model.webhookResponseBody,
       createdDate: model.createdDate,
       updatedDate: model.updatedDate,

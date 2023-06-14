@@ -43,7 +43,7 @@ export class RequestProvisioningWebHookUseCase {
     )
       return;
 
-    const moduleType = await this.moduleRepository.findByAttemptId({
+    const module = await this.moduleRepository.findByAttemptId({
       requestModuleAttemptId: requestModuleAttemptOld.id,
     });
 
@@ -52,9 +52,9 @@ export class RequestProvisioningWebHookUseCase {
     );
 
     const moduleStatus = await this.getModuleStatus(
-      moduleType.statusUrl,
+      module.statusUrl,
       request.tenant.tenantId,
-      moduleType.integrationKey,
+      this.TENANT_INTEGRATION_KEY, //moduleType.integrationKey,
     );
 
     if (moduleStatus.status !== attrs.status) return;
@@ -96,7 +96,7 @@ export class RequestProvisioningWebHookUseCase {
       });
     if (attemptHasSucceeded) {
       await this.inspireTenantService.linkTenantModule({
-        moduleType,
+        module: module,
         attrs: {
           moduleUrl: attrs.moduleUrl,
           tenantIntegrationKey: this.TENANT_INTEGRATION_KEY,
@@ -104,6 +104,8 @@ export class RequestProvisioningWebHookUseCase {
         tenant: {
           googleTenantId: tenantDetails.googleTenantId,
           id: tenantDetails.id,
+          name: tenantDetails.name,
+          slug: tenantDetails.slug,
         },
       });
     }

@@ -12,7 +12,6 @@ export const RequestModulesMapper: IMapper<
   domainToModel: (domain: RequestModules): TypeOrmRequestModules => {
     const model = new TypeOrmRequestModules();
     model.id = domain.id;
-    model.wrapperIntegrationId = domain.wrapperIntegrationId;
     model.attempts = domain.attempts;
     model.requestSettings = domain.requestSettings;
     model.requestNotes = domain.requestNotes;
@@ -35,7 +34,6 @@ export const RequestModulesMapper: IMapper<
   modelToDomain: (model: TypeOrmRequestModules): RequestModules => {
     const domain = new RequestModules({
       id: model.id,
-      wrapperIntegrationId: model.wrapperIntegrationId,
       module: ModulesMapper.modelToDomain(model.module),
       attempts: model.attempts,
       moduleRequestStatus: RequestModuleStatusesMapper.modelToDomain(

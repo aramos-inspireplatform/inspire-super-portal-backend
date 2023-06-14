@@ -22,6 +22,7 @@ export const ModulesMapper: IMapper<Module, Modules> = {
       id: model.id,
       name: model.name,
       deployUrl: model.deployUrl,
+      integrationCode: model.integrationCode,
       integrationKey: model.integrationKey,
       minimumTimeSpan: model.minimumTimeSpan,
       statusUrl: model.statusUrl,

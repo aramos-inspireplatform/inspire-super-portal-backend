@@ -36,5 +36,5 @@ export class GetPaymentCountryResponseDto extends BaseDto {
     type: String,
     example: '86fd5615-544d-4aa7-88d1-f8bdd3da8156',
   })
-  wrapperIntegrationId: string;
+  integrationCode: string;
 }

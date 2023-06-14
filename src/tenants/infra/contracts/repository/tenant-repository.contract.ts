@@ -8,8 +8,8 @@ export interface ITenantRepository {
   listAndCount(
     attrs: ITenantRepository.ListAllInputAttrs,
   ): ITenantRepository.ListAllResult;
-  findByWrapperIntegrationId(
-    attrs: ITenantRepository.FindByWrapperIntegrationIdInputAttrs,
+  findByIntegrationCode(
+    attrs: ITenantRepository.FindByIntegrationCodeInputAttrs,
   ): Promise<Tenant | null>;
 }
 
@@ -31,8 +31,8 @@ export namespace ITenantRepository {
   };
   export type ListAllResult = Promise<[Tenant[], number]>;
 
-  export type FindByWrapperIntegrationIdInputAttrs = {
+  export type FindByIntegrationCodeInputAttrs = {
     id: string;
   };
-  export type FindByWrapperIntegrationIdResult = Promise<Tenant | null>;
+  export type FindByIntegrationCodeResult = Promise<Tenant | null>;
 }

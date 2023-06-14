@@ -36,7 +36,6 @@ export class RequestRepository implements IRequestRepository {
       request.requestModules.map((rm) => ({
         id: rm.id,
         request: <any>{ id: request.id },
-        wrapperIntegrationId: rm.wrapperIntegrationId,
         moduleRequestStatus: <any>{ id: rm.moduleRequestStatus.id },
         module: <any>{ id: rm.module.id },
         apiRequestBody: rm.apiRequestBody,
