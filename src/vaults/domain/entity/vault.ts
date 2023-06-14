@@ -4,16 +4,14 @@ import { InstanceProperties } from '~/shared/types/class-properties.type';
 
 export class Vault extends BaseDomainEntity {
   name: string;
-
   isActive: boolean;
-
-  wrapperIntegrationId?: string;
+  integrationCode?: string;
 
   constructor(attrs: InstanceProperties<Vault>) {
     super(attrs);
     this.id = attrs.id ?? RandomUUIDGeneratorAdapter();
     this.name = attrs.name;
     this.isActive = attrs.isActive;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
+    this.integrationCode = attrs.integrationCode;
   }
 }

@@ -37,7 +37,7 @@ export class Requests extends BaseEntity {
       cascade: ['update'],
     },
   )
-  @JoinColumn([{ name: 'request_status', referencedColumnName: 'id' }])
+  @JoinColumn([{ name: 'request_status_id', referencedColumnName: 'id' }])
   requestStatus: Relation<RequestStatuses>;
 
   @ManyToOne(() => Tenants, (tenants) => tenants.requests, {

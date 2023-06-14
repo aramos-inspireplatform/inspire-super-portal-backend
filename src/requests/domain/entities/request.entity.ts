@@ -22,13 +22,9 @@ export type RequestAttrs = {
 
 export class Request extends BaseDomainEntity {
   tenant: Tenant;
-
   createdByUserId: string;
-
   createdByUserEmail: string;
-
   requestStatus: RequestStatus;
-
   requestModules: RequestModules[];
 
   constructor(attrs: RequestAttrs) {
@@ -60,7 +56,6 @@ export class Request extends BaseDomainEntity {
       deletedDate: null,
       requestModuleAttempts: [],
       updatedDate: null,
-      wrapperIntegrationId: attrs.wrapperIntegrationId,
     });
     this.requestModules.push(requestModule);
     return requestModule;

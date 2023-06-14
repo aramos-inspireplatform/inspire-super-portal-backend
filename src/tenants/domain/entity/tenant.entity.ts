@@ -5,7 +5,7 @@ import { TenantStatus } from '~/tenants/domain/entity/tenant-statuses.entity';
 export class Tenant extends BaseDomainEntity {
   name: string;
 
-  wrapperIntegrationId: string;
+  integrationCode: string;
 
   tenantId: string;
 
@@ -20,7 +20,7 @@ export class Tenant extends BaseDomainEntity {
   constructor(attrs: InstanceProperties<Tenant>) {
     super(attrs);
     this.name = attrs?.name;
-    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
+    this.integrationCode = attrs?.integrationCode;
     this.tenantId = attrs?.tenantId;
     this.createdByUserId = attrs?.createdByUserId;
     this.createdByUserEmail = attrs?.createdByUserEmail;

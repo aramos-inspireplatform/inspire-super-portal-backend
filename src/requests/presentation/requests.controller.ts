@@ -78,7 +78,6 @@ export class RequestsController {
       requestModuleAttemptsId: id,
       status: payload.status,
       webhookResponseBody: payload,
-
       moduleUrl: payload.moduleUrl,
     });
   }
