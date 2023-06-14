@@ -27,6 +27,7 @@ export class CreateTenantUserUseCase {
           headers: {
             authorization: attrs.accessToken,
             tenant: tenant.tenantId,
+            'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
           },
         },
       );
