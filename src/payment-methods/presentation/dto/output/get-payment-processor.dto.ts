@@ -19,5 +19,5 @@ export class GetPaymentProcessorResponseDto extends BaseDto {
   @ApiProperty({
     example: 'cdc9b219-fb2a-4416-a092-81a02b312668',
   })
-  wrapperIntegrationId: string;
+  integrationCode: string;
 }

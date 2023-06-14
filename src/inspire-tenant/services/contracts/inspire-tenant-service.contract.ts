@@ -10,7 +10,7 @@ export interface IInspireTenantService {
   ): IInspireTenantService.TenantDetailsResult;
 
   linkTenantModule(attrs: {
-    moduleType: Module;
+    module: Module;
     attrs: {
       tenantIntegrationKey: string;
       moduleUrl: string;
@@ -18,6 +18,8 @@ export interface IInspireTenantService {
     tenant: {
       id: string;
       googleTenantId: string;
+      name: string;
+      slug: string;
     };
   }): Promise<void>;
 
@@ -88,7 +90,7 @@ export namespace IInspireTenantService {
   export type UserDetailsResult = Promise<TenantUserUserDetails>;
 
   export type GetTenantDetailsInputAttrs = {
-    wrapperIntegrationId: string;
+    integrationCode: string;
   };
   export type TenantDetailsResult = Promise<TenantDetails | Error>;
 }

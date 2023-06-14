@@ -20,10 +20,6 @@ export class ModuleRequestType {
   @Expose()
   @ApiProperty({ example: 'any name for example' })
   name: string;
-
-  @Expose()
-  @ApiProperty({ example: '64330429a19029aa893f0fb0' })
-  wrapperIntegrationId: string;
 }
 
 export class Tenant {
@@ -34,10 +30,6 @@ export class Tenant {
   @Expose()
   @ApiProperty({ example: 'any name for example' })
   name: string;
-
-  @Expose()
-  @ApiProperty({ example: '64330429a19029aa893f0fb0' })
-  wrapperIntegrationId: string;
 
   @Expose()
   @ApiProperty({ example: '' })

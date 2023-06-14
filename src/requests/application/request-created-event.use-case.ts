@@ -19,7 +19,7 @@ export class RequestCreatedEventUseCase {
   async handle(attrs: RequestCreatedEventUseCase.InputAttrs) {
     const request = await this.requestRepository.findById(attrs.requestId);
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
-      wrapperIntegrationId: request.tenant.tenantId,
+      integrationCode: request.tenant.tenantId,
     });
     if (tenantDetails instanceof Error) return;
     const requestModuleAttemptStatus = <any>{
@@ -71,7 +71,7 @@ export class RequestCreatedEventUseCase {
         {
           headers: {
             authorization: attrs.accessToken,
-            'x-integration-key': requestModule.module.integrationKey,
+            'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
           },
         },
       );

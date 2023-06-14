@@ -35,7 +35,7 @@ export class CreateTenantUseCase {
     const storedTenant = new Tenant({
       slug: attrs.tenant.slug,
       name: attrs.tenant.name,
-      wrapperIntegrationId: tenant.id,
+      integrationCode: tenant.id,
       tenantStatus: tenantPendingStatuses,
       createdByUserId: attrs.currentUser,
       createdByUserEmail: tenant.userEmail,
@@ -45,7 +45,7 @@ export class CreateTenantUseCase {
     return {
       ...tenant,
       id: storedTenant.id,
-      wrapperIntegrationId: tenant.id,
+      integrationCode: tenant.id,
     };
   }
 }

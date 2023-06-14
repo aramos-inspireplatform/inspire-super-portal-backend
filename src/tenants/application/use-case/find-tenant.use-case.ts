@@ -15,7 +15,7 @@ export class FindTenantUseCase {
     if (!tenant)
       throw new NotFoundException('ExceptionsConstants.TENANT_NOT_FOUND');
 
-    const url = new URL(`${this.TENANTS_ROUTE}/${tenant.wrapperIntegrationId}`);
+    const url = new URL(`${this.TENANTS_ROUTE}/${tenant.integrationCode}`);
 
     const responseOrError = await this.httpClient.get(url.toString(), {
       headers: {
@@ -27,7 +27,7 @@ export class FindTenantUseCase {
       ...responseOrError.data.body.data,
       id: tenant.id,
       tenantStatus: tenant.tenantStatus,
-      wrapperIntegrationId: tenant.wrapperIntegrationId,
+      integrationCode: tenant.integrationCode,
     };
   }
 }

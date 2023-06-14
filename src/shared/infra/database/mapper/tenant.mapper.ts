@@ -10,7 +10,7 @@ export const TenantMapper: IMapper<Tenant, Tenants> = {
     const model = new Tenants();
     model.id = domain.id;
     model.name = domain.name;
-    model.wrapperIntegrationId = domain.wrapperIntegrationId;
+    model.integrationCode = domain.integrationCode;
     model.tenantStatus = <any>{ id: domain.tenantStatus.id };
     model.createdDate = domain.createdDate;
     model.updatedDate = domain.updatedDate;
@@ -21,7 +21,7 @@ export const TenantMapper: IMapper<Tenant, Tenants> = {
     const domain = new Tenant({
       id: model.id,
       name: model.name,
-      wrapperIntegrationId: model.wrapperIntegrationId,
+      integrationCode: model.integrationCode,
       tenantStatus: TenantStatusesMapper.modelToDomain(model.tenantStatus),
       createdDate: model.createdDate,
       updatedDate: model.updatedDate,

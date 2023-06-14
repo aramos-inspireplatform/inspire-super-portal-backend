@@ -28,13 +28,6 @@ export class RequestModuleAttempts extends BaseEntity {
   })
   provisionApiResponseStatusCode: number | null;
 
-  @Column('character varying', {
-    name: 'wrapper_integration_id',
-    nullable: true,
-    length: 300,
-  })
-  wrapperIntegrationId: string | null;
-
   @Column('jsonb', { name: 'webhook_response_body', nullable: true })
   webhookResponseBody: object | null;
 
@@ -47,7 +40,7 @@ export class RequestModuleAttempts extends BaseEntity {
       cascade: ['insert', 'update'],
     },
   )
-  @JoinColumn([{ name: 'module_request_id', referencedColumnName: 'id' }])
+  @JoinColumn([{ name: 'request_module_id', referencedColumnName: 'id' }])
   moduleRequest: Relation<RequestModules>;
 
   @ManyToOne(

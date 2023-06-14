@@ -8,10 +8,6 @@ export class RequestModulesResponseBodyDto {
 
   @ApiProperty({})
   @Expose()
-  wrapperIntegrationId: string;
-
-  @ApiProperty({})
-  @Expose()
   apiRequestBody: object;
 
   @ApiProperty({})

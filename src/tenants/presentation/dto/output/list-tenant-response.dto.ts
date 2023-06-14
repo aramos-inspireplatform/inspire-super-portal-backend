@@ -32,7 +32,7 @@ export class ListTenantsResponseDto extends BaseDto {
 
   @ApiProperty({ example: '643303d0a19029aa893f0f9b' })
   @Expose()
-  wrapperIntegrationId: string;
+  integrationCode: string;
 
   @ApiProperty({ example: '2021-01-01T00:00:00.000Z' })
   @Expose()
