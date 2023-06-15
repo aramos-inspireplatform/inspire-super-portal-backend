@@ -12,5 +12,5 @@ export class GetSettlementCurrenciesResponseDto extends BaseDto {
     type: String,
     example: 'bb2d5ae7-e161-4f24-a0fc-435b1f5f6ac2',
   })
-  wrapperIntegrationId: string;
+  integrationCode: string;
 }

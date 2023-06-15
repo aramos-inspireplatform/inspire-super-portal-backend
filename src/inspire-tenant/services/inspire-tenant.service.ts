@@ -19,7 +19,7 @@ export class InspireTenantService implements IInspireTenantService {
   async getTenantDetails(
     attrs: IInspireTenantService.GetTenantDetailsInputAttrs,
   ): IInspireTenantService.TenantDetailsResult {
-    const url = `${this.TENANT_DETAILS_URL}/${attrs.wrapperIntegrationId}/integration-data`;
+    const url = `${this.TENANT_DETAILS_URL}/${attrs.integrationCode}/integration-data`;
     const responseOrError =
       await this.httpClient.get<InspireTenantService.TenantDetailsHttpResponse>(
         url,
@@ -34,10 +34,10 @@ export class InspireTenantService implements IInspireTenantService {
 
   async linkTenantModule({
     attrs,
-    moduleType,
+    module,
     tenant,
   }: {
-    moduleType: Module;
+    module: Module;
     attrs: {
       tenantIntegrationKey: string;
       moduleUrl: string;
@@ -45,29 +45,16 @@ export class InspireTenantService implements IInspireTenantService {
     tenant: {
       id: string;
       googleTenantId: string;
+      name: string;
+      slug: string;
     };
   }) {
-    const moduleResponse = await this.httpClient.post<InspireHttpResponse>(
-      `${this.TENANT_MODULE_URL}/integration`,
-      {
-        name: moduleType.name,
-        slug: moduleType.name.toLowerCase(),
-        isActive: true,
-      },
-      {
-        headers: {
-          'x-integration-key': attrs.tenantIntegrationKey,
-          tenant: tenant.googleTenantId,
-        },
-      },
-    );
-
     await this.httpClient.post(
-      `${this.TENANT_TENANT_MODULE_URL}`,
+      `${this.TENANT_TENANT_MODULE_URL}/integration`,
       {
         tenantId: tenant.id,
-        moduleId: moduleResponse.data.body.data.id,
-        name: moduleType.name,
+        moduleSlug: module.integrationCode,
+        name: tenant.name + ' - ' + module.name,
         link: attrs.moduleUrl,
         isActive: true,
       },

@@ -40,3 +40,5 @@ lerna-debug.log*
 
 generated-entities
 .env
+
+.npm-cache

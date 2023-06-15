@@ -6,12 +6,12 @@ export class Processor extends BaseDomainEntity {
 
   isActive: boolean;
 
-  wrapperIntegrationId?: string;
+  integrationCode?: string;
 
   constructor(attrs: InstanceProperties<Processor>) {
     super(attrs);
     this.name = attrs?.name;
     this.isActive = attrs?.isActive;
-    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
+    this.integrationCode = attrs?.integrationCode;
   }
 }

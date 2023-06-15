@@ -34,9 +34,8 @@ export class ReAttemptRequestModuleUseCase {
     const requestModuleAttempt = requestModule.createAttempt({
       createdByUserId: request.createdByUserId,
     });
-    requestModule.attempts += 1;
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
-      wrapperIntegrationId: request.tenant.tenantId,
+      integrationCode: request.tenant.tenantId,
     });
     if (tenantDetails instanceof Error) throw tenantDetails;
     await this.callDeployUrl({

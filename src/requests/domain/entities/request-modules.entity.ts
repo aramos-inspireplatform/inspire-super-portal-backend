@@ -6,28 +6,18 @@ import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 
 export class RequestModules extends BaseDomainEntity {
   module: Module;
-
   moduleRequestStatus: RequestModuleStatus;
-
   requestSettings: object;
-
-  wrapperIntegrationId?: string;
-
   apiRequestBody?: object;
-
   apiResponseBody?: object;
-
   attempts: number;
-
   requestModuleAttempts?: RequestModuleAttempts[];
-
   requestNotes?: object;
 
   constructor(attrs: RequestModules.Constructor) {
     super(attrs);
     this.module = attrs.module;
     this.moduleRequestStatus = attrs.moduleRequestStatus;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
     this.requestSettings = attrs.requestSettings;
     this.apiRequestBody = attrs.apiRequestBody;
     this.apiResponseBody = attrs.apiResponseBody;
@@ -87,7 +77,6 @@ export namespace RequestModules {
     module: Module;
     moduleRequestStatus: RequestModuleStatus;
     requestSettings: object;
-    wrapperIntegrationId?: string;
     apiRequestBody?: object;
     apiResponseBody?: object;
     attempts?: number;

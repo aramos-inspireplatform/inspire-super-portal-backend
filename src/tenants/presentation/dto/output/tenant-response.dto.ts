@@ -101,5 +101,5 @@ export class GetTenantResponseDto extends BaseDto {
 
   @ApiProperty({ example: '643303d0a19029aa893f0f9b' })
   @Expose()
-  wrapperIntegrationId: string;
+  integrationCode: string;
 }

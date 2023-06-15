@@ -16,6 +16,6 @@ export class Countries extends BaseEntity {
   @Column('character varying', { name: 'code', length: 2 })
   code: string;
 
-  @Column('character varying', { name: 'wrapper_integration_id', length: 300 })
-  wrapperIntegrationId: string;
+  @Column('character varying', { name: 'integration_code', length: 50 })
+  integrationCode: string;
 }

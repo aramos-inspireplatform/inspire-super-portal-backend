@@ -38,7 +38,7 @@ export class ModuleRequestBatchUseCase {
       requestModule.id,
     );
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
-      wrapperIntegrationId: request.tenant.tenantId,
+      integrationCode: request.tenant.tenantId,
     });
     if (tenantDetails instanceof Error) return;
     const requestModuleAttempt = requestModule.createAttempt({

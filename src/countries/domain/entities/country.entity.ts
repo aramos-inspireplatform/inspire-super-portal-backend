@@ -6,7 +6,7 @@ export class Country extends BaseDomainEntity {
   code: string;
   nativeName: string;
   flagSvgUrl: string;
-  wrapperIntegrationId: string;
+  integrationCode: string;
 
   constructor(attrs: InstanceProperties<Country>) {
     super(attrs);
@@ -14,6 +14,6 @@ export class Country extends BaseDomainEntity {
     this.code = attrs?.code;
     this.nativeName = attrs?.nativeName;
     this.flagSvgUrl = attrs?.flagSvgUrl;
-    this.wrapperIntegrationId = attrs?.wrapperIntegrationId;
+    this.integrationCode = attrs?.integrationCode;
   }
 }

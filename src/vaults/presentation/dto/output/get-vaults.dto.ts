@@ -19,5 +19,5 @@ export class GetVaultsResponseDto extends BaseDto {
   @ApiProperty({
     example: '5b3ffe96-bfc2-4b5b-b323-558621f0ea16',
   })
-  wrapperIntegrationId: string;
+  integrationCode: string;
 }

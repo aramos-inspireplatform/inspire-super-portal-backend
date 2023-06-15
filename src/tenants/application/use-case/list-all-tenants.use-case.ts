@@ -34,7 +34,7 @@ export namespace ListAllTenantsUseCase {
   export type Tenant = {
     id: string;
     name: string;
-    wrapperIntegrationId: string;
+    integrationCode: string;
     tenantStatus: TenantStatus;
     createdDate: Date;
     updatedDate: Date;

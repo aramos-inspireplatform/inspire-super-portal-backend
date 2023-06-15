@@ -16,13 +16,6 @@ import { BaseEntity } from '~/shared/infra/database/entities/base';
 @Index('pk__request_module', ['id'], { unique: true })
 @Entity('request_modules', { schema: 'public' })
 export class RequestModules extends BaseEntity {
-  @Column('character varying', {
-    name: 'wrapper_integration_id',
-    nullable: true,
-    length: 300,
-  })
-  wrapperIntegrationId: string | null;
-
   @Column('smallint', { name: 'attempts' })
   attempts: number;
 
@@ -43,7 +36,7 @@ export class RequestModules extends BaseEntity {
     (requestModuleAttempts) => requestModuleAttempts.moduleRequest,
     {
       eager: true,
-      cascade: ['insert'],
+      cascade: ['insert', 'update'],
     },
   )
   requestModuleAttempts: Relation<RequestModuleAttempts[]>;
