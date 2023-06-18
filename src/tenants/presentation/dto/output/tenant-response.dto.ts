@@ -3,11 +3,11 @@ import { Expose, Exclude, Type } from 'class-transformer';
 import { BaseDto } from '../../../../shared/presentation/base.dto';
 import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
 import { TenantStatus } from '~/tenants/domain/entity/tenant-statuses.entity';
-import { GetTenantCountryResponseDto } from '~/tenants/presentation/dto/output/tenant-country-response.dto';
-import { GetTenantLanguageResponseDto } from '~/tenants/presentation/dto/output/tenant-language-response.dto';
-import { GetTenantTimezoneResponseDto } from '~/tenants/presentation/dto/output/tenant-timezone-response.dto';
-import { GetTenantAgencyResponseDto } from '~/tenants/presentation/dto/output/tenant-agency-response.dto';
-export class GetTenantResponseDto extends BaseDto {
+import { TenantCountryResponseDto } from '~/tenants/presentation/dto/output/tenant-country-response.dto';
+import { TenantLanguageResponseDto } from '~/tenants/presentation/dto/output/tenant-language-response.dto';
+import { TenantTimezoneResponseDto } from '~/tenants/presentation/dto/output/tenant-timezone-response.dto';
+import { TenantAgencyResponseDto } from '~/tenants/presentation/dto/output/tenant-agency-response.dto';
+export class TenantResponseDto extends BaseDto {
   @Expose()
   @ApiProperty({
     name: 'id',
@@ -109,21 +109,21 @@ export class GetTenantResponseDto extends BaseDto {
 
   @ApiProperty({ name: 'country' })
   @Expose({ name: 'country' })
-  @Type(() => GetTenantCountryResponseDto)
-  countries: GetTenantCountryResponseDto;
+  @Type(() => TenantCountryResponseDto)
+  countries: TenantCountryResponseDto;
 
   @ApiProperty({ name: 'language' })
   @Expose({ name: 'language' })
-  @Type(() => GetTenantLanguageResponseDto)
-  languages: GetTenantLanguageResponseDto;
+  @Type(() => TenantLanguageResponseDto)
+  languages: TenantLanguageResponseDto;
 
   @ApiProperty({ name: 'timezone' })
   @Expose({ name: 'timezone' })
-  @Type(() => GetTenantTimezoneResponseDto)
-  timezone: GetTenantTimezoneResponseDto;
+  @Type(() => TenantTimezoneResponseDto)
+  timezone: TenantTimezoneResponseDto;
 
   @ApiProperty({ name: 'agency' })
   @Expose({ name: 'agency' })
-  @Type(() => GetTenantAgencyResponseDto)
-  agencies: GetTenantAgencyResponseDto;
+  @Type(() => TenantAgencyResponseDto)
+  agencies: TenantAgencyResponseDto;
 }

@@ -1,4 +1,4 @@
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
 import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
@@ -16,7 +16,7 @@ export class ReAttemptRequestModuleUseCase {
     private readonly requestModulesRepository: IRequestModuleRepository,
     private readonly httpClient: IHttpClient,
     private readonly requestRepository: IRequestRepository,
-    private readonly inspireTenantService: IInspireTenantService,
+    private readonly inspireTenantService: IInspireTenantApiService,
   ) {}
 
   async handle(attrs: ReAttemptRequestModuleUseCase.InputAttrs) {
@@ -61,7 +61,7 @@ export class ReAttemptRequestModuleUseCase {
     request: Request;
     requestModuleAttempt: RequestModuleAttempts;
     requestModule: RequestModules;
-    tenantDetails: IInspireTenantService.TenantDetails;
+    tenantDetails: IInspireTenantApiService.TenantDetails;
     accessToken: string;
   }) {
     const payload = {

@@ -1,13 +1,24 @@
 import { Module } from '~/requests/domain/entities/module.entity';
+import { TenantListResponseDto } from '~/tenants/presentation/dto/output/tenant-list-response.dto';
 
-export interface IInspireTenantService {
+export interface IInspireTenantApiService {
+  findAll(
+    attrs: IInspireTenantApiService.FindAllInputAttrs,
+  ): IInspireTenantApiService.FindAllResult;
+
+  findOne(
+    attrs: IInspireTenantApiService.FindOneInputAttrs,
+  ): IInspireTenantApiService.FindOneResult;
+
+  // Deprecated below ----------------------------
+
   getTenantJwtTokenUserDetails(
-    attrs: IInspireTenantService.GetTenantUserDetailsInputAttrs,
-  ): IInspireTenantService.UserDetailsResult;
+    attrs: IInspireTenantApiService.GetTenantUserDetailsInputAttrs,
+  ): IInspireTenantApiService.UserDetailsResult;
 
   getTenantDetails(
-    attrs: IInspireTenantService.GetTenantDetailsInputAttrs,
-  ): IInspireTenantService.TenantDetailsResult;
+    attrs: IInspireTenantApiService.GetTenantDetailsInputAttrs,
+  ): IInspireTenantApiService.TenantDetailsResult;
 
   linkTenantModule(attrs: {
     module: Module;
@@ -26,10 +37,10 @@ export interface IInspireTenantService {
   getTenantAndUserDetails(attrs: {
     tenantIntegrationKey: string;
     googleTenantId: string;
-  }): Promise<IInspireTenantService.TenantDetails>;
+  }): Promise<IInspireTenantApiService.TenantDetails>;
 }
 
-export namespace IInspireTenantService {
+export namespace IInspireTenantApiService {
   export type TenantUserUserDetails = {
     id: string;
     name: string;
@@ -85,6 +96,25 @@ export namespace IInspireTenantService {
     logo: string;
     id: string;
   };
+
+  export type FindAllInputAttrs = {
+    accessToken: string;
+    pagination: {
+      page: number;
+      pageSize: number;
+      sortby?: string;
+      keywords?: string;
+    };
+  };
+  export type FindAllResult = Promise<TenantListResponseDto>;
+
+  export type FindOneInputAttrs = {
+    accessToken: string;
+    integrationCode: string;
+  };
+  export type FindOneResult = Promise<TenantDetails | Error>;
+
+  // Deprecated below ----------------------------
 
   export type GetTenantUserDetailsInputAttrs = { accessToken: string };
   export type UserDetailsResult = Promise<TenantUserUserDetails>;

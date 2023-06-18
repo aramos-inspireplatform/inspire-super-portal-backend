@@ -4,7 +4,7 @@ import { ListAllTenantsUseCase } from '~/tenants/application/use-case/list-all-t
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 
-export class ListAlltenantsUseCaseFactoryProvider {
+export class ListAllTenantsUseCaseFactoryProvider {
   static register(): FactoryProvider {
     return {
       provide: TenantProvidersSymbols.LIST_TENANTS_USE_CASE,

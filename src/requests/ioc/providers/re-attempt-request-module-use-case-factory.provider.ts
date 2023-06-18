@@ -1,6 +1,6 @@
 import { FactoryProvider } from '@nestjs/common';
-import { InspireTenantProvidersSymbols } from '~/inspire-tenant/ioc/inspire-tenant-providers.symbols';
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { InspireApiServicesProvidersSymbols } from '~/shared/application/services/inspire-api-services/shared/symbols/inspire-api-services-providers.symbols';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { ReAttemptRequestModuleUseCase } from '~/requests/application/re-attempt-request-module.use-case';
 import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
@@ -18,7 +18,7 @@ export class ReAttemptRequestModuleUseCaseFactoryProvider {
         requestModulesRepository: IRequestModuleRepository,
         httpClient: IHttpClient,
         requestRepository: IRequestRepository,
-        inspireTenantService: IInspireTenantService,
+        inspireTenantService: IInspireTenantApiService,
       ) =>
         new ReAttemptRequestModuleUseCase(
           requestModulesRepository,
@@ -30,7 +30,7 @@ export class ReAttemptRequestModuleUseCaseFactoryProvider {
         RequestModulesRepository,
         AxiosHttpClientAdapter,
         RequestRepository,
-        InspireTenantProvidersSymbols.INSPIRE_TENANT_SERVICE,
+        InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
       ],
     };
   }

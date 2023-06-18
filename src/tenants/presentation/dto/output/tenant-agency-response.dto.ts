@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { BaseTenantDto } from '~/shared/presentation/base-tenant.dto';
 
-export class GetTenantAgencyResponseDto extends BaseTenantDto {
+export class TenantAgencyResponseDto extends BaseTenantDto {
   @Expose()
   @ApiProperty({ example: 'Agency name' })
   name: string;

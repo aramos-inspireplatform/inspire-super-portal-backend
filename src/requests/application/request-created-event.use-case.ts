@@ -1,4 +1,4 @@
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
 import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses-ids.constant';
@@ -13,7 +13,7 @@ export class RequestCreatedEventUseCase {
   constructor(
     private readonly httpClient: IHttpClient,
     private readonly requestRepository: IRequestRepository,
-    private readonly inspireTenantService: IInspireTenantService,
+    private readonly inspireTenantService: IInspireTenantApiService,
   ) {}
 
   async handle(attrs: RequestCreatedEventUseCase.InputAttrs) {
@@ -53,7 +53,7 @@ export class RequestCreatedEventUseCase {
     requestModuleAttempt: RequestModuleAttempts,
     requestModule: RequestModules,
     request: Request,
-    tenantDetails: IInspireTenantService.TenantDetails,
+    tenantDetails: IInspireTenantApiService.TenantDetails,
     attrs: RequestCreatedEventUseCase.InputAttrs,
   ) {
     const payload = {

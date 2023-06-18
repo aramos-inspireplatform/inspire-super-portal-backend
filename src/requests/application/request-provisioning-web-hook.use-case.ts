@@ -1,4 +1,4 @@
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import {
   RequestEmailTemplates,
   RequestEmailTemplatesSubject,
@@ -25,7 +25,7 @@ export class RequestProvisioningWebHookUseCase {
     private readonly requestRepository: IRequestRepository,
     private readonly queueService: IQueueService,
     private readonly moduleRepository: IModuleRepository,
-    private readonly inspireTenantService: IInspireTenantService,
+    private readonly inspireTenantService: IInspireTenantApiService,
     private readonly httpClient: IHttpClient,
   ) {}
 

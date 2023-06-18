@@ -1,6 +1,6 @@
 import { FactoryProvider } from '@nestjs/common';
-import { InspireTenantProvidersSymbols } from '~/inspire-tenant/ioc/inspire-tenant-providers.symbols';
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { InspireApiServicesProvidersSymbols } from '~/shared/application/services/inspire-api-services/shared/symbols/inspire-api-services-providers.symbols';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { ModuleRequestBatchUseCase } from '~/requests/application/batch/module-request-batch.use-case';
 import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
@@ -17,7 +17,7 @@ export class ModuleRequestBatchUseCaseFactoryProvider {
       useFactory: (
         requestModuleRepository: IRequestModuleRepository,
         requestRepository: IRequestRepository,
-        inspireTenantService: IInspireTenantService,
+        inspireTenantService: IInspireTenantApiService,
         httpClient: IHttpClient,
       ) =>
         new ModuleRequestBatchUseCase(
@@ -29,7 +29,7 @@ export class ModuleRequestBatchUseCaseFactoryProvider {
       inject: [
         RequestModulesRepository,
         RequestRepository,
-        InspireTenantProvidersSymbols.INSPIRE_TENANT_SERVICE,
+        InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
         AxiosHttpClientAdapter,
       ],
     };
