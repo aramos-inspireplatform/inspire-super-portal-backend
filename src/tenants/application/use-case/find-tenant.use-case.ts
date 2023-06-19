@@ -1,6 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 
 export class FindTenantUseCase {
@@ -36,48 +35,4 @@ export namespace FindTenantUseCase {
     tenantId: string;
     accessToken: string;
   };
-
-  export type Tenant = {
-    id: string;
-    name: string;
-    slug: string;
-    googleTenantId: string;
-    logo: any;
-    accountName: string;
-    publicBusinessName: any;
-    supportEmail: any;
-    supportPhoneNumber: any;
-    showPhoneOnInvoiceAndReceipt: boolean;
-    statementDescriptor: any;
-    shortenedDescriptor: any;
-    businessWebsite: any;
-    supportWebsite: any;
-    privacyPolicy: any;
-    termsOfService: any;
-    timezone: Timezone;
-    languages: Languages;
-    currencies: any[];
-    countries: Countries;
-  };
-
-  export type Timezone = {
-    id: string;
-    name: string;
-    countryIsoCode: string;
-    utcOffset: string;
-    utcDstOffset: string;
-  };
-
-  export type Languages = {
-    id: string;
-    name: string;
-    isoCode: string;
-  };
-
-  export type Countries = {
-    id: string;
-    name: string;
-  };
-
-  export type TenantRouteResponse = InspireHttpResponse<Tenant>;
 }

@@ -1,13 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Exclude, Type } from 'class-transformer';
+import { Expose, Exclude } from 'class-transformer';
 import { BaseDto } from '../../../../shared/presentation/base.dto';
 import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
 import { TenantStatus } from '~/tenants/domain/entity/tenant-statuses.entity';
-import { TenantCountryResponseDto } from '~/tenants/presentation/dto/output/tenant-country-response.dto';
-import { TenantLanguageResponseDto } from '~/tenants/presentation/dto/output/tenant-language-response.dto';
-import { TenantTimezoneResponseDto } from '~/tenants/presentation/dto/output/tenant-timezone-response.dto';
-import { TenantAgencyResponseDto } from '~/tenants/presentation/dto/output/tenant-agency-response.dto';
-export class TenantResponseDto extends BaseDto {
+export class TenantDto extends BaseDto {
   @Expose()
   @ApiProperty({
     name: 'id',
@@ -106,24 +102,4 @@ export class TenantResponseDto extends BaseDto {
   @ApiProperty({ example: '643303d0a19029aa893f0f9b' })
   @Expose()
   integrationCode: string;
-
-  @ApiProperty({ name: 'country' })
-  @Expose({ name: 'country' })
-  @Type(() => TenantCountryResponseDto)
-  countries: TenantCountryResponseDto;
-
-  @ApiProperty({ name: 'language' })
-  @Expose({ name: 'language' })
-  @Type(() => TenantLanguageResponseDto)
-  languages: TenantLanguageResponseDto;
-
-  @ApiProperty({ name: 'timezone' })
-  @Expose({ name: 'timezone' })
-  @Type(() => TenantTimezoneResponseDto)
-  timezone: TenantTimezoneResponseDto;
-
-  @ApiProperty({ name: 'agency' })
-  @Expose({ name: 'agency' })
-  @Type(() => TenantAgencyResponseDto)
-  agencies: TenantAgencyResponseDto;
 }

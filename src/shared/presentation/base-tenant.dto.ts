@@ -9,8 +9,8 @@ import {
 } from 'class-transformer';
 
 export class BaseTenantDto {
+  @ApiProperty({ name: 'integrationCode', example: '61b0dbd5ec727249cd6e2e24' })
   @Expose({ name: 'integrationCode' })
-  @ApiProperty({ example: '61b0dbd5ec727249cd6e2e24' })
   id: string;
 
   @ApiHideProperty()

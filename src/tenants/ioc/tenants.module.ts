@@ -6,6 +6,7 @@ import { FindTenantUseCaseFactoryProvider } from './providers/find-tenant-use-ca
 import { FindTenantV2UseCaseFactoryProvider } from './providers/find-tenant-v2-use-case-factory.provider';
 import { InspireTenantApiServiceModule } from '~/shared/application/services/inspire-api-services/tenant/ioc/inspire-tenant-api-service.module';
 import { FindAllTenantV2UseCaseFactoryProvider } from '~/tenants/ioc/providers/find-all-tenant-v2-use-case-factory.provider';
+import { TenantsV2Controller } from '~/tenants/presentation/tenants-v2.controller';
 
 @Module({
   providers: [
@@ -18,7 +19,7 @@ import { FindAllTenantV2UseCaseFactoryProvider } from '~/tenants/ioc/providers/f
     FindTenantUseCaseFactoryProvider.register(),
     CreateTenantUseCaseFactoryProvider.register(),
   ],
-  controllers: [TenantsController],
+  controllers: [TenantsV2Controller, TenantsController],
   imports: [InspireTenantApiServiceModule],
 })
 export class TenantsModule {}

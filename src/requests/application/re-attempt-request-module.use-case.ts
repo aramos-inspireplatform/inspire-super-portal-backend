@@ -10,6 +10,7 @@ import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
+import { InspireTenantApiServiceDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.dto';
 
 export class ReAttemptRequestModuleUseCase {
   constructor(
@@ -61,7 +62,7 @@ export class ReAttemptRequestModuleUseCase {
     request: Request;
     requestModuleAttempt: RequestModuleAttempts;
     requestModule: RequestModules;
-    tenantDetails: IInspireTenantApiService.TenantDetails;
+    tenantDetails: InspireTenantApiServiceDto.TenantDetails;
     accessToken: string;
   }) {
     const payload = {
