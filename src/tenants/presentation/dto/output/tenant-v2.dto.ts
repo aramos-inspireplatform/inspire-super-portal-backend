@@ -89,6 +89,10 @@ export class TenantV2Dto extends BaseTenantDto {
   @Expose()
   termsOfService: string;
 
+  @ApiProperty({ example: new Date() })
+  @Expose()
+  createdAt: string;
+
   @ApiProperty()
   @Expose()
   @Type(() => TenantTimezoneDto)
