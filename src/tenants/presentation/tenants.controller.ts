@@ -40,26 +40,10 @@ export class TenantsController {
     private readonly findTenantUseCase: FindTenantUseCase,
   ) {}
 
-  @Post()
-  @AuthenticatedRoute()
-  @ApiDefaultResponse({ type: TenantDto })
-  async createTenant(
-    @Body() payload: CreateTenantRequestBodyDto,
-    @Req() request: FastifyRequest,
-    @GetUserFromRequest() user: UserFromRequest,
-  ) {
-    const tenant = await this.createTenantUseCase.create({
-      accessToken: request.headers.authorization,
-      tenant: payload,
-      currentUser: user.claims.userId,
-    });
-    return TenantDto.factory(TenantDto, tenant);
-  }
-
   @Get()
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: PaginatedTenantsResponseDto })
-  async findAllV1(
+  async findAll(
     @Req() request: FastifyRequest,
     @Query() pagination: CommonPaginateDto,
   ) {
@@ -82,13 +66,29 @@ export class TenantsController {
   @Get(':id')
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: TenantDto })
-  async findOneV1(
+  async findOne(
     @Req() request: FastifyRequest,
     @Param('id', ParseUUIDPipe) id: string,
   ) {
     const tenant = await this.findTenantUseCase.find({
       accessToken: request.headers.authorization,
       tenantId: id,
+    });
+    return TenantDto.factory(TenantDto, tenant);
+  }
+
+  @Post()
+  @AuthenticatedRoute()
+  @ApiDefaultResponse({ type: TenantDto })
+  async create(
+    @Body() payload: CreateTenantRequestBodyDto,
+    @Req() request: FastifyRequest,
+    @GetUserFromRequest() user: UserFromRequest,
+  ) {
+    const tenant = await this.createTenantUseCase.create({
+      accessToken: request.headers.authorization,
+      tenant: payload,
+      currentUser: user.claims.userId,
     });
     return TenantDto.factory(TenantDto, tenant);
   }

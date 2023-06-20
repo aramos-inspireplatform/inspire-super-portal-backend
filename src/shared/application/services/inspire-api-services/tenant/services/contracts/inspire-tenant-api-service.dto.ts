@@ -121,6 +121,23 @@ export namespace InspireTenantApiServiceDto {
   };
   export type FindOneResult = Promise<Tenant | Error>;
 
+  // Create
+  export type CreateInputAttrs = {
+    accessToken: string;
+    currentUser: string;
+    tenant: {
+      name: string;
+      accountName: string;
+      slug: string;
+      countryId: string;
+      settings?: Settings;
+      agencyId?: string;
+      timezoneId?: string;
+      languageId?: string;
+    };
+  };
+  export type CreateResult = Promise<Tenant | Error>;
+
   // Deprecated below ------------------------------------------------
   export type TenantUserUserDetails = {
     id: string;
@@ -151,9 +168,7 @@ export namespace InspireTenantApiServiceDto {
     firstUserEmail: string;
   };
 
-  export type Settings = {
-    teste: string;
-  };
+  export type Settings = { [property: string]: Settings };
 
   export type TimezoneId = {
     _id: string;

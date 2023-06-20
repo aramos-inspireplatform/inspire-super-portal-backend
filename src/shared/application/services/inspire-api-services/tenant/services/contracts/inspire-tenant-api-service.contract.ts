@@ -10,6 +10,10 @@ export interface IInspireTenantApiService {
     attrs: InspireTenantApiServiceDto.FindOneInputAttrs,
   ): InspireTenantApiServiceDto.FindOneResult;
 
+  create(
+    attrs: InspireTenantApiServiceDto.CreateInputAttrs,
+  ): InspireTenantApiServiceDto.CreateResult;
+
   // Deprecated below ----------------------------
 
   getTenantJwtTokenUserDetails(
