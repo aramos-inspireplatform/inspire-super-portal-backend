@@ -26,7 +26,7 @@ export class CreateTenantUserRequestDto {
   })
   @IsNotEmpty()
   @IsString()
-  @MaxLength(50)
+  @MaxLength(200)
   lastName: string;
 
   @ApiProperty({
