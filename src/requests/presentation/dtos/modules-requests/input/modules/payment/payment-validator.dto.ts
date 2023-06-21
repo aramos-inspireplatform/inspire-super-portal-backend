@@ -6,6 +6,7 @@ import {
   IsDefined,
   IsOptional,
   ValidateNested,
+  ArrayUnique,
 } from 'class-validator';
 import { PaymentProcessorDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-processor.dto';
 import { VaultDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/vault.dto';
@@ -31,5 +32,6 @@ export class PaymentProviderValidatorRequestDto {
   @ValidateNested({ each: true })
   @ArrayMinSize(1)
   @Type(() => WebHookDto)
+  @ArrayUnique((item: WebHookDto) => item.url)
   webHooks?: WebHookDto[];
 }

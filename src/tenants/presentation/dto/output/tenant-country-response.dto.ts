@@ -1,40 +1,41 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { BaseDto } from '~/shared/presentation/base.dto';
+import { BaseTenantDto } from '~/shared/presentation/base-tenant.dto';
 
-export class GetPaymentCountryResponseDto extends BaseDto {
+export class GetTenantCountryResponseDto extends BaseTenantDto {
   @Expose()
   @ApiProperty({
     type: String,
-    example: 'Brazil',
+    example: 'United States',
   })
   name: string;
 
   @Expose()
   @ApiProperty({
     type: String,
-    example: 'Brasil',
+    example: 'United States',
   })
   nativeName: string;
 
   @Expose()
   @ApiProperty({
     type: String,
-    example: 'BR',
+    example: 'US',
   })
   code: string;
 
   @Expose()
   @ApiProperty({
     type: String,
-    example: 'https://test',
+    example:
+      'https://inspire-tenant-assets-public.s3.amazonaws.com/countries_flags/US.svg',
   })
   flagSvgUrl: string;
 
   @Expose()
   @ApiProperty({
     type: String,
-    example: '86fd5615-544d-4aa7-88d1-f8bdd3da8156',
+    example: '+1',
   })
-  integrationCode: string;
+  dialCode: string;
 }

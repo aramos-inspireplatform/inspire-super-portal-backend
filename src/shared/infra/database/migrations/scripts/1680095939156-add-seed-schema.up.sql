@@ -536,7 +536,7 @@ INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_da
 INSERT INTO request_statuses (id, "name", created_date, updated_date, deleted_date) VALUES('46b6189b-7e7e-45f1-8004-f9f81c2769ed'::uuid, 'Partially Completed', '2023-04-12 06:50:28.867', NULL, NULL);
 
 -- Module Request Types
-INSERT INTO modules (id, "name", deploy_url, created_date, updated_date, deleted_date, wrapper_integration_id, status_url, time_span, minimum_time_span, integration_key) VALUES('bbf8b5ce-d2fe-43ba-8144-f510c1ed3f49'::uuid, 'Payments', 'https://webhook.site/0b100a54-b8f4-48e5-b7e6-e869c495809a', '2023-05-10 14:07:03.296', NULL, NULL, NULL, 'https://webhook.site/0b100a54-b8f4-48e5-b7e6-e869c495809a', 10, 10, 'XXXXXXX');
+INSERT INTO modules (id, "name", deploy_url, created_date, updated_date, deleted_date, wrapper_integration_id, status_url, time_span, minimum_time_span, integration_key) VALUES('bbf8b5ce-d2fe-43ba-8144-f510c1ed3f49'::uuid, 'Payments', 'http://inspire_billing_nestjs:3334/create-tenants', '2023-05-10 14:07:03.296', NULL, NULL, NULL, 'http://inspire_billing_nestjs:3334/create-tenants', 10, 10, 'XXXXXXX');
 
 -- Module Provision Request Statuses
 INSERT INTO request_module_attempt_statuses ("name", id, created_date, updated_date, deleted_date) VALUES('Requested', '9a3e164a-5a59-4dfd-939e-0c39dc74a70e'::uuid, '2023-04-09 07:39:02.769', NULL, NULL);

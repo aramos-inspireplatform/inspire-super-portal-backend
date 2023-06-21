@@ -8,7 +8,6 @@ export class RequestModuleAttempts extends BaseDomainEntity {
   provisionApiRequestBody?: object;
   provisionApiResponseStatusCode?: number;
   provisionApiResponseBody?: object;
-  wrapperIntegrationId?: string;
   webhookResponseBody?: object;
 
   constructor(attrs: RequestModuleAttempts.Constructor) {
@@ -20,7 +19,6 @@ export class RequestModuleAttempts extends BaseDomainEntity {
     this.provisionApiRequestBody = attrs.provisionApiRequestBody;
     this.provisionApiResponseStatusCode = attrs.provisionApiResponseStatusCode;
     this.provisionApiResponseBody = attrs.provisionApiResponseBody;
-    this.wrapperIntegrationId = attrs.wrapperIntegrationId;
     this.webhookResponseBody = attrs.webhookResponseBody;
   }
 
@@ -62,7 +60,6 @@ export namespace RequestModuleAttempts {
     provisionApiRequestBody?: object;
     provisionApiResponseStatusCode?: number;
     provisionApiResponseBody?: object;
-    wrapperIntegrationId?: string;
     webhookResponseBody?: object;
   };
 }

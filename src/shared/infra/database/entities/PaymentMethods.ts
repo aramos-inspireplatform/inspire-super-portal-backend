@@ -13,9 +13,8 @@ export class PaymentMethods extends BaseEntity {
   isActive: boolean;
 
   @Column('character varying', {
-    name: 'wrapper_integration_id',
-    nullable: true,
-    length: 300,
+    name: 'integration_code',
+    length: 50,
   })
-  wrapperIntegrationId: string | null;
+  integrationCode: string;
 }

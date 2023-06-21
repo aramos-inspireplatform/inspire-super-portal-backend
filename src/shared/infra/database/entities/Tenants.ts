@@ -20,8 +20,12 @@ export class Tenants extends BaseEntity {
   @Column('character varying', { name: 'tenant_id', length: 300 })
   tenantId: string;
 
-  @Column('character varying', { name: 'wrapper_integration_id', length: 300 })
-  wrapperIntegrationId: string;
+  @Column('character varying', {
+    name: 'integration_code',
+    nullable: true,
+    length: 50,
+  })
+  integrationCode: string | null;
 
   @Column('character varying', { name: 'created_by_user_id', length: 300 })
   createdByUserId: string;

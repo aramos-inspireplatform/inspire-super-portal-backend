@@ -80,7 +80,6 @@ export class RequestModuleAttemptsRepository
       }),
       updatedDate: entity.updatedDate,
       webhookResponseBody: entity.webhookResponseBody,
-      wrapperIntegrationId: entity.wrapperIntegrationId,
     });
   }
 
@@ -126,7 +125,6 @@ export class RequestModuleAttemptsRepository
       provisionApiResponseBody: entity.provisionApiResponseBody,
       provisionApiResponseStatusCode: entity.provisionApiResponseStatusCode,
       webhookResponseBody: entity.webhookResponseBody,
-      wrapperIntegrationId: entity.wrapperIntegrationId,
       createdByUserId: entity.createdByUserId,
       createdDate: entity.createdDate,
       updatedDate: entity.updatedDate,

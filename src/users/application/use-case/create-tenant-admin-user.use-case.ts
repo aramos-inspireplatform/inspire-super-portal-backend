@@ -1,3 +1,4 @@
+import { timingSafeEqual } from 'crypto';
 import { RandomUUIDGeneratorAdapter } from '~/shared/application/adapters/uuid-generator.adapter';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
@@ -22,6 +23,7 @@ export class CreateTenantAdminUserUseCase {
         {
           headers: {
             authorization: attrs.accessToken,
+            'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
           },
         },
       );
