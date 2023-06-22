@@ -23,12 +23,12 @@ export class CreateTenantRequestBodyDto {
   name: string;
 
   @ApiProperty({ example: 'dontknow Test' })
-  @MaxLength(50)
+  @MaxLength(300)
   @MinLength(2)
   @IsNotEmpty()
   accountName: string;
 
-  @MaxLength(20)
+  @MaxLength(100)
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ example: 'description' })
