@@ -28,6 +28,9 @@ export class InspireTenantApiService implements IInspireTenantApiService {
       headers: {
         authorization: attrs.accessToken,
       },
+      params: {
+        ...attrs.pagination,
+      },
     });
 
     return tenants.data.body.data;
@@ -69,6 +72,25 @@ export class InspireTenantApiService implements IInspireTenantApiService {
 
     return tenant.data.body.data;
   }
+
+  // async activate(
+  //   attrs: InspireTenantApiServiceDto.ActivateInputAttrs,
+  // ): InspireTenantApiServiceDto.ActivateResult {
+  //   const url = `${this.V2_BASE_URL}/${attrs.integrationCode}/activate`;
+
+  //   const tenant =
+  //     await this.httpClient.patch<InspireTenantApiService.CreateHttpResponse>(
+  //       url,
+  //       null,
+  //       {
+  //         headers: {
+  //           'x-integration-key': this.TENANT_INTEGRATION_KEY,
+  //         },
+  //       },
+  //     );
+
+  //   return tenant.data.body.data;
+  // }
 
   // Deprecated below ----------------------------
   async getTenantDetails(

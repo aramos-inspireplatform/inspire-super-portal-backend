@@ -10,11 +10,13 @@ export class FindTenantUseCase {
     private readonly tenantRepository: ITenantRepository,
   ) {}
   async find(attrs: FindTenantUseCase.InputAttrs) {
-    const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
+    const tenant = await this.tenantRepository.findById({
+      integrationCode: attrs.integrationCode,
+    });
     if (!tenant)
       throw new NotFoundException('ExceptionsConstants.TENANT_NOT_FOUND');
 
-    const url = new URL(`${this.TENANTS_ROUTE}/${tenant.integrationCode}`);
+    const url = new URL(`${this.TENANTS_ROUTE}/v2/${tenant.integrationCode}`);
 
     const responseOrError = await this.httpClient.get(url.toString(), {
       headers: {
@@ -32,7 +34,7 @@ export class FindTenantUseCase {
 }
 export namespace FindTenantUseCase {
   export type InputAttrs = {
-    tenantId: string;
+    integrationCode: string;
     accessToken: string;
   };
 }

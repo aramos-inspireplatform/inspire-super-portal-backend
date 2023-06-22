@@ -72,7 +72,7 @@ export class TenantsController {
   ) {
     const tenant = await this.findTenantUseCase.find({
       accessToken: request.headers.authorization,
-      tenantId: id,
+      integrationCode: id,
     });
     return TenantDto.factory(TenantDto, tenant);
   }

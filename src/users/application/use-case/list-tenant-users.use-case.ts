@@ -38,9 +38,9 @@ export class ListTenantUsersUseCase {
   }
 
   private async getTenantId(attrs: ListUsersUseCase.InputAttrs) {
-    if (!attrs.tenantId) return null;
+    if (!attrs.integrationCode) return null;
     const tenant = await this.tenantRepository.findById({
-      id: attrs.tenantId,
+      integrationCode: attrs.integrationCode,
     });
     if (!tenant) throw new Error('exception:TENANT_NOT_FOUND');
     return tenant.tenantId;
@@ -55,7 +55,7 @@ export namespace ListUsersUseCase {
       sortby?: string;
       keywords?: string;
     };
-    tenantId?: string;
+    integrationCode?: string;
     accessToken: string;
   };
 

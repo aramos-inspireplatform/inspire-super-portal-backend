@@ -7,14 +7,20 @@ export type ReqConfig = {
 } & Json;
 
 export type IHttpClient = {
+  get<TResponse = any, TConfig = ReqConfig>(
+    url: string,
+    config?: TConfig,
+  ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
+
   post<TResponse, TConfig = ReqConfig>(
     url: string,
     data?: any,
     config?: TConfig,
   ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
-  get<TResponse = any, TConfig = ReqConfig>(
+  patch<TResponse = any, TConfig = ReqConfig>(
     url: string,
+    data?: any,
     config?: TConfig,
   ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
@@ -31,12 +37,6 @@ export type IHttpClient = {
   // ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
   // put<TResponse = any, TConfig = ReqConfig>(
-  //   url: string,
-  //   data?: any,
-  //   config?: TConfig,
-  // ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
-
-  // patch<TResponse = any, TConfig = ReqConfig>(
   //   url: string,
   //   data?: any,
   //   config?: TConfig,

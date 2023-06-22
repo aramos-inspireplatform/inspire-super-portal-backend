@@ -51,7 +51,9 @@ export class CreateRequestUseCase {
   }
 
   private async getTenant(attrs: CreateRequestUseCase.InputAttrs) {
-    const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
+    const tenant = await this.tenantRepository.findById({
+      integrationCode: attrs.tenantId,
+    });
     if (!tenant) throw new TenantNotFoundException();
     return tenant;
   }

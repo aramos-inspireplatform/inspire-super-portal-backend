@@ -21,7 +21,7 @@ export namespace ITenantRepository {
   export type SaveResult = Promise<Tenant>;
 
   export type FindByIdInputAttrs = {
-    id: string;
+    integrationCode: string;
   };
   export type FindByIdResult = Promise<Tenant | null>;
 

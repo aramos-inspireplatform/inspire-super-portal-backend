@@ -73,7 +73,7 @@ export class TenantsUsersController {
   ) {
     const users = await this.listTenantUsersUseCase.list({
       accessToken: request.headers.authorization,
-      tenantId: pagination.tenantId,
+      integrationCode: pagination.integrationCode,
       pagination: {
         ...pagination,
         pageSize: pagination.pagesize,
