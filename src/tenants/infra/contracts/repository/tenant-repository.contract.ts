@@ -28,6 +28,7 @@ export namespace ITenantRepository {
   export type ListAllInputAttrs = {
     skip: number;
     take: number;
+    sortby?: string;
   };
   export type ListAllResult = Promise<[Tenant[], number]>;
 

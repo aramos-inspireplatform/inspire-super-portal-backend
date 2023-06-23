@@ -9,6 +9,7 @@ export class ListAllTenantsUseCase {
     const [tenants, count] = await this.tenantRepository.listAndCount({
       skip: attrs.pagination.page * attrs.pagination.pageSize,
       take: attrs.pagination.pageSize,
+      sortby: attrs.pagination.sortby,
     });
 
     return {
