@@ -17,7 +17,7 @@ export class CreateTenantUserRequestDto {
   })
   @IsNotEmpty()
   @IsString()
-  @MaxLength(350)
+  @MaxLength(50)
   firstName: string;
 
   @ApiProperty({
@@ -26,7 +26,7 @@ export class CreateTenantUserRequestDto {
   })
   @IsNotEmpty()
   @IsString()
-  @MaxLength(50)
+  @MaxLength(200)
   lastName: string;
 
   @ApiProperty({
@@ -45,7 +45,7 @@ export class CreateTenantUserRequestDto {
   })
   @IsNotEmpty()
   @IsEmail()
-  @MaxLength(300)
+  @MaxLength(254)
   email: string;
 
   @ApiProperty({
