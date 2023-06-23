@@ -13,7 +13,7 @@ export class CreateTenantUserUseCase {
 
   async create(attrs: CreateTenantUserUseCase.InputAttrs) {
     const tenant = await this.tenantsRepository.findById({
-      id: attrs.tenantId,
+      integrationCode: attrs.tenantId,
     });
     if (!tenant) throw new TenantNotFoundException();
     const responseOrError =

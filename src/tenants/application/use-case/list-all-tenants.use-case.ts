@@ -1,5 +1,3 @@
-import { InspireHttpPaginatedResponse } from '~/shared/types/inspire-http-response.type';
-import { TenantStatus } from '~/tenants/domain/entity/tenant-statuses.entity';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 
 export class ListAllTenantsUseCase {
@@ -31,15 +29,4 @@ export namespace ListAllTenantsUseCase {
     };
     accessToken: string;
   };
-
-  export type Tenant = {
-    id: string;
-    name: string;
-    integrationCode: string;
-    tenantStatus: TenantStatus;
-    createdDate: Date;
-    updatedDate: Date;
-  };
-
-  export type TenantsResponse = InspireHttpPaginatedResponse<Tenant>;
 }
