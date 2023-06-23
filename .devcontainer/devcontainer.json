@@ -4,7 +4,7 @@
     "docker-compose.yml"
   ],
   "service": "inspire_superportal_nestjs",
-  "workspaceFolder": "/inspire_superportal",
+  "workspaceFolder": "/inspire_superportal_backend",
   "mounts": [
     "source=try-node-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume"
   ],
@@ -29,8 +29,14 @@
         "wallabyjs.wallaby-vscode"
       ],
       "settings": {
-        "terminal.integrated.shell.linux": "/bin/zsh"
+        "terminal.integrated.shell.linux": "/bin/zsh",
+        "workbench.colorCustomizations": {
+          "statusBar.background": "#6a329f",
+          "statusBar.noFolderBackground": "#212121",
+          "statusBar.debuggingBackground": "#263238"
+        }
       }
     }
   }
+}
 }
