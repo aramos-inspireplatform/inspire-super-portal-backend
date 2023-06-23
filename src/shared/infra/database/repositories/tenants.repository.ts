@@ -42,12 +42,15 @@ export class TenantsRepository implements ITenantRepository {
   async listAndCount(
     attrs: ITenantRepository.ListAllInputAttrs,
   ): ITenantRepository.ListAllResult {
-    const [tenants, total] = await this.repository
+    const query = this.repository
       .createQueryBuilder('tenants')
       .leftJoinAndSelect('tenants.tenantStatus', 'tenantStatus')
       .skip(attrs.skip)
-      .take(attrs.take)
-      .getManyAndCount();
+      .take(attrs.take);
+
+    if (attrs.sortby) query.orderBy(`tenants.${attrs.sortby}`, 'ASC');
+
+    const [tenants, total] = await query.getManyAndCount();
     return [tenants.map((tenant) => new Tenant(tenant)), total];
   }
 
