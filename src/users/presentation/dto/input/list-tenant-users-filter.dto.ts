@@ -8,5 +8,5 @@ export class ListTenantUsersFilterDto extends CommonPaginateDto {
     required: false,
   })
   @IsOptional()
-  integrationCode?: string;
+  googleTenantId?: string;
 }
