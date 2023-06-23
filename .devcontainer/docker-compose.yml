@@ -8,10 +8,10 @@ services:
     ports:
       - 3336:3336
     volumes:
-      - ../:/inspire_superportal:cached
+      - ../:/inspire_superportal_backend:cached
       - ../:/home/node/app:delegated
-      - inspire_superportal:/inspire_superportal/node_modules
-      - inspire_superportal_dist:/inspire_superportal/dist
+      - inspire_superportal:/inspire_superportal_backend/node_modules
+      - inspire_superportal_dist:/inspire_superportal_backend/dist
 
   inspire_superportal_postgres:
     build: ./postgres
@@ -29,6 +29,7 @@ volumes:
   inspire_superportal:
   inspire_superportal_dist:
   pgdata-superportal:
+
 
 networks:
   default:
