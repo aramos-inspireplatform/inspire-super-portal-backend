@@ -8,6 +8,27 @@ import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract'
 export class AxiosHttpClientAdapter implements IHttpClient {
   constructor(private readonly httpService: HttpService) {}
 
+  async get<TResponse, TConfig = any>(
+    url: string,
+    config?: TConfig,
+  ): Promise<IHttpClient.HttpClientResponse<TResponse>> {
+    try {
+      const response = await firstValueFrom(this.httpService.get(url, config));
+      return response;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      this.logError(axiosError, 'get');
+      throw new HttpException(
+        (axiosError?.response?.data as any)?.body,
+        axiosError?.response?.status,
+        {
+          cause: axiosError?.cause,
+          description: axiosError?.name,
+        },
+      );
+    }
+  }
+
   async post<TResponse, TConfig = any>(
     url: string,
     data?: any,
@@ -32,18 +53,21 @@ export class AxiosHttpClientAdapter implements IHttpClient {
     }
   }
 
-  async get<TResponse, TConfig = any>(
+  async patch<TResponse, TConfig = any>(
     url: string,
+    data?: any,
     config?: TConfig,
   ): Promise<IHttpClient.HttpClientResponse<TResponse>> {
     try {
-      const response = await firstValueFrom(this.httpService.get(url, config));
+      const response = await firstValueFrom(
+        this.httpService.patch(url, data, config),
+      );
       return response;
     } catch (error) {
       const axiosError = error as AxiosError;
-      this.logError(axiosError, 'get');
+      this.logError(axiosError, 'patch');
       throw new HttpException(
-        (axiosError?.response?.data as any)?.body,
+        (axiosError?.response?.data as any).body,
         axiosError?.response?.status,
         {
           cause: axiosError?.cause,

@@ -1,4 +1,4 @@
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
 import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
@@ -13,7 +13,7 @@ export class ModuleRequestBatchUseCase {
   constructor(
     private readonly requestModuleRepository: IRequestModuleRepository,
     private readonly requestRepository: IRequestRepository,
-    private readonly inspireTenantService: IInspireTenantService,
+    private readonly inspireTenantService: IInspireTenantApiService,
     protected readonly httpClient: IHttpClient,
   ) {}
 

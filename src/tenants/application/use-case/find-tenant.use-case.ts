@@ -1,6 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 
 export class FindTenantUseCase {
@@ -11,11 +10,13 @@ export class FindTenantUseCase {
     private readonly tenantRepository: ITenantRepository,
   ) {}
   async find(attrs: FindTenantUseCase.InputAttrs) {
-    const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
+    const tenant = await this.tenantRepository.findById({
+      integrationCode: attrs.integrationCode,
+    });
     if (!tenant)
       throw new NotFoundException('ExceptionsConstants.TENANT_NOT_FOUND');
 
-    const url = new URL(`${this.TENANTS_ROUTE}/${tenant.integrationCode}`);
+    const url = new URL(`${this.TENANTS_ROUTE}/v2/${tenant.integrationCode}`);
 
     const responseOrError = await this.httpClient.get(url.toString(), {
       headers: {
@@ -33,51 +34,7 @@ export class FindTenantUseCase {
 }
 export namespace FindTenantUseCase {
   export type InputAttrs = {
-    tenantId: string;
+    integrationCode: string;
     accessToken: string;
   };
-
-  export type Tenant = {
-    id: string;
-    name: string;
-    slug: string;
-    googleTenantId: string;
-    logo: any;
-    accountName: string;
-    publicBusinessName: any;
-    supportEmail: any;
-    supportPhoneNumber: any;
-    showPhoneOnInvoiceAndReceipt: boolean;
-    statementDescriptor: any;
-    shortenedDescriptor: any;
-    businessWebsite: any;
-    supportWebsite: any;
-    privacyPolicy: any;
-    termsOfService: any;
-    timezone: Timezone;
-    languages: Languages;
-    currencies: any[];
-    countries: Countries;
-  };
-
-  export type Timezone = {
-    id: string;
-    name: string;
-    countryIsoCode: string;
-    utcOffset: string;
-    utcDstOffset: string;
-  };
-
-  export type Languages = {
-    id: string;
-    name: string;
-    isoCode: string;
-  };
-
-  export type Countries = {
-    id: string;
-    name: string;
-  };
-
-  export type TenantRouteResponse = InspireHttpResponse<Tenant>;
 }

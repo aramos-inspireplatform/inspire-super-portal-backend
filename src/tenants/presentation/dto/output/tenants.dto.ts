@@ -3,7 +3,7 @@ import { Exclude, Expose } from 'class-transformer';
 import { BaseDto } from '../../../../shared/presentation/base.dto';
 import { TenantStatus } from '~/tenants/domain/entity/tenant-statuses.entity';
 import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
-export class ListTenantsResponseDto extends BaseDto {
+export class TenantsDto extends BaseDto {
   @Expose()
   @ApiProperty({
     name: 'id',
