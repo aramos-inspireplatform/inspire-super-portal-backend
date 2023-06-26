@@ -1,6 +1,6 @@
 import { FactoryProvider, Scope } from '@nestjs/common';
-import { InspireTenantProvidersSymbols } from '~/inspire-tenant/ioc/inspire-tenant-providers.symbols';
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { InspireApiServicesProvidersSymbols } from '~/shared/application/services/inspire-api-services/shared/symbols/inspire-api-services-providers.symbols';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { RequestProvisioningWebHookUseCase } from '~/requests/application/request-provisioning-web-hook.use-case';
 import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
 import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
@@ -23,7 +23,7 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
         requestRepository: IRequestRepository,
         queueService: IQueueService,
         moduleRepository: IModuleRepository,
-        inspireTenantService: IInspireTenantService,
+        inspireTenantService: IInspireTenantApiService,
         httpClient: IHttpClient,
       ) =>
         new RequestProvisioningWebHookUseCase(
@@ -39,7 +39,7 @@ export class RequestProvisioningWebHookUseCaseFactoryProvider {
         RequestRepository,
         QueueService,
         ModulesRepository,
-        InspireTenantProvidersSymbols.INSPIRE_TENANT_SERVICE,
+        InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
         AxiosHttpClientAdapter,
       ],
       scope: Scope.REQUEST,

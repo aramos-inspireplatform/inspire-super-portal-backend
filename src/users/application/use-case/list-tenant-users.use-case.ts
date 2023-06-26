@@ -29,7 +29,7 @@ export class ListTenantUsersUseCase {
         {
           headers: {
             authorization: attrs.accessToken,
-            tenant: await this.getTenantId(attrs),
+            tenant: attrs.googleTenantId,
           },
         },
       );
@@ -37,14 +37,14 @@ export class ListTenantUsersUseCase {
     return responseOrError.data.body.data;
   }
 
-  private async getTenantId(attrs: ListUsersUseCase.InputAttrs) {
-    if (!attrs.tenantId) return null;
-    const tenant = await this.tenantRepository.findById({
-      id: attrs.tenantId,
-    });
-    if (!tenant) throw new Error('exception:TENANT_NOT_FOUND');
-    return tenant.tenantId;
-  }
+  //   private async getTenantId(attrs: ListUsersUseCase.InputAttrs) {
+  //     if (!attrs.integrationCode) return null;
+  //     const tenant = await this.tenantRepository.findById({
+  //       integrationCode: attrs.integrationCode,
+  //     });
+  //     if (!tenant) throw new Error('exception:TENANT_NOT_FOUND');
+  //     return tenant.tenantId;
+  //   }
 }
 
 export namespace ListUsersUseCase {
@@ -55,7 +55,7 @@ export namespace ListUsersUseCase {
       sortby?: string;
       keywords?: string;
     };
-    tenantId?: string;
+    googleTenantId?: string;
     accessToken: string;
   };
 

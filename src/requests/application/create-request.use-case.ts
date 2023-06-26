@@ -1,4 +1,4 @@
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { RequestModuleNotFoundException } from '~/requests/domain/exceptions/request-module-not-found.exception';
 import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
@@ -15,7 +15,7 @@ export class CreateRequestUseCase {
     private readonly moduleRepository: IModuleRepository,
     private readonly requestRepository: IRequestRepository,
     private readonly eventEmitter: IEventEmitter,
-    private readonly inspireTenantService: IInspireTenantService,
+    private readonly inspireTenantService: IInspireTenantApiService,
   ) {}
 
   async handle(attrs: CreateRequestUseCase.InputAttrs) {
@@ -51,7 +51,9 @@ export class CreateRequestUseCase {
   }
 
   private async getTenant(attrs: CreateRequestUseCase.InputAttrs) {
-    const tenant = await this.tenantRepository.findById({ id: attrs.tenantId });
+    const tenant = await this.tenantRepository.findById({
+      integrationCode: attrs.tenantId,
+    });
     if (!tenant) throw new TenantNotFoundException();
     return tenant;
   }
