@@ -1,19 +1,19 @@
 import { FactoryProvider } from '@nestjs/common';
 import { InspireApiServicesProvidersSymbols } from '~/shared/application/services/inspire-api-services/shared/symbols/inspire-api-services-providers.symbols';
-import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
-import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
-import { FindAllTenantV2UseCase } from '~/tenants/application/use-case/find-all-tenant-v2.use-case';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { FindAllTenantsDao } from '~/tenants/infra/queries/dao/find-all-tenants.dao';
 
-export class FindAllTenantV2UseCaseFactoryProvider {
+export class FindAllTenantsDaoFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide: TenantProvidersSymbols.FIND_ALL_TENANT_V2_USE_CASE,
+      provide: TenantProvidersSymbols.FIND_ALL_TENANTS_DAO,
       useFactory: (
-        inspireTenantService: IInspireTenantApiService,
+        inspireTenantApiService: IInspireTenantApiService,
         tenantRepository: ITenantRepository,
-      ) => new FindAllTenantV2UseCase(inspireTenantService, tenantRepository),
+      ) => new FindAllTenantsDao(inspireTenantApiService, tenantRepository),
       inject: [
         InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
         TenantsRepository,

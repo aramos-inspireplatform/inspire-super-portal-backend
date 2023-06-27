@@ -12,10 +12,6 @@ export class CreateTenantUserUseCase {
   ) {}
 
   async create(attrs: CreateTenantUserUseCase.InputAttrs) {
-    const tenant = await this.tenantsRepository.findById({
-      integrationCode: attrs.tenantId,
-    });
-    if (!tenant) throw new TenantNotFoundException();
     const responseOrError =
       await this.httpClient.post<CreateTenantUserUseCase.UserRouteResponse>(
         this.CREATE_TENANT_USER,
@@ -26,7 +22,7 @@ export class CreateTenantUserUseCase {
         {
           headers: {
             authorization: attrs.accessToken,
-            tenant: tenant.tenantId,
+            tenant: attrs.tenantId,
             'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
           },
         },

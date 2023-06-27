@@ -8,7 +8,7 @@ import { TenantCurrencyDto } from '~/tenants/presentation/dto/output/tenant-curr
 import { IsArray } from 'class-validator';
 import { TenantStatusDto } from '~/tenants/presentation/dto/output/tenant-status.dto';
 import { BaseTenantDto } from '~/shared/presentation/base-tenant.dto';
-export class TenantV2Dto extends BaseTenantDto {
+export class FindTenantOutput extends BaseTenantDto {
   @Expose()
   @ApiProperty({
     example: 'dontknow',

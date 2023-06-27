@@ -19,20 +19,12 @@ export class LinkTenantUserUseCase {
         {
           headers: {
             authorization: attrs.accessToken,
-            tenant: await this.getTenantId(attrs),
+            tenant: attrs.tenantId,
           },
         },
       );
     if (responseOrError instanceof Error) throw responseOrError;
     return responseOrError.data.body.data;
-  }
-
-  private async getTenantId(attrs: LinkTenantUserUseCase.InputAttrs) {
-    const tenant = await this.tenantRepository.findByIntegrationCode({
-      id: attrs.tenantId,
-    });
-    if (!tenant) throw new Error('exception:TENANT_NOT_FOUND');
-    return tenant.tenantId;
   }
 }
 

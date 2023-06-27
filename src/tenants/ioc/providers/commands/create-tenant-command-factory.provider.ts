@@ -1,29 +1,29 @@
 import { FactoryProvider } from '@nestjs/common';
+import { InspireApiServicesProvidersSymbols } from '~/shared/application/services/inspire-api-services/shared/symbols/inspire-api-services-providers.symbols';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { TenantStatusesRepository } from '~/shared/infra/database/repositories/tenant-statuses.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
-import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
-import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import { CreateTenantUseCase } from '~/tenants/application/use-case/create-tenant.use-case';
+import { CreateTenantCommand } from '~/tenants/application/commands/create-tenant.command';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
 import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/tenant-statuses-repository.contract';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 
-export class CreateTenantUseCaseFactoryProvider {
+export class CreateTenantCommandFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide: TenantProvidersSymbols.CREATE_TENANT_USE_CASE,
+      provide: TenantProvidersSymbols.CREATE_TENANT_COMMAND,
       useFactory: (
-        httpClient: IHttpClient,
+        inspireTenantService: IInspireTenantApiService,
         tenantRepository: ITenantRepository,
         tenantStatusesRepository: ITenantStatusesRepository,
       ) =>
-        new CreateTenantUseCase(
-          httpClient,
+        new CreateTenantCommand(
+          inspireTenantService,
           tenantRepository,
           tenantStatusesRepository,
         ),
       inject: [
-        AxiosHttpClientAdapter,
+        InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
         TenantsRepository,
         TenantStatusesRepository,
       ],
