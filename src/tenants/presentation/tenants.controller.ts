@@ -43,13 +43,13 @@ export class TenantsController {
   @ApiOkResponse({ type: FindAllTenantsOutput })
   async findAll(
     @Req() request: FastifyRequest,
-    @Query() pagination: CommonPaginateDto,
+    @Query() paginationDto: CommonPaginateDto,
   ) {
     const tenants = await this.findAllTenantQuery.execute({
       accessToken: request.headers.authorization,
       pagination: {
-        ...pagination,
-        pageSize: pagination.pagesize,
+        ...paginationDto,
+        pageSize: paginationDto.pagesize,
       },
     });
 
@@ -75,15 +75,17 @@ export class TenantsController {
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: FindTenantOutput })
   async create(
-    @Body() payload: CreateTenantRequestBodyDto,
+    @Body() createDto: CreateTenantRequestBodyDto,
     @Req() request: FastifyRequest,
     @GetUserFromRequest() user: UserFromRequest,
   ) {
     const tenant = await this.createTenantCommand.execute({
       accessToken: request.headers.authorization,
-      tenant: payload,
-      currentUser: user.claims.userId,
+      tenant: createDto,
+      currentUserId: user.claims.userId,
+      currentUserEmail: user.claims.email,
     });
-    return FindTenantOutput.factory(FindTenantOutput, tenant);
+
+    return tenant;
   }
 }

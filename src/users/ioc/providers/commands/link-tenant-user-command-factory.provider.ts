@@ -3,17 +3,17 @@ import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.
 import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
-import { CreateTenantUserUseCase } from '~/users/application/use-case/create-tenant-user.use-case';
+import { LinkTenantUserCommand } from '~/users/application/commands/link-tenant-user.command';
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 
-export class CreateTenantUserUseCaseFactoryProvider {
+export class LinkTenantUserCommandFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide: UsersProvidersSymbols.CREATE_TENANT_USER,
+      provide: UsersProvidersSymbols.LINK_TENANT_USER_COMMAND,
       useFactory: (
         httpClient: IHttpClient,
         tenantRepository: ITenantRepository,
-      ) => new CreateTenantUserUseCase(httpClient, tenantRepository),
+      ) => new LinkTenantUserCommand(httpClient, tenantRepository),
       inject: [AxiosHttpClientAdapter, TenantsRepository],
     };
   }

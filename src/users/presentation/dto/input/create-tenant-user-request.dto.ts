@@ -86,10 +86,10 @@ export class CreateTenantUserRequestDto {
   @ApiProperty({
     example: 'teste-hnmkt',
     required: false,
-    description: 'The old googleTenantId now will be called as tenantId',
+    description: 'The tenant identifier',
   })
   @IsString()
-  tenantId: string;
+  gTenantId: string;
 
   @ApiProperty({ example: '61b0dbd5ec727212cd6e2e21', required: false })
   @IsOptional()

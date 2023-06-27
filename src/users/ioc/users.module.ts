@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { CreateTenantAdminUserUseCaseFactoryProvider } from '~/users/ioc/providers/create-tenant-admin-user-use-case-factory.provider';
-import { CreateTenantUserUseCaseFactoryProvider } from '~/users/ioc/providers/create-tenant-user-use-case-factory.provider';
-import { LinkTenantUserUseCaseFactoryProvider } from '~/users/ioc/providers/link-tenant-user-use-case-factory.provider';
+import { CreateTenantUserCommandFactoryProvider } from '~/users/ioc/providers/commands/create-tenant-user-command-factory.provider';
+import { LinkTenantUserCommandFactoryProvider } from '~/users/ioc/providers/commands/link-tenant-user-command-factory.provider';
 import { TenantAdminUsersController } from '~/users/presentation/tenant-admin-user.controller';
 import { TenantsUsersController } from '~/users/presentation/tenant-users.controller';
 import { ListTenantUsersUseCaseFactoryProvider } from './providers/list-tenant-users-use-case-factory.provider';
@@ -10,8 +10,8 @@ import { ListOneUserUseCaseFactoryProvider } from '~/users/ioc/providers/list-on
 
 @Module({
   providers: [
-    CreateTenantUserUseCaseFactoryProvider.register(),
-    LinkTenantUserUseCaseFactoryProvider.register(),
+    CreateTenantUserCommandFactoryProvider.register(),
+    LinkTenantUserCommandFactoryProvider.register(),
     CreateTenantAdminUserUseCaseFactoryProvider.register(),
     ListTenantUsersUseCaseFactoryProvider.register(),
     ListAdminUsersUseCaseFactoryProvider.register(),

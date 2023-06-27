@@ -19,7 +19,7 @@ export class CreateTenantCommand implements ICreateTenantCommand {
   ): ICreateTenantCommand.Output {
     const tenant = await this.inspireTenantService.create({
       accessToken: attrs.accessToken,
-      currentUser: attrs.currentUser,
+      currentUser: attrs.currentUserId,
       tenant: {
         name: attrs.tenant.name,
         accountName: attrs.tenant.accountName,
@@ -37,13 +37,14 @@ export class CreateTenantCommand implements ICreateTenantCommand {
     const tenantPendingStatuses = await this.tenantStatusesRepository.findById({
       id: TenantStatusesConstant.Pending,
     });
+
     const storedTenant = new Tenant({
       slug: attrs.tenant.slug,
       name: attrs.tenant.name,
       integrationCode: tenant.id,
       tenantStatus: tenantPendingStatuses,
-      createdByUserId: attrs.currentUser,
-      createdByUserEmail: 'ALTERAR@ALTERAR.com', //attrs.email,
+      createdByUserId: attrs.currentUserId,
+      createdByUserEmail: attrs.currentUserEmail,
       tenantId: tenant.googleTenantId,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
@@ -52,24 +53,10 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       id: tenant.id,
       name: tenant.name,
       slug: tenant.slug,
-      googleTenantId: tenant.googleTenantId,
+      gTenantId: tenant.googleTenantId,
       logo: tenant.logo,
       accountName: tenant.accountName,
       publicBusinessName: tenant.publicBusinessName,
-      // supportEmail: tenant.supportEmail,
-      // supportPhoneNumber: tenant.supportPhoneNumber,
-      // showPhoneOnInvoiceAndReceipt: tenant.showPhoneOnInvoiceAndReceipt,
-      // statementDescriptor: tenant.statementDescriptor,
-      // shortenedDescriptor: tenant.shortenedDescriptor,
-      // businessWebsite: tenant.businessWebsite,
-      // supportWebsite: tenant.supportWebsite,
-      // privacyPolicy: tenant.privacyPolicy,
-      // termsOfService: tenant.termsOfService,
-      // timezone: tenant.timezone,
-      // languages: tenant.languages,
-      // currencies: tenant.currencies,
-      // countries: tenant.countries,
-      // userEmail: tenant.userEmail,
     };
   }
 }

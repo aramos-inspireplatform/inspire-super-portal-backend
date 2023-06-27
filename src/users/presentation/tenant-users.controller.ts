@@ -11,8 +11,8 @@ import {
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
-import { CreateTenantUserUseCase } from '~/users/application/use-case/create-tenant-user.use-case';
-import { LinkTenantUserUseCase } from '~/users/application/use-case/link-tenant-user.use-case';
+import { CreateTenantUserCommand } from '~/users/application/commands/create-tenant-user.command';
+import { LinkTenantUserCommand } from '~/users/application/commands/link-tenant-user.command';
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 import { CreateTenantUserRequestDto } from '~/users/presentation/dto/input/create-tenant-user-request.dto';
 import { UserResponseDto } from '~/users/presentation/dto/output/user-response.dto';
@@ -25,10 +25,10 @@ import { ListTenantUsersFilterDto } from './dto/input/list-tenant-users-filter.d
 @ApiTags('Tenant Users')
 export class TenantsUsersController {
   constructor(
-    @Inject(UsersProvidersSymbols.CREATE_TENANT_USER)
-    private readonly createTenantUserUseCase: CreateTenantUserUseCase,
-    @Inject(UsersProvidersSymbols.LINK_TENANT_USER_USE_CASE)
-    private readonly linkTenantUser: LinkTenantUserUseCase,
+    @Inject(UsersProvidersSymbols.CREATE_TENANT_USER_COMMAND)
+    private readonly createTenantUserUseCase: CreateTenantUserCommand,
+    @Inject(UsersProvidersSymbols.LINK_TENANT_USER_COMMAND)
+    private readonly linkTenantUser: LinkTenantUserCommand,
     @Inject(UsersProvidersSymbols.LIST_TENANT_USERS_USE_CASE)
     private readonly listTenantUsersUseCase: ListTenantUsersUseCase,
   ) {}
@@ -38,30 +38,32 @@ export class TenantsUsersController {
   @ApiDefaultResponse({ type: UserResponseDto })
   async create(
     @Req() request: FastifyRequest,
-    @Body() payload: CreateTenantUserRequestDto,
+    @Body() createDto: CreateTenantUserRequestDto,
   ) {
-    const tenantUser = await this.createTenantUserUseCase.create({
+    const tenantUser = await this.createTenantUserUseCase.execute({
       accessToken: request.headers.authorization,
-      user: payload,
-      tenantId: payload.tenantId,
+      user: createDto,
+      gTenantId: createDto.gTenantId,
     });
-    return UserResponseDto.factory(UserResponseDto, tenantUser);
+
+    return tenantUser;
   }
 
-  @Post('/:tenantId/:userId/link-tenant')
+  @Post('/:gTenantId/:userId/link-tenant')
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: UserResponseDto })
   async linkTenant(
     @Req() request: FastifyRequest,
-    @Param('tenantId') tenantId: string,
+    @Param('gTenantId') gTenantId: string,
     @Param('userId') userId: string,
   ) {
-    const tenantUser = await this.linkTenantUser.link({
+    const tenantUser = await this.linkTenantUser.execute({
       accessToken: request.headers.authorization,
-      tenantId,
+      gTenantId: gTenantId,
       userId,
     });
-    return UserResponseDto.factory(UserResponseDto, tenantUser);
+
+    return tenantUser;
   }
 
   @Get()

@@ -46,15 +46,6 @@ export namespace IFindTenantQuery {
     isoCode: string;
   };
 
-  // type Currency = {
-  //   id: string;
-  //   name: string;
-  //   symbol: string;
-  //   isoCode: string;
-  //   isDefault: boolean;
-  //   isActive: boolean;
-  // };
-
   type Country = {
     id: string;
     name: string;
