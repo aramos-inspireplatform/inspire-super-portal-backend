@@ -23,18 +23,18 @@ export namespace IFindAllTenantsDao {
     name: string;
     slug: string;
     gTenantId: string;
-    logo: any;
+    logo: string;
     accountName: string;
-    publicBusinessName: any;
-    supportEmail: any;
-    supportPhoneNumber: any;
+    publicBusinessName: string;
+    supportEmail: string;
+    supportPhoneNumber: string;
     showPhoneOnInvoiceAndReceipt: boolean;
-    statementDescriptor: any;
-    shortenedDescriptor: any;
-    businessWebsite: any;
-    supportWebsite: any;
-    privacyPolicy: any;
-    termsOfService: any;
+    statementDescriptor: string;
+    shortenedDescriptor: string;
+    businessWebsite: string;
+    supportWebsite: string;
+    privacyPolicy: string;
+    termsOfService: string;
     createdAt: Date;
     agency: Agency;
     timezone: Timezone;
@@ -87,5 +87,5 @@ export namespace IFindAllTenantsDao {
     slug: string;
   };
 
-  type Settings = { [property: string]: Settings };
+  type Settings = { [property: string]: any };
 }
