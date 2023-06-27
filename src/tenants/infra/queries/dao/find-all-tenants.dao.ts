@@ -15,7 +15,6 @@ export class FindAllTenantsDao implements IFindAllTenantsDao {
     });
     if (tenants instanceof Error) throw tenants;
 
-    console.log(tenants.rows[0]);
     return {
       rows: tenants.rows.map((tenant) => ({
         id: tenant.id,

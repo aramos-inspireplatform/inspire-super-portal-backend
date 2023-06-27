@@ -78,5 +78,5 @@ export namespace IFindTenantDao {
     slug: string;
   };
 
-  type Settings = { [property: string]: Settings };
+  type Settings = { [property: string]: any };
 }

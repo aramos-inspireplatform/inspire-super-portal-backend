@@ -68,5 +68,5 @@ export namespace IFindTenantQuery {
     slug: string;
   };
 
-  type Settings = { [property: string]: Settings };
+  type Settings = { [property: string]: any };
 }
