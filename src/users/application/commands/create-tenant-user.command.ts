@@ -1,5 +1,5 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
 import { ICreateTenantUserCommand } from '~/users/application/commands/contracts/create-tenant-user.contract';
 
 export class CreateTenantUserCommand implements ICreateTenantUserCommand {

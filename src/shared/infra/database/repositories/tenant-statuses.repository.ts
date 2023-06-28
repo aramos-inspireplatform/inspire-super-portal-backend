@@ -3,7 +3,7 @@ import { Repository, DataSource } from 'typeorm';
 import { TenantStatuses } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 import { TenantStatus } from '~/tenants/domain/entity/tenant-statuses.entity';
-import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/tenant-statuses-repository.contract';
+import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repositories/tenant-statuses-repository.contract';
 
 @Injectable()
 export class TenantStatusesRepository implements ITenantStatusesRepository {

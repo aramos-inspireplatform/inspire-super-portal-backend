@@ -3,7 +3,7 @@ import { InspireApiServicesProvidersSymbols } from '~/shared/application/service
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
 import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
-import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
 import { FindAllTenantsDao } from '~/tenants/infra/queries/dao/find-all-tenants.dao';
 
 export class FindAllTenantsDaoFactoryProvider {

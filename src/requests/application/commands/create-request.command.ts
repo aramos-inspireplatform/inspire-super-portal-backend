@@ -6,7 +6,7 @@ import { IRequestRepository } from '~/requests/infra/contracts/repository/reques
 import { IEventEmitter } from '~/shared/application/contracts/event-emitter.contract';
 import { RequestEvents } from '~/shared/domain/events/request.events';
 import { TenantNotFoundException } from '~/tenants/domain/exceptions/tenant-not-found.exception';
-import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
 import { ICreateRequestCommand } from '~/requests/application/commands/contracts/create-request.contract';
 
 export class CreateRequestCommand implements ICreateRequestCommand {

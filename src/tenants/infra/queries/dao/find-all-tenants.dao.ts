@@ -1,6 +1,6 @@
 import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { IFindAllTenantsDao } from '~/tenants/application/queries/contracts/find-all-tenants.dao.contract';
-import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
 
 export class FindAllTenantsDao implements IFindAllTenantsDao {
   constructor(

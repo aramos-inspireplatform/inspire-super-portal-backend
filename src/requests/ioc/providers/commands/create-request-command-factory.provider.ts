@@ -10,7 +10,7 @@ import { IEventEmitter } from '~/shared/application/contracts/event-emitter.cont
 import { ModulesRepository } from '~/shared/infra/database/repositories/modules.repository';
 import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
-import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
 
 export class CreateRequestCommandFactoryProvider {
   static register(): FactoryProvider {

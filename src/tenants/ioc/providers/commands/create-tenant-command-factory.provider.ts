@@ -4,8 +4,8 @@ import { IInspireTenantApiService } from '~/shared/application/services/inspire-
 import { TenantStatusesRepository } from '~/shared/infra/database/repositories/tenant-statuses.repository';
 import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
 import { CreateTenantCommand } from '~/tenants/application/commands/create-tenant.command';
-import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
-import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repository/tenant-statuses-repository.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
+import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repositories/tenant-statuses-repository.contract';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 
 export class CreateTenantCommandFactoryProvider {
