@@ -27,6 +27,7 @@ export namespace IFindAllTenantUsersQuery {
     title: string;
     email: string;
     phoneNumber: string;
+    phoneNumberCountryId: string;
     adminBlockedDate: string;
     createdAt: Date;
   };

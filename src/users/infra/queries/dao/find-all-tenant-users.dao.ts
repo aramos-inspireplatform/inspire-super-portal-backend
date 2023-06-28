@@ -45,6 +45,7 @@ export class FindAllTenantUsersDao implements IFindAllTenantUsersDao {
         title: user.title,
         email: user.email,
         phoneNumber: user.phoneNumber,
+        phoneNumberCountryId: user.phoneNumberCountryId,
         adminBlockedDate: user.adminBlockedDate,
         createdAt: user.createdAt,
       })),

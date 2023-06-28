@@ -20,7 +20,7 @@ import { ListAdminUsersUseCase } from '../application/use-case/list-admin-users.
 import { ListUserResponseDto } from '~/users/presentation/dto/output/list-user-response.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
-import { ListOneUserUseCase } from '~/users/application/use-case/list-one-user.use-case';
+import { FindOneUserQuery } from '~/users/application/queries/find-one-user.query';
 import { GetAdminUserDetailsDto } from '~/users/presentation/dto/output/admin-user-details.response.dto';
 
 @Controller('users')
@@ -31,23 +31,9 @@ export class TenantAdminUsersController {
     private readonly createTenantAdminUserUseCase: CreateTenantAdminUserUseCase,
     @Inject(UsersProvidersSymbols.LIST_ADMIN_USERS_USE_CASE)
     private readonly listAdminUsersUseCase: ListAdminUsersUseCase,
-    @Inject(UsersProvidersSymbols.LIST_ONE_USER_USE_CASE)
-    private readonly listOneUserUseCase: ListOneUserUseCase,
+    @Inject(UsersProvidersSymbols.FIND_ONE_USER_QUERY)
+    private readonly findOneUserQuery: FindOneUserQuery,
   ) {}
-
-  @Post()
-  @AuthenticatedRoute()
-  @ApiDefaultResponse({ type: UserResponseDto })
-  async create(
-    @Req() request: FastifyRequest,
-    @Body() payload: CreateTenantAdminUserRequestBodyDto,
-  ) {
-    const user = await this.createTenantAdminUserUseCase.create({
-      accessToken: request.headers.authorization,
-      user: payload,
-    });
-    return UserResponseDto.factory(UserResponseDto, user);
-  }
 
   @Get()
   @AuthenticatedRoute()
@@ -78,10 +64,25 @@ export class TenantAdminUsersController {
     @Req() request: FastifyRequest,
     @Param('id', IsMongoIdPipe) userId: string,
   ) {
-    const users = await this.listOneUserUseCase.handle({
+    const user = await this.findOneUserQuery.execute({
       accessToken: request.headers.authorization,
       userId,
     });
-    return GetAdminUserDetailsDto.factory(GetAdminUserDetailsDto, users);
+
+    return user;
+  }
+
+  @Post()
+  @AuthenticatedRoute()
+  @ApiDefaultResponse({ type: UserResponseDto })
+  async create(
+    @Req() request: FastifyRequest,
+    @Body() payload: CreateTenantAdminUserRequestBodyDto,
+  ) {
+    const user = await this.createTenantAdminUserUseCase.create({
+      accessToken: request.headers.authorization,
+      user: payload,
+    });
+    return UserResponseDto.factory(UserResponseDto, user);
   }
 }

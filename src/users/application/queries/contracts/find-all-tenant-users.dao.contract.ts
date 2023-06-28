@@ -25,6 +25,7 @@ export namespace IFindAllTenantUsersDao {
     title: string;
     email: string;
     phoneNumber: string;
+    phoneNumberCountryId: string;
     adminBlockedDate: string;
     createdAt: Date;
   };
@@ -38,6 +39,7 @@ export namespace IFindAllTenantUsersDao {
     title: string;
     email: string;
     phoneNumber: string;
+    phoneNumberCountryId: string;
     adminBlockedDate: string;
     googleTenantId: string;
     isSsoUser: boolean;

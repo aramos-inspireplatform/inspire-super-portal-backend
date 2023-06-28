@@ -14,7 +14,7 @@ import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
-import { FindTenantQuery } from '~/tenants/application/queries/find-tenant.query';
+import { FindOneTenantQuery } from '~/tenants/application/queries/find-one-tenant.query';
 import { FindAllTenantsQuery } from '~/tenants/application/queries/find-all-tenants.query';
 import { FindAllTenantsOutput } from '~/tenants/presentation/dto/output/find-all-tenants.output';
 import { FindTenantOutput } from '~/tenants/presentation/dto/output/find-tenant.output';
@@ -32,8 +32,8 @@ export class TenantsController {
   constructor(
     @Inject(TenantProvidersSymbols.FIND_ALL_TENANTS_QUERY)
     private readonly findAllTenantQuery: FindAllTenantsQuery,
-    @Inject(TenantProvidersSymbols.FIND_TENANT_QUERY)
-    private readonly findTenantQuery: FindTenantQuery,
+    @Inject(TenantProvidersSymbols.FIND_ONE_TENANT_QUERY)
+    private readonly findTenantQuery: FindOneTenantQuery,
     @Inject(TenantProvidersSymbols.CREATE_TENANT_COMMAND)
     private readonly createTenantCommand: CreateTenantCommand,
   ) {}

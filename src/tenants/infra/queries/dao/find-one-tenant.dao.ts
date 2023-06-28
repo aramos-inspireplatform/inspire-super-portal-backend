@@ -1,11 +1,15 @@
-import { IFindTenantDao } from '~/tenants/application/queries/contracts/find-tenant.dao.contract';
-import { IFindTenantQuery } from '~/tenants/application/queries/contracts/find-tenant.query.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
+import { IFindTenantDao as IFindOneTenantDao } from '~/tenants/application/queries/contracts/find-one-tenant.dao.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
 
-export class FindTenantQuery implements IFindTenantQuery {
-  constructor(private readonly findTenantDao: IFindTenantDao) {}
+export class FindOneTenantDao implements IFindOneTenantDao {
+  constructor(
+    private readonly inspireTenantApiService: IInspireTenantApiService,
+    private readonly tenantRepository: ITenantRepository,
+  ) {}
 
-  async execute(attrs: IFindTenantQuery.Input): IFindTenantQuery.Output {
-    const tenant = await this.findTenantDao.execute({
+  async execute(attrs: IFindOneTenantDao.Input): IFindOneTenantDao.Output {
+    const tenant = await this.inspireTenantApiService.findOne({
       accessToken: attrs.accessToken,
       gTenantId: attrs.gTenantId,
     });
@@ -15,10 +19,19 @@ export class FindTenantQuery implements IFindTenantQuery {
       id: tenant.id,
       name: tenant.name,
       slug: tenant.slug,
-      gTenantId: tenant.googleTenantId,
+      googleTenantId: tenant.googleTenantId,
       logo: tenant.logo,
       accountName: tenant.accountName,
       publicBusinessName: tenant.publicBusinessName,
+      supportEmail: tenant.supportEmail,
+      supportPhoneNumber: tenant.supportPhoneNumber,
+      showPhoneOnInvoiceAndReceipt: tenant.showPhoneOnInvoiceAndReceipt,
+      statementDescriptor: tenant.statementDescriptor,
+      shortenedDescriptor: tenant.shortenedDescriptor,
+      businessWebsite: tenant.businessWebsite,
+      supportWebsite: tenant.supportWebsite,
+      privacyPolicy: tenant.privacyPolicy,
+      termsOfService: tenant.termsOfService,
       createdAt: tenant.createdAt,
       agency: tenant.agency
         ? {
@@ -43,7 +56,7 @@ export class FindTenantQuery implements IFindTenantQuery {
             isoCode: tenant.language.isoCode,
           }
         : null,
-      //currencies: tenant.currencies,
+      currencies: tenant.currencies,
       country: tenant.country
         ? {
             id: tenant.country.id,
