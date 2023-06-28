@@ -3,7 +3,7 @@ import { DataSource, Repository } from 'typeorm';
 import { Tenants } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 import { Tenant } from '~/tenants/domain/entity/tenant.entity';
-import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
 
 @Injectable()
 export class TenantsRepository implements ITenantRepository {
@@ -56,14 +56,15 @@ export class TenantsRepository implements ITenantRepository {
     return [tenants.map((tenant) => new Tenant(tenant)), total];
   }
 
-  async findByIntegrationCode(
-    attrs: ITenantRepository.FindByIntegrationCodeInputAttrs,
-  ): ITenantRepository.FindByIntegrationCodeResult {
+  async findByGTenantId(
+    attrs: ITenantRepository.FindByGTenantIdInputAttrs,
+  ): ITenantRepository.FindByGTenantIdResult {
     const tenant = await this.repository
       .createQueryBuilder('tenants')
       .leftJoinAndSelect('tenants.tenantStatus', 'tenantStatus')
-      .where('tenants.integrationCode = :id', { id: attrs.id })
+      .where('tenants.tenantId = :gTenantId', { gTenantId: attrs.gTenantId })
       .getOne();
+
     return tenant ? new Tenant(tenant) : null;
   }
 }

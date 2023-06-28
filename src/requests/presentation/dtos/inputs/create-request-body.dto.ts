@@ -6,7 +6,7 @@ import {
   IsArray,
   ValidateNested,
   ArrayMinSize,
-  IsUUID,
+  IsString,
 } from 'class-validator';
 import { CreateModuleRequestBodyDto } from '~/requests/presentation/dtos/modules-requests/input/create-module-request.dto';
 
@@ -15,8 +15,8 @@ export class CreateRequestBodyDto {
     example: 'e6c846a8-fc6c-43ee-9239-345c6033e22a',
   })
   @IsNotEmpty()
-  @IsUUID()
-  tenantId: string;
+  @IsString()
+  gTenantId: string;
 
   @ApiProperty({
     type: CreateModuleRequestBodyDto,
