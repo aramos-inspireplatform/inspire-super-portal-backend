@@ -16,7 +16,7 @@ import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 import { CreateTenantAdminUserRequestBodyDto } from '~/users/presentation/dto/input/create-tenant-admin-user-request.dto';
 import { PaginatedUsersResponseDto } from '~/users/presentation/dto/output/paginated-users-response.dto';
 import { UserResponseDto } from '~/users/presentation/dto/output/user-response.dto';
-import { ListAdminUsersUseCase } from '../application/use-case/list-admin-users.use-case';
+import { FindAllAdminUsersQuery } from '../application/queries/find-all-admin-users.query';
 import { ListUserResponseDto } from '~/users/presentation/dto/output/list-user-response.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
@@ -27,22 +27,22 @@ import { GetAdminUserDetailsDto } from '~/users/presentation/dto/output/admin-us
 @ApiTags('Admin Users')
 export class TenantAdminUsersController {
   constructor(
-    @Inject(UsersProvidersSymbols.CREATE_TENANT_ADMIN_USER_USE_CASE)
-    private readonly createTenantAdminUserUseCase: CreateTenantAdminUserUseCase,
-    @Inject(UsersProvidersSymbols.LIST_ADMIN_USERS_USE_CASE)
-    private readonly listAdminUsersUseCase: ListAdminUsersUseCase,
+    @Inject(UsersProvidersSymbols.FIND_ALL_ADMIN_USERS_QUERY)
+    private readonly findAllAdminUsersQuery: FindAllAdminUsersQuery,
     @Inject(UsersProvidersSymbols.FIND_ONE_USER_QUERY)
     private readonly findOneUserQuery: FindOneUserQuery,
+    @Inject(UsersProvidersSymbols.CREATE_TENANT_ADMIN_USER_USE_CASE)
+    private readonly createTenantAdminUserUseCase: CreateTenantAdminUserUseCase,
   ) {}
 
   @Get()
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: PaginatedUsersResponseDto })
-  async list(
+  async findAll(
     @Req() request: FastifyRequest,
     @Query() pagination: CommonPaginateDto,
   ) {
-    const users = await this.listAdminUsersUseCase.list({
+    const users = await this.findAllAdminUsersQuery.execute({
       accessToken: request.headers.authorization,
       pagination: {
         ...pagination,
