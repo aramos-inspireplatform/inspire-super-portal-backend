@@ -8,7 +8,7 @@ import {
   MaxLength,
 } from 'class-validator';
 
-export class CreateTenantAdminUserRequestBodyDto {
+export class CreateAdminUserRequestDto {
   @ApiProperty({
     type: String,
     example: 'Jhon',

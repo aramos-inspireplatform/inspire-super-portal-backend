@@ -4,16 +4,16 @@ import { IInspireTenantApiService } from '~/shared/application/services/inspire-
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
-import { FindOneUserDao } from '~/users/infra/queries/dao/find-one-user.dao';
+import { FindOneAdminUserDao } from '~/users/infra/queries/dao/find-one-admin-user.dao';
 
-export class FindOneUserDaoFactoryProvider {
+export class FindOneAdminUserDaoFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide: UsersProvidersSymbols.FIND_ONE_USER_DAO,
+      provide: UsersProvidersSymbols.FIND_ONE_ADMIN_USER_DAO,
       useFactory: (
         inspireTenantApiService: IInspireTenantApiService,
         httpClient: IHttpClient,
-      ) => new FindOneUserDao(inspireTenantApiService, httpClient),
+      ) => new FindOneAdminUserDao(inspireTenantApiService, httpClient),
       inject: [
         InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
         AxiosHttpClientAdapter,

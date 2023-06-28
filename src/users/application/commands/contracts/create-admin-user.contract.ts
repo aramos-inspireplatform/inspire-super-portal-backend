@@ -1,13 +1,22 @@
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 
-export interface IFindOneUserDao {
-  execute(params: IFindOneUserDao.Input): IFindOneUserDao.Output;
+export interface ICreateAdminUserCommand {
+  execute(
+    params: ICreateAdminUserCommand.Input,
+  ): ICreateAdminUserCommand.Output;
 }
 
-export namespace IFindOneUserDao {
+export namespace ICreateAdminUserCommand {
   export type Input = {
     accessToken: string;
-    userId: string;
+    user: {
+      firstName: string;
+      lastName: string;
+      userTypeId: string;
+      email: string;
+      title?: string;
+      phoneNumber?: string;
+    };
   };
 
   export type Output = Promise<{
@@ -17,10 +26,12 @@ export namespace IFindOneUserDao {
     title: string;
     email: string;
     phoneNumber: string;
-    userType: string;
-    phoneNumberCountryId: string;
+    adminBlockedDate: string;
+    gTenantId: string;
+    isSsoUser: boolean;
   }>;
 
+  // Must be moved to API
   export type ApiResponse = InspireHttpResponse<UserApi>;
   type UserApi = {
     id: string;
@@ -29,8 +40,8 @@ export namespace IFindOneUserDao {
     title: string;
     email: string;
     phoneNumber: string;
-    phoneNumberCountryId: string;
-    userType: string;
     adminBlockedDate: string;
+    googleTenantId: string;
+    isSsoUser: boolean;
   };
 }

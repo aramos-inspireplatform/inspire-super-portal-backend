@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import { BaseDto } from '~/shared/presentation/base.dto';
 
-export class GetUserTypesDto extends BaseDto {
+export class FindOneAdminUserResponseDto extends BaseDto {
   @Expose()
   @ApiProperty({ name: 'name', description: 'The name of the user type' })
   name: string;
@@ -64,9 +64,9 @@ export class GetAdminUserDetailsDto extends BaseDto {
   createdAt: string;
 
   @Expose()
-  @ApiProperty({ example: GetUserTypesDto })
-  @Type(() => GetUserTypesDto)
-  userTypeId: GetUserTypesDto;
+  @ApiProperty({ example: FindOneAdminUserResponseDto })
+  @Type(() => FindOneAdminUserResponseDto)
+  userTypeId: FindOneAdminUserResponseDto;
 
   @Expose()
   @ApiProperty({ example: '6153611e2daa238fc1f67ac4' })

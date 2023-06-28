@@ -18,7 +18,7 @@ import { CreateTenantUserRequestDto } from '~/users/presentation/dto/input/creat
 import { UserResponseDto } from '~/users/presentation/dto/output/user-response.dto';
 import { FindAllTenantUsersQuery } from '~/users/application/queries/find-all-tenant-users.query';
 import { PaginatedUsersResponseDto } from './dto/output/paginated-users-response.dto';
-import { ListUserResponseDto } from '~/users/presentation/dto/output/list-user-response.dto';
+import { FindAllAdminUsersResponseDto } from '~/users/presentation/dto/output/find-all-admin-users-response.dto';
 import { FindAllTenantUsersRequestDto } from './dto/input/find-all-tenant-users-request.dto';
 
 @Controller('tenants/users')

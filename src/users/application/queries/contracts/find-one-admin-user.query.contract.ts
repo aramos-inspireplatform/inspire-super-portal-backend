@@ -1,8 +1,8 @@
-export interface IFindOneUserQuery {
-  execute(params: IFindOneUserQuery.Input): IFindOneUserQuery.Output;
+export interface IFindOneAdminUserQuery {
+  execute(params: IFindOneAdminUserQuery.Input): IFindOneAdminUserQuery.Output;
 }
 
-export namespace IFindOneUserQuery {
+export namespace IFindOneAdminUserQuery {
   export type Input = {
     accessToken: string;
     userId: string;

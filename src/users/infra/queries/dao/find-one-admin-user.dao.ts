@@ -1,8 +1,8 @@
 import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import { IFindOneUserDao } from '~/users/application/queries/contracts/find-one-user.dao.contract';
+import { IFindOneAdminUserDao } from '~/users/application/queries/contracts/find-one-admin-user.dao.contract';
 
-export class FindOneUserDao implements IFindOneUserDao {
+export class FindOneAdminUserDao implements IFindOneAdminUserDao {
   private readonly USERS_ROUTE = `${process.env.TENANT_URL}/user/admin-users`;
 
   constructor(
@@ -10,15 +10,15 @@ export class FindOneUserDao implements IFindOneUserDao {
     private readonly httpClient: IHttpClient,
   ) {}
 
-  async execute(attrs: IFindOneUserDao.Input): IFindOneUserDao.Output {
+  async execute(
+    attrs: IFindOneAdminUserDao.Input,
+  ): IFindOneAdminUserDao.Output {
     const url = `${this.USERS_ROUTE}/${attrs.userId}`;
 
-    const response = await this.httpClient.get<IFindOneUserDao.ApiResponse>(
-      url,
-      {
+    const response =
+      await this.httpClient.get<IFindOneAdminUserDao.ApiResponse>(url, {
         headers: { authorization: attrs.accessToken },
-      },
-    );
+      });
     if (response instanceof Error) throw response;
 
     return {
