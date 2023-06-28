@@ -5,11 +5,11 @@ import { IModuleRepository } from '~/requests/infra/contracts/repository/module-
 import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
 import { IEventEmitter } from '~/shared/application/contracts/event-emitter.contract';
 import { RequestEvents } from '~/shared/domain/events/request.events';
-import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 import { TenantNotFoundException } from '~/tenants/domain/exceptions/tenant-not-found.exception';
 import { ITenantRepository } from '~/tenants/infra/contracts/repository/tenant-repository.contract';
+import { ICreateRequestCommand } from '~/requests/application/commands/contracts/create-request.contract';
 
-export class CreateRequestUseCase {
+export class CreateRequestCommand implements ICreateRequestCommand {
   constructor(
     private readonly tenantRepository: ITenantRepository,
     private readonly moduleRepository: IModuleRepository,
@@ -18,15 +18,20 @@ export class CreateRequestUseCase {
     private readonly inspireTenantService: IInspireTenantApiService,
   ) {}
 
-  async handle(attrs: CreateRequestUseCase.InputAttrs) {
+  async execute(
+    attrs: ICreateRequestCommand.Input,
+  ): ICreateRequestCommand.Output {
     const userRequesterData =
       await this.inspireTenantService.getTenantJwtTokenUserDetails(attrs);
-    const tenant = await this.getTenant(attrs);
+
+    const tenant = await this.getTenantByGTenantId(attrs);
+
     const request = new Request({
       createdByUserEmail: userRequesterData.email,
       createdByUserId: userRequesterData.id,
       tenant,
     });
+
     for await (const module of attrs.modules) {
       const storedModule = await this.getModule(module);
       if (!storedModule) continue;
@@ -39,7 +44,9 @@ export class CreateRequestUseCase {
         ...attrs,
       });
     }
+
     const storedRequest = await this.requestRepository.create(request);
+
     this.eventEmitter.emit(RequestEvents.Created, {
       requestId: storedRequest.id,
       tenantId: tenant.id,
@@ -50,11 +57,12 @@ export class CreateRequestUseCase {
     return storedRequest;
   }
 
-  private async getTenant(attrs: CreateRequestUseCase.InputAttrs) {
-    const tenant = await this.tenantRepository.findById({
-      integrationCode: attrs.tenantId,
+  private async getTenantByGTenantId(attrs: ICreateRequestCommand.Input) {
+    const tenant = await this.tenantRepository.findByGTenantId({
+      gTenantId: attrs.gTenantId,
     });
     if (!tenant) throw new TenantNotFoundException();
+
     return tenant;
   }
 
@@ -65,26 +73,4 @@ export class CreateRequestUseCase {
     if (!requestType) throw new RequestModuleNotFoundException();
     return requestType;
   }
-}
-
-export namespace CreateRequestUseCase {
-  type UserDetails = {
-    id: string;
-    firstName: string;
-    lastName: string;
-    email: string;
-    googleTenantId: any;
-  };
-
-  export type GetUserDetailsResponse = InspireHttpResponse<UserDetails>;
-  export type RequestModule = {
-    moduleId: string;
-    requestSettings: object;
-  };
-
-  export type InputAttrs = {
-    modules: RequestModule[];
-    tenantId: string;
-    accessToken: string;
-  };
 }

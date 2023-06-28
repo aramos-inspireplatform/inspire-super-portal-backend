@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
-import { CreateRequestUseCase } from '~/requests/application/create-request.use-case';
+import { CreateRequestCommand } from '~/requests/application/commands/create-request.command';
 import { ListAllRequestsUseCase } from '~/requests/application/list-all-requests.use-case';
 import { ListOneRequestModuleUseCase } from '~/requests/application/list-one-request-modules.use-case';
 import { ListOneRequestUseCase } from '~/requests/application/list-one-request.use-case';
@@ -36,8 +36,8 @@ import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto
 )
 export class RequestsController {
   constructor(
-    @Inject(RequestProviderSymbols.CREATE_REQUEST_USE_CASE)
-    private readonly createRequestUseCase: CreateRequestUseCase,
+    @Inject(RequestProviderSymbols.CREATE_REQUEST_COMMAND)
+    private readonly createRequestUseCase: CreateRequestCommand,
     @Inject(RequestProviderSymbols.REQUEST_PROVISIONING_WEB_HOOK_USE_CASE)
     private readonly requestProvisioningWebHookUseCase: RequestProvisioningWebHookUseCase,
     @Inject(RequestProviderSymbols.LIST_ALL_REQUESTS_USE_CASE)
@@ -52,13 +52,13 @@ export class RequestsController {
 
   @Post()
   @AuthenticatedRoute()
-  async createRequest(
+  async create(
     @Body() payload: CreateRequestBodyDto,
     @Req() req: FastifyRequest,
   ) {
-    const request = await this.createRequestUseCase.handle({
+    const request = await this.createRequestUseCase.execute({
       accessToken: req.headers.authorization,
-      tenantId: payload.tenantId,
+      gTenantId: payload.gTenantId,
       modules: payload.moduleRequests.map((moduleRequest) => {
         return {
           moduleId: moduleRequest.moduleId,

@@ -8,9 +8,9 @@ export interface ITenantRepository {
   listAndCount(
     attrs: ITenantRepository.ListAllInputAttrs,
   ): ITenantRepository.ListAllResult;
-  findByIntegrationCode(
-    attrs: ITenantRepository.FindByIntegrationCodeInputAttrs,
-  ): Promise<Tenant | null>;
+  findByGTenantId(
+    attrs: ITenantRepository.FindByGTenantIdInputAttrs,
+  ): ITenantRepository.FindByGTenantIdResult;
 }
 
 export namespace ITenantRepository {
@@ -32,8 +32,8 @@ export namespace ITenantRepository {
   };
   export type ListAllResult = Promise<[Tenant[], number]>;
 
-  export type FindByIntegrationCodeInputAttrs = {
-    id: string;
+  export type FindByGTenantIdInputAttrs = {
+    gTenantId: string;
   };
-  export type FindByIntegrationCodeResult = Promise<Tenant | null>;
+  export type FindByGTenantIdResult = Promise<Tenant | null>;
 }

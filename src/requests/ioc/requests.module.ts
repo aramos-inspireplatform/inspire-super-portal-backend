@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { DiscoveryModule } from '@nestjs/core';
 import { InspireTenantApiServiceModule } from '~/shared/application/services/inspire-api-services/tenant/ioc/inspire-tenant-api-service.module';
 import { RequestCreatedEventHandler } from '~/requests/infra/events/request-created-event.handler';
-import { CreateRequestUseCaseFactoryProvider } from '~/requests/ioc/providers/create-request-use-case-factory.provider';
+import { CreateRequestCommandFactoryProvider } from '~/requests/ioc/providers/commands/create-request-command-factory.provider';
 import { ListAllRequestsUseCaseFactoryProvider } from '~/requests/ioc/providers/list-all-requests-use-case-factory.provider';
 import { ListOneRequestModuleUseCaseFactoryProvider } from '~/requests/ioc/providers/list-one-request-module-use-case-factory.provider';
 import { ListOneRequestUseCaseFactoryProvider } from '~/requests/ioc/providers/list-one-request-use-case-factory.provider';
@@ -16,7 +16,7 @@ import { QueueModule } from '~/shared/infra/sqs/queue.module';
 
 @Module({
   providers: [
-    CreateRequestUseCaseFactoryProvider.register(),
+    CreateRequestCommandFactoryProvider.register(),
     RequestCreatedEventUseCaseFactoryProvider.register(),
     RequestProvisioningWebHookUseCaseFactoryProvider.register(),
     ListAllRequestsUseCaseFactoryProvider.register(),

@@ -56,14 +56,15 @@ export class TenantsRepository implements ITenantRepository {
     return [tenants.map((tenant) => new Tenant(tenant)), total];
   }
 
-  async findByIntegrationCode(
-    attrs: ITenantRepository.FindByIntegrationCodeInputAttrs,
-  ): ITenantRepository.FindByIntegrationCodeResult {
+  async findByGTenantId(
+    attrs: ITenantRepository.FindByGTenantIdInputAttrs,
+  ): ITenantRepository.FindByGTenantIdResult {
     const tenant = await this.repository
       .createQueryBuilder('tenants')
       .leftJoinAndSelect('tenants.tenantStatus', 'tenantStatus')
-      .where('tenants.integrationCode = :id', { id: attrs.id })
+      .where('tenants.tenantId = :gTenantId', { gTenantId: attrs.gTenantId })
       .getOne();
+
     return tenant ? new Tenant(tenant) : null;
   }
 }
