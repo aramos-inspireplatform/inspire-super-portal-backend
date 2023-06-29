@@ -7,10 +7,10 @@ import { TenantsUsersController } from '~/users/presentation/tenant-users.contro
 import { FindAllTenantUsersQueryFactoryProvider } from './providers/queries/find-all-tenant-users-query-factory.provider';
 import { FindAllAdminUsersQueryFactoryProvider } from './providers/queries/find-all-admin-users-query-factory.provider';
 import { FindOneAdminUserQueryFactoryProvider } from '~/users/ioc/providers/queries/find-one-admin-user-query-factory.provider';
-import { FindAllTenantUsersDaoFactoryProvider } from '~/users/ioc/providers/dao/find-all-tenant-users-dao-factory.provider';
+import { FindAllTenantUsersDaoFactoryProvider } from '~/users/ioc/providers/daos/find-all-tenant-users-dao-factory.provider';
 import { InspireTenantApiServiceModule } from '~/shared/application/services/inspire-api-services/tenant/ioc/inspire-tenant-api-service.module';
-import { FindOneAdminUserDaoFactoryProvider } from '~/users/ioc/providers/dao/find-one-admin-user-dao-factory.provider';
-import { FindAllAdminUsersDaoFactoryProvider } from '~/users/ioc/providers/dao/find-all-admin-users-dao-factory.provider';
+import { FindOneAdminUserDaoFactoryProvider } from '~/users/ioc/providers/daos/find-one-admin-user-dao-factory.provider';
+import { FindAllAdminUsersDaoFactoryProvider } from '~/users/ioc/providers/daos/find-all-admin-users-dao-factory.provider';
 
 @Module({
   providers: [

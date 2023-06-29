@@ -16,13 +16,13 @@ import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-pagin
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 import { FindOneTenantQuery } from '~/tenants/application/queries/find-one-tenant.query';
 import { FindAllTenantsQuery } from '~/tenants/application/queries/find-all-tenants.query';
-import { FindAllTenantsOutput } from '~/tenants/presentation/dto/output/find-all-tenants.output';
-import { FindTenantOutput } from '~/tenants/presentation/dto/output/find-tenant.output';
+import { FindAllTenantsOutput } from '~/tenants/presentation/dtos/responses/find-all-tenants.output';
+import { FindTenantOutput } from '~/tenants/presentation/dtos/responses/find-tenant.output';
 import {
   GetUserFromRequest,
   UserFromRequest,
 } from '~/shared/presentation/decorators/get-user-from-request';
-import { CreateTenantRequestBodyDto } from '~/tenants/presentation/dto/input/create-tenant-request.dto';
+import { CreateTenantRequestBodyDto } from '~/tenants/presentation/dtos/requests/create-tenant-request.dto';
 import { CreateTenantCommand } from '~/tenants/application/commands/create-tenant.command';
 
 @Controller('/tenants')

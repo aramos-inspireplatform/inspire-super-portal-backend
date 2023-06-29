@@ -1,12 +1,12 @@
 import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { Request } from '~/requests/domain/entities/request.entity';
 import { RequestModuleNotFoundException } from '~/requests/domain/exceptions/request-module-not-found.exception';
-import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
-import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import { IModuleRepository } from '~/requests/domain/repositories/module-repository.contract';
+import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 import { IEventEmitter } from '~/shared/application/contracts/event-emitter.contract';
 import { RequestEvents } from '~/shared/domain/events/request.events';
 import { TenantNotFoundException } from '~/tenants/domain/exceptions/tenant-not-found.exception';
-import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { ICreateRequestCommand } from '~/requests/application/commands/contracts/create-request.contract';
 
 export class CreateRequestCommand implements ICreateRequestCommand {

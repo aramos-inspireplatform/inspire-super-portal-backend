@@ -1,5 +1,5 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { ILinkTenantUserCommand } from '~/users/application/commands/contracts/link-tenant-user.contract';
 
 export class LinkTenantUserCommand implements ILinkTenantUserCommand {

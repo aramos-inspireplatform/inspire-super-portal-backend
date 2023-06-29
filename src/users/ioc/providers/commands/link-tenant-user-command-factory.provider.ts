@@ -1,8 +1,8 @@
 import { FactoryProvider } from '@nestjs/common';
-import { TenantsRepository } from '~/shared/infra/database/repositories/tenants.repository';
+import { TenantsRepository } from '~/tenants/infra/repositories/tenants.repository';
 import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
+import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { LinkTenantUserCommand } from '~/users/application/commands/link-tenant-user.command';
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 

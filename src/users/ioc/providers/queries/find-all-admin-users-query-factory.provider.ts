@@ -1,5 +1,5 @@
 import { FactoryProvider } from '@nestjs/common';
-import { IFindAllAdminUsersDao } from '~/users/application/queries/contracts/find-all-admin-users.dao.contract';
+import { IFindAllAdminUsersDao } from '~/users/application/daos/find-all-admin-users.dao.contract';
 import { FindAllAdminUsersQuery } from '~/users/application/queries/find-all-admin-users.query';
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 

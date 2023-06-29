@@ -15,7 +15,21 @@ export namespace IFindOneAdminUserQuery {
     title: string;
     email: string;
     phoneNumber: string;
-    userType: string;
+    userType: UserType;
     phoneNumberCountryId: string;
+    agencies: Agency[];
   }>;
+
+  // Additional types
+  type UserType = {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
+  type Agency = {
+    id: string;
+    name: string;
+    logo: string;
+  };
 }

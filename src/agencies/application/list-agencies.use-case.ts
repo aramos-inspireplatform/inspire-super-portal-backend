@@ -8,12 +8,14 @@ export class ListAgenciesUseCase {
 
   async handle(attrs: ListAgenciesUseCase.InputAttrs) {
     const url = this.buildUrl(attrs);
-    const resposneOrError =
+
+    const response =
       await this.httpClient.get<ListAgenciesUseCase.InspireHttpResponse>(url, {
         headers: { authorization: attrs.accessToken },
       });
-    if (resposneOrError instanceof Error) throw resposneOrError;
-    return resposneOrError.data.body.data;
+    if (response instanceof Error) throw response;
+
+    return response.data.body.data;
   }
 
   protected buildUrl(attrs: ListAgenciesUseCase.InputAttrs) {
