@@ -1,4 +1,4 @@
-import { IFindTenantDao as IFindOneTenantDao } from '~/tenants/application/queries/contracts/find-one-tenant.dao.contract';
+import { IFindTenantDao as IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
 import { IFindTenantQuery as IFindOneTenantQuery } from '~/tenants/application/queries/contracts/find-tenant.query.contract';
 
 export class FindOneTenantQuery implements IFindOneTenantQuery {

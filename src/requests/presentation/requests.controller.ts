@@ -18,10 +18,10 @@ import { ListOneRequestUseCase } from '~/requests/application/list-one-request.u
 import { ReAttemptRequestModuleUseCase } from '~/requests/application/re-attempt-request-module.use-case';
 import { RequestProvisioningWebHookUseCase } from '~/requests/application/request-provisioning-web-hook.use-case';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
-import { CreateRequestBodyDto } from '~/requests/presentation/dtos/inputs/create-request-body.dto';
-import { WebHookRequestBodyDto } from '~/requests/presentation/dtos/inputs/web-hook-request-body.dto';
-import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-validator.dto';
-import { GetRequestResponseDto } from '~/requests/presentation/dtos/output/get-response.dto';
+import { CreateRequestBodyDto } from '~/requests/presentation/dtos/requests/create-request-body.dto';
+import { WebHookRequestBodyDto } from '~/requests/presentation/dtos/requests/web-hook-request-body.dto';
+import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/requests/modules/payment/payment-validator.dto';
+import { GetRequestResponseDto } from '~/requests/presentation/dtos/responses/get-response.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';

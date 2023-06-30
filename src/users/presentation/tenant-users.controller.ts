@@ -14,12 +14,10 @@ import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticat
 import { CreateTenantUserCommand } from '~/users/application/commands/create-tenant-user.command';
 import { LinkTenantUserCommand } from '~/users/application/commands/link-tenant-user.command';
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
-import { CreateTenantUserRequestDto } from '~/users/presentation/dto/input/create-tenant-user-request.dto';
-import { UserResponseDto } from '~/users/presentation/dto/output/user-response.dto';
+import { CreateTenantUserRequestDto } from '~/users/presentation/dtos/requests/create-tenant-user-request.dto';
+import { UserResponseDto } from '~/users/presentation/dtos/responses/user-response.dto';
 import { FindAllTenantUsersQuery } from '~/users/application/queries/find-all-tenant-users.query';
-import { PaginatedUsersResponseDto } from './dto/output/paginated-users-response.dto';
-import { FindAllAdminUsersResponseDto } from '~/users/presentation/dto/output/find-all-admin-users-response.dto';
-import { FindAllTenantUsersRequestDto } from './dto/input/find-all-tenant-users-request.dto';
+import { FindAllTenantUsersRequestDto } from '~/users/presentation/dtos/requests/find-all-tenant-users-request.dto';
 
 @Controller('tenants/users')
 @ApiTags('Tenant Users')

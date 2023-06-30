@@ -1,4 +1,4 @@
-import { IFindAllAdminUsersDao } from '~/users/application/queries/contracts/find-all-admin-users.dao.contract';
+import { IFindAllAdminUsersDao } from '~/users/application/daos/find-all-admin-users.dao.contract';
 import { IFindAllAdminUsersQuery } from '~/users/application/queries/contracts/find-all-admin-users.query.contract';
 
 export class FindAllAdminUsersQuery implements IFindAllAdminUsersQuery {

@@ -1,9 +1,9 @@
 import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { ICreateTenantCommand } from '~/tenants/application/commands/contracts/create-tenant.contract';
 import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
-import { Tenant } from '~/tenants/domain/entity/tenant.entity';
-import { ITenantRepository } from '~/tenants/infra/contracts/repositories/tenant-repository.contract';
-import { ITenantStatusesRepository } from '~/tenants/infra/contracts/repositories/tenant-statuses-repository.contract';
+import { Tenant } from '~/tenants/domain/entities/tenant.entity';
+import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
+import { ITenantStatusesRepository } from '~/tenants/domain/repositories/tenant-statuses-repository.contract';
 
 export class CreateTenantCommand implements ICreateTenantCommand {
   private readonly CREATE_TENANT_URL = `${process.env.TENANT_URL}/tenants`;

@@ -1,8 +1,8 @@
 import { Controller, Get, Inject, Param, Query, Req } from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
-import { ListAgenciesUseCase } from '~/agencies/application/list-agencies.use-case';
-import { ListUserAgenciesUseCase } from '~/agencies/application/list-user-agencies.use-case';
+import { FindAllAgenciesQuery } from '~/agencies/application/queries/find-all-agencies.query';
+import { FindAllUserAgenciesQuery } from '~/agencies/application/queries/find-all-user-agencies.query';
 import { AgenciesProvidersSymbols } from '~/agencies/ioc/agencies-providers.symbols';
 import { GetAgencyDto } from '~/agencies/presentation/dto/output/get-agencies.dto';
 import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
@@ -14,21 +14,20 @@ import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto
 @ApiTags('Agencies')
 export class AgenciesController {
   constructor(
-    @Inject(AgenciesProvidersSymbols.LIST_AGENCIES_USE_CASE)
-    private readonly listAgenciesUseCase: ListAgenciesUseCase,
-
-    @Inject(AgenciesProvidersSymbols.LIST_USER_AGENCIES_USE_CASE)
-    private readonly listUserAgenciesUseCase: ListUserAgenciesUseCase,
+    @Inject(AgenciesProvidersSymbols.FIND_ALL_AGENCIES_QUERY)
+    private readonly findAllAgenciesQuery: FindAllAgenciesQuery,
+    @Inject(AgenciesProvidersSymbols.FIND_ALL_USER_AGENCIES_QUERY)
+    private readonly findAllUserAgenciesQuery: FindAllUserAgenciesQuery,
   ) {}
 
   @Get()
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: PaginatedResultsDto<GetAgencyDto> })
-  async listAgencies(
+  async findAll(
     @Req() request: FastifyRequest,
     @Query() searchParams: CommonPaginateDto,
   ) {
-    const agencies = await this.listAgenciesUseCase.handle({
+    const agencies = await this.findAllAgenciesQuery.execute({
       accessToken: request.headers.authorization,
       searchParams: {
         keywords: searchParams.keywords,
@@ -44,11 +43,11 @@ export class AgenciesController {
   @Get('user-agencies/:userId/')
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: PaginatedResultsDto<GetAgencyDto> })
-  async listUserAgencies(
+  async findAllByUser(
     @Req() request: FastifyRequest,
     @Param('userId', IsMongoIdPipe) userId: string,
   ) {
-    const agencies = await this.listUserAgenciesUseCase.handle({
+    const agencies = await this.findAllUserAgenciesQuery.execute({
       accessToken: request.headers.authorization,
       userId,
     });
