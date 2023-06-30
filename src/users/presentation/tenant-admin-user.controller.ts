@@ -11,52 +11,37 @@ import {
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
-import { CreateTenantAdminUserUseCase } from '~/users/application/use-case/create-tenant-admin-user.use-case';
+import { CreateAdminUserCommand } from '~/users/application/commands/create-admin-user.command';
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
-import { CreateTenantAdminUserRequestBodyDto } from '~/users/presentation/dto/input/create-tenant-admin-user-request.dto';
-import { PaginatedUsersResponseDto } from '~/users/presentation/dto/output/paginated-users-response.dto';
-import { UserResponseDto } from '~/users/presentation/dto/output/user-response.dto';
-import { ListAdminUsersUseCase } from '../application/use-case/list-admin-users.use-case';
-import { ListUserResponseDto } from '~/users/presentation/dto/output/list-user-response.dto';
+import { CreateAdminUserRequestDto } from '~/users/presentation/dtos/requests/create-admin-user-request.dto';
+import { PaginatedUsersResponseDto } from '~/users/presentation/dtos/responses/paginated-users-response.dto';
+import { UserResponseDto } from '~/users/presentation/dtos/responses/user-response.dto';
+import { FindAllAdminUsersQuery } from '../application/queries/find-all-admin-users.query';
+import { FindAllAdminUsersResponseDto } from '~/users/presentation/dtos/responses/find-all-admin-users-response.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
-import { ListOneUserUseCase } from '~/users/application/use-case/list-one-user.use-case';
-import { GetAdminUserDetailsDto } from '~/users/presentation/dto/output/admin-user-details.response.dto';
+import { FindOneAdminUserQuery } from '~/users/application/queries/find-one-admin-user.query';
 
 @Controller('users')
 @ApiTags('Admin Users')
 export class TenantAdminUsersController {
   constructor(
-    @Inject(UsersProvidersSymbols.CREATE_TENANT_ADMIN_USER_USE_CASE)
-    private readonly createTenantAdminUserUseCase: CreateTenantAdminUserUseCase,
-    @Inject(UsersProvidersSymbols.LIST_ADMIN_USERS_USE_CASE)
-    private readonly listAdminUsersUseCase: ListAdminUsersUseCase,
-    @Inject(UsersProvidersSymbols.LIST_ONE_USER_USE_CASE)
-    private readonly listOneUserUseCase: ListOneUserUseCase,
+    @Inject(UsersProvidersSymbols.FIND_ALL_ADMIN_USERS_QUERY)
+    private readonly findAllAdminUsersQuery: FindAllAdminUsersQuery,
+    @Inject(UsersProvidersSymbols.FIND_ONE_ADMIN_USER_QUERY)
+    private readonly findOneAdminUserQuery: FindOneAdminUserQuery,
+    @Inject(UsersProvidersSymbols.CREATE_ADMIN_USER_COMMAND)
+    private readonly createAdminUserCommand: CreateAdminUserCommand,
   ) {}
-
-  @Post()
-  @AuthenticatedRoute()
-  @ApiDefaultResponse({ type: UserResponseDto })
-  async create(
-    @Req() request: FastifyRequest,
-    @Body() payload: CreateTenantAdminUserRequestBodyDto,
-  ) {
-    const user = await this.createTenantAdminUserUseCase.create({
-      accessToken: request.headers.authorization,
-      user: payload,
-    });
-    return UserResponseDto.factory(UserResponseDto, user);
-  }
 
   @Get()
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: PaginatedUsersResponseDto })
-  async list(
+  async findAll(
     @Req() request: FastifyRequest,
     @Query() pagination: CommonPaginateDto,
   ) {
-    const users = await this.listAdminUsersUseCase.list({
+    const users = await this.findAllAdminUsersQuery.execute({
       accessToken: request.headers.authorization,
       pagination: {
         ...pagination,
@@ -64,7 +49,10 @@ export class TenantAdminUsersController {
       },
     });
     return new PaginatedUsersResponseDto(
-      ListUserResponseDto.factory(ListUserResponseDto, users.rows),
+      FindAllAdminUsersResponseDto.factory(
+        FindAllAdminUsersResponseDto,
+        users.rows,
+      ),
       users.count,
       users.page,
       users.pageSize,
@@ -73,15 +61,31 @@ export class TenantAdminUsersController {
 
   @Get(':id')
   @AuthenticatedRoute()
-  @ApiDefaultResponse({ type: ListUserResponseDto })
+  @ApiDefaultResponse({ type: FindAllAdminUsersResponseDto })
   async findOne(
     @Req() request: FastifyRequest,
     @Param('id', IsMongoIdPipe) userId: string,
   ) {
-    const users = await this.listOneUserUseCase.handle({
+    const user = await this.findOneAdminUserQuery.execute({
       accessToken: request.headers.authorization,
       userId,
     });
-    return GetAdminUserDetailsDto.factory(GetAdminUserDetailsDto, users);
+
+    return user;
+  }
+
+  @Post()
+  @AuthenticatedRoute()
+  @ApiDefaultResponse({ type: UserResponseDto })
+  async create(
+    @Req() request: FastifyRequest,
+    @Body() payload: CreateAdminUserRequestDto,
+  ) {
+    const user = await this.createAdminUserCommand.execute({
+      accessToken: request.headers.authorization,
+      user: payload,
+    });
+
+    return user;
   }
 }

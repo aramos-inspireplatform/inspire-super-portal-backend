@@ -11,17 +11,17 @@ import {
 } from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
-import { CreateRequestUseCase } from '~/requests/application/create-request.use-case';
+import { CreateRequestCommand } from '~/requests/application/commands/create-request.command';
 import { ListAllRequestsUseCase } from '~/requests/application/list-all-requests.use-case';
 import { ListOneRequestModuleUseCase } from '~/requests/application/list-one-request-modules.use-case';
 import { ListOneRequestUseCase } from '~/requests/application/list-one-request.use-case';
 import { ReAttemptRequestModuleUseCase } from '~/requests/application/re-attempt-request-module.use-case';
 import { RequestProvisioningWebHookUseCase } from '~/requests/application/request-provisioning-web-hook.use-case';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
-import { CreateRequestBodyDto } from '~/requests/presentation/dtos/inputs/create-request-body.dto';
-import { WebHookRequestBodyDto } from '~/requests/presentation/dtos/inputs/web-hook-request-body.dto';
-import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/input/modules/payment/payment-validator.dto';
-import { GetRequestResponseDto } from '~/requests/presentation/dtos/output/get-response.dto';
+import { CreateRequestBodyDto } from '~/requests/presentation/dtos/requests/create-request-body.dto';
+import { WebHookRequestBodyDto } from '~/requests/presentation/dtos/requests/web-hook-request-body.dto';
+import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/requests/modules/payment/payment-validator.dto';
+import { GetRequestResponseDto } from '~/requests/presentation/dtos/responses/get-response.dto';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
@@ -36,8 +36,8 @@ import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto
 )
 export class RequestsController {
   constructor(
-    @Inject(RequestProviderSymbols.CREATE_REQUEST_USE_CASE)
-    private readonly createRequestUseCase: CreateRequestUseCase,
+    @Inject(RequestProviderSymbols.CREATE_REQUEST_COMMAND)
+    private readonly createRequestUseCase: CreateRequestCommand,
     @Inject(RequestProviderSymbols.REQUEST_PROVISIONING_WEB_HOOK_USE_CASE)
     private readonly requestProvisioningWebHookUseCase: RequestProvisioningWebHookUseCase,
     @Inject(RequestProviderSymbols.LIST_ALL_REQUESTS_USE_CASE)
@@ -52,13 +52,13 @@ export class RequestsController {
 
   @Post()
   @AuthenticatedRoute()
-  async createRequest(
+  async create(
     @Body() payload: CreateRequestBodyDto,
     @Req() req: FastifyRequest,
   ) {
-    const request = await this.createRequestUseCase.handle({
+    const request = await this.createRequestUseCase.execute({
       accessToken: req.headers.authorization,
-      tenantId: payload.tenantId,
+      gTenantId: payload.gTenantId,
       modules: payload.moduleRequests.map((moduleRequest) => {
         return {
           moduleId: moduleRequest.moduleId,

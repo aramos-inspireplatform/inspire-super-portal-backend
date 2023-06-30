@@ -5,7 +5,7 @@ import { RequestStatusesIds } from '~/requests/domain/constants/request-statuses
 import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
 import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
 import { Request } from '~/requests/domain/entities/request.entity';
-import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 import { InspireTenantApiServiceDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.dto';
