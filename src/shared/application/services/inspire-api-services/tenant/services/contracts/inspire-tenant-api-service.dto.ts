@@ -35,6 +35,7 @@ export namespace InspireTenantApiServiceDto {
     supportWebsite: string;
     privacyPolicy: string;
     termsOfService: string;
+    createdAt: Date;
     timezone: Timezone;
     language: Language;
     currency: Currency;
@@ -117,7 +118,7 @@ export namespace InspireTenantApiServiceDto {
   // FindOne
   export type FindOneInputAttrs = {
     accessToken: string;
-    integrationCode: string;
+    gTenantId: string;
   };
   export type FindOneResult = Promise<Tenant | Error>;
 

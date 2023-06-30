@@ -39,7 +39,7 @@ export class InspireTenantApiService implements IInspireTenantApiService {
   async findOne(
     attrs: InspireTenantApiServiceDto.FindOneInputAttrs,
   ): InspireTenantApiServiceDto.FindOneResult {
-    const url = `${this.V2_BASE_URL}/${attrs.integrationCode}`;
+    const url = `${this.V2_BASE_URL}/${attrs.gTenantId}`;
 
     const tenant =
       await this.httpClient.get<InspireTenantApiService.FindOneHttpResponse>(
