@@ -26,22 +26,6 @@ export class PaymentProcessorDto {
 
   @ApiProperty({
     required: true,
-    example: '90261c51-ed8a-4859-b193-395a7375b903',
-  })
-  @IsNotEmpty()
-  @IsUUID()
-  settlementCurrencyId: string;
-
-  @ApiProperty({
-    required: true,
-    example: false,
-  })
-  @IsNotEmpty()
-  @IsBoolean()
-  isDefault: boolean;
-
-  @ApiProperty({
-    required: true,
     example: 1,
   })
   @IsNotEmpty()
@@ -52,12 +36,11 @@ export class PaymentProcessorDto {
 
   @ApiProperty({
     required: true,
-    example: 'aa8501e1-a828-4e94-aff6-b7aab6760039',
+    example: false,
   })
-  @ValidateIf((obj: PaymentProcessorDto) => !obj.apiSecretKey)
   @IsNotEmpty()
-  @IsString()
-  apiAccessKey: string;
+  @IsBoolean()
+  allowInstallments: boolean;
 
   @ApiProperty({
     required: true,
@@ -65,7 +48,24 @@ export class PaymentProcessorDto {
   })
   @IsNotEmpty()
   @IsBoolean()
-  allowInstallments: boolean;
+  isSplitPaymentAllowed: boolean;
+
+  @ApiProperty({
+    required: true,
+    example: '90261c51-ed8a-4859-b193-395a7375b903',
+  })
+  @IsNotEmpty()
+  @IsUUID()
+  settlementCurrencyId: string;
+
+  @ApiProperty({
+    required: true,
+    example: 'aa8501e1-a828-4e94-aff6-b7aab6760039',
+  })
+  @ValidateIf((obj: PaymentProcessorDto) => !obj.apiSecretKey)
+  @IsNotEmpty()
+  @IsString()
+  apiAccessKey: string;
 
   @ApiProperty({
     required: true,
@@ -92,4 +92,12 @@ export class PaymentProcessorDto {
   @IsArray()
   @IsUUID(undefined, { each: true })
   allowedCountriesIds: string[];
+
+  @ApiProperty({
+    required: true,
+    example: false,
+  })
+  @IsNotEmpty()
+  @IsBoolean()
+  isDefault: boolean;
 }
