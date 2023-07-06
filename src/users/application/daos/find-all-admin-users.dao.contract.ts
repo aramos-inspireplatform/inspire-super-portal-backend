@@ -26,6 +26,7 @@ export namespace IFindAllAdminUsersDao {
     email: string;
     phoneNumber: string;
     phoneNumberCountryId: string;
+    status: string;
     agencyCount: number;
     userType: string;
     createdAt: Date;
@@ -42,6 +43,7 @@ export namespace IFindAllAdminUsersDao {
     email: string;
     phoneNumber: string;
     phoneNumberCountryId: string;
+    status: string;
     googleTenantId: string;
     isSsoUser: boolean;
     agencyCount: number;

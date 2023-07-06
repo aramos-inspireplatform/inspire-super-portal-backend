@@ -14,6 +14,7 @@ export namespace IFindOneAdminUserQuery {
     lastName: string;
     title: string;
     email: string;
+    status: string;
     phoneNumber: string;
     userType: UserType;
     phoneNumberCountryId: string;

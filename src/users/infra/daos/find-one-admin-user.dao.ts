@@ -27,8 +27,12 @@ export class FindOneAdminUserDao implements IFindOneAdminUserDao {
       lastName: response?.data?.body?.data?.lastName,
       title: response?.data?.body?.data?.title,
       email: response?.data?.body?.data?.email,
+      status: response?.data?.body?.data?.adminBlockedDate
+        ? 'Inactive'
+        : 'Active',
       phoneNumber: response?.data?.body?.data?.phoneNumber,
       phoneNumberCountryId: response?.data?.body?.data?.phoneNumberCountryId,
+      adminBlockedDate: response?.data?.body?.data?.adminBlockedDate,
       userTypeId: response?.data?.body?.data?.userTypeId
         ? {
             id: response?.data?.body?.data?.userTypeId.id,

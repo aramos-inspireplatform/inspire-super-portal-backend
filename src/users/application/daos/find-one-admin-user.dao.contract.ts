@@ -17,9 +17,11 @@ export namespace IFindOneAdminUserDao {
     title: string;
     email: string;
     phoneNumber: string;
+    status: string;
     userTypeId: UserType;
     phoneNumberCountryId: string;
     agencies: Agency[];
+    adminBlockedDate: string;
   }>;
 
   // Additional types
@@ -43,6 +45,7 @@ export namespace IFindOneAdminUserDao {
     lastName: string;
     title: string;
     email: string;
+    status: string;
     phoneNumber: string;
     phoneNumberCountryId: string;
     userTypeId: {
