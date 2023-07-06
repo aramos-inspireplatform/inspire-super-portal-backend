@@ -44,14 +44,6 @@ export class PaymentProcessorDto {
 
   @ApiProperty({
     required: true,
-    example: false,
-  })
-  @IsNotEmpty()
-  @IsBoolean()
-  isSplitPaymentAllowed: boolean;
-
-  @ApiProperty({
-    required: true,
     example: '90261c51-ed8a-4859-b193-395a7375b903',
   })
   @IsNotEmpty()
