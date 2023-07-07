@@ -21,7 +21,6 @@ export class FindOneAdminUserDao implements IFindOneAdminUserDao {
       });
     if (response instanceof Error) throw response;
 
-    console.log('Aqui', response?.data?.body?.data);
     return {
       id: response?.data?.body?.data?.id,
       firstName: response?.data?.body?.data?.firstName,
