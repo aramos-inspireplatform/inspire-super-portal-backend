@@ -18,7 +18,7 @@ export class FindOneAdminUserQuery implements IFindOneAdminUserQuery {
       lastName: user.lastName,
       title: user.title,
       email: user.email,
-      status: user?.adminBlockedDate ? 'Inactive' : 'Active',
+      status: user?.status,
       phoneNumber: user.phoneNumber,
       phoneNumberCountryId: user.phoneNumberCountryId,
       userType: user.userTypeId

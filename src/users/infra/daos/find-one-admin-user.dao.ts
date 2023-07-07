@@ -21,15 +21,14 @@ export class FindOneAdminUserDao implements IFindOneAdminUserDao {
       });
     if (response instanceof Error) throw response;
 
+    console.log('Aqui', response?.data?.body?.data);
     return {
       id: response?.data?.body?.data?.id,
       firstName: response?.data?.body?.data?.firstName,
       lastName: response?.data?.body?.data?.lastName,
       title: response?.data?.body?.data?.title,
       email: response?.data?.body?.data?.email,
-      status: response?.data?.body?.data?.adminBlockedDate
-        ? 'Inactive'
-        : 'Active',
+      status: response?.data?.body?.data?.status,
       phoneNumber: response?.data?.body?.data?.phoneNumber,
       phoneNumberCountryId: response?.data?.body?.data?.phoneNumberCountryId,
       adminBlockedDate: response?.data?.body?.data?.adminBlockedDate,

@@ -10,17 +10,17 @@ import {
 } from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
+import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
+import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CreateAdminUserCommand } from '~/users/application/commands/create-admin-user.command';
+import { FindOneAdminUserQuery } from '~/users/application/queries/find-one-admin-user.query';
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 import { CreateAdminUserRequestDto } from '~/users/presentation/dtos/requests/create-admin-user-request.dto';
+import { FindAllAdminUsersResponseDto } from '~/users/presentation/dtos/responses/find-all-admin-users-response.dto';
 import { PaginatedUsersResponseDto } from '~/users/presentation/dtos/responses/paginated-users-response.dto';
 import { UserResponseDto } from '~/users/presentation/dtos/responses/user-response.dto';
 import { FindAllAdminUsersQuery } from '../application/queries/find-all-admin-users.query';
-import { FindAllAdminUsersResponseDto } from '~/users/presentation/dtos/responses/find-all-admin-users-response.dto';
-import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
-import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
-import { FindOneAdminUserQuery } from '~/users/application/queries/find-one-admin-user.query';
 
 @Controller('users')
 @ApiTags('Admin Users')
