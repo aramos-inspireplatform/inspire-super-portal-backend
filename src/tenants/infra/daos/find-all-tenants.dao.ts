@@ -74,6 +74,7 @@ export class FindAllTenantsDao implements IFindAllTenantsDao {
             }
           : null,
         settings: tenant.settings,
+        createdBy: tenant.createdBy,
       })),
       page: tenants.page,
       pageSize: tenants.pageSize,

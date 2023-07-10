@@ -32,6 +32,7 @@ export namespace IFindAllTenantsQuery {
     language: Language;
     country: Country;
     status: Status;
+    createdBy: CreatedBy;
   };
 
   // Additional types
@@ -64,5 +65,10 @@ export namespace IFindAllTenantsQuery {
     id: string;
     name: string;
     slug: string;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
   };
 }
