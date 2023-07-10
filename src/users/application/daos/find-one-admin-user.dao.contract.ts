@@ -17,7 +17,7 @@ export namespace IFindOneAdminUserDao {
     title: string;
     email: string;
     phoneNumber: string;
-    status: string;
+    isActive: boolean;
     userTypeId: UserType;
     phoneNumberCountryId: string;
     agencies: Agency[];
@@ -45,7 +45,7 @@ export namespace IFindOneAdminUserDao {
     lastName: string;
     title: string;
     email: string;
-    status: string;
+    isActive: boolean;
     phoneNumber: string;
     phoneNumberCountryId: string;
     userTypeId: {

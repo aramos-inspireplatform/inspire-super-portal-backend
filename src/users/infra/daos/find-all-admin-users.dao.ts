@@ -43,7 +43,7 @@ export class FindAllAdminUsersDao implements IFindAllAdminUsersDao {
         lastName: user.lastName?.trim(),
         title: user.title,
         email: user.email,
-        status: user?.status,
+        isActive: user.isActive,
         phoneNumber: user.phoneNumber,
         phoneNumberCountryId: user.phoneNumberCountryId,
         agencyCount: user.agencyCount,

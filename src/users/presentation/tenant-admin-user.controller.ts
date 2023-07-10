@@ -48,6 +48,7 @@ export class TenantAdminUsersController {
         pageSize: pagination.pagesize,
       },
     });
+
     return new PaginatedUsersResponseDto(
       FindAllAdminUsersResponseDto.factory(
         FindAllAdminUsersResponseDto,

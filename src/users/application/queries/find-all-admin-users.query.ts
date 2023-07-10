@@ -30,7 +30,7 @@ export class FindAllAdminUsersQuery implements IFindAllAdminUsersQuery {
         email: user.email,
         phoneNumber: user.phoneNumber,
         phoneNumberCountryId: user.phoneNumberCountryId,
-        status: user.status,
+        isActive: user.isActive,
         agencyCount: user.agencyCount,
         userType: user.userType,
         createdAt: user.createdAt,
