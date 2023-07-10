@@ -36,8 +36,8 @@ export class GetAdminUserDetailsDto extends BaseDto {
   lastName: string;
 
   @Expose()
-  @ApiProperty({ example: 'Dr.' })
-  title: string;
+  @ApiProperty({ example: false, type: Boolean })
+  isActive: boolean;
 
   @Expose()
   @ApiProperty({ example: 'test@test.com' })

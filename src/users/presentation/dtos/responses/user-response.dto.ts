@@ -23,6 +23,10 @@ export class UserResponseDto extends BaseDto {
   @ApiProperty({ example: '+55 21 99898-9898' })
   phoneNumber: string;
 
+  @Expose()
+  @ApiProperty({ example: false, type: Boolean })
+  isActive: boolean;
+
   @Expose({ name: 'tenantId' })
   @ApiProperty({ example: 'teste-hnmkt', name: 'tenantId' })
   googleTenantId: string;
