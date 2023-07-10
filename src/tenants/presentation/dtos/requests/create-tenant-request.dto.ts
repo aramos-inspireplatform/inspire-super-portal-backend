@@ -2,6 +2,7 @@ import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
   IsMongoId,
   IsNotEmpty,
+  IsNumber,
   IsObject,
   IsOptional,
   IsString,
@@ -59,4 +60,12 @@ export class CreateTenantRequestBodyDto {
   @IsMongoId()
   @IsOptional()
   languageId?: string;
+
+  @ApiProperty({ example: '30', required: true })
+  @IsNumber()
+  termsRecurringIntervalCount: number;
+
+  @ApiProperty({ example: '614ce3cfc49775f5ae6dc123', required: true })
+  @IsMongoId()
+  termsRecurringIntervalId: string;
 }

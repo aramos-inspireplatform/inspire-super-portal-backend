@@ -75,12 +75,14 @@ export class FindAllTenantsDao implements IFindAllTenantsDao {
           : null,
         settings: tenant.settings,
         termsRecurringIntervalCount: tenant.termsRecurringIntervalCount,
-        termsRecurringInterval: {
-          id: tenant.termsRecurringInterval.id,
-          name: tenant.termsRecurringInterval.name,
-          interval: tenant.termsRecurringInterval.interval,
-          isActive: tenant.termsRecurringInterval.isActive,
-        },
+        termsRecurringInterval: tenant.termsRecurringInterval
+          ? {
+              id: tenant.termsRecurringInterval.id,
+              name: tenant.termsRecurringInterval.name,
+              interval: tenant.termsRecurringInterval.interval,
+              isActive: tenant.termsRecurringInterval.isActive,
+            }
+          : null,
       })),
       page: tenants.page,
       pageSize: tenants.pageSize,

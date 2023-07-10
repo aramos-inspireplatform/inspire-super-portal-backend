@@ -147,6 +147,8 @@ export namespace InspireTenantApiServiceTenantsDto {
       agencyId?: string;
       timezoneId?: string;
       languageId?: string;
+      termsRecurringIntervalCount: number;
+      termsRecurringIntervalId: string;
     };
   };
   export type CreateTenantResult = Promise<Tenant | Error>;
