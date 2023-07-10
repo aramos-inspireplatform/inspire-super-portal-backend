@@ -19,6 +19,7 @@ import { VaultsModule } from '~/vaults/ioc/vaults.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SqsConfig, SqsModule, SqsQueueType } from '@nestjs-packages/sqs';
 import { ScheduleModule } from '@nestjs/schedule';
+import { PayoutsModule } from '~/payouts/ioc/payouts.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { ScheduleModule } from '@nestjs/schedule';
     AuthModule,
     AgenciesModule,
     TenantsModule,
+    PayoutsModule,
     UsersModule,
     RequestModule,
     DatabaseModule,
