@@ -44,6 +44,8 @@ export namespace InspireTenantApiServiceTenantsDto {
     agency: Agency;
     country: Country;
     status: TenantStatus;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
   };
 
   export type SupportAddress = {
@@ -106,8 +108,15 @@ export namespace InspireTenantApiServiceTenantsDto {
     slug: string;
   };
 
-  // FindAllTenants
-  export type FindAllTenantsInputAttrs = {
+  type TermsRecurringInterval = {
+    id: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
+  };
+
+  // FindAll
+  export type FindAllInputAttrs = {
     accessToken: string;
     pagination: {
       page: number;

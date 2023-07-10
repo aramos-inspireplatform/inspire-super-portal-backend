@@ -32,6 +32,8 @@ export namespace IFindAllTenantsQuery {
     language: Language;
     country: Country;
     status: Status;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
   };
 
   // Additional types
@@ -64,5 +66,12 @@ export namespace IFindAllTenantsQuery {
     id: string;
     name: string;
     slug: string;
+  };
+
+  type TermsRecurringInterval = {
+    id: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
   };
 }

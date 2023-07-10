@@ -60,6 +60,13 @@ export class FindAllTenantsQuery implements IFindAllTenantsQuery {
               slug: tenant.status.slug,
             }
           : null,
+        termsRecurringIntervalCount: tenant.termsRecurringIntervalCount,
+        termsRecurringInterval: {
+          id: tenant.termsRecurringInterval.id,
+          name: tenant.termsRecurringInterval.name,
+          interval: tenant.termsRecurringInterval.interval,
+          isActive: tenant.termsRecurringInterval.isActive,
+        },
       })),
       page: tenants.page,
       pageSize: tenants.pageSize,

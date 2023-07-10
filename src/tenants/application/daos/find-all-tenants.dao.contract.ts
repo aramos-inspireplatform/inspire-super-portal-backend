@@ -43,6 +43,8 @@ export namespace IFindAllTenantsDao {
     country: Country;
     status: Status;
     settings: Settings;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
   };
 
   type Agency = {
@@ -85,6 +87,13 @@ export namespace IFindAllTenantsDao {
     id: string;
     name: string;
     slug: string;
+  };
+
+  type TermsRecurringInterval = {
+    id: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
   };
 
   type Settings = { [property: string]: any };

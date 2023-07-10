@@ -23,7 +23,7 @@ export class InspireTenantApiService implements IInspireTenantApiService {
 
   // Tenants
   async findAllTenants(
-    attrs: InspireTenantApiServiceTenantsDto.FindAllTenantsInputAttrs,
+    attrs: InspireTenantApiServiceTenantsDto.FindAllInputAttrs,
   ): InspireTenantApiServiceTenantsDto.FindAllTenantsResult {
     const url = `${this.TENANT_V2_BASE_URL}`;
 
