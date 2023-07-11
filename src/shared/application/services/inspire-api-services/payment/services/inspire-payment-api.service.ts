@@ -16,12 +16,13 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
   async findAllPayoutPayments(
     attrs: InspirePaymentApiServiceDto.FindAllPayoutPaymentsInputAttrs,
   ): InspirePaymentApiServiceDto.FindAllPayoutPaymentsResult {
-    const url = `${this.PAYOUT_API_BASE_URL}/payments`;
+    const url = `${this.PAYOUT_API_BASE_URL}/payments/period`;
 
     const payments = await this.httpClient.get<any>(url, {
       headers: {
         authorization: attrs.accessToken,
         tenant: attrs.gTenantId,
+        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
       },
       params: {
         periodStartDate: attrs.periodStartDate,
