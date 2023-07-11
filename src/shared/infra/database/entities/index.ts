@@ -15,3 +15,4 @@ export * from './Processors';
 export * from './RequestModules';
 export * from './RequestModuleAttempts';
 export * from './PaymentMethods';
+export * from './TenantPayouts';
