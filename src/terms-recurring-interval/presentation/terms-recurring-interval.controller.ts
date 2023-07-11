@@ -25,22 +25,23 @@ export class TermsRecurringIntervalController {
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: GetTermsRecurringIntervalDto, isArray: true })
   async list(@Req() request: FastifyRequest) {
-    const termsRecurringInterval = this.listTermsRecurringIntervalUseCase.list({
-      accessToken: request.headers.authorization,
-    });
+    const termsRecurringInterval =
+      await this.listTermsRecurringIntervalUseCase.list({
+        accessToken: request.headers.authorization,
+      });
     return GetTermsRecurringIntervalDto.factory(
       GetTermsRecurringIntervalDto,
       termsRecurringInterval,
     );
   }
 
-  @Get(':id')
+  @Get(':uuid')
   @AuthenticatedRoute()
   @ApiDefaultResponse({ type: GetTermsRecurringIntervalDto, isArray: false })
-  async get(@Req() request: FastifyRequest, @Param('id') id: string) {
+  async get(@Req() request: FastifyRequest, @Param('uuid') uuid: string) {
     const termsRecurringInterval = this.getTermsRecurringIntervalUseCase.get({
       accessToken: request.headers.authorization,
-      id,
+      uuid,
     });
     return GetTermsRecurringIntervalDto.factory(
       GetTermsRecurringIntervalDto,

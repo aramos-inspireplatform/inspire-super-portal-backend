@@ -26,7 +26,7 @@ export namespace ListTermsRecurringIntervalUseCase {
   };
 
   export type TermsRecurringInterval = {
-    id: string;
+    uuid: string;
     name: string;
     interval: string;
     isActive: boolean;

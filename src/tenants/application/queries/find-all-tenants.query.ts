@@ -63,7 +63,7 @@ export class FindAllTenantsQuery implements IFindAllTenantsQuery {
         termsRecurringIntervalCount: tenant.termsRecurringIntervalCount,
         termsRecurringInterval: tenant.termsRecurringInterval
           ? {
-              id: tenant.termsRecurringInterval.id,
+              uuid: tenant.termsRecurringInterval.uuid,
               name: tenant.termsRecurringInterval.name,
               interval: tenant.termsRecurringInterval.interval,
               isActive: tenant.termsRecurringInterval.isActive,

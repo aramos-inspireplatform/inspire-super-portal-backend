@@ -65,7 +65,10 @@ export class CreateTenantRequestBodyDto {
   @IsNumber()
   termsRecurringIntervalCount: number;
 
-  @ApiProperty({ example: '614ce3cfc49775f5ae6dc123', required: true })
+  @ApiProperty({
+    example: 'cd44a946-bfdd-4370-b2cc-1b3f0df311fd',
+    required: true,
+  })
   @IsMongoId()
   termsRecurringIntervalId: string;
 }

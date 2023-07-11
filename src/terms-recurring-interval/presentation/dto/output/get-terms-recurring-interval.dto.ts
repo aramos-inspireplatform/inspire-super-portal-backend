@@ -8,7 +8,7 @@ export class GetTermsRecurringIntervalDto extends BaseDto {
     type: String,
     example: 'cd44a946-bfdd-4370-b2cc-1b3f0df311fd',
   })
-  id: string;
+  uuid: string;
 
   @Expose()
   @ApiProperty({

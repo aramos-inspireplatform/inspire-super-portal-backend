@@ -8,7 +8,7 @@ export class GetTermsRecurringIntervalUseCase {
   async get(attrs: GetTermsRecurringIntervalUseCase.InputAttrs) {
     const responseOrError =
       await this.httpClient.get<GetTermsRecurringIntervalUseCase.TermsRecurringIntervalResponse>(
-        `${this.TERMS_RECURRING_INTERVAL_ROUTE}/${attrs.id}`,
+        `${this.TERMS_RECURRING_INTERVAL_ROUTE}/${attrs.uuid}`,
         {
           headers: {
             authorization: attrs.accessToken,
@@ -23,11 +23,11 @@ export class GetTermsRecurringIntervalUseCase {
 export namespace GetTermsRecurringIntervalUseCase {
   export type InputAttrs = {
     accessToken: string;
-    id: string;
+    uuid: string;
   };
 
   export type TermsRecurringInterval = {
-    id: string;
+    uuid: string;
     name: string;
     interval: string;
     isActive: boolean;
