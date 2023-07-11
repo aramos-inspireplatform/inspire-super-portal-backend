@@ -1,134 +1,94 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
-import { TenantCountryDto } from '~/tenants/presentation/dtos/responses/tenant-country.dto';
-import { TenantLanguageDto } from '~/tenants/presentation/dtos/responses/tenant-language.dto';
-import { TenantTimezoneDto } from '~/tenants/presentation/dtos/responses/tenant-timezone.dto';
-import { TenantAgencyDto } from '~/tenants/presentation/dtos/responses/tenant-agency.dto';
-import { TenantCurrencyDto } from '~/tenants/presentation/dtos/responses/tenant-currency.dto';
-import { IsArray } from 'class-validator';
-import { TenantStatusDto } from '~/tenants/presentation/dtos/responses/tenant-status.dto';
-import { BaseTenantDto } from '~/shared/presentation/base-tenant.dto';
-export class FindPayoutPaymentOutput extends BaseTenantDto {
+import { Expose } from 'class-transformer';
+import { IsUUID } from 'class-validator';
+import { BaseDto } from '~/shared/presentation/base.dto';
+export class FindPayoutPaymentOutput extends BaseDto {
   @Expose()
   @ApiProperty({
-    example: 'dontknow',
+    example: '74deb067-2bf6-45b1-991d-a0f22ab0ae3a',
   })
-  name: string;
+  @IsUUID()
+  id: string;
 
   @Expose()
-  @ApiProperty({
-    example: 'description',
-  })
-  slug: string;
-
-  @Expose()
-  @ApiProperty({
-    example: 'description',
-  })
-  googleTenantId: string;
-
-  @Expose()
-  @ApiProperty({
-    example: 'dontknow',
-  })
-  accountName: string;
-
-  @Expose()
-  @ApiProperty({
-    example: { test: 'test' },
-  })
-  settings: Record<string, any>;
-
-  @Expose()
-  @ApiProperty({ example: 'http://logo' })
-  logo: string;
-
-  @ApiProperty({ example: 'Sample public business name' })
-  @Expose()
-  publicBusinessName: string;
-
-  @ApiProperty({ example: 'sample@email.com' })
-  @Expose()
-  supportEmail: string;
-
-  @ApiProperty({ example: '123451234' })
-  @Expose()
-  supportPhoneNumber: string;
-
-  @ApiProperty({ example: true })
-  @Expose()
-  showPhoneOnInvoiceAndReceipt?: boolean;
-
-  // @ApiProperty({
-  //   example: GetSupportAddressDto,
-  // })
-  // @Expose()
-  // supportAddress?: GetSupportAddressDto;
-
-  @ApiProperty({ example: 'Sample statement descriptor' })
-  @Expose()
-  statementDescriptor: string;
-
-  @ApiProperty({ example: 'Sample shortened descriptor' })
-  @Expose()
-  shortenedDescriptor: string;
-
-  @ApiProperty({ example: 'https://website.com' })
-  @Expose()
-  businessWebsite: string;
-
-  @ApiProperty({ example: 'https://website.com/support' })
-  @Expose()
-  supportWebsite: string;
-
-  @ApiProperty({ example: 'https://website.com/privacy-police' })
-  @Expose()
-  privacyPolicy: string;
-
-  @ApiProperty({ example: 'https://website.com/terms-of-service' })
-  @Expose()
-  termsOfService: string;
-
   @ApiProperty({ example: new Date() })
-  @Expose()
-  createdAt: string;
+  date: Date;
 
-  @ApiProperty()
   @Expose()
-  @Type(() => TenantTimezoneDto)
-  timezone: TenantTimezoneDto;
-
-  @ApiProperty()
-  @Expose()
-  @Type(() => TenantLanguageDto)
-  language: TenantLanguageDto;
-
-  @ApiProperty()
-  @Expose()
-  @Type(() => TenantCurrencyDto)
-  currency: TenantCurrencyDto;
-
   @ApiProperty({
-    type: TenantCurrencyDto,
-    isArray: true,
+    example: 'Succeeded',
   })
-  @Expose()
-  @IsArray()
-  @Type(() => TenantCurrencyDto)
-  currencies: TenantCurrencyDto[];
+  status: string;
 
-  @ApiProperty()
   @Expose()
-  @Type(() => TenantAgencyDto)
-  agency: TenantAgencyDto;
+  @ApiProperty({
+    example: 2.75,
+  })
+  amount: number;
 
-  @ApiProperty()
   @Expose()
-  @Type(() => TenantCountryDto)
-  country: TenantCountryDto;
+  @ApiProperty({
+    example: 2.69,
+  })
+  receivedAmount: number;
 
-  @ApiProperty()
   @Expose()
-  @Type(() => TenantStatusDto)
-  status: TenantStatusDto;
+  @ApiProperty({
+    example: 0.71995,
+  })
+  feeAmount: number;
+
+  @Expose()
+  @ApiProperty({
+    example: 2.03005,
+  })
+  payableAmount: number;
+
+  @Expose()
+  @ApiProperty({
+    example: 0.30995,
+  })
+  profitAmount: number;
+
+  @Expose()
+  @ApiProperty({
+    example: 'Bexs',
+  })
+  paymentProcessorName: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'Credit card',
+  })
+  paymentMethodName: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'MasterCard',
+  })
+  creditCardBrandName: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 1,
+  })
+  installments: number;
+
+  @Expose()
+  @ApiProperty({
+    example: 'ef05df5e1e744399b2d85cf3fffec254V1',
+  })
+  paymentProcessorId: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'automatic',
+  })
+  reconciliationMethod: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'ef05df5e1e744399',
+  })
+  paymentProcessorConfirmation: string;
 }

@@ -12,7 +12,7 @@ export namespace IFindAllPayoutPaymentsQuery {
     gTenantId: string;
     periodStartDate: Date;
     periodEndDate: Date;
-    settlementCurrencyId: string;
+    settlementCurrencyIsoCode: string;
     payoutId?: string | null;
     pagination: {
       page: number;

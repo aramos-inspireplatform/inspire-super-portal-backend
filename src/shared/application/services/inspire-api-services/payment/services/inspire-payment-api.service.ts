@@ -27,7 +27,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
       params: {
         periodStartDate: attrs.periodStartDate,
         periodEndDate: attrs.periodEndDate,
-        settlementCurrencyId: attrs.settlementCurrencyId,
+        settlementCurrencyIsoCode: attrs.settlementCurrencyIsoCode,
         payoutId: attrs.payoutId,
         ...attrs.pagination,
       },
