@@ -43,6 +43,7 @@ export namespace InspireTenantApiServiceDto {
     agency: Agency;
     country: Country;
     status: TenantStatus;
+    createdBy: CreatedBy;
   };
 
   export type SupportAddress = {
@@ -101,6 +102,11 @@ export namespace InspireTenantApiServiceDto {
     id: string;
     name: string;
     slug: string;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
   };
 
   // FindAll

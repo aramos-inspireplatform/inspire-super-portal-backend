@@ -60,6 +60,12 @@ export class FindAllTenantsQuery implements IFindAllTenantsQuery {
               slug: tenant.status.slug,
             }
           : null,
+        createdBy: tenant.createdBy
+          ? {
+              firstName: tenant.createdBy.firstName,
+              lastName: tenant.createdBy.lastName,
+            }
+          : null,
       })),
       page: tenants.page,
       pageSize: tenants.pageSize,

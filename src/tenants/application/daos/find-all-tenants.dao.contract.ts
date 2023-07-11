@@ -43,6 +43,7 @@ export namespace IFindAllTenantsDao {
     country: Country;
     status: Status;
     settings: Settings;
+    createdBy: CreatedBy;
   };
 
   type Agency = {
@@ -88,4 +89,9 @@ export namespace IFindAllTenantsDao {
   };
 
   type Settings = { [property: string]: any };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
+  };
 }
