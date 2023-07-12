@@ -23,7 +23,7 @@ export class TenantBalances extends BaseEntity {
   settlementCurrenciesId: string;
 
   @Column('numeric', { name: 'amount', precision: 15, scale: 6 })
-  amount: string;
+  amount: number;
 
   @ManyToOne(() => Currencies, (currencies) => currencies.tenantBalances, {
     onDelete: 'RESTRICT',

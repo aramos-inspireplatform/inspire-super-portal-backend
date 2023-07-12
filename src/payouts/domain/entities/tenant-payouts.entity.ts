@@ -10,10 +10,10 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
   payoutAlternativeId: string;
   periodStartDate: string;
   periodEndDate: string;
-  amount: string;
+  amount: number;
   termsRecurringIntervalCount: number;
-  customerGrossAmount: string;
-  customerFeeAmount: string;
+  customerGrossAmount: number;
+  customerFeeAmount: number;
   paymentGatewayNetAmount: string;
   expectedArrivalDate: string;
   processedDate: Date;

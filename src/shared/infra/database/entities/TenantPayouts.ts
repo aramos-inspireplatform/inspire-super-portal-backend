@@ -26,23 +26,23 @@ export class TenantPayouts extends BaseEntity {
   periodEndDate: string;
 
   @Column('numeric', { name: 'amount', precision: 15, scale: 6 })
-  amount: string;
+  amount: number;
 
   @Column('smallint', { name: 'terms_recurring_interval_count' })
   termsRecurringIntervalCount: number;
 
   @Column('numeric', { name: 'customer_gross_amount', precision: 15, scale: 6 })
-  customerGrossAmount: string;
+  customerGrossAmount: number;
 
   @Column('numeric', { name: 'customer_fee_amount', precision: 15, scale: 6 })
-  customerFeeAmount: string;
+  customerFeeAmount: number;
 
   @Column('numeric', {
     name: 'payment_gateway_net_amount',
     precision: 15,
     scale: 6,
   })
-  paymentGatewayNetAmount: string;
+  paymentGatewayNetAmount: number;
 
   @Column('date', { name: 'expected_arrival_date', nullable: true })
   expectedArrivalDate: string | null;
