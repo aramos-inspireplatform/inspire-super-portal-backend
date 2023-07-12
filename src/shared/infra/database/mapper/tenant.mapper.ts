@@ -12,7 +12,7 @@ export const TenantMapper: IMapper<Tenant, Tenants> = {
     model.id = domain.id;
     model.name = domain.name;
     model.googleTenantId = domain.googleTenantId;
-    model.agenciesId = domain.agenciesId;
+    model.agencyId = domain.agencyId;
     model.agencyName = domain.agencyName;
     model.termsRecurringIntervalCount = domain.termsRecurringIntervalCount;
     model.termsRecurringInterval = <any>{
@@ -32,7 +32,7 @@ export const TenantMapper: IMapper<Tenant, Tenants> = {
       name: model.name,
       googleTenantId: model.googleTenantId,
       tenantStatus: TenantStatusesMapper.modelToDomain(model.tenantStatus),
-      agenciesId: model.agenciesId,
+      agencyId: model.agencyId,
       agencyName: model.agencyName,
       termsRecurringIntervalCount: model.termsRecurringIntervalCount,
       termsRecurringInterval: RecurringIntervalsMapper.modelToDomain(
