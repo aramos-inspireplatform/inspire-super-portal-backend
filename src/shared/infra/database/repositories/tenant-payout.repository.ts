@@ -2,7 +2,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
 import { ITenantPayoutsRepository } from '~/payouts/infra/contracts/repository/tenant-payouts.repository.contract';
-import { PaginationInput } from '~/shared/application/services/pagination';
 import { TenantPayouts } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 
@@ -21,11 +20,21 @@ export class TenantPayoutsRepository implements ITenantPayoutsRepository {
   async findAll(
     params: ITenantPayoutsRepository.Input,
   ): ITenantPayoutsRepository.FindAllResult {
-    const query = await this.repository
-      .createQueryBuilder('tenant_payouts')
-      .skip(params.pagination.skip())
-      .take(params.pagination.take())
-      .getManyAndCount();
+    const query = await this.repository.findAndCount({
+      skip: params.pagination.skip(),
+      take: params.pagination.take(),
+      relations: {
+        creatorUsers: true,
+        deleterUsers: true,
+        payoutStatuses: true,
+        processorUsers: true,
+        settlementCurrencies: true,
+        tenantsId: true,
+        termsRecurringIntervals: true,
+        updaterUsers: true,
+        tenants: true,
+      },
+    });
     return [
       query[0].map((tenantPayout) => new TenantPayoutsEntity(tenantPayout)),
       query[1],
