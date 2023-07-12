@@ -7,6 +7,7 @@ export const TenantStatusesMapper: IMapper<TenantStatus, TenantStatuses> = {
     const model = new TenantStatuses();
     model.id = domain.id;
     model.name = domain.name;
+    model.slug = domain.slug;
     model.createdDate = domain.createdDate;
     model.updatedDate = domain.updatedDate;
     model.deletedDate = domain.deletedDate;
@@ -16,6 +17,7 @@ export const TenantStatusesMapper: IMapper<TenantStatus, TenantStatuses> = {
     const domain = new TenantStatus({
       id: model.id,
       name: model.name,
+      slug: model.slug,
       createdDate: model.createdDate,
       updatedDate: model.updatedDate,
       deletedDate: model.deletedDate,

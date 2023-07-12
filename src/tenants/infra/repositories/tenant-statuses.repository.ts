@@ -24,6 +24,18 @@ export class TenantStatusesRepository implements ITenantStatusesRepository {
       .createQueryBuilder('tenantStatuses')
       .where('tenantStatuses.id = :id', { id: attrs.id })
       .getOne();
+
+    return tenantStatuses ? new TenantStatus(tenantStatuses) : null;
+  }
+
+  async findBySlug(
+    attrs: ITenantStatusesRepository.FindBySlugInputAttrs,
+  ): ITenantStatusesRepository.FindBySlugResult {
+    const tenantStatuses = await this.repository
+      .createQueryBuilder('tenantStatuses')
+      .where('tenantStatuses.slug = :slug', { slug: attrs.slug })
+      .getOne();
+
     return tenantStatuses ? new TenantStatus(tenantStatuses) : null;
   }
 }

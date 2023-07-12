@@ -18,6 +18,7 @@ export namespace InspireTenantApiServiceDto {
 
   export type Tenant = {
     id: string;
+    uuid: string;
     name: string;
     slug: string;
     googleTenantId: string;
@@ -83,6 +84,7 @@ export namespace InspireTenantApiServiceDto {
 
   export type Agency = {
     id: string;
+    uuid: string;
     name: string;
     logo: string;
   };
@@ -99,6 +101,7 @@ export namespace InspireTenantApiServiceDto {
 
   export type TenantStatus = {
     id: string;
+    uuid: string;
     name: string;
     slug: string;
   };

@@ -10,6 +10,7 @@ import {
 import { Requests } from './Requests';
 import { TenantStatuses } from './TenantStatuses';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
+import { RecurringIntervals } from '~/shared/infra/database/entities/RecurringIntervals';
 
 @Index('pk__tenants', ['id'], { unique: true })
 @Entity('tenants', { schema: 'public' })
@@ -17,21 +18,31 @@ export class Tenants extends BaseEntity {
   @Column('character varying', { name: 'name', length: 200 })
   name: string;
 
-  @Column('character varying', { name: 'tenant_id', length: 300 })
-  tenantId: string;
+  @Column('character varying', { name: 'google_tenant_id', length: 100 })
+  googleTenantId: string;
 
-  @Column('character varying', {
-    name: 'integration_code',
-    nullable: true,
-    length: 50,
-  })
-  integrationCode: string | null;
+  @Column('character varying', { name: 'agencies_id', length: 36 })
+  agencyId: string;
 
-  @Column('character varying', { name: 'created_by_user_id', length: 300 })
-  createdByUserId: string;
+  @Column('character varying', { name: 'agency_name', length: 200 })
+  agencyName: string;
 
-  @Column('character varying', { name: 'created_by_user_email', length: 300 })
-  createdByUserEmail: string;
+  @Column('smallint', { name: 'terms_recurring_interval_count' })
+  termsRecurringIntervalCount: number;
+
+  @ManyToOne(
+    () => RecurringIntervals,
+    (recurringIntervals) => recurringIntervals.tenants,
+    {
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+      eager: true,
+    },
+  )
+  @JoinColumn([
+    { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
+  ])
+  termsRecurringInterval: Relation<RecurringIntervals>;
 
   @OneToMany(() => Requests, (requests) => requests.tenant)
   requests: Relation<Requests[]>;
@@ -41,6 +52,11 @@ export class Tenants extends BaseEntity {
     onUpdate: 'CASCADE',
     eager: true,
   })
-  @JoinColumn([{ name: 'tenant_status_id', referencedColumnName: 'id' }])
+  @JoinColumn([{ name: 'tenant_statuses_id', referencedColumnName: 'id' }])
   tenantStatus: Relation<TenantStatuses>;
+
+  @Column('numeric', { name: 'total_paid_amount', precision: 15, scale: 6 })
+  totalPaidAmount: number;
+
+  //this.lastTenantPayout = attrs.lastTenantPayout;
 }

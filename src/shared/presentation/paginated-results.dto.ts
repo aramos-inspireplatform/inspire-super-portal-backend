@@ -4,43 +4,43 @@ export class PaginatedResultsDto<T> {
   @ApiProperty()
   rows: T[];
 
-  @ApiProperty({ example: 0 })
+  @ApiProperty({ example: 1 })
   page: number;
 
   @ApiProperty({ example: 10 })
   pageSize: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 30 })
   count: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 3 })
   pageCount?: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: true })
   pageNumberIsGood?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ example: false })
   hasPreviousPage?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ example: true })
   hasNextPage?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ example: true })
   isFirstPage?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ example: false })
   isLastPage?: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   numberOfFirstItemOnPage?: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 1 })
   firstItemOnPage?: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 10 })
   numberOfLastItemOnPage?: number;
 
-  @ApiProperty()
+  @ApiProperty({ example: 10 })
   lastItemOnPage?: number;
 
   constructor(data: T[], count: number, page: number, pageSize: number) {

@@ -22,7 +22,7 @@ export class PayoutPaymentsController {
     private readonly findAllPayoutPaymentsQuery: FindAllPayoutPaymentsQuery,
   ) {}
 
-  @Get()
+  @Get('/period')
   @AuthenticatedRoute()
   @ApiOkResponse({ type: FindAllPayoutPaymentsOutputDto })
   async findAll(
@@ -34,7 +34,7 @@ export class PayoutPaymentsController {
       gTenantId: inputDto.gTenantId,
       periodStartDate: inputDto.periodStartDate,
       periodEndDate: inputDto.periodEndDate,
-      settlementCurrencyId: inputDto.settlementCurrencyId,
+      settlementCurrencyIsoCode: inputDto.settlementCurrencyIsoCode,
       payoutId: inputDto.payoutId,
       pagination: {
         ...inputDto,
