@@ -8,14 +8,14 @@ import { UsersEntity } from '~/users/domain/entities/users.entity';
 
 export class TenantPayoutsEntity extends BaseDomainEntity {
   payoutAlternativeId: string;
-  periodStartDate: string;
-  periodEndDate: string;
+  periodStartDate: Date;
+  periodEndDate: Date;
   amount: number;
   termsRecurringIntervalCount: number;
   customerGrossAmount: number;
   customerFeeAmount: number;
-  paymentGatewayNetAmount: string;
-  expectedArrivalDate: string;
+  paymentGatewayNetAmount: number;
+  expectedArrivalDate: Date;
   processedDate: Date;
   creatorUsers: UsersEntity;
   deleterUsers: UsersEntity;

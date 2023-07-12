@@ -20,10 +20,10 @@ export class TenantPayouts extends BaseEntity {
   payoutAlternativeId: string;
 
   @Column('date', { name: 'period_start_date' })
-  periodStartDate: string;
+  periodStartDate: Date;
 
   @Column('date', { name: 'period_end_date' })
-  periodEndDate: string;
+  periodEndDate: Date;
 
   @Column('numeric', { name: 'amount', precision: 15, scale: 6 })
   amount: number;
@@ -45,7 +45,7 @@ export class TenantPayouts extends BaseEntity {
   paymentGatewayNetAmount: number;
 
   @Column('date', { name: 'expected_arrival_date', nullable: true })
-  expectedArrivalDate: string | null;
+  expectedArrivalDate: Date | null;
 
   @Column('timestamp with time zone', {
     name: 'processed_date',
