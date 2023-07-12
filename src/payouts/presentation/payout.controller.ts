@@ -9,6 +9,7 @@ import { FindAllPayoutPaymentsInputDto } from '~/payouts/presentation/dtos/reque
 import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
+import { FindAllTenantPayoutsDao } from '~/payouts/infra/daos/find-all-tenant-payouts.dao';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
@@ -21,7 +22,7 @@ export class PayoutController {
 
   @Get()
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: FindAllPayoutPaymentsOutputDto })
+  @ApiOkResponse()
   async findAll(
     @Req() request: FastifyRequest,
     @Query() searchParams: CommonPaginateDto,
