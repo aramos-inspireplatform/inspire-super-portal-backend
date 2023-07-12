@@ -6,7 +6,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Requests } from './Requests';
 import { TenantBalances } from './TenantBalances';
@@ -20,23 +19,8 @@ import { RecurringIntervals } from './RecurringIntervals';
 @Index('pk__tenants', ['id'], { unique: true })
 @Entity('tenants', { schema: 'public' })
 export class Tenants extends BaseEntity {
-  @Column('uuid', { primary: true, name: 'id' })
-  id: string;
-
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'alternative_id' })
-  alternativeId: string;
-
   @Column('character varying', { name: 'name', length: 200 })
   name: string;
-
-  @Column('timestamp with time zone', { name: 'created_date' })
-  createdDate: Date;
-
-  @Column('timestamp with time zone', { name: 'updated_date', nullable: true })
-  updatedDate: Date | null;
-
-  @Column('timestamp with time zone', { name: 'deleted_date', nullable: true })
-  deletedDate: Date | null;
 
   @Column('character varying', { name: 'google_tenant_id', length: 100 })
   googleTenantId: string;
@@ -63,7 +47,7 @@ export class Tenants extends BaseEntity {
   @OneToMany(() => TenantBalances, (tenantBalances) => tenantBalances.tenants)
   tenantBalances: TenantBalances[];
 
-  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenants_2)
+  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenants_id)
   tenantPayouts: TenantPayouts[];
 
   @ManyToOne(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenants, {

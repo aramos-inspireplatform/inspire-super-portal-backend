@@ -6,7 +6,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Users } from './Users';
 import { PayoutStatuses } from './PayoutStatuses';
@@ -17,12 +16,6 @@ import { RecurringIntervals } from './RecurringIntervals';
 @Index('pk__tenant_payouts', ['id'], { unique: true })
 @Entity('tenant_payouts', { schema: 'public' })
 export class TenantPayouts extends BaseEntity {
-  @Column('uuid', { primary: true, name: 'id' })
-  id: string;
-
-  @PrimaryGeneratedColumn({ type: 'bigint', name: 'alternative_id' })
-  alternativeId: string;
-
   @Column('bigint', { name: 'payout_alternative_id' })
   payoutAlternativeId: string;
 
@@ -60,23 +53,14 @@ export class TenantPayouts extends BaseEntity {
   })
   processedDate: Date | null;
 
-  @Column('timestamp with time zone', { name: 'created_date' })
-  createdDate: Date;
-
-  @Column('timestamp with time zone', { name: 'updated_date', nullable: true })
-  updatedDate: Date | null;
-
-  @Column('timestamp with time zone', { name: 'deleted_date', nullable: true })
-  deletedDate: Date | null;
-
-  @ManyToOne(() => Users, (users) => users.tenantPayouts, {
+  @ManyToOne(() => Users, (users) => users.creatorUsersId, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'creator_users_id', referencedColumnName: 'id' }])
   creatorUsers: Users;
 
-  @ManyToOne(() => Users, (users) => users.tenantPayouts2, {
+  @ManyToOne(() => Users, (users) => users.deleterUsersId, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
@@ -91,7 +75,7 @@ export class TenantPayouts extends BaseEntity {
   @JoinColumn([{ name: 'payout_statuses_id', referencedColumnName: 'id' }])
   payoutStatuses: PayoutStatuses;
 
-  @ManyToOne(() => Users, (users) => users.tenantPayouts3, {
+  @ManyToOne(() => Users, (users) => users.processorUsersId, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
@@ -112,7 +96,7 @@ export class TenantPayouts extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenants_2: Tenants;
+  tenants_id: Tenants;
 
   @ManyToOne(
     () => RecurringIntervals,
@@ -124,7 +108,7 @@ export class TenantPayouts extends BaseEntity {
   ])
   termsRecurringIntervals: RecurringIntervals;
 
-  @ManyToOne(() => Users, (users) => users.tenantPayouts4, {
+  @ManyToOne(() => Users, (users) => users.updaterUsersId, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
