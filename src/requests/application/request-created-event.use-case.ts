@@ -60,11 +60,18 @@ export class RequestCreatedEventUseCase {
     const payload = {
       callbackId: requestModuleAttempt.id,
       requestSettings: requestModule.requestSettings,
-      tenant: request.tenant,
-      tenantId: tenantDetails.googleTenantId,
+      //tenant: request.tenant,
+      tenantId: tenantDetails.uuid,
+      tenantName: tenantDetails.name,
       tenantSlug: tenantDetails.slug,
+      gTenantId: tenantDetails.googleTenantId,
     };
+
     const url = requestModule.module.deployUrl;
+    console.log('tenantDetails:', tenantDetails);
+    console.log('payload:', payload);
+    console.log('url:', url);
+
     try {
       const response = await this.httpClient.post<InspireHttpResponse<any>>(
         url,
