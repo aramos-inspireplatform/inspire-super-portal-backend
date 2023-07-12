@@ -158,6 +158,7 @@ export namespace InspireTenantApiServiceDto {
 
   export type TenantDetails = {
     _id: string;
+    uuid: string;
     name: string;
     slug: string;
     googleTenantId: string;
