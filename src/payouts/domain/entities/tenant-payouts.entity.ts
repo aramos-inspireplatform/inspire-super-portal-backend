@@ -1,5 +1,10 @@
+import { PayoutStatusesEntity } from '~/payout-statuses/domain/entities/payout-statuses.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
+import { Currencies } from '~/shared/infra/database/entities';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
+import { RecurringInterval } from '~/tenants/domain/entities/recurring-intervals.entity';
+import { Tenant } from '~/tenants/domain/entities/tenant.entity';
+import { UsersEntity } from '~/users/domain/entities/users.entity';
 
 export class TenantPayoutsEntity extends BaseDomainEntity {
   payoutAlternativeId: string;
@@ -12,15 +17,15 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
   paymentGatewayNetAmount: string;
   expectedArrivalDate: string;
   processedDate: Date;
-  creatorUsers: any; //Id
-  deleterUsers: any; //Id
-  payoutStatuses: any; //Id
-  processorUsers: any; //Id
-  settlementCurrencies: any; //Id
-  tenantsId: any; //Id
-  termsRecurringIntervals: any; //Id
-  updaterUsers: any; //Id
-  tenants: any; //Id
+  creatorUsers: UsersEntity;
+  deleterUsers: UsersEntity;
+  payoutStatuses: PayoutStatusesEntity;
+  processorUsers: UsersEntity;
+  settlementCurrencies: Currencies;
+  tenantsId: Tenant;
+  termsRecurringIntervals: RecurringInterval;
+  updaterUsers: UsersEntity;
+  tenants: Tenant[];
 
   constructor(attrs: InstanceProperties<TenantPayoutsEntity>) {
     super(attrs);
