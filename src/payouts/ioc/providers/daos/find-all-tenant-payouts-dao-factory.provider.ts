@@ -2,7 +2,7 @@ import { FactoryProvider } from '@nestjs/common';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { FindAllTenantPayoutsDao } from '~/payouts/infra/daos/find-all-tenant-payouts.dao';
 import { TenantPayoutsRepository } from '~/shared/infra/database/repositories/tenant-payout.repository';
-import { ITenantPayoutsRepository } from '~/payouts/infra/contracts/repository/tenant-payouts.contract';
+import { ITenantPayoutsRepository } from '~/payouts/infra/contracts/repository/tenant-payouts.repository.contract';
 
 export class FindAllTenantPayoutsDaoFactoryProvider {
   static register(): FactoryProvider {

@@ -1,5 +1,5 @@
 import { FactoryProvider } from '@nestjs/common';
-import { IFindAllTenantPayoutsDao } from '~/payouts/application/daos/find-all-tenant-payout.dao.contract';
+import { IFindAllTenantPayoutsDao } from '~/payouts/application/daos/find-all-tenant-payouts.dao.contract';
 import { FindAllTenantPayoutQuery } from '~/payouts/application/queries/find-all-tenant-payouts.query';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 

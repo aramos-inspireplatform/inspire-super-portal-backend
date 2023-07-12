@@ -1,31 +1,21 @@
+import { PaginationInput } from '~/shared/application/services/pagination';
 import { QueryPaginatedOutput } from '~/shared/types/query-paginated-output.type';
 
-export interface IFindAllTenantPayoutQuery {
+export interface IFindAllTenantPayoutsQuery {
   execute(
-    params: IFindAllTenantPayoutQuery.Input,
-  ): IFindAllTenantPayoutQuery.Output;
+    params: IFindAllTenantPayoutsQuery.Input,
+  ): IFindAllTenantPayoutsQuery.Output;
 }
 
-export namespace IFindAllTenantPayoutQuery {
+export namespace IFindAllTenantPayoutsQuery {
   export type Input = {
-    // accessToken: string;
-    // gTenantId: string;
-    // periodStartDate: Date;
-    // periodEndDate: Date;
-    // settlementCurrencyId: string;
-    // payoutId?: string | null;
-    // pagination: {
-    //   page: number;
-    //   pagesize: number;
-    //   sortby?: string;
-    //   keywords?: string;
-    // };
+    pagination: PaginationInput;
   };
 
-  export type Output = QueryPaginatedOutput<Payment>;
+  export type Output = QueryPaginatedOutput<TenantPayouts>;
 
   // Additional types
-  export type Payment = {
+  export type TenantPayouts = {
     // id: string;
     // date: Date;
     // status: string;

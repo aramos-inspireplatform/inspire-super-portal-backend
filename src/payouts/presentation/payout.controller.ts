@@ -6,15 +6,17 @@ import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-pagin
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { FindAllPayoutPaymentsOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payout-payments.output';
 import { FindAllPayoutPaymentsInputDto } from '~/payouts/presentation/dtos/requests/find-all-payout-payments.input.dto';
-import { IFindAllTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
+import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
+import { PaginationInput } from '~/shared/application/services/pagination';
+import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
 @CustomApiExtraModels()
-export class PayoutPaymentsController {
+export class PayoutController {
   constructor(
     @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_PAYOUT_QUERY)
-    private readonly findAllTenantPayoutQuery: IFindAllTenantPayoutQuery,
+    private readonly findAllTenantPayoutsQuery: IFindAllTenantPayoutsQuery,
   ) {}
 
   @Get()
@@ -22,9 +24,16 @@ export class PayoutPaymentsController {
   @ApiOkResponse({ type: FindAllPayoutPaymentsOutputDto })
   async findAll(
     @Req() request: FastifyRequest,
-    @Query() inputDto: FindAllPayoutPaymentsInputDto,
+    @Query() searchParams: CommonPaginateDto,
   ) {
-    const payments = await this.findAllTenantPayoutQuery.execute({});
+    const payments = await this.findAllTenantPayoutsQuery.execute({
+      pagination: new PaginationInput({
+        keywords: searchParams.keywords,
+        page: searchParams.page,
+        size: searchParams.pagesize,
+        sort: searchParams.sortby,
+      }),
+    });
 
     return payments;
   }

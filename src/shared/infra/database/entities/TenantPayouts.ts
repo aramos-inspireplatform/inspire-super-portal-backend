@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   Column,
   Entity,
   Index,
@@ -12,6 +11,7 @@ import { PayoutStatuses } from './PayoutStatuses';
 import { Currencies } from './Currencies';
 import { Tenants } from './Tenants';
 import { RecurringIntervals } from './RecurringIntervals';
+import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index('pk__tenant_payouts', ['id'], { unique: true })
 @Entity('tenant_payouts', { schema: 'public' })
@@ -96,7 +96,7 @@ export class TenantPayouts extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenants_id: Tenants;
+  tenantsId: Tenants;
 
   @ManyToOne(
     () => RecurringIntervals,

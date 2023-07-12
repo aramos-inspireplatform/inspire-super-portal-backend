@@ -1,31 +1,24 @@
-import { QueryPaginatedOutput } from '~/shared/types/query-paginated-output.type';
+import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
+import {
+  PaginationInput,
+  PaginationOutput,
+} from '~/shared/application/services/pagination';
 
 export interface IFindAllTenantPayoutsDao {
   execute(
     params: IFindAllTenantPayoutsDao.Input,
-  ): IFindAllTenantPayoutsDao.Output;
+  ): Promise<IFindAllTenantPayoutsDao.Output>;
 }
 
 export namespace IFindAllTenantPayoutsDao {
   export type Input = {
-    // accessToken: string;
-    // gTenantId: string;
-    // periodStartDate: Date;
-    // periodEndDate: Date;
-    // settlementCurrencyId: string;
-    // payoutId?: string | null;
-    // pagination: {
-    //   page: number;
-    //   pagesize: number;
-    //   sortby?: string;
-    //   keywords?: string;
-    // };
+    pagination: PaginationInput;
   };
 
-  export type Output = QueryPaginatedOutput<Payment>;
+  export type Output = PaginationOutput.Output<TenantPayoutsEntity>;
 
   // Additional types
-  export type Payment = {
+  export type TenantPayout = {
     // id: string;
     // date: Date;
     // status: string;

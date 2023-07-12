@@ -1,13 +1,7 @@
-import {
-  BaseEntity,
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-} from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { Currencies } from './Currencies';
 import { Tenants } from './Tenants';
+import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index(
   'idx__uq__tenant_balances',

@@ -1,6 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
+import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
 import { ITenantPayoutsRepository } from '~/payouts/infra/contracts/repository/tenant-payouts.repository.contract';
+import { PaginationInput } from '~/shared/application/services/pagination';
 import { TenantPayouts } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 
@@ -16,5 +18,17 @@ export class TenantPayoutsRepository implements ITenantPayoutsRepository {
       this.dataSource.getRepository<TenantPayouts>(TenantPayouts);
   }
 
-  async findAll(): ITenantPayoutsRepository.FindAllResult {}
+  async findAll(
+    params: ITenantPayoutsRepository.Input,
+  ): ITenantPayoutsRepository.FindAllResult {
+    const query = await this.repository
+      .createQueryBuilder('tenant_payouts')
+      .skip(params.pagination.skip())
+      .take(params.pagination.take())
+      .getManyAndCount();
+    return [
+      query[0].map((tenantPayout) => new TenantPayoutsEntity(tenantPayout)),
+      query[1],
+    ];
+  }
 }

@@ -1,6 +1,7 @@
-import { BaseEntity, Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { TenantBalances } from './TenantBalances';
 import { TenantPayouts } from './TenantPayouts';
+import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index('idx__uq__currencies', ['deletedDate', 'isoCode'], { unique: true })
 @Index('pk__currencies', ['id'], { unique: true })

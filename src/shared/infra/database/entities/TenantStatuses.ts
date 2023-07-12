@@ -13,6 +13,6 @@ export class TenantStatuses extends BaseEntity {
   @Column('character varying', { name: 'slug', length: 50 })
   slug: string;
 
-  @OneToMany(() => Tenants, (tenants) => tenants.tenantStatuses)
+  @OneToMany(() => Tenants, (tenants) => tenants.tenantStatus)
   tenants: Relation<Tenants[]>;
 }

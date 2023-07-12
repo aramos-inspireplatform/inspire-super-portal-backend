@@ -1,9 +1,16 @@
-import { TenantPayouts } from '~/payouts/domain/entities/tenant-payouts.entity';
+import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
+import { PaginationInput } from '~/shared/application/services/pagination';
 
 export interface ITenantPayoutsRepository {
-  findAll(): ITenantPayoutsRepository.FindAllResult;
+  findAll(
+    params: ITenantPayoutsRepository.Input,
+  ): ITenantPayoutsRepository.FindAllResult;
 }
 
 export namespace ITenantPayoutsRepository {
-  export type FindAllResult = Promise<TenantPayouts[]>;
+  export type Input = {
+    pagination: PaginationInput;
+  };
+
+  export type FindAllResult = Promise<[TenantPayoutsEntity[], number]>;
 }

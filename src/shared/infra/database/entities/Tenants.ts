@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   Column,
   Entity,
   Index,
@@ -12,6 +11,7 @@ import { TenantBalances } from './TenantBalances';
 import { TenantPayouts } from './TenantPayouts';
 import { TenantStatuses } from './TenantStatuses';
 import { RecurringIntervals } from './RecurringIntervals';
+import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index('idx__tenants__agencies_id', ['agenciesId', 'deletedDate'], {})
 @Index('idx__uq__tenants', ['deletedDate', 'googleTenantId'], { unique: true })
@@ -39,7 +39,7 @@ export class Tenants extends BaseEntity {
   termsRecurringIntervalCount: number;
 
   @Column('numeric', { name: 'total_paid_amount', precision: 15, scale: 6 })
-  totalPaidAmount: string;
+  totalPaidAmount: number;
 
   @OneToMany(() => Requests, (requests) => requests.tenant)
   requests: Requests[];
@@ -47,7 +47,7 @@ export class Tenants extends BaseEntity {
   @OneToMany(() => TenantBalances, (tenantBalances) => tenantBalances.tenants)
   tenantBalances: TenantBalances[];
 
-  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenants_id)
+  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenantsId)
   tenantPayouts: TenantPayouts[];
 
   @ManyToOne(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenants, {
@@ -62,7 +62,7 @@ export class Tenants extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'tenant_statuses_id', referencedColumnName: 'id' }])
-  tenantStatuses: TenantStatuses;
+  tenantStatus: TenantStatuses;
 
   @ManyToOne(
     () => RecurringIntervals,
@@ -72,5 +72,5 @@ export class Tenants extends BaseEntity {
   @JoinColumn([
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
-  termsRecurringIntervals: RecurringIntervals;
+  termsRecurringInterval: RecurringIntervals;
 }
