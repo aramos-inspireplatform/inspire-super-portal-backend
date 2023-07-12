@@ -38,7 +38,7 @@ export class ModuleRequestBatchUseCase {
       requestModule.id,
     );
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
-      integrationCode: request.tenant.tenantId,
+      integrationCode: request.tenant.googleTenantId,
     });
     if (tenantDetails instanceof Error) return;
     const requestModuleAttempt = requestModule.createAttempt({

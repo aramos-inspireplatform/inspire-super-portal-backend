@@ -20,7 +20,7 @@ export class RequestCreatedEventUseCase {
   async handle(attrs: RequestCreatedEventUseCase.InputAttrs) {
     const request = await this.requestRepository.findById(attrs.requestId);
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
-      integrationCode: request.tenant.tenantId,
+      integrationCode: request.tenant.googleTenantId,
     });
     if (tenantDetails instanceof Error) return;
     const requestModuleAttemptStatus = <any>{

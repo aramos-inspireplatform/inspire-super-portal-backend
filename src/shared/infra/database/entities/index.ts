@@ -12,6 +12,7 @@ export * from './GeneralDataTypes';
 export * from './ModuleRequestStatuses';
 export * from './Vaults';
 export * from './Processors';
+export * from './RecurringIntervals';
 export * from './RequestModules';
 export * from './RequestModuleAttempts';
 export * from './PaymentMethods';
