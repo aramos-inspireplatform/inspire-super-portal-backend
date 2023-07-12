@@ -1,7 +1,9 @@
 import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { ICreateTenantCommand } from '~/tenants/application/commands/contracts/create-tenant.contract';
+import { RecurringIntervalsConstant } from '~/tenants/domain/constants/recurring-intervals.constant';
 import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
 import { Tenant } from '~/tenants/domain/entities/tenant.entity';
+import { IRecurringIntervalsRepository } from '~/tenants/domain/repositories/recurring-intervals-repository.contract';
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { ITenantStatusesRepository } from '~/tenants/domain/repositories/tenant-statuses-repository.contract';
 
@@ -12,6 +14,7 @@ export class CreateTenantCommand implements ICreateTenantCommand {
     private readonly inspireTenantService: IInspireTenantApiService,
     private readonly tenantRepository: ITenantRepository,
     private readonly tenantStatusesRepository: ITenantStatusesRepository,
+    private readonly recurringIntervalsRepository: IRecurringIntervalsRepository,
   ) {}
 
   async execute(
@@ -34,23 +37,31 @@ export class CreateTenantCommand implements ICreateTenantCommand {
     if (tenant instanceof Error) throw tenant;
 
     //TODO: move this to request modules and discard tenants table
-    const tenantPendingStatuses = await this.tenantStatusesRepository.findById({
-      id: TenantStatusesConstant.Pending,
+    const pendingTenantStatus = await this.tenantStatusesRepository.findById({
+      id: tenant.status?.uuid,
     });
 
+    const monthlyRecurringInterval =
+      await this.recurringIntervalsRepository.findById({
+        id: RecurringIntervalsConstant.Monthly,
+      });
+
     const storedTenant = new Tenant({
-      slug: attrs.tenant.slug,
-      name: attrs.tenant.name,
-      integrationCode: tenant.id,
-      tenantStatus: tenantPendingStatuses,
-      createdByUserId: attrs.currentUserId,
-      createdByUserEmail: attrs.currentUserEmail,
-      tenantId: tenant.googleTenantId,
+      id: tenant.uuid,
+      name: tenant.name,
+      googleTenantId: tenant.googleTenantId,
+      agencyId: tenant.agency?.uuid,
+      agencyName: tenant.agency?.name,
+      termsRecurringIntervalCount: 30, //TODO: Change termsRecurringIntervalCount on tenant creation
+      termsRecurringInterval: monthlyRecurringInterval, //monthlyRecurringInterval, //TODO: Change termsRecurringInterval on tenant creation
+      tenantStatus: pendingTenantStatus,
+      totalPaidAmount: 0,
+      //lastTenantPayout: null,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
 
     return {
-      id: tenant.id,
+      id: tenant.uuid,
       name: tenant.name,
       slug: tenant.slug,
       gTenantId: tenant.googleTenantId,

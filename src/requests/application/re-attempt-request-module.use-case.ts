@@ -36,7 +36,7 @@ export class ReAttemptRequestModuleUseCase {
       createdByUserId: request.createdByUserId,
     });
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
-      integrationCode: request.tenant.tenantId,
+      integrationCode: request.tenant.googleTenantId,
     });
     if (tenantDetails instanceof Error) throw tenantDetails;
     await this.callDeployUrl({
