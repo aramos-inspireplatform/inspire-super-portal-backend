@@ -16,3 +16,8 @@ export * from './RecurringIntervals';
 export * from './RequestModules';
 export * from './RequestModuleAttempts';
 export * from './PaymentMethods';
+export * from './TenantPayouts';
+export * from './Users';
+export * from './PayoutStatuses';
+export * from './Currencies';
+export * from './TenantBalances';

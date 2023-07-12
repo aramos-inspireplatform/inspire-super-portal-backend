@@ -50,7 +50,7 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       id: tenant.uuid,
       name: tenant.name,
       googleTenantId: tenant.googleTenantId,
-      agencyId: tenant.agency?.uuid,
+      agenciesId: tenant.agency?.uuid,
       agencyName: tenant.agency?.name,
       termsRecurringIntervalCount: 30, //TODO: Change termsRecurringIntervalCount on tenant creation
       termsRecurringInterval: monthlyRecurringInterval, //monthlyRecurringInterval, //TODO: Change termsRecurringInterval on tenant creation

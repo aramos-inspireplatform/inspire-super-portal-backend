@@ -1,4 +1,5 @@
-import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
+import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { TenantPayouts } from './TenantPayouts';
 import { Tenants } from './Tenants';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
@@ -12,12 +13,18 @@ export class RecurringIntervals extends BaseEntity {
   @Column('character varying', { name: 'name', length: 50 })
   name: string;
 
-  @Column('character varying', { name: 'name', length: 10 })
+  @Column('character varying', { name: 'interval', length: 10 })
   interval: string;
 
-  @Column('bool', { name: 'is_active' })
+  @Column('boolean', { name: 'is_active' })
   isActive: boolean;
 
+  @OneToMany(
+    () => TenantPayouts,
+    (tenantPayouts) => tenantPayouts.termsRecurringIntervals,
+  )
+  tenantPayouts: TenantPayouts[];
+
   @OneToMany(() => Tenants, (tenants) => tenants.termsRecurringInterval)
-  tenants: Relation<Tenants[]>;
+  tenants: Tenants[];
 }
