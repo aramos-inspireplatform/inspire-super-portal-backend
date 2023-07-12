@@ -5,8 +5,10 @@ import { FindAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/provide
 import { FindAllPayoutPaymentsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-payout-payments-dao-factory.provider';
 import { FindAllTenantPayoutsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-tenant-payouts-query-factory.provider';
 import { FindAllTenantPayoutsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-tenant-payouts-dao-factory.provider';
-import { DatabaseModule } from '~/shared/infra/database/ioc/database.module';
 import { PayoutController } from '~/payouts/presentation/payout.controller';
+import { PayoutTenantBalancesController } from '~/payouts/presentation/payout-tenant-balances.controller';
+import { FindOneTenantBalanceQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-tenant-balance-query-factory.provider';
+import { FindOneTenantBalanceDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-tenant-balance-dao-factory.provider';
 
 @Module({
   providers: [
@@ -14,8 +16,14 @@ import { PayoutController } from '~/payouts/presentation/payout.controller';
     FindAllPayoutPaymentsDaoFactoryProvider.register(),
     FindAllTenantPayoutsQueryFactoryProvider.register(),
     FindAllTenantPayoutsDaoFactoryProvider.register(),
+    FindOneTenantBalanceQueryFactoryProvider.register(),
+    FindOneTenantBalanceDaoFactoryProvider.register(),
   ],
-  controllers: [PayoutPaymentsController, PayoutController],
-  imports: [InspirePaymentApiServiceModule, DatabaseModule],
+  controllers: [
+    PayoutPaymentsController,
+    PayoutController,
+    PayoutTenantBalancesController,
+  ],
+  imports: [InspirePaymentApiServiceModule],
 })
 export class PayoutsModule {}
