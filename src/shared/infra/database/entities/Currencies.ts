@@ -6,16 +6,14 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { TenantBalances } from './TenantBalances';
 import { TenantPayouts } from './TenantPayouts';
-import { Tenants } from './Tenants';
 
-@Index('idx__uq__recurring_intervals', ['deletedDate', 'name'], {
-  unique: true,
-})
-@Index('pk__recurring_intervals', ['id'], { unique: true })
-@Index('idx__part__uq__recurring_intervals', ['name'], { unique: true })
-@Entity('recurring_intervals', { schema: 'public' })
-export class RecurringIntervals extends BaseEntity {
+@Index('idx__uq__currencies', ['deletedDate', 'isoCode'], { unique: true })
+@Index('pk__currencies', ['id'], { unique: true })
+@Index('idx__part__uq__currencies', ['isoCode'], { unique: true })
+@Entity('currencies', { schema: 'public' })
+export class Currencies extends BaseEntity {
   @Column('uuid', { primary: true, name: 'id' })
   id: string;
 
@@ -25,11 +23,11 @@ export class RecurringIntervals extends BaseEntity {
   @Column('character varying', { name: 'name', length: 50 })
   name: string;
 
-  @Column('character varying', { name: 'interval', length: 10 })
-  interval: string;
+  @Column('character varying', { name: 'symbol', length: 5 })
+  symbol: string;
 
-  @Column('boolean', { name: 'is_active' })
-  isActive: boolean;
+  @Column('character varying', { name: 'iso_code', length: 3 })
+  isoCode: string;
 
   @Column('timestamp with time zone', { name: 'created_date' })
   createdDate: Date;
@@ -41,11 +39,14 @@ export class RecurringIntervals extends BaseEntity {
   deletedDate: Date | null;
 
   @OneToMany(
+    () => TenantBalances,
+    (tenantBalances) => tenantBalances.settlementCurrencies,
+  )
+  tenantBalances: TenantBalances[];
+
+  @OneToMany(
     () => TenantPayouts,
-    (tenantPayouts) => tenantPayouts.termsRecurringIntervals,
+    (tenantPayouts) => tenantPayouts.settlementCurrencies,
   )
   tenantPayouts: TenantPayouts[];
-
-  @OneToMany(() => Tenants, (tenants) => tenants.termsRecurringIntervals)
-  tenants: Tenants[];
 }

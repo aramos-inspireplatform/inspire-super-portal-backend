@@ -1,62 +1,92 @@
 import {
+  BaseEntity,
   Column,
   Entity,
   Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
-  Relation,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Requests } from './Requests';
+import { TenantBalances } from './TenantBalances';
+import { TenantPayouts } from './TenantPayouts';
 import { TenantStatuses } from './TenantStatuses';
-import { BaseEntity } from '~/shared/infra/database/entities/base';
-import { RecurringIntervals } from '~/shared/infra/database/entities/RecurringIntervals';
+import { RecurringIntervals } from './RecurringIntervals';
 
+@Index('idx__tenants__agencies_id', ['agenciesId', 'deletedDate'], {})
+@Index('idx__uq__tenants', ['deletedDate', 'googleTenantId'], { unique: true })
+@Index('idx__part__uq__tenants', ['googleTenantId'], { unique: true })
 @Index('pk__tenants', ['id'], { unique: true })
 @Entity('tenants', { schema: 'public' })
 export class Tenants extends BaseEntity {
+  @Column('uuid', { primary: true, name: 'id' })
+  id: string;
+
+  @PrimaryGeneratedColumn({ type: 'bigint', name: 'alternative_id' })
+  alternativeId: string;
+
   @Column('character varying', { name: 'name', length: 200 })
   name: string;
+
+  @Column('timestamp with time zone', { name: 'created_date' })
+  createdDate: Date;
+
+  @Column('timestamp with time zone', { name: 'updated_date', nullable: true })
+  updatedDate: Date | null;
+
+  @Column('timestamp with time zone', { name: 'deleted_date', nullable: true })
+  deletedDate: Date | null;
 
   @Column('character varying', { name: 'google_tenant_id', length: 100 })
   googleTenantId: string;
 
-  @Column('character varying', { name: 'agencies_id', length: 36 })
-  agencyId: string;
+  @Column('uuid', { name: 'agencies_id', nullable: true })
+  agenciesId: string | null;
 
-  @Column('character varying', { name: 'agency_name', length: 200 })
-  agencyName: string;
+  @Column('character varying', {
+    name: 'agency_name',
+    nullable: true,
+    length: 200,
+  })
+  agencyName: string | null;
 
   @Column('smallint', { name: 'terms_recurring_interval_count' })
   termsRecurringIntervalCount: number;
 
+  @Column('numeric', { name: 'total_paid_amount', precision: 15, scale: 6 })
+  totalPaidAmount: string;
+
+  @OneToMany(() => Requests, (requests) => requests.tenant)
+  requests: Requests[];
+
+  @OneToMany(() => TenantBalances, (tenantBalances) => tenantBalances.tenants)
+  tenantBalances: TenantBalances[];
+
+  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenants_2)
+  tenantPayouts: TenantPayouts[];
+
+  @ManyToOne(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenants, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT',
+  })
+  @JoinColumn([{ name: 'last_tenant_payouts_id', referencedColumnName: 'id' }])
+  lastTenantPayouts: TenantPayouts;
+
+  @ManyToOne(() => TenantStatuses, (tenantStatuses) => tenantStatuses.tenants, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT',
+  })
+  @JoinColumn([{ name: 'tenant_statuses_id', referencedColumnName: 'id' }])
+  tenantStatuses: TenantStatuses;
+
   @ManyToOne(
     () => RecurringIntervals,
     (recurringIntervals) => recurringIntervals.tenants,
-    {
-      onDelete: 'RESTRICT',
-      onUpdate: 'RESTRICT',
-      eager: true,
-    },
+    { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' },
   )
   @JoinColumn([
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
-  termsRecurringInterval: Relation<RecurringIntervals>;
-
-  @OneToMany(() => Requests, (requests) => requests.tenant)
-  requests: Relation<Requests[]>;
-
-  @ManyToOne(() => TenantStatuses, (tenantStatuses) => tenantStatuses.tenants, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'CASCADE',
-    eager: true,
-  })
-  @JoinColumn([{ name: 'tenant_statuses_id', referencedColumnName: 'id' }])
-  tenantStatus: Relation<TenantStatuses>;
-
-  @Column('numeric', { name: 'total_paid_amount', precision: 15, scale: 6 })
-  totalPaidAmount: number;
-
-  //this.lastTenantPayout = attrs.lastTenantPayout;
+  termsRecurringIntervals: RecurringIntervals;
 }

@@ -7,15 +7,12 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { TenantPayouts } from './TenantPayouts';
-import { Tenants } from './Tenants';
 
-@Index('idx__uq__recurring_intervals', ['deletedDate', 'name'], {
-  unique: true,
-})
-@Index('pk__recurring_intervals', ['id'], { unique: true })
-@Index('idx__part__uq__recurring_intervals', ['name'], { unique: true })
-@Entity('recurring_intervals', { schema: 'public' })
-export class RecurringIntervals extends BaseEntity {
+@Index('idx__uq__payout_statuses', ['deletedDate', 'slug'], { unique: true })
+@Index('pk__payout_statuses', ['id'], { unique: true })
+@Index('idx__part__uq__payout_statuses', ['slug'], { unique: true })
+@Entity('payout_statuses', { schema: 'public' })
+export class PayoutStatuses extends BaseEntity {
   @Column('uuid', { primary: true, name: 'id' })
   id: string;
 
@@ -25,11 +22,8 @@ export class RecurringIntervals extends BaseEntity {
   @Column('character varying', { name: 'name', length: 50 })
   name: string;
 
-  @Column('character varying', { name: 'interval', length: 10 })
-  interval: string;
-
-  @Column('boolean', { name: 'is_active' })
-  isActive: boolean;
+  @Column('character varying', { name: 'slug', length: 50 })
+  slug: string;
 
   @Column('timestamp with time zone', { name: 'created_date' })
   createdDate: Date;
@@ -42,10 +36,7 @@ export class RecurringIntervals extends BaseEntity {
 
   @OneToMany(
     () => TenantPayouts,
-    (tenantPayouts) => tenantPayouts.termsRecurringIntervals,
+    (tenantPayouts) => tenantPayouts.payoutStatuses,
   )
   tenantPayouts: TenantPayouts[];
-
-  @OneToMany(() => Tenants, (tenants) => tenants.termsRecurringIntervals)
-  tenants: Tenants[];
 }
