@@ -6,7 +6,7 @@ import { RecurringInterval } from '~/tenants/domain/entities/recurring-intervals
 export class Tenant extends BaseDomainEntity {
   name: string;
   googleTenantId: string;
-  agenciesId: string;
+  agencyId: string;
   agencyName: string;
   termsRecurringIntervalCount: number;
   termsRecurringInterval: RecurringInterval;
@@ -18,7 +18,7 @@ export class Tenant extends BaseDomainEntity {
     super(attrs);
     this.name = attrs.name;
     this.googleTenantId = attrs.googleTenantId;
-    this.agenciesId = attrs.agenciesId;
+    this.agencyId = attrs.agencyId;
     this.agencyName = attrs.agencyName;
     this.termsRecurringIntervalCount = attrs.termsRecurringIntervalCount;
     this.termsRecurringInterval = attrs.termsRecurringInterval;

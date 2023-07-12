@@ -13,7 +13,7 @@ import { TenantStatuses } from './TenantStatuses';
 import { RecurringIntervals } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('idx__tenants__agencies_id', ['agenciesId', 'deletedDate'], {})
+@Index('idx__tenants__agencies_id', ['agencyId', 'deletedDate'], {})
 @Index('idx__uq__tenants', ['deletedDate', 'googleTenantId'], { unique: true })
 @Index('idx__part__uq__tenants', ['googleTenantId'], { unique: true })
 @Index('pk__tenants', ['id'], { unique: true })
@@ -26,7 +26,7 @@ export class Tenants extends BaseEntity {
   googleTenantId: string;
 
   @Column('uuid', { name: 'agencies_id', nullable: true })
-  agenciesId: string | null;
+  agencyId: string | null;
 
   @Column('character varying', {
     name: 'agency_name',
