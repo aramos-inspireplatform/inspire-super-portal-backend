@@ -14,6 +14,9 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
   async execute(
     attrs: IFindOneTenantBalanceQuery.Input,
   ): IFindOneTenantBalanceQuery.Output {
+    if (attrs.userAuth.isAgencyAdmin())
+      console.log('User is agency admin. Must check tenant permission.'); //TODO: Check agency permission
+
     const currency = await this.findOneCurrencyDao.execute({
       currencyIsoCode: attrs.settlementCurrencyIsoCode,
     });
