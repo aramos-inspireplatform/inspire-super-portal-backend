@@ -2,6 +2,7 @@ import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 import { Currencies } from './Currencies';
 import { Tenants } from './Tenants';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
+import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
 @Index(
   'idx__uq__tenant_balances',
@@ -22,7 +23,12 @@ export class TenantBalances extends BaseEntity {
   @Column('uuid', { name: 'settlement_currencies_id' })
   settlementCurrenciesId: string;
 
-  @Column('numeric', { name: 'amount', precision: 15, scale: 6 })
+  @Column('numeric', {
+    name: 'amount',
+    precision: 15,
+    scale: 6,
+    transformer: new ColumnNumericTransformer(),
+  })
   amount: number;
 
   @ManyToOne(() => Currencies, (currencies) => currencies.tenantBalances, {
