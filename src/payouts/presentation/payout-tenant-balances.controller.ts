@@ -5,18 +5,44 @@ import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-pagin
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { FindOneTenantBalanceInputDto } from '~/payouts/presentation/dtos/requests/find-one-tenant-balance.input.dto';
 import { FindOneTenantBalanceQuery } from '~/payouts/application/queries/find-one-tenant-balance.query';
-import { FindOneTenantBalanceOutput } from '~/payouts/presentation/dtos/responses/find-one-tenanat-balance.output';
+import { FindOneTenantBalanceOutput } from '~/payouts/presentation/dtos/responses/find-one-tenant-balance.output';
 import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
+import { FindAllTenantBalancesQuery } from '~/payouts/application/queries/find-all-tenant-balances.query';
+import { PaginationInput } from '~/shared/application/services/pagination';
+import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
+import { FindAllTenantBalancesOutputDto } from '~/payouts/presentation/dtos/responses/find-all-tenant-balances.output';
 
 @Controller('/payouts/tenants')
 @ApiTags('Payouts')
 @CustomApiExtraModels()
 export class PayoutTenantBalancesController {
   constructor(
+    @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_BALANCES_QUERY)
+    private readonly findAllTenantBalancesQuery: FindAllTenantBalancesQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_TENANT_BALANCE_QUERY)
     private readonly findOneTenantBalanceQuery: FindOneTenantBalanceQuery,
   ) {}
+
+  @Get()
+  @AuthenticatedRoute()
+  @ApiOkResponse({ type: FindAllTenantBalancesOutputDto })
+  async findAll(
+    @UserAuth() authUser: UserAuthDto,
+    @Query() searchParams: CommonPaginateDto,
+  ) {
+    const tenantBalances = await this.findAllTenantBalancesQuery.execute({
+      authUser,
+      paginationInput: new PaginationInput({
+        keywords: searchParams.keywords,
+        page: searchParams.page,
+        size: searchParams.pagesize,
+        sort: searchParams.sortby,
+      }),
+    });
+
+    return tenantBalances;
+  }
 
   @Get('/:tenantId')
   @AuthenticatedRoute()
@@ -26,17 +52,17 @@ export class PayoutTenantBalancesController {
     description: 'The tenant unique ID.',
   })
   @ApiOkResponse({ type: FindOneTenantBalanceOutput })
-  async findAll(
+  async findOne(
     @UserAuth() authUser: UserAuthDto,
     @Param('tenantId') tenantId: string,
     @Query() inputDto: FindOneTenantBalanceInputDto,
   ) {
-    const tenantBalances = await this.findOneTenantBalanceQuery.execute({
+    const tenantBalance = await this.findOneTenantBalanceQuery.execute({
       authUser: authUser,
       tenantId: tenantId,
       settlementCurrencyIsoCode: inputDto.settlementCurrencyIsoCode,
     });
 
-    return tenantBalances;
+    return tenantBalance;
   }
 }
