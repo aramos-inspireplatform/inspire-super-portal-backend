@@ -1,3 +1,4 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { PayoutPaymentsController } from '~/payouts/presentation/payout-payments.controller';
 import { InspirePaymentApiServiceModule } from '~/shared/application/services/inspire-api-services/payment/ioc/inspire-payment-api-service.module';
@@ -10,6 +11,7 @@ import { PayoutTenantBalancesController } from '~/payouts/presentation/payout-te
 import { FindOneTenantBalanceQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-tenant-balance-query-factory.provider';
 import { FindOneTenantBalanceDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-tenant-balance-dao-factory.provider';
 import { FindOneCurrencyDaoFactoryProvider } from '~/currencies/ioc/providers/daos/find-one-currency-dao-factory.provider';
+import { InspireTenantApiServiceModule } from '~/shared/application/services/inspire-api-services/tenant/ioc/inspire-tenant-api-service.module';
 
 @Module({
   providers: [
@@ -26,6 +28,5 @@ import { FindOneCurrencyDaoFactoryProvider } from '~/currencies/ioc/providers/da
     PayoutController,
     PayoutTenantBalancesController,
   ],
-  imports: [InspirePaymentApiServiceModule],
 })
 export class PayoutsModule {}

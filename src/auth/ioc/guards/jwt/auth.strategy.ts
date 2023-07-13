@@ -6,7 +6,6 @@ import { Strategy } from 'passport-custom';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { DecodedToken } from '~/auth/ioc/guards/jwt/types/decoded-token.type';
-import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
 
 @Injectable()
 export class JwtAuthStrategy extends PassportStrategy(Strategy, 'tenant-auth') {
@@ -46,7 +45,6 @@ export class JwtAuthStrategy extends PassportStrategy(Strategy, 'tenant-auth') {
         exp: data.exp,
         tenant: decodedCustomToken.tenant_id,
         ...decodedCustomToken.claims,
-        userAuth: new UserAuthDto(decodedCustomToken.claims),
       };
     } catch (e) {
       throw new UnauthorizedException();

@@ -9,7 +9,7 @@ export class FindOneTenantDao implements IFindOneTenantDao {
   ) {}
 
   async execute(attrs: IFindOneTenantDao.Input): IFindOneTenantDao.Output {
-    const tenant = await this.inspireTenantApiService.findOne({
+    const tenant = await this.inspireTenantApiService.findOneTenant({
       accessToken: attrs.accessToken,
       gTenantId: attrs.gTenantId,
     });

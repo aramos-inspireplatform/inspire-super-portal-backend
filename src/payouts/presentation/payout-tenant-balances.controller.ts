@@ -27,17 +27,16 @@ export class PayoutTenantBalancesController {
   })
   @ApiOkResponse({ type: FindOneTenantBalanceOutput })
   async findAll(
-    @UserAuth() userAuth: UserAuthDto,
+    @UserAuth() authUser: UserAuthDto,
     @Param('tenantId') tenantId: string,
     @Query() inputDto: FindOneTenantBalanceInputDto,
   ) {
-    console.log('userAuth:', userAuth);
-    const payments = await this.findOneTenantBalanceQuery.execute({
-      userAuth,
+    const tenantBalances = await this.findOneTenantBalanceQuery.execute({
+      authUser: authUser,
       tenantId: tenantId,
       settlementCurrencyIsoCode: inputDto.settlementCurrencyIsoCode,
     });
 
-    return payments;
+    return tenantBalances;
   }
 }

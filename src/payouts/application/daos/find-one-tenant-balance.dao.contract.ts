@@ -1,3 +1,5 @@
+import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
+
 export interface IFindOneTenantBalanceDao {
   execute(
     params: IFindOneTenantBalanceDao.Input,
@@ -6,6 +8,7 @@ export interface IFindOneTenantBalanceDao {
 
 export namespace IFindOneTenantBalanceDao {
   export type Input = {
+    authUser: UserAuthDto;
     tenantId: string;
     settlementCurrencyId: string;
   };

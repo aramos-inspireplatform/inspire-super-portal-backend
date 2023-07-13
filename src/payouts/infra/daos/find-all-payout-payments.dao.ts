@@ -18,7 +18,6 @@ export class FindAllPayoutPaymentsDao implements IFindAllPayoutPaymentsDao {
         keywords: attrs.pagination.keywords,
       },
     });
-    if (payments instanceof Error) throw payments;
 
     return {
       rows: payments.rows.map((payment) => ({

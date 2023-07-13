@@ -66,6 +66,14 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
       )
       .where('tenants.id = :tenantId', { tenantId: attrs.tenantId });
 
+    if (attrs.authUser.isAgencyAdmin()) {
+      if (!attrs.authUser.agencies?.length) return null;
+
+      query.andWhere('tenants.agencyId in (:...agenciesIds)', {
+        agenciesIds: attrs.authUser.agencies.map((agency) => agency.id),
+      });
+    }
+
     const tenantBalance = await query.getOne();
 
     return tenantBalance
