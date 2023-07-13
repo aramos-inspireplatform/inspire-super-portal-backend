@@ -1,4 +1,4 @@
-import { PayoutStatusesEntity } from '~/payout-statuses/domain/entities/payout-statuses.entity';
+import { PayoutStatusesEntity } from '~/payouts/domain/entities/payout-statuses.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import { Currencies } from '~/shared/infra/database/entities';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
@@ -20,9 +20,9 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
   processedDate: Date;
   creatorUsers: UsersEntity;
   deleterUsers: UsersEntity;
-  payoutStatuses: PayoutStatusesEntity;
+  payoutStatus: PayoutStatusesEntity;
   processorUsers: UsersEntity;
-  settlementCurrencies: Currencies;
+  settlementCurrency: Currencies;
   tenantsId: Tenant;
   termsRecurringIntervals: RecurringInterval;
   updaterUsers: UsersEntity;
@@ -43,9 +43,9 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
     this.processedDate = attrs?.processedDate;
     this.creatorUsers = attrs?.creatorUsers;
     this.deleterUsers = attrs?.deleterUsers;
-    this.payoutStatuses = attrs?.payoutStatuses;
+    this.payoutStatus = attrs?.payoutStatus;
     this.processorUsers = attrs?.processorUsers;
-    this.settlementCurrencies = attrs?.settlementCurrencies;
+    this.settlementCurrency = attrs?.settlementCurrency;
     this.tenantsId = attrs?.tenantsId;
     this.termsRecurringIntervals = attrs?.termsRecurringIntervals;
     this.updaterUsers = attrs?.updaterUsers;

@@ -13,9 +13,6 @@ export class PayoutStatuses extends BaseEntity {
   @Column('character varying', { name: 'slug', length: 50 })
   slug: string;
 
-  @OneToMany(
-    () => TenantPayouts,
-    (tenantPayouts) => tenantPayouts.payoutStatuses,
-  )
+  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.payoutStatus)
   tenantPayouts: TenantPayouts[];
 }

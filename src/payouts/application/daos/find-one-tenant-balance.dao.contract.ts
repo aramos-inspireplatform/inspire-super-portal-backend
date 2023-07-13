@@ -7,25 +7,22 @@ export interface IFindOneTenantBalanceDao {
 export namespace IFindOneTenantBalanceDao {
   export type Input = {
     tenantId: string;
-    settlementCurrencyIsoCode: string;
+    settlementCurrencyId: string;
   };
 
   export type Output = Promise<TenantBalance>;
 
   // Additional types
   type TenantBalance = {
-    tenant: Tenant;
-    agency: Agency;
-    terms: Terms;
-    lastPayout: LastPayout;
-    totalPaid: number;
-    balance: Balance;
-  };
-
-  type Tenant = {
     id: string;
     name: string;
+    gTenantId: string;
     agency: Agency;
+    terms: Terms;
+    status: Status;
+    lastPayout: LastPayout;
+    totalPaidAmount: number;
+    balance: Balance;
   };
 
   type Agency = {
@@ -38,22 +35,43 @@ export namespace IFindOneTenantBalanceDao {
     recurringInterval: RecurringInterval;
   };
 
-  type LastPayout = {
-    id: string;
-    amount: number;
-    periodStartDate: Date;
-    periodEndDate: Date;
-  };
-
-  type Balance = {
-    settlementCurrencyId: string;
-    settlementCurrencyIsoCode: string;
-    amount: number;
-  };
-
   type RecurringInterval = {
     id: string;
     name: string;
     interval: string;
+  };
+
+  type Status = {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
+  type LastPayout = {
+    id: string;
+    status: PayoutStatus;
+    amount: number;
+    settlementCurrency: Currency;
+    periodStartDate: Date;
+    periodEndDate: Date;
+  };
+
+  type PayoutStatus = {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
+  type Currency = {
+    id: string;
+    name: string;
+    isoCode: string;
+    symbol: string;
+  };
+
+  type Balance = {
+    id: string;
+    amount: number;
+    settlementCurrency: Currency;
   };
 }

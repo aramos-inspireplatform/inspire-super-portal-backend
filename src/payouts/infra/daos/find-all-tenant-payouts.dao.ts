@@ -20,9 +20,9 @@ export class FindAllTenantPayoutsDao implements IFindAllTenantPayoutsDao {
       relations: {
         creatorUsers: true,
         deleterUsers: true,
-        payoutStatuses: true,
+        payoutStatus: true,
         processorUsers: true,
-        settlementCurrencies: true,
+        settlementCurrency: true,
         tenantsId: true,
         termsRecurringIntervals: true,
         updaterUsers: true,

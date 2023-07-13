@@ -1,7 +1,7 @@
 import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
-import { TenantBalancesEntity } from '~/tenant-balances/domain/entities/tenant-balances.entity';
+import { TenantBalancesEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 
 export class CurrenciesEntity extends BaseDomainEntity {
   name: string;

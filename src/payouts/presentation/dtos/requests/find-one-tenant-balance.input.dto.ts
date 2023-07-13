@@ -4,6 +4,7 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class FindOneTenantBalanceInputDto {
   @ApiProperty({
     example: 'USD',
+    description: 'The currency ISO CODE for the tenant balance.',
   })
   @IsNotEmpty()
   @IsString()

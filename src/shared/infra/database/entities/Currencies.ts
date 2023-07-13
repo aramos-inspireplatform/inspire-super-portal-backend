@@ -19,13 +19,13 @@ export class Currencies extends BaseEntity {
 
   @OneToMany(
     () => TenantBalances,
-    (tenantBalances) => tenantBalances.settlementCurrencies,
+    (tenantBalances) => tenantBalances.settlementCurrency,
   )
   tenantBalances: TenantBalances[];
 
   @OneToMany(
     () => TenantPayouts,
-    (tenantPayouts) => tenantPayouts.settlementCurrencies,
+    (tenantPayouts) => tenantPayouts.settlementCurrency,
   )
   tenantPayouts: TenantPayouts[];
 }

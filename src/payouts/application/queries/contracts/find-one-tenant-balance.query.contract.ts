@@ -14,17 +14,15 @@ export namespace IFindOneTenantBalanceQuery {
 
   // Additional types
   type TenantBalance = {
-    tenant: Tenant;
-    agency: Agency;
-    terms: Terms;
-    lastPayout: LastPayout;
-    totalPaid: number;
-    balance: Balance;
-  };
-
-  type Tenant = {
     id: string;
     name: string;
+    gTenantId: string;
+    agency: Agency;
+    terms: Terms;
+    status: Status;
+    lastPayout: LastPayout;
+    totalPaidAmount: number;
+    balance: Balance;
   };
 
   type Agency = {
@@ -43,17 +41,25 @@ export namespace IFindOneTenantBalanceQuery {
     interval: string;
   };
 
+  type Status = {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
   type LastPayout = {
     id: string;
+    status: PayoutStatus;
     amount: number;
+    settlementCurrency: Currency;
     periodStartDate: Date;
     periodEndDate: Date;
   };
 
-  type Balance = {
+  type PayoutStatus = {
     id: string;
-    amount: number;
-    settlementCurrency: Currency;
+    name: string;
+    slug: string;
   };
 
   type Currency = {
@@ -61,5 +67,11 @@ export namespace IFindOneTenantBalanceQuery {
     name: string;
     isoCode: string;
     symbol: string;
+  };
+
+  type Balance = {
+    id: string;
+    amount: number;
+    settlementCurrency: Currency;
   };
 }
