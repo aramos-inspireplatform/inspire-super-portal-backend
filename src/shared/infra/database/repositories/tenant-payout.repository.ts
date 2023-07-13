@@ -26,9 +26,9 @@ export class TenantPayoutsRepository implements ITenantPayoutsRepository {
       relations: {
         creatorUsers: true,
         deleterUsers: true,
-        payoutStatuses: true,
+        payoutStatus: true,
         processorUsers: true,
-        settlementCurrencies: true,
+        settlementCurrency: true,
         tenantsId: true,
         termsRecurringIntervals: true,
         updaterUsers: true,

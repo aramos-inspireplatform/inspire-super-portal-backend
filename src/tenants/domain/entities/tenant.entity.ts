@@ -2,6 +2,8 @@ import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
 import { TenantStatus } from '~/tenants/domain/entities/tenant-statuses.entity';
 import { RecurringInterval } from '~/tenants/domain/entities/recurring-intervals.entity';
+import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
+import { TenantBalancesEntity } from '~/tenant-balances/domain/entities/tenant-balances.entity';
 
 export class Tenant extends BaseDomainEntity {
   name: string;
@@ -12,7 +14,8 @@ export class Tenant extends BaseDomainEntity {
   termsRecurringInterval: RecurringInterval;
   tenantStatus: TenantStatus;
   totalPaidAmount: number;
-  //lastTenantPayout: Payout;
+  lastTenantPayout: TenantPayoutsEntity;
+  tenantBalances: TenantBalancesEntity[];
 
   constructor(attrs: InstanceProperties<Tenant>) {
     super(attrs);
@@ -24,6 +27,7 @@ export class Tenant extends BaseDomainEntity {
     this.termsRecurringInterval = attrs.termsRecurringInterval;
     this.tenantStatus = attrs.tenantStatus;
     this.totalPaidAmount = attrs.totalPaidAmount;
-    //this.lastTenantPayout = attrs.lastTenantPayout;
+    this.lastTenantPayout = attrs.lastTenantPayout;
+    this.tenantBalances = attrs.tenantBalances;
   }
 }

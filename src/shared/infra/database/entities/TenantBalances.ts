@@ -5,19 +5,19 @@ import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index(
   'idx__uq__tenant_balances',
-  ['deletedDate', 'settlementCurrenciesId', 'tenantsId'],
+  ['deletedDate', 'settlementCurrenciesId', 'tenantId'],
   { unique: true },
 )
 @Index('pk__tenant_balances', ['id'], { unique: true })
 @Index(
   'idx__part__uq__tenant_balances',
-  ['settlementCurrenciesId', 'tenantsId'],
+  ['settlementCurrenciesId', 'tenantId'],
   { unique: true },
 )
 @Entity('tenant_balances', { schema: 'public' })
 export class TenantBalances extends BaseEntity {
   @Column('uuid', { name: 'tenants_id' })
-  tenantsId: string;
+  tenantId: string;
 
   @Column('uuid', { name: 'settlement_currencies_id' })
   settlementCurrenciesId: string;
@@ -32,12 +32,12 @@ export class TenantBalances extends BaseEntity {
   @JoinColumn([
     { name: 'settlement_currencies_id', referencedColumnName: 'id' },
   ])
-  settlementCurrencies: Currencies;
+  settlementCurrency: Currencies;
 
   @ManyToOne(() => Tenants, (tenants) => tenants.tenantBalances, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenants: Tenants;
+  tenant: Tenants;
 }

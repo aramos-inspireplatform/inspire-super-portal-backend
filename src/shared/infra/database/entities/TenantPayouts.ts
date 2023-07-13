@@ -73,7 +73,7 @@ export class TenantPayouts extends BaseEntity {
     { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' },
   )
   @JoinColumn([{ name: 'payout_statuses_id', referencedColumnName: 'id' }])
-  payoutStatuses: PayoutStatuses;
+  payoutStatus: PayoutStatuses;
 
   @ManyToOne(() => Users, (users) => users.processorUsersId, {
     onDelete: 'RESTRICT',
@@ -89,7 +89,7 @@ export class TenantPayouts extends BaseEntity {
   @JoinColumn([
     { name: 'settlement_currencies_id', referencedColumnName: 'id' },
   ])
-  settlementCurrencies: Currencies;
+  settlementCurrency: Currencies;
 
   @ManyToOne(() => Tenants, (tenants) => tenants.tenantPayouts, {
     onDelete: 'RESTRICT',
@@ -115,6 +115,6 @@ export class TenantPayouts extends BaseEntity {
   @JoinColumn([{ name: 'updater_users_id', referencedColumnName: 'id' }])
   updaterUsers: Users;
 
-  @OneToMany(() => Tenants, (tenants) => tenants.lastTenantPayouts)
+  @OneToMany(() => Tenants, (tenants) => tenants.lastTenantPayout)
   tenants: Tenants[];
 }
