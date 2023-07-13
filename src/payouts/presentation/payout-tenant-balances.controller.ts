@@ -8,6 +8,10 @@ import { FindOneTenantBalanceQuery } from '~/payouts/application/queries/find-on
 import { FindOneTenantBalanceOutput } from '~/payouts/presentation/dtos/responses/find-one-tenanat-balance.output';
 import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
+import { FindAllTenantBalancesQuery } from '~/payouts/application/queries/find-all-tenant-balances.query';
+import { PaginationInput } from '~/shared/application/services/pagination';
+import { FindAllPayoutPaymentsOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payout-payments.output';
+import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 
 @Controller('/payouts/tenants')
 @ApiTags('Payouts')
@@ -16,6 +20,8 @@ export class PayoutTenantBalancesController {
   constructor(
     @Inject(PayoutProvidersSymbols.FIND_ONE_TENANT_BALANCE_QUERY)
     private readonly findOneTenantBalanceQuery: FindOneTenantBalanceQuery,
+    @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_BALANCES_QUERY)
+    private readonly findAllTenantBalancesQuery: FindAllTenantBalancesQuery,
   ) {}
 
   @Get('/:tenantId')
@@ -26,15 +32,35 @@ export class PayoutTenantBalancesController {
     description: 'The tenant unique ID.',
   })
   @ApiOkResponse({ type: FindOneTenantBalanceOutput })
-  async findAll(
+  async findOne(
     @UserAuth() authUser: UserAuthDto,
     @Param('tenantId') tenantId: string,
     @Query() inputDto: FindOneTenantBalanceInputDto,
   ) {
-    const tenantBalances = await this.findOneTenantBalanceQuery.execute({
+    const tenantBalance = await this.findOneTenantBalanceQuery.execute({
       authUser: authUser,
       tenantId: tenantId,
       settlementCurrencyIsoCode: inputDto.settlementCurrencyIsoCode,
+    });
+
+    return tenantBalance;
+  }
+
+  @Get()
+  @AuthenticatedRoute()
+  @ApiOkResponse({ type: FindAllPayoutPaymentsOutputDto }) //TODO: Change this
+  async findAll(
+    @UserAuth() authUser: UserAuthDto,
+    @Query() searchParams: CommonPaginateDto,
+  ) {
+    const tenantBalances = await this.findAllTenantBalancesQuery.execute({
+      authUser,
+      paginationInput: new PaginationInput({
+        keywords: searchParams.keywords,
+        page: searchParams.page,
+        size: searchParams.pagesize,
+        sort: searchParams.sortby,
+      }),
     });
 
     return tenantBalances;
