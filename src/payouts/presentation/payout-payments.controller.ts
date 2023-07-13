@@ -1,13 +1,8 @@
 import { Controller, Get, Inject, Query, Req } from '@nestjs/common';
-import { ApiDefaultResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
-import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import {
-  GetUserFromRequest,
-  UserFromRequest,
-} from '~/shared/presentation/decorators/get-user-from-request';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { FindAllPayoutPaymentsQuery } from '~/payouts/application/queries/find-all-payout-payments.query';
 import { FindAllPayoutPaymentsOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payout-payments.output';

@@ -1,28 +1,35 @@
 import { Module } from '~/requests/domain/entities/module.entity';
-import { InspireTenantApiServiceDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.dto';
+import { InspireTenantApiServiceAdminUsersDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.admin-users.dto';
+import { InspireTenantApiServiceTenantsDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.tenants.dto';
 
 export interface IInspireTenantApiService {
-  findAll(
-    attrs: InspireTenantApiServiceDto.FindAllInputAttrs,
-  ): InspireTenantApiServiceDto.FindAllResult;
+  // Tenants
+  findAllTenants(
+    attrs: InspireTenantApiServiceTenantsDto.FindAllTenantsInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.FindAllTenantsResult;
 
-  findOne(
-    attrs: InspireTenantApiServiceDto.FindOneInputAttrs,
-  ): InspireTenantApiServiceDto.FindOneResult;
+  findOneTenant(
+    attrs: InspireTenantApiServiceTenantsDto.FindOneTenantInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.FindOneTenantResult;
 
-  create(
-    attrs: InspireTenantApiServiceDto.CreateInputAttrs,
-  ): InspireTenantApiServiceDto.CreateResult;
+  createTenant(
+    attrs: InspireTenantApiServiceTenantsDto.CreateTenantInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.CreateTenantResult;
+
+  // Admin Users
+  findOneAdminUser(
+    attrs: InspireTenantApiServiceAdminUsersDto.FindOneInputAttrs,
+  ): InspireTenantApiServiceAdminUsersDto.FindOneResult;
 
   // Deprecated below ----------------------------
 
   getTenantJwtTokenUserDetails(
-    attrs: InspireTenantApiServiceDto.GetTenantUserDetailsInputAttrs,
-  ): InspireTenantApiServiceDto.UserDetailsResult;
+    attrs: InspireTenantApiServiceTenantsDto.GetTenantUserDetailsInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.UserDetailsResult;
 
   getTenantDetails(
-    attrs: InspireTenantApiServiceDto.GetTenantDetailsInputAttrs,
-  ): InspireTenantApiServiceDto.TenantDetailsResult;
+    attrs: InspireTenantApiServiceTenantsDto.GetTenantDetailsInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.TenantDetailsResult;
 
   linkTenantModule(attrs: {
     module: Module;
@@ -41,5 +48,5 @@ export interface IInspireTenantApiService {
   getTenantAndUserDetails(attrs: {
     tenantIntegrationKey: string;
     googleTenantId: string;
-  }): Promise<InspireTenantApiServiceDto.TenantDetails>;
+  }): Promise<InspireTenantApiServiceTenantsDto.TenantDetails>;
 }
