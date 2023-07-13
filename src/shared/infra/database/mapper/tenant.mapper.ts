@@ -20,7 +20,7 @@ export const TenantMapper: IMapper<Tenant, Tenants> = {
     };
     model.tenantStatus = <any>{ id: domain.tenantStatus.id };
     model.totalPaidAmount = domain.totalPaidAmount;
-    //model.lastTenantPayout = <any>{ id: domain.lastTenantPayout.id };
+    model.lastTenantPayout = <any>{ id: domain.lastTenantPayout.id };
     model.createdDate = domain.createdDate;
     model.updatedDate = domain.updatedDate;
     model.deletedDate = domain.deletedDate;
@@ -42,6 +42,8 @@ export const TenantMapper: IMapper<Tenant, Tenants> = {
       createdDate: model.createdDate,
       updatedDate: model.updatedDate,
       deletedDate: model.deletedDate,
+      lastTenantPayout: model.lastTenantPayout,
+      tenantBalances: model.tenantBalances,
     });
     return domain;
   },

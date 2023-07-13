@@ -41,9 +41,9 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       id: tenant.status?.uuid,
     });
 
-    const monthlyRecurringInterval =
+    const dailyRecurringInterval =
       await this.recurringIntervalsRepository.findById({
-        id: RecurringIntervalsConstant.Monthly,
+        id: RecurringIntervalsConstant.Daily,
       });
 
     const storedTenant = new Tenant({
@@ -53,10 +53,11 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       agencyId: tenant.agency?.uuid,
       agencyName: tenant.agency?.name,
       termsRecurringIntervalCount: 30, //TODO: Change termsRecurringIntervalCount on tenant creation
-      termsRecurringInterval: monthlyRecurringInterval, //monthlyRecurringInterval, //TODO: Change termsRecurringInterval on tenant creation
+      termsRecurringInterval: dailyRecurringInterval, //monthlyRecurringInterval, //TODO: Change termsRecurringInterval on tenant creation
       tenantStatus: pendingTenantStatus,
       totalPaidAmount: 0,
-      //lastTenantPayout: null,
+      lastTenantPayout: null,
+      tenantBalances: null,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
 

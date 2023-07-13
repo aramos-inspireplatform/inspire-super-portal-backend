@@ -20,6 +20,7 @@ import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SqsConfig, SqsModule, SqsQueueType } from '@nestjs-packages/sqs';
 import { ScheduleModule } from '@nestjs/schedule';
 import { PayoutsModule } from '~/payouts/ioc/payouts.module';
+import { CurrenciesModule } from '~/currencies/ioc/currencies.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { PayoutsModule } from '~/payouts/ioc/payouts.module';
     VaultsModule,
     ProcessorsModule,
     PaymentMethodsModule,
+    CurrenciesModule,
     SettlementCurrenciesModule,
     EventEmitterModule.forRoot({
       global: true,
