@@ -1,8 +1,4 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import {
-  InspireHttpPaginatedResponse,
-  InspireHttpResponse,
-} from '~/shared/types/inspire-http-response.type';
 import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
 import { InspirePaymentApiServiceDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.dto';
 
@@ -13,7 +9,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
 
   constructor(private readonly httpClient: IHttpClient) {}
 
-  async findAllPayoutPayments(
+  async findPeriodPayoutPayments(
     attrs: InspirePaymentApiServiceDto.FindAllPayoutPaymentsInputAttrs,
   ): InspirePaymentApiServiceDto.FindAllPayoutPaymentsResult {
     const url = `${this.PAYOUT_API_BASE_URL}/payments/period`;
