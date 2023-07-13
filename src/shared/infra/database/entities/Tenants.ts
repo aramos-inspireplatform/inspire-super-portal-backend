@@ -12,6 +12,7 @@ import { TenantPayouts } from './TenantPayouts';
 import { TenantStatuses } from './TenantStatuses';
 import { RecurringIntervals } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
+import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
 @Index('idx__tenants__agencies_id', ['agencyId', 'deletedDate'], {})
 @Index('idx__uq__tenants', ['deletedDate', 'googleTenantId'], { unique: true })
@@ -35,10 +36,18 @@ export class Tenants extends BaseEntity {
   })
   agencyName: string | null;
 
-  @Column('smallint', { name: 'terms_recurring_interval_count' })
+  @Column('smallint', {
+    name: 'terms_recurring_interval_count',
+    transformer: new ColumnNumericTransformer(),
+  })
   termsRecurringIntervalCount: number;
 
-  @Column('numeric', { name: 'total_paid_amount', precision: 15, scale: 6 })
+  @Column('numeric', {
+    name: 'total_paid_amount',
+    precision: 15,
+    scale: 6,
+    transformer: new ColumnNumericTransformer(),
+  })
   totalPaidAmount: number;
 
   @OneToMany(() => Requests, (requests) => requests.tenant)
