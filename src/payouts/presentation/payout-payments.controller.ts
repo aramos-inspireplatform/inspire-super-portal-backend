@@ -20,7 +20,7 @@ export class PayoutPaymentsController {
     private readonly findPeriodPayoutPaymentsQuery: FindPeriodPayoutPaymentsQuery,
 
     @Inject(PayoutProvidersSymbols.FIND_ALL_PAYMENTS_QUERY)
-    private readonly findAllPeriodPayoutsPaymentsQuery: FindAllPayoutPaymentsQuery,
+    private readonly findAllPayoutsPaymentsQuery: FindAllPayoutPaymentsQuery,
   ) {}
 
   @Get('/period')
@@ -52,7 +52,7 @@ export class PayoutPaymentsController {
     @Req() request: FastifyRequest,
     @Query() inputDto: FindAllPayoutPaymentsInputDto,
   ) {
-    const payments = await this.findAllPeriodPayoutsPaymentsQuery.execute({
+    const payments = await this.findAllPayoutsPaymentsQuery.execute({
       pagination: new PaginationInput({
         keywords: inputDto.keywords,
         page: inputDto.page,
