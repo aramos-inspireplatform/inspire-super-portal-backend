@@ -1,4 +1,4 @@
-import { PayoutStatusesEntity } from '~/payout-statuses/domain/entities/payout-statuses.entity';
+import { PayoutStatusesEntity } from '~/payouts/domain/entities/payout-statuses.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import { Currencies } from '~/shared/infra/database/entities';
 import { InstanceProperties } from '~/shared/types/class-properties.type';

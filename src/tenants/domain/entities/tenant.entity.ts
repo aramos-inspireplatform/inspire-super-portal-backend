@@ -3,7 +3,7 @@ import { InstanceProperties } from '~/shared/types/class-properties.type';
 import { TenantStatus } from '~/tenants/domain/entities/tenant-statuses.entity';
 import { RecurringInterval } from '~/tenants/domain/entities/recurring-intervals.entity';
 import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
-import { TenantBalancesEntity } from '~/tenant-balances/domain/entities/tenant-balances.entity';
+import { TenantBalancesEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 
 export class Tenant extends BaseDomainEntity {
   name: string;
