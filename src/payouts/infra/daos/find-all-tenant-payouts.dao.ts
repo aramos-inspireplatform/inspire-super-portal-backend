@@ -5,11 +5,10 @@ import { PaginationOutput } from '~/shared/application/services/pagination';
 import { TenantPayouts } from '~/shared/infra/database/entities';
 
 export class FindAllTenantPayoutsDao implements IFindAllTenantPayoutsDao {
-  private repository: Repository<TenantPayoutsEntity>;
+  private repository: Repository<TenantPayouts>;
 
   constructor(private readonly dataSource: DataSource) {
-    this.repository =
-      this.dataSource.getRepository<TenantPayoutsEntity>(TenantPayouts);
+    this.repository = this.dataSource.getRepository(TenantPayouts);
   }
   async execute(
     params: IFindAllTenantPayoutsDao.Input,
@@ -32,7 +31,31 @@ export class FindAllTenantPayoutsDao implements IFindAllTenantPayoutsDao {
 
     const result = new PaginationOutput({
       rows: query[0].map(
-        (tenantPayout) => new TenantPayoutsEntity(tenantPayout),
+        (tenantPayout) =>
+          new TenantPayoutsEntity({
+            id: tenantPayout.id,
+            alternativeId: tenantPayout.alternativeId,
+            payoutAlternativeId: tenantPayout.payoutAlternativeId,
+            periodStartDate: tenantPayout.periodStartDate,
+            periodEndDate: tenantPayout.periodEndDate,
+            amount: tenantPayout.amount,
+            termsRecurringIntervalCount:
+              tenantPayout.termsRecurringIntervalCount,
+            customerGrossAmount: tenantPayout.customerGrossAmount,
+            customerFeeAmount: tenantPayout.customerFeeAmount,
+            paymentGatewayNetAmount: tenantPayout.paymentGatewayNetAmount,
+            expectedArrivalDate: tenantPayout.expectedArrivalDate,
+            processedDate: tenantPayout.processedDate,
+            creatorUsers: tenantPayout.creatorUsers,
+            deleterUsers: tenantPayout.deleterUsers,
+            payoutStatus: tenantPayout.payoutStatus,
+            processorUsers: tenantPayout.processorUsers,
+            settlementCurrency: tenantPayout.settlementCurrency,
+            tenantsId: tenantPayout.tenantsId,
+            termsRecurringIntervals: tenantPayout.termsRecurringIntervals,
+            updaterUsers: tenantPayout.updaterUsers,
+            tenants: tenantPayout.tenants,
+          }),
       ),
       total: query[1],
       page: params.pagination.getPage(),
