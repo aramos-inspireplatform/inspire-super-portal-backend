@@ -1,6 +1,4 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
-import { IsString, IsUUID } from 'class-validator';
 import { BaseDto } from '~/shared/presentation/base.dto';
 export class FindOneTenantBalanceOutput extends BaseDto {
   @ApiProperty({

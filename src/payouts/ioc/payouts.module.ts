@@ -25,9 +25,9 @@ import { FindAllTenantBalancesDaoFactoryProvider } from '~/payouts/ioc/providers
     FindOneCurrencyDaoFactoryProvider.register(),
   ],
   controllers: [
-    PayoutPaymentsController,
     PayoutController,
     PayoutTenantBalancesController,
+    PayoutPaymentsController,
   ],
 })
 export class PayoutsModule {}
