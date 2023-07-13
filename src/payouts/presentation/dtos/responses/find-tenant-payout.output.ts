@@ -7,6 +7,85 @@ import { GetSettlementCurrenciesResponseDto } from '~/settlement-currencies/pres
 import { BaseDto } from '~/shared/presentation/base.dto';
 import { TenantDto } from '~/tenants/presentation/dtos/responses/tenant.dto';
 import { UserResponseDto } from '~/users/presentation/dtos/responses/user-response.dto';
+
+export class UserDto extends BaseDto {
+  @Expose()
+  @ApiProperty({
+    example: 'Jonas',
+  })
+  firstName: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'Klocko',
+  })
+  lastName: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'Allene.Jast6@gmail.com',
+  })
+  email: string;
+}
+
+export class settlementCurrenciesDto extends BaseDto {
+  @Expose()
+  @ApiProperty({
+    example: 'Brazilian Real',
+  })
+  name: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'R$',
+  })
+  symbol: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'BRL',
+  })
+  isoCode: string;
+}
+
+export class TenantIdDto extends BaseDto {
+  @Expose()
+  @ApiProperty({
+    example: 'Jasmin',
+  })
+  name: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'c9183d22-229f-41a0-94dc-21586d3e37f3',
+  })
+  googleTenantId: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'c9183d22-229f-41a0-94dc-21586d3e37h2',
+  })
+  agencyId: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'Jasmin L',
+  })
+  agencyName: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 30,
+  })
+  termsRecurringIntervalCount: number;
+
+  @Expose()
+  @ApiProperty({
+    example: 1820,
+  })
+  totalPaidAmount: number;
+}
+
 export class FindTenantPayoutOutput extends BaseDto {
   @Expose()
   @ApiProperty({
@@ -62,13 +141,13 @@ export class FindTenantPayoutOutput extends BaseDto {
 
   @ApiProperty()
   @Expose()
-  @Type(() => UserResponseDto)
-  creatorUsers: UserResponseDto;
+  @Type(() => UserDto)
+  creatorUsers: UserDto;
 
   @ApiProperty()
   @Expose()
-  @Type(() => UserResponseDto)
-  deleterUsers: UserResponseDto;
+  @Type(() => UserDto)
+  deleterUsers: UserDto;
 
   @ApiProperty()
   @Expose()
@@ -77,18 +156,18 @@ export class FindTenantPayoutOutput extends BaseDto {
 
   @ApiProperty()
   @Expose()
-  @Type(() => UserResponseDto)
-  processorUsers: UserResponseDto;
+  @Type(() => UserDto)
+  processorUsers: UserDto;
 
   @ApiProperty()
   @Expose()
-  @Type(() => GetSettlementCurrenciesResponseDto)
-  settlementCurrencies: GetSettlementCurrenciesResponseDto;
+  @Type(() => settlementCurrenciesDto)
+  settlementCurrencies: settlementCurrenciesDto;
 
   @ApiProperty()
   @Expose()
-  @Type(() => TenantDto)
-  tenantsId: TenantDto;
+  @Type(() => TenantIdDto)
+  tenantsId: TenantIdDto;
 
   @ApiProperty()
   @Expose()
@@ -97,13 +176,13 @@ export class FindTenantPayoutOutput extends BaseDto {
 
   @ApiProperty()
   @Expose()
-  @Type(() => UserResponseDto)
-  updaterUsers: UserResponseDto;
+  @Type(() => UserDto)
+  updaterUsers: UserDto;
 
   @Expose()
   @ApiProperty({
-    type: TenantDto,
+    type: TenantIdDto,
     isArray: true,
   })
-  tenants: TenantDto[];
+  tenants: TenantIdDto[];
 }
