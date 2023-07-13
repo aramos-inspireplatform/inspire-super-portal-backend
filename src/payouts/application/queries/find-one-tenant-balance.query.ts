@@ -1,20 +1,33 @@
+import { IFindOneCurrencyDao } from '~/currencies/application/daos/find-one-currency.dao.contract';
+import { CurrenciesExceptionsConstants } from '~/currencies/domain/exceptions/currencies-exceptions.enum';
 import { IFindOneTenantBalanceDao } from '~/payouts/application/daos/find-one-tenant-balance.dao.contract';
 import { IFindOneTenantBalanceQuery } from '~/payouts/application/queries/contracts/find-one-tenant-balance.query.contract';
+import { PayoutsExceptionsConstants } from '~/payouts/domain/exceptions/payouts-exceptions.enum';
+import { NotFoundException } from '~/shared/domain/exceptions/not-found.exception';
 
 export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
   constructor(
     private readonly findOneTenantBalanceDao: IFindOneTenantBalanceDao,
+    private readonly findOneCurrencyDao: IFindOneCurrencyDao,
   ) {}
 
   async execute(
     attrs: IFindOneTenantBalanceQuery.Input,
   ): IFindOneTenantBalanceQuery.Output {
-    const tenantBalance = await this.findOneTenantBalanceDao.execute({
-      ...attrs,
+    const currency = await this.findOneCurrencyDao.execute({
+      currencyIsoCode: attrs.settlementCurrencyIsoCode,
     });
-    if (tenantBalance instanceof Error) throw tenantBalance;
+    if (!currency)
+      throw new NotFoundException(CurrenciesExceptionsConstants.NOT_FOUND);
 
-    console.log('tenantBalance-query:', tenantBalance);
+    const tenantBalance = await this.findOneTenantBalanceDao.execute({
+      tenantId: attrs.tenantId,
+      settlementCurrencyId: currency.id,
+    });
+    if (!tenantBalance)
+      throw new NotFoundException(
+        PayoutsExceptionsConstants.TENANT_BALANCE_NOT_FOUND,
+      );
 
     return {
       id: tenantBalance.id,

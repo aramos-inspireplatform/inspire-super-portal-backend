@@ -1,4 +1,3 @@
-import { NotFoundException } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { IFindOneTenantBalanceDao } from '~/payouts/application/daos/find-one-tenant-balance.dao.contract';
 import { Tenants } from '~/shared/infra/database/entities';
@@ -60,7 +59,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
         'tenants.tenantBalances',
         'tenantBalances',
         'tenantBalances.settlementCurrency.id = :settlementCurrencyId',
-        { settlementCurrencyId: 'ef579caf-a6da-4d53-80cb-a67bf4742a3e' },
+        { settlementCurrencyId: attrs.settlementCurrencyId },
       )
       .leftJoin(
         'tenantBalances.settlementCurrency',
@@ -69,7 +68,6 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
       .where('tenants.id = :tenantId', { tenantId: attrs.tenantId });
 
     const tenantBalance = await query.getOne();
-    console.log(tenantBalance);
 
     return tenantBalance
       ? {

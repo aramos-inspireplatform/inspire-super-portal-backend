@@ -7,7 +7,7 @@ export interface IFindOneTenantBalanceDao {
 export namespace IFindOneTenantBalanceDao {
   export type Input = {
     tenantId: string;
-    settlementCurrencyIsoCode: string;
+    settlementCurrencyId: string;
   };
 
   export type Output = Promise<TenantBalance>;
