@@ -63,6 +63,7 @@ export class PayoutController {
         gTenantId: inputDto.gTenantId,
         payments: inputDto.payments,
         adjustmentFees: inputDto.adjustmentFees,
+        payoutId: inputDto.payoutId,
       });
 
     return payoutSummaryPreview;
