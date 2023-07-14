@@ -6,6 +6,7 @@ import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-pagin
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { IFindAllPayoutAdjustmentTypesQuery } from '~/payouts/application/queries/contracts/find-all-payout-adjustment-types.query.contract';
 import { FindAllPayoutAdjustmentTypesInputDto } from '~/payouts/presentation/dtos/requests/find-all-payout-adjustment-types.input.dto';
+import { FindAllPayoutAdjustmentTypesOutput } from '~/payouts/presentation/dtos/responses/find-all-payout-adjustment-types.output';
 
 @Controller('/payouts/adjustment-types')
 @ApiTags('Payouts')
@@ -18,7 +19,7 @@ export class PayoutAdjustmentTypesController {
 
   @Get()
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: FindAllPayoutAdjustmentTypesInputDto })
+  @ApiOkResponse({ type: FindAllPayoutAdjustmentTypesOutput, isArray: true })
   async findAll(
     @Req() request: FastifyRequest,
     @Query() inputDto: FindAllPayoutAdjustmentTypesInputDto,
