@@ -74,7 +74,10 @@ export class FindAllTenantBalancesDao implements IFindAllTenantBalancesDao {
 
     query.orderBy('tenants.name', 'ASC');
 
-    const [tenantBalances, count] = await query.getManyAndCount();
+    const [tenantBalances, count] = await query
+      .skip(attrs.paginationInput.skip())
+      .take(attrs.paginationInput.take())
+      .getManyAndCount();
 
     const result = new PaginationOutput({
       rows: tenantBalances?.map((tenantBalance) => ({
