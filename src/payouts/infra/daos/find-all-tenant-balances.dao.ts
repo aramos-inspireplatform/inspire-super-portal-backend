@@ -48,16 +48,20 @@ export class FindAllTenantBalancesDao implements IFindAllTenantBalancesDao {
       ])
       .innerJoin('tenants.tenantStatus', 'tenantStatus')
       .innerJoin('tenants.termsRecurringInterval', 'termsRecurringInterval')
+      .innerJoin(
+        'tenants.tenantBalances',
+        'tenantBalances',
+        'tenantBalances.amount > 0',
+      )
+      .innerJoin(
+        'tenantBalances.settlementCurrency',
+        'tenantBalanceSettlementCurrency',
+      )
       .leftJoin('tenants.lastTenantPayout', 'lastTenantPayout')
       .leftJoin('lastTenantPayout.payoutStatus', 'lastTenantPayoutStatus')
       .leftJoin(
         'lastTenantPayout.settlementCurrency',
         'lastTenantPayoutSettlementCurrency',
-      )
-      .leftJoin('tenants.tenantBalances', 'tenantBalances')
-      .leftJoin(
-        'tenantBalances.settlementCurrency',
-        'tenantBalanceSettlementCurrency',
       );
 
     if (attrs.authUser.isAgencyAdmin()) {
@@ -67,6 +71,8 @@ export class FindAllTenantBalancesDao implements IFindAllTenantBalancesDao {
         agenciesIds: attrs.authUser.agencies.map((agency) => agency.id),
       });
     }
+
+    query.orderBy('tenants.name', 'ASC');
 
     const [tenantBalances, count] = await query.getManyAndCount();
 
