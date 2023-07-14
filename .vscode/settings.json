@@ -2,13 +2,10 @@
   "typescript.preferences.importModuleSpecifier": "non-relative",
   "editor.formatOnSave": true,
   "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
   "[yaml]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "cSpell.words": [
-    "daos",
-    "dtos"
-  ]
+  "cSpell.words": ["srcv"]
 }
