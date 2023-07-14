@@ -10,15 +10,15 @@ import { PayoutTenantBalancesController } from '~/payouts/presentation/payout-te
 import { FindOneTenantBalanceQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-tenant-balance-query-factory.provider';
 import { FindOneTenantBalanceDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-tenant-balance-dao-factory.provider';
 import { FindOneCurrencyDaoFactoryProvider } from '~/currencies/ioc/providers/daos/find-one-currency-dao-factory.provider';
-import { FindAllPayoutPaymentsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-payout-payments-dao-factory.provider';
-import { FindAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-payments-query-factory.provider';
+import { SearchAllPayoutPaymentsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/search-all-payout-payments-dao-factory.provider';
+import { SearchAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/search-all-payout-payments-query-factory.provider';
 
 @Module({
   providers: [
     FindPeriodPayoutPaymentsQueryFactoryProvider.register(),
     FindPeriodPayoutPaymentsDaoFactoryProvider.register(),
-    FindAllPayoutPaymentsDaoFactoryProvider.register(),
-    FindAllPayoutPaymentsQueryFactoryProvider.register(),
+    SearchAllPayoutPaymentsDaoFactoryProvider.register(),
+    SearchAllPayoutPaymentsQueryFactoryProvider.register(),
     FindAllTenantPayoutsQueryFactoryProvider.register(),
     FindAllTenantPayoutsDaoFactoryProvider.register(),
     FindOneTenantBalanceQueryFactoryProvider.register(),

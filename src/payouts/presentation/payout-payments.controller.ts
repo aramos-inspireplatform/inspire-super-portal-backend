@@ -4,12 +4,12 @@ import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
-import { FindPeriodPayoutPaymentsQuery } from '~/payouts/application/queries/find-period-payout-payments.query';
 import { FindPeriodPayoutPaymentsOutputDto } from '~/payouts/presentation/dtos/responses/find-period-payout-payments.output';
 import { FindPeriodPayoutPaymentsInputDto } from '~/payouts/presentation/dtos/requests/find-period-payout-payments.input.dto';
-import { FindAllPayoutPaymentsInputDto } from '~/payouts/presentation/dtos/requests/find-all-payout-payments.input.dto';
-import { PaginationInput } from '~/shared/application/services/pagination';
-import { FindAllPayoutPaymentsQuery } from '~/payouts/application/queries/find-all-payout-payments.query';
+import { ISearchAllPayoutPaymentsQuery } from '~/payouts/application/queries/contracts/search-all-payments.query.contract';
+import { IFindPeriodPayoutPaymentsQuery } from '~/payouts/application/queries/contracts/find-period-payments.query.contract';
+import { SearchAllPayoutPaymentsInputDto } from '~/payouts/presentation/dtos/requests/search-all-payout-payments.input.dto';
+import { SearchAllPayoutPaymentArrayOutput } from '~/payouts/presentation/dtos/responses/search-all-payout-payment-array.output';
 
 @Controller('/payouts/payments')
 @ApiTags('Payouts')
@@ -17,10 +17,10 @@ import { FindAllPayoutPaymentsQuery } from '~/payouts/application/queries/find-a
 export class PayoutPaymentsController {
   constructor(
     @Inject(PayoutProvidersSymbols.FIND_PERIOD_PAYMENTS_QUERY)
-    private readonly findPeriodPayoutPaymentsQuery: FindPeriodPayoutPaymentsQuery,
+    private readonly findPeriodPayoutPaymentsQuery: IFindPeriodPayoutPaymentsQuery,
 
-    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYMENTS_QUERY)
-    private readonly findAllPayoutsPaymentsQuery: FindAllPayoutPaymentsQuery,
+    @Inject(PayoutProvidersSymbols.SEARCH_ALL_PAYMENTS_QUERY)
+    private readonly searchAllPayoutsPaymentsQuery: ISearchAllPayoutPaymentsQuery,
   ) {}
 
   @Get('/period')
@@ -45,20 +45,20 @@ export class PayoutPaymentsController {
     return payments;
   }
 
-  @Get()
+  @Get('/period/select-all')
   @AuthenticatedRoute()
-  @ApiOkResponse()
+  @ApiOkResponse({ type: SearchAllPayoutPaymentArrayOutput })
   async findAll(
     @Req() request: FastifyRequest,
-    @Query() inputDto: FindAllPayoutPaymentsInputDto,
+    @Query() inputDto: SearchAllPayoutPaymentsInputDto,
   ) {
-    const payments = await this.findAllPayoutsPaymentsQuery.execute({
-      pagination: new PaginationInput({
-        keywords: inputDto.keywords,
-        page: inputDto.page,
-        size: inputDto.pagesize,
-        sort: inputDto.sortby,
-      }),
+    const payments = await this.searchAllPayoutsPaymentsQuery.execute({
+      accessToken: request.headers.authorization,
+      gTenantId: inputDto.gTenantId,
+      periodStartDate: inputDto.periodStartDate,
+      periodEndDate: inputDto.periodEndDate,
+      settlementCurrencyIsoCode: inputDto.settlementCurrencyIsoCode,
+      payoutId: inputDto.payoutId,
     });
     return payments;
   }

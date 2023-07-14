@@ -2,6 +2,10 @@ import { InspirePaymentApiServiceDto } from '~/shared/application/services/inspi
 
 export interface IInspirePaymentApiService {
   findPeriodPayoutPayments(
-    attrs: InspirePaymentApiServiceDto.FindAllPayoutPaymentsInputAttrs,
-  ): InspirePaymentApiServiceDto.FindAllPayoutPaymentsResult;
+    attrs: InspirePaymentApiServiceDto.FindPeriodPayoutPaymentsInputAttrs,
+  ): InspirePaymentApiServiceDto.FindPeriodPayoutPaymentsResult;
+
+  searchAllPayoutPayments(
+    attrs: InspirePaymentApiServiceDto.SearchAllPayoutPaymentsInputAttrs,
+  ): Promise<InspirePaymentApiServiceDto.Payment[]>;
 }

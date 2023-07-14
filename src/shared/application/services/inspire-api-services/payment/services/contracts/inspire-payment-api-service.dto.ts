@@ -1,6 +1,16 @@
 export namespace InspirePaymentApiServiceDto {
-  // FindAll Payout Payments
-  export type FindAllPayoutPaymentsInputAttrs = {
+  // SearchAll Payout Payments
+  export type SearchAllPayoutPaymentsInputAttrs = {
+    accessToken: string;
+    gTenantId: string;
+    periodStartDate: Date;
+    periodEndDate: Date;
+    settlementCurrencyIsoCode: string;
+    payoutId?: string | null;
+  };
+
+  // FindPeriod Payout Payments
+  export type FindPeriodPayoutPaymentsInputAttrs = {
     accessToken: string;
     gTenantId: string;
     periodStartDate: Date;
@@ -14,7 +24,7 @@ export namespace InspirePaymentApiServiceDto {
       keywords?: string;
     };
   };
-  export type FindAllPayoutPaymentsResult = Promise<Payments>;
+  export type FindPeriodPayoutPaymentsResult = Promise<Payments>;
 
   // Additional types
   export type Payments = {
