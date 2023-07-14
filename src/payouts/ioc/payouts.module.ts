@@ -14,6 +14,8 @@ import { FindAllTenantBalancesDaoFactoryProvider } from '~/payouts/ioc/providers
 import { FindAllPayoutAdjustmentTypesDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-payout-adjustment-types-dao-factory.provider';
 import { FindAllPayoutAdjustmentTypesQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutment-types-query-factory.provider';
 import { PayoutAdjustmentTypesController } from '~/payouts/presentation/payout-adjustment-types.controller';
+import { FindOnePayoutSummaryPreviewQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-payout-summary-preview-query-factory.provider';
+import { FindOnePayoutSummaryPreviewDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-payout-summary-preview-dao-factory.provider';
 
 @Module({
   providers: [
@@ -27,6 +29,8 @@ import { PayoutAdjustmentTypesController } from '~/payouts/presentation/payout-a
     FindOneTenantBalanceDaoFactoryProvider.register(),
     FindAllPayoutAdjustmentTypesQueryFactoryProvider.register(),
     FindAllPayoutAdjustmentTypesDaoFactoryProvider.register(),
+    FindOnePayoutSummaryPreviewQueryFactoryProvider.register(),
+    FindOnePayoutSummaryPreviewDaoFactoryProvider.register(),
     FindOneCurrencyDaoFactoryProvider.register(),
   ],
   controllers: [
