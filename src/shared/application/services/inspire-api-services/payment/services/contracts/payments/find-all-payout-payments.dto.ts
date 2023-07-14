@@ -1,6 +1,6 @@
-export namespace InspirePaymentApiServiceDto {
+export namespace FindAllPayoutPaymentsDto {
   // FindAll Payout Payments
-  export type FindAllPayoutPaymentsInputAttrs = {
+  export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
     periodStartDate: Date;
@@ -14,7 +14,7 @@ export namespace InspirePaymentApiServiceDto {
       keywords?: string;
     };
   };
-  export type FindAllPayoutPaymentsResult = Promise<Payments>;
+  export type Result = Promise<Payments>;
 
   // Additional types
   export type Payments = {
