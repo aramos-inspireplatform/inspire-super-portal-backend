@@ -61,7 +61,7 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
               name: tenantBalance.lastPayout.status.name,
               slug: tenantBalance.lastPayout.status.slug,
             },
-            amount: tenantBalance.lastPayout.amount,
+            amount: Number(tenantBalance.lastPayout.amount),
             settlementCurrency: {
               id: tenantBalance.lastPayout.settlementCurrency.id,
               name: tenantBalance.lastPayout.settlementCurrency.name,
@@ -72,11 +72,11 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
             periodEndDate: tenantBalance.lastPayout.periodEndDate,
           }
         : null,
-      totalPaidAmount: tenantBalance.totalPaidAmount,
+      totalPaidAmount: Number(tenantBalance.totalPaidAmount),
       balance: tenantBalance.balance
         ? {
             id: tenantBalance.balance.id,
-            amount: tenantBalance.balance.amount,
+            amount: Number(tenantBalance.balance.amount),
             settlementCurrency: {
               id: tenantBalance.balance.settlementCurrency.id,
               name: tenantBalance.balance.settlementCurrency.name,

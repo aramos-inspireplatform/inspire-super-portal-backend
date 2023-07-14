@@ -48,7 +48,11 @@ export class FindAllTenantBalancesDao implements IFindAllTenantBalancesDao {
       ])
       .innerJoin('tenants.tenantStatus', 'tenantStatus')
       .innerJoin('tenants.termsRecurringInterval', 'termsRecurringInterval')
-      .innerJoin('tenants.tenantBalances', 'tenantBalances')
+      .innerJoin(
+        'tenants.tenantBalances',
+        'tenantBalances',
+        'tenantBalances.amount > 0',
+      )
       .innerJoin(
         'tenantBalances.settlementCurrency',
         'tenantBalanceSettlementCurrency',
