@@ -55,6 +55,7 @@ export class FindAllTenantBalancesQuery implements IFindAllTenantBalancesQuery {
               },
               periodStartDate: tenantBalance.lastPayout.periodStartDate,
               periodEndDate: tenantBalance.lastPayout.periodEndDate,
+              processedDate: tenantBalance.lastPayout.processedDate,
             }
           : null,
         totalPaidAmount: Number(tenantBalance.totalPaidAmount),
