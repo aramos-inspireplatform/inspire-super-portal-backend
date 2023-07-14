@@ -62,6 +62,7 @@ export class FindAllTenantBalanceOutput extends BaseDto {
       },
       periodStartDate: '2023-01-01',
       periodEndDate: '2023-01-31',
+      processedDate: '2023-07-14 10:13:48.860 -0300',
     },
   })
   lastPayout: object;
