@@ -44,6 +44,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
       {
         payments: attrs.payments,
         adjustmentFees: attrs.adjustmentFees,
+        payoutId: attrs.payoutId,
       },
       {
         headers: {

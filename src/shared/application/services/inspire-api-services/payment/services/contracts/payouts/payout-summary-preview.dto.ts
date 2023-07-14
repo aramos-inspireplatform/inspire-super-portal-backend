@@ -4,6 +4,7 @@ export namespace PayoutSummaryPreviewDto {
     gTenantId: string;
     payments: Payment[];
     adjustmentFees: AdjustmentFee[];
+    payoutId: string;
   };
 
   export type Result = Promise<PayoutSummaryPreview>;

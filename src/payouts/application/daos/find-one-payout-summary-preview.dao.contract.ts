@@ -10,6 +10,7 @@ export namespace IFindOnePayoutSummaryPreviewDao {
     gTenantId: string;
     payments: Payment[];
     adjustmentFees: AdjustmentFee[];
+    payoutId: string;
   };
 
   export type Output = Promise<PayoutSummaryPreview>;

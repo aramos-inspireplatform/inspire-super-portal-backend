@@ -8,6 +8,7 @@ import {
   IsNotEmpty,
   IsOptional,
   IsString,
+  IsUUID,
   ValidateNested,
 } from 'class-validator';
 import { FindOnePayoutSummaryPreviewAdjustmentFeeInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary-preview-adjustment-fee.input.dto';
@@ -43,4 +44,12 @@ export class FindOnePayoutSummaryPreviewInputDto {
   @ValidateNested({ each: true })
   @Type(() => FindOnePayoutSummaryPreviewAdjustmentFeeInputDto)
   adjustmentFees: FindOnePayoutSummaryPreviewAdjustmentFeeInputDto[];
+
+  @ApiProperty({
+    example: '7fcd36e4-3fec-4033-8a07-d95cd193fc7a',
+    required: false,
+  })
+  @IsOptional()
+  @IsUUID()
+  payoutId?: string;
 }
