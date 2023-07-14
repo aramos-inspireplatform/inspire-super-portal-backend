@@ -32,6 +32,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
         'lastTenantPayout.amount',
         'lastTenantPayout.periodStartDate',
         'lastTenantPayout.periodEndDate',
+        'lastTenantPayout.processedDate',
         'lastTenantPayoutStatus.id',
         'lastTenantPayoutStatus.name',
         'lastTenantPayoutStatus.slug',
@@ -119,6 +120,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
                 },
                 periodStartDate: tenantBalance.lastTenantPayout.periodStartDate,
                 periodEndDate: tenantBalance.lastTenantPayout.periodEndDate,
+                processedDate: tenantBalance.lastTenantPayout.processedDate,
               }
             : null,
           totalPaidAmount: tenantBalance.totalPaidAmount,

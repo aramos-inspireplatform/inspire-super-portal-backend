@@ -58,6 +58,7 @@ export namespace IFindAllTenantBalancesQuery {
     settlementCurrency: Currency;
     periodStartDate: Date;
     periodEndDate: Date;
+    processedDate: Date;
   };
 
   type PayoutStatus = {
