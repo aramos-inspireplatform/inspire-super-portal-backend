@@ -1,10 +1,7 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
-import {
-  InspireHttpPaginatedResponse,
-  InspireHttpResponse,
-} from '~/shared/types/inspire-http-response.type';
 import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
-import { InspirePaymentApiServiceDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.dto';
+import { FindAllPayoutAdjustmentTypesDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payout-adjustment-types/find-all-payout-adjustment-types.dto';
+import { FindAllPayoutPaymentsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payout-payments.dto';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
   private readonly PAYMENT_API_BASE_URL = `${process.env.PAYMENT_API_URL}`;
@@ -14,8 +11,8 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
   constructor(private readonly httpClient: IHttpClient) {}
 
   async findAllPayoutPayments(
-    attrs: InspirePaymentApiServiceDto.FindAllPayoutPaymentsInputAttrs,
-  ): InspirePaymentApiServiceDto.FindAllPayoutPaymentsResult {
+    attrs: FindAllPayoutPaymentsDto.InputAttrs,
+  ): FindAllPayoutPaymentsDto.Result {
     const url = `${this.PAYOUT_API_BASE_URL}/payments/period`;
 
     const payments = await this.httpClient.get<any>(url, {
@@ -34,6 +31,22 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
     });
 
     return payments.data.body.data;
+  }
+
+  async findAllPayoutAdjustmentTypes(
+    attrs: FindAllPayoutAdjustmentTypesDto.InputAttrs,
+  ): FindAllPayoutAdjustmentTypesDto.Result {
+    const url = `${this.PAYOUT_API_BASE_URL}/adjustment-types`;
+
+    const adjustmentTypes = await this.httpClient.get<any>(url, {
+      headers: {
+        authorization: attrs.accessToken,
+        tenant: attrs.gTenantId,
+        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+      },
+    });
+
+    return adjustmentTypes.data.body.data;
   }
 }
 
