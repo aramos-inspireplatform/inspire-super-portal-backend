@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import { IsUUID } from 'class-validator';
 import { BaseDto } from '~/shared/presentation/base.dto';
-export class FindAllPaymentsPeriodPagedPaymentOutput extends BaseDto {
+export class FindAllPayoutPaymentsPagedPaymentOutput extends BaseDto {
   @Expose()
   @ApiProperty({
     example: '74deb067-2bf6-45b1-991d-a0f22ab0ae3a',

@@ -1,15 +1,17 @@
-import { IFindAllPayoutPaymentsDao } from '~/payouts/application/daos/find-all-payments.dao.contract';
-import { IFindAllPayoutPaymentsQuery } from '~/payouts/application/queries/contracts/find-all-payments.query.contract';
+import { IFindAllPayoutPaymentsPagedDao } from '~/payouts/application/daos/find-all-payout-payments-paged.dao.contract';
+import { IFindAllPayoutPaymentsPagedQuery } from '~/payouts/application/queries/contracts/find-all-payout-payments-paged.query.contract';
 
-export class FindAllPayoutPaymentsQuery implements IFindAllPayoutPaymentsQuery {
+export class FindAllPayoutPaymentsPagedQuery
+  implements IFindAllPayoutPaymentsPagedQuery
+{
   constructor(
-    private readonly findAllPayoutPaymentsDao: IFindAllPayoutPaymentsDao,
+    private readonly findAllPayoutPaymentsPagedDao: IFindAllPayoutPaymentsPagedDao,
   ) {}
 
   async execute(
-    attrs: IFindAllPayoutPaymentsQuery.Input,
-  ): IFindAllPayoutPaymentsQuery.Output {
-    const payments = await this.findAllPayoutPaymentsDao.execute({
+    attrs: IFindAllPayoutPaymentsPagedQuery.Input,
+  ): IFindAllPayoutPaymentsPagedQuery.Output {
+    const payments = await this.findAllPayoutPaymentsPagedDao.execute({
       ...attrs,
     });
     if (payments instanceof Error) throw payments;

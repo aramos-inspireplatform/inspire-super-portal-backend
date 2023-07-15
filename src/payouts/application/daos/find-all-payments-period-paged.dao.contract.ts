@@ -1,6 +1,13 @@
-export namespace FindAllPayoutPaymentsDto {
-  // FindAll Payout Payments
-  export type InputAttrs = {
+import { QueryPaginatedOutput } from '~/shared/types/query-paginated-output.type';
+
+export interface IFindAllPaymentsPeriodPagedDao {
+  execute(
+    params: IFindAllPaymentsPeriodPagedDao.Input,
+  ): IFindAllPaymentsPeriodPagedDao.Output;
+}
+
+export namespace IFindAllPaymentsPeriodPagedDao {
+  export type Input = {
     accessToken: string;
     gTenantId: string;
     periodStartDate: Date;
@@ -9,31 +16,15 @@ export namespace FindAllPayoutPaymentsDto {
     payoutId?: string | null;
     pagination: {
       page: number;
-      size: number;
+      pagesize: number;
       sortby?: string;
       keywords?: string;
     };
   };
-  export type Result = Promise<Payments>;
+
+  export type Output = QueryPaginatedOutput<Payment>;
 
   // Additional types
-  export type Payments = {
-    rows: Payment[];
-    count: number;
-    page: number;
-    pageSize: number;
-    pageCount: number;
-    pageNumberIsGood: boolean;
-    hasPreviousPage: boolean;
-    hasNextPage: boolean;
-    isFirstPage: boolean;
-    isLastPage: boolean;
-    numberOfFirstItemOnPage: 0;
-    firstItemOnPage: number;
-    numberOfLastItemOnPage: number;
-    lastItemOnPage: number;
-  };
-
   export type Payment = {
     id: string;
     date: Date;

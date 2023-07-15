@@ -1,13 +1,5 @@
-import { QueryPaginatedOutput } from '~/shared/types/query-paginated-output.type';
-
-export interface IFindAllPayoutPaymentsQuery {
-  execute(
-    params: IFindAllPayoutPaymentsQuery.Input,
-  ): IFindAllPayoutPaymentsQuery.Output;
-}
-
-export namespace IFindAllPayoutPaymentsQuery {
-  export type Input = {
+export namespace FindAllPaymentsPeriodPagedDto {
+  export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
     periodStartDate: Date;
@@ -16,15 +8,31 @@ export namespace IFindAllPayoutPaymentsQuery {
     payoutId?: string | null;
     pagination: {
       page: number;
-      pagesize: number;
+      size: number;
       sortby?: string;
       keywords?: string;
     };
   };
-
-  export type Output = QueryPaginatedOutput<Payment>;
+  export type Result = Promise<Payments>;
 
   // Additional types
+  export type Payments = {
+    rows: Payment[];
+    count: number;
+    page: number;
+    pageSize: number;
+    pageCount: number;
+    pageNumberIsGood: boolean;
+    hasPreviousPage: boolean;
+    hasNextPage: boolean;
+    isFirstPage: boolean;
+    isLastPage: boolean;
+    numberOfFirstItemOnPage: 0;
+    firstItemOnPage: number;
+    numberOfLastItemOnPage: number;
+    lastItemOnPage: number;
+  };
+
   export type Payment = {
     id: string;
     date: Date;
