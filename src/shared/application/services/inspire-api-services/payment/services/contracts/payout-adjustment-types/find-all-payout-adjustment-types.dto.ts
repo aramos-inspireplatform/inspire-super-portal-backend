@@ -1,5 +1,4 @@
 export namespace FindAllPayoutAdjustmentTypesDto {
-  // FindAll Payout Payments
   export type InputAttrs = {
     accessToken: string;
     gTenantId: string;

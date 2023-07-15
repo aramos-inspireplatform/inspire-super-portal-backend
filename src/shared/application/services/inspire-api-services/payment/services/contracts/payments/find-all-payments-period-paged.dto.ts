@@ -1,5 +1,4 @@
 export namespace FindAllPaymentsPeriodPagedDto {
-  // FindAll Payout Payments
   export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
