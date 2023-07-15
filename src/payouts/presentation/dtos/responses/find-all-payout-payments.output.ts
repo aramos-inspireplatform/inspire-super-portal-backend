@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { FindPayoutPaymentOutput } from '~/payouts/presentation/dtos/responses/find-payout-payment.output';
+import { FindPayoutPaymentOutput } from '~/payouts/presentation/dtos/responses/find-payments-payout.output';
 import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto';
 
 export class FindAllPayoutPaymentsOutputDto extends PaginatedResultsDto<FindPayoutPaymentOutput> {
