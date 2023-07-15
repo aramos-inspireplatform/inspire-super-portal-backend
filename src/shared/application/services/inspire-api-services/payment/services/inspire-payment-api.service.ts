@@ -1,8 +1,9 @@
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
 import { FindAllPayoutAdjustmentTypesDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payout-adjustment-types/find-all-payout-adjustment-types.dto';
-import { FindAllPayoutPaymentsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payout-payments.dto';
+import { FindAllPaymentsPeriodPagedDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payments-period-paged.dto';
 import { PayoutSummaryPreviewDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary-preview.dto';
+import { FindAllPayoutPaymentsPagedDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payout-payments-paged.dto';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
   private readonly PAYMENT_API_BASE_URL = `${process.env.PAYMENT_API_URL}`;
@@ -11,9 +12,9 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
 
   constructor(private readonly httpClient: IHttpClient) {}
 
-  async findAllPayoutPayments(
-    attrs: FindAllPayoutPaymentsDto.InputAttrs,
-  ): FindAllPayoutPaymentsDto.Result {
+  async findAllPaymentsPeriodPaged(
+    attrs: FindAllPaymentsPeriodPagedDto.InputAttrs,
+  ): FindAllPaymentsPeriodPagedDto.Result {
     const url = `${this.PAYOUT_API_BASE_URL}/payments/period`;
 
     const payments = await this.httpClient.get<any>(url, {
@@ -27,6 +28,25 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
         periodEndDate: attrs.periodEndDate,
         settlementCurrencyIsoCode: attrs.settlementCurrencyIsoCode,
         payoutId: attrs.payoutId,
+        ...attrs.pagination,
+      },
+    });
+
+    return payments.data.body.data;
+  }
+
+  async findAllPayoutPaymentsPaged(
+    attrs: FindAllPayoutPaymentsPagedDto.InputAttrs,
+  ): FindAllPayoutPaymentsPagedDto.Result {
+    const url = `${this.PAYOUT_API_BASE_URL}/${attrs.payoutId}/payments`;
+
+    const payments = await this.httpClient.get<any>(url, {
+      headers: {
+        authorization: attrs.accessToken,
+        tenant: attrs.gTenantId,
+        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+      },
+      params: {
         ...attrs.pagination,
       },
     });

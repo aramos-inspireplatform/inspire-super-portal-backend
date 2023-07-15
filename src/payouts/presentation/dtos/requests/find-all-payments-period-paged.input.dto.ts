@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 
-export class FindAllPayoutPaymentsInputDto extends CommonPaginateDto {
+export class FindAllPaymentsPeriodPagedInputDto extends CommonPaginateDto {
   @ApiProperty({
     example: 'teste-hnmkt',
   })

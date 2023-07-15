@@ -1,23 +1,26 @@
-import { IFindAllPayoutPaymentsDao } from '~/payouts/application/daos/find-all-payments.dao.contract';
+import { IFindAllPaymentsPeriodPagedDao } from '~/payouts/application/daos/find-all-payments-period-paged.dao.contract';
 import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
 
-export class FindAllPayoutPaymentsDao implements IFindAllPayoutPaymentsDao {
+export class FindAllPaymentsPeriodPagedDao
+  implements IFindAllPaymentsPeriodPagedDao
+{
   constructor(
     private readonly inspirePaymentApiService: IInspirePaymentApiService,
   ) {}
 
   async execute(
-    attrs: IFindAllPayoutPaymentsDao.Input,
-  ): IFindAllPayoutPaymentsDao.Output {
-    const payments = await this.inspirePaymentApiService.findAllPayoutPayments({
-      ...attrs,
-      pagination: {
-        page: attrs.pagination.page,
-        size: attrs.pagination.pagesize,
-        sortby: attrs.pagination.sortby,
-        keywords: attrs.pagination.keywords,
-      },
-    });
+    attrs: IFindAllPaymentsPeriodPagedDao.Input,
+  ): IFindAllPaymentsPeriodPagedDao.Output {
+    const payments =
+      await this.inspirePaymentApiService.findAllPaymentsPeriodPaged({
+        ...attrs,
+        pagination: {
+          page: attrs.pagination.page,
+          size: attrs.pagination.pagesize,
+          sortby: attrs.pagination.sortby,
+          keywords: attrs.pagination.keywords,
+        },
+      });
 
     return {
       rows: payments.rows.map((payment) => ({

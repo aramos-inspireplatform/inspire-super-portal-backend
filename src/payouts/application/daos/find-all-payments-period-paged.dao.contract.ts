@@ -1,12 +1,12 @@
 import { QueryPaginatedOutput } from '~/shared/types/query-paginated-output.type';
 
-export interface IFindAllPayoutPaymentsQuery {
+export interface IFindAllPaymentsPeriodPagedDao {
   execute(
-    params: IFindAllPayoutPaymentsQuery.Input,
-  ): IFindAllPayoutPaymentsQuery.Output;
+    params: IFindAllPaymentsPeriodPagedDao.Input,
+  ): IFindAllPaymentsPeriodPagedDao.Output;
 }
 
-export namespace IFindAllPayoutPaymentsQuery {
+export namespace IFindAllPaymentsPeriodPagedDao {
   export type Input = {
     accessToken: string;
     gTenantId: string;
