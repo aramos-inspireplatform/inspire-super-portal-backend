@@ -1,12 +1,9 @@
-export namespace FindAllPayoutPaymentsDto {
+export namespace FindAllPayoutPaymentsPagedDto {
   // FindAll Payout Payments
   export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
-    periodStartDate: Date;
-    periodEndDate: Date;
-    settlementCurrencyIsoCode: string;
-    payoutId?: string | null;
+    payoutId: string;
     pagination: {
       page: number;
       size: number;

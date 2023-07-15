@@ -12,7 +12,7 @@ import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
-import { FindAllPayoutPaymentsOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payout-payments.output';
+import { FindAllPaymentsPeriodPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period-paged.output';
 import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
@@ -33,7 +33,7 @@ export class PayoutController {
 
   @Get()
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: FindAllPayoutPaymentsOutputDto })
+  @ApiOkResponse({ type: FindAllPaymentsPeriodPagedOutputDto })
   async findAll(
     @Req() request: FastifyRequest,
     @Query() searchParams: CommonPaginateDto,
