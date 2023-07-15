@@ -1,88 +1,57 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { Expose } from 'class-transformer';
+import { IsUUID } from 'class-validator';
 import { BaseDto } from '~/shared/presentation/base.dto';
 export class FindOnePaymentsPayoutOutput extends BaseDto {
+  @Expose()
   @ApiProperty({
     example: '74deb067-2bf6-45b1-991d-a0f22ab0ae3a',
   })
+  @IsUUID()
   id: string;
 
+  @Expose()
   @ApiProperty({
-    example: 'Test',
+    example: 'Processed',
   })
-  name: string;
+  statusPayout: Date;
 
-  @ApiProperty({
-    example: 'test-hnmkt',
-  })
-  gTenantId: string;
+  @Expose()
+  @ApiProperty({ example: new Date() })
+  createdDate: Date;
 
+  @Expose()
   @ApiProperty({
     example: {
-      id: '40768094-b6fb-4cba-9733-377202991137',
-      name: 'Agency',
+      gTenantId: 'Test',
+      name: 'Test',
     },
   })
-  agency: object;
+  tenant: object;
 
+  @Expose()
   @ApiProperty({
-    example: {
-      recurringIntervalCount: 30,
-      recurringInterval: {
-        id: 'cd44a946-bfdd-4370-b2cc-1b3f0df311fd',
-        name: 'Daily',
-        interval: 'day',
-      },
-    },
+    example: 30,
   })
-  terms: object;
+  payoutTermsCount: number;
 
+  @Expose()
   @ApiProperty({
-    example: {
-      id: 'a217e218-a723-4659-8f3d-9f218310655b',
-      name: 'Active',
-      slug: 'active',
-    },
+    example: 'Days',
   })
-  status: object;
+  payoutTermsInterval: string;
 
-  @ApiProperty({
-    example: {
-      id: '15d19c35-fc21-4eb3-b2dd-37511ee58e2b',
-      status: {
-        id: '6f1342e6-af0e-4642-8e56-cec2efb2303d',
-        name: 'Paid',
-        slug: 'paid',
-      },
-      amount: '59423.000000',
-      settlementCurrency: {
-        id: 'ef579caf-a6da-4d53-80cb-a67bf4742a3e',
-        name: 'United States dollar',
-        isoCode: 'USD',
-        symbol: '$',
-      },
-      periodStartDate: '2023-01-01',
-      periodEndDate: '2023-01-31',
-      processedDate: '2023-07-14 10:13:48.860 -0300',
-    },
-  })
-  lastPayout: object;
+  @Expose()
+  @ApiProperty({ example: new Date() })
+  periodStartDate: Date;
 
-  @ApiProperty({
-    example: 95000.55,
-  })
-  totalPaidAmount: number;
+  @Expose()
+  @ApiProperty({ example: new Date() })
+  periodEndDate: Date;
 
+  @Expose()
   @ApiProperty({
-    example: {
-      id: '05d1c20c-d0d5-47ee-bed9-accb0dbeb2fb',
-      amount: '95000.000000',
-      settlementCurrency: {
-        id: 'ef579caf-a6da-4d53-80cb-a67bf4742a3e',
-        name: 'United States dollar',
-        isoCode: 'USD',
-        symbol: '$',
-      },
-    },
+    example: 30,
   })
-  balance: object;
+  amount: number;
 }

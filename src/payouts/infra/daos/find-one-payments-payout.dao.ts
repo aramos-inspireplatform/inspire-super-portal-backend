@@ -15,7 +15,6 @@ export class FindOnePaymentsPayoutDao implements IFindOnePaymentsPayoutDao {
     const query = this.payoutRepository
       .createQueryBuilder('payouts')
       .select([
-        // 'payouts',
         'payoutStatus.name',
         'payoutStatus.createdDate',
         'payouts.id',
@@ -26,7 +25,6 @@ export class FindOnePaymentsPayoutDao implements IFindOnePaymentsPayoutDao {
         'payouts.periodEndDate',
         'payouts.customerGrossAmount',
         'payouts.customerFeeAmount',
-        // 'tenants',
         'tenants.id',
         'tenants.name',
         'tenants.googleTenantId',
