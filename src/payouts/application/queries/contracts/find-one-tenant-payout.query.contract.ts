@@ -17,18 +17,46 @@ export namespace IFindOneTenantPayoutQuery {
   // Additional types
   type Payout = {
     id: string;
-    statusPayout: string;
-    tenant: Tenant;
+    status: PayoutStatus;
+    amount: number;
+    settlementCurrency: SettlementCurrency;
     createdDate: Date;
-    payoutTermsCount: number;
-    payoutTermsInterval: string;
+    processedDate: Date;
+    expectedArrivalDate: Date;
+    paidDate: string;
+    tenant: Tenant;
+    terms: Terms;
     periodStartDate: Date;
     periodEndDate: Date;
-    amount: number;
+  };
+
+  type SettlementCurrency = {
+    id: string;
+    name: string;
+    isoCode: string;
+    symbol: string;
   };
 
   type Tenant = {
+    id: string;
     gTenantId: string;
     name: string;
+  };
+
+  type PayoutStatus = {
+    id: string;
+    name: string;
+    slug: string;
+  };
+
+  type Terms = {
+    recurringIntervalCount: number;
+    recurringInterval: RecurringInterval;
+  };
+
+  type RecurringInterval = {
+    id: string;
+    name: string;
+    interval: string;
   };
 }

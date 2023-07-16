@@ -20,17 +20,45 @@ export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
 
     return {
       id: payout.id,
-      statusPayout: payout?.statusPayout,
-      tenant: {
-        gTenantId: payout.tenant.gTenantId,
-        name: payout.tenant.name,
-      },
+      status: payout.status
+        ? {
+            id: payout.status.id,
+            name: payout.status.name,
+            slug: payout.status.slug,
+          }
+        : null,
+      amount: payout.amount,
+      settlementCurrency: payout.settlementCurrency
+        ? {
+            id: payout.settlementCurrency.id,
+            name: payout.settlementCurrency.name,
+            isoCode: payout.settlementCurrency.isoCode,
+            symbol: payout.settlementCurrency.symbol,
+          }
+        : null,
       periodStartDate: payout.periodStartDate,
       periodEndDate: payout.periodEndDate,
-      amount: payout.amount,
       createdDate: payout.createdDate,
-      payoutTermsCount: payout.payoutTermsCount,
-      payoutTermsInterval: payout.payoutTermsInterval,
+      processedDate: payout.processedDate,
+      expectedArrivalDate: payout.expectedArrivalDate,
+      paidDate: payout.paidDate,
+      tenant: payout.tenant
+        ? {
+            id: payout.tenant.id,
+            gTenantId: payout.tenant.gTenantId,
+            name: payout.tenant.name,
+          }
+        : null,
+      terms: {
+        recurringIntervalCount: payout.terms.recurringIntervalCount,
+        recurringInterval: payout.terms.recurringInterval
+          ? {
+              id: payout.terms.recurringInterval.id,
+              name: payout.terms.recurringInterval.name,
+              interval: payout.terms.recurringInterval.interval,
+            }
+          : null,
+      },
     };
   }
 }

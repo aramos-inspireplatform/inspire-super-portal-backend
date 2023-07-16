@@ -23,7 +23,7 @@ export function createRandomTenantPayout(
     payoutStatus: '2eca46d3-40e3-4555-afa6-d8d52b04fa2e' as any,
     processorUsers: userId as any,
     settlementCurrency: 'bb2d5ae7-e161-4f24-a0fc-435b1f5f6ac2' as any,
-    tenantsId: tenantId as any,
+    tenant: tenantId as any,
     termsRecurringIntervals: 'cd44a946-bfdd-4370-b2cc-1b3f0df311fd' as any,
     createdDate: faker.date.anytime(),
   };

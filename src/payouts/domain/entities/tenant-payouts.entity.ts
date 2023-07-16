@@ -22,10 +22,10 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
   payoutStatus: PayoutStatusesEntity;
   processorUsers: UsersEntity;
   settlementCurrency: Currencies;
-  tenantsId: Tenant;
+  tenant: Tenant;
   termsRecurringIntervals: RecurringInterval;
   updaterUsers: UsersEntity;
-  tenants: Tenant[];
+  lastPayoutTenants: Tenant[];
 
   constructor(attrs: InstanceProperties<TenantPayoutsEntity>) {
     super(attrs);
@@ -44,9 +44,9 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
     this.payoutStatus = attrs?.payoutStatus;
     this.processorUsers = attrs?.processorUsers;
     this.settlementCurrency = attrs?.settlementCurrency;
-    this.tenantsId = attrs?.tenantsId;
+    this.tenant = attrs?.tenant;
     this.termsRecurringIntervals = attrs?.termsRecurringIntervals;
     this.updaterUsers = attrs?.updaterUsers;
-    this.tenants = attrs?.tenants;
+    this.lastPayoutTenants = attrs?.lastPayoutTenants;
   }
 }

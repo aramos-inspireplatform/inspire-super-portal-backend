@@ -29,10 +29,10 @@ export class TenantPayoutsRepository implements ITenantPayoutsRepository {
         payoutStatus: true,
         processorUsers: true,
         settlementCurrency: true,
-        tenantsId: true,
+        tenant: true,
         termsRecurringIntervals: true,
         updaterUsers: true,
-        tenants: true,
+        lastPayoutTenants: true,
       },
     });
     return [

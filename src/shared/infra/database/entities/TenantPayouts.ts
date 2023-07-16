@@ -96,7 +96,7 @@ export class TenantPayouts extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenantsId: Tenants;
+  tenant: Tenants;
 
   @ManyToOne(
     () => RecurringIntervals,
@@ -116,5 +116,5 @@ export class TenantPayouts extends BaseEntity {
   updaterUsers: Users;
 
   @OneToMany(() => Tenants, (tenants) => tenants.lastTenantPayout)
-  tenants: Tenants[];
+  lastPayoutTenants: Tenants[];
 }
