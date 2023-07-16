@@ -28,6 +28,7 @@ import { FindOnePayoutSummaryQuery } from '~/payouts/application/queries/find-on
 import { FindOnePayoutSummaryOutputDto } from '~/payouts/presentation/dtos/responses/find-one-payout-summary.output';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
+import { FindOnePayoutInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout.input.dto';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
@@ -67,15 +68,19 @@ export class PayoutController {
   @AuthenticatedRoute()
   @ApiOkResponse({ type: FindOneTenantPayoutOutput })
   async findOne(
+    @Req() request: FastifyRequest,
     @UserAuth() authUser: UserAuthDto,
     @Param('payoutId') payoutId: string,
+    @Query() inputDto: FindOnePayoutInputDto,
   ) {
-    const tenantBalance = await this.findOneTenantPayoutQuery.execute({
+    const payout = await this.findOneTenantPayoutQuery.execute({
       authUser: authUser,
+      accessToken: request.headers.authorization,
+      gTenantId: inputDto.gTenantId,
       payoutId: payoutId,
     });
 
-    return tenantBalance;
+    return payout;
   }
 
   @Get('/:payoutId/summary')
@@ -86,13 +91,13 @@ export class PayoutController {
     @Param('payoutId', ParseUUIDPipe) payoutId: string,
     @Query() inputDto: FindOnePayoutSummaryInputDto,
   ) {
-    const payoutSummaryPreview = await this.findOnePayoutSummaryQuery.execute({
+    const payoutSummary = await this.findOnePayoutSummaryQuery.execute({
       accessToken: request.headers.authorization,
       gTenantId: inputDto.gTenantId,
       payoutId,
     });
 
-    return payoutSummaryPreview;
+    return payoutSummary;
   }
 
   @Post('/summary/preview')

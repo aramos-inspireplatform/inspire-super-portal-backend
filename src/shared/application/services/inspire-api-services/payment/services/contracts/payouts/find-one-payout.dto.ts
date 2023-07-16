@@ -1,20 +1,11 @@
-import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
-
-export interface IFindOneTenantPayoutDao {
-  execute(
-    params: IFindOneTenantPayoutDao.Input,
-  ): IFindOneTenantPayoutDao.Output;
-}
-
-export namespace IFindOneTenantPayoutDao {
-  export type Input = {
+export namespace FindOnePayoutDto {
+  export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
-    authUser: UserAuthDto;
     payoutId: string;
   };
 
-  export type Output = Promise<Payout>;
+  export type Result = Promise<Payout>;
 
   // Additional types
   type Payout = {

@@ -25,6 +25,7 @@ import { PayoutTenantBalancesController } from '~/payouts/presentation/payout-te
 import { PayoutController } from '~/payouts/presentation/payout.controller';
 import { FindOnePayoutSummaryQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-payout-summary-query-factory.provider';
 import { FindOnePayoutSummaryDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-payout-summary-dao-factory.provider';
+import { FindOneTenantDaoFactoryProvider } from '~/tenants/ioc/providers/daos/find-tenant-dao-factory.provider';
 
 @Module({
   providers: [
@@ -49,6 +50,7 @@ import { FindOnePayoutSummaryDaoFactoryProvider } from '~/payouts/ioc/providers/
     FindOneCurrencyDaoFactoryProvider.register(),
     FindOneTenantPayoutDaoFactoryProvider.register(),
     FindOneTenantPayoutQueryFactoryProvider.register(),
+    FindOneTenantDaoFactoryProvider.register(),
   ],
   controllers: [
     PayoutController,

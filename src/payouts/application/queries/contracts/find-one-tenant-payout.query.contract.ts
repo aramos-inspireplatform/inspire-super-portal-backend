@@ -8,6 +8,8 @@ export interface IFindOneTenantPayoutQuery {
 
 export namespace IFindOneTenantPayoutQuery {
   export type Input = {
+    accessToken: string;
+    gTenantId: string;
     authUser: UserAuthDto;
     payoutId: string;
   };

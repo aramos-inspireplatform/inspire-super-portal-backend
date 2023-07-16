@@ -2,20 +2,27 @@ import { NotFoundException } from '@nestjs/common';
 import { IFindOneTenantPayoutDao } from '~/payouts/application/daos/find-one-tenant-payout.dao.contract';
 import { IFindOneTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-one-tenant-payout.query.contract';
 import { PayoutsExceptionsConstants } from '~/payouts/domain/exceptions/payouts-exceptions.enum';
+import { IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
 
 export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
   constructor(
     private readonly findOneTenantPayoutDao: IFindOneTenantPayoutDao,
+    private readonly findOneTenantDao: IFindOneTenantDao,
   ) {}
 
   async execute(
     attrs: IFindOneTenantPayoutQuery.Input,
   ): IFindOneTenantPayoutQuery.Output {
     const payout = await this.findOneTenantPayoutDao.execute({
-      authUser: attrs.authUser,
-      payoutId: attrs.payoutId,
+      ...attrs,
     });
     if (!payout)
+      throw new NotFoundException(PayoutsExceptionsConstants.PAYOUT_NOT_FOUND);
+
+    const tenant = await this.findOneTenantDao.execute({
+      ...attrs,
+    });
+    if (!tenant)
       throw new NotFoundException(PayoutsExceptionsConstants.PAYOUT_NOT_FOUND);
 
     return {
@@ -42,11 +49,11 @@ export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
       processedDate: payout.processedDate,
       expectedArrivalDate: payout.expectedArrivalDate,
       paidDate: payout.paidDate,
-      tenant: payout.tenant
+      tenant: tenant
         ? {
-            id: payout.tenant.id,
-            gTenantId: payout.tenant.gTenantId,
-            name: payout.tenant.name,
+            id: tenant.uuid,
+            gTenantId: tenant.googleTenantId,
+            name: tenant.name,
           }
         : null,
       terms: {
