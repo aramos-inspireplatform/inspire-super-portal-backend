@@ -6,6 +6,8 @@ import {
   Query,
   Req,
   Body,
+  Param,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
@@ -17,8 +19,11 @@ import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contra
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { FindOnePayoutSummaryPreviewInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary-preview.input.dto';
-import { PreviewPayoutSummaryOutputDto } from '~/payouts/presentation/dtos/responses/preview-payout-summary.output';
+import { FindOnePayoutSummaryPreviewOutputDto } from '~/payouts/presentation/dtos/responses/find-one-payout-summary-preview.output';
 import { FindOnePayoutSummaryPreviewQuery } from '~/payouts/application/queries/find-one-payout-summary-preview.query';
+import { FindOnePayoutSummaryInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary.input.dto';
+import { FindOnePayoutSummaryQuery } from '~/payouts/application/queries/find-one-payout-summary.query';
+import { FindOnePayoutSummaryOutputDto } from '~/payouts/presentation/dtos/responses/find-one-payout-summary.output';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
@@ -27,6 +32,8 @@ export class PayoutController {
   constructor(
     @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_PAYOUT_QUERY)
     private readonly findAllTenantPayoutsQuery: IFindAllTenantPayoutsQuery,
+    @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_QUERY)
+    private readonly findOnePayoutSummaryQuery: FindOnePayoutSummaryQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_PREVIEW_QUERY)
     private readonly findOnePayoutSummaryPreviewQuery: FindOnePayoutSummaryPreviewQuery,
   ) {}
@@ -50,9 +57,27 @@ export class PayoutController {
     return payouts;
   }
 
+  @Get('/:payoutId/summary')
+  @AuthenticatedRoute()
+  @ApiOkResponse({ type: FindOnePayoutSummaryOutputDto })
+  async findOneSummary(
+    @Req() request: FastifyRequest,
+    @Param('payoutId', ParseUUIDPipe) payoutId: string,
+    @Query() inputDto: FindOnePayoutSummaryInputDto,
+  ) {
+    console.log(inputDto);
+    const payoutSummaryPreview = await this.findOnePayoutSummaryQuery.execute({
+      accessToken: request.headers.authorization,
+      gTenantId: inputDto.gTenantId,
+      payoutId,
+    });
+
+    return payoutSummaryPreview;
+  }
+
   @Post('/summary/preview')
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: PreviewPayoutSummaryOutputDto })
+  @ApiOkResponse({ type: FindOnePayoutSummaryPreviewOutputDto })
   async findOneSummaryPreview(
     @Req() request: FastifyRequest,
     @Body() inputDto: FindOnePayoutSummaryPreviewInputDto,

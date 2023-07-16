@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
-export class PreviewPayoutSummaryOutputDto {
+export class FindOnePayoutSummaryOutputDto {
   @Expose()
   @ApiProperty({
     example: 1000.0,
@@ -36,12 +36,6 @@ export class PreviewPayoutSummaryOutputDto {
   @ApiProperty({
     example: 1300,
   })
-  paymentsReceivedCount: number;
-
-  @Expose()
-  @ApiProperty({
-    example: 1300,
-  })
   paymentsFoundCount: number;
 
   @Expose()
@@ -54,7 +48,7 @@ export class PreviewPayoutSummaryOutputDto {
   @ApiProperty({
     example: 5,
   })
-  adjustmentFeesReceivedCount: number;
+  adjustmentFeesFoundCount: number;
 
   @Expose()
   @ApiProperty({

@@ -29,6 +29,7 @@ export namespace PayoutSummaryPreviewDto {
     paymentsFoundCount: number;
     adjustmentFeesAmount: number;
     adjustmentFeesReceivedCount: number;
+    adjustmentFeesFoundCount: number;
     feeGroups: string[];
   };
 }
