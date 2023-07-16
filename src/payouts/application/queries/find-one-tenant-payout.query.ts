@@ -1,13 +1,13 @@
 import { NotFoundException } from '@nestjs/common';
+import { IFindOneTenantBalanceDao } from '~/payouts/application/daos/find-one-tenant-balance.dao.contract';
 import { IFindOneTenantPayoutDao } from '~/payouts/application/daos/find-one-tenant-payout.dao.contract';
 import { IFindOneTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-one-tenant-payout.query.contract';
 import { PayoutsExceptionsConstants } from '~/payouts/domain/exceptions/payouts-exceptions.enum';
-import { IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
 
 export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
   constructor(
     private readonly findOneTenantPayoutDao: IFindOneTenantPayoutDao,
-    private readonly findOneTenantDao: IFindOneTenantDao,
+    private readonly findOneTenantBalanceDao: IFindOneTenantBalanceDao,
   ) {}
 
   async execute(
@@ -19,10 +19,12 @@ export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
     if (!payout)
       throw new NotFoundException(PayoutsExceptionsConstants.PAYOUT_NOT_FOUND);
 
-    const tenant = await this.findOneTenantDao.execute({
-      ...attrs,
+    const tenantBalance = await this.findOneTenantBalanceDao.execute({
+      authUser: attrs.authUser,
+      gTenantId: attrs.gTenantId,
+      settlementCurrencyId: payout.settlementCurrency.id,
     });
-    if (!tenant)
+    if (!tenantBalance)
       throw new NotFoundException(PayoutsExceptionsConstants.PAYOUT_NOT_FOUND);
 
     return {
@@ -49,11 +51,11 @@ export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
       processedDate: payout.processedDate,
       expectedArrivalDate: payout.expectedArrivalDate,
       paidDate: payout.paidDate,
-      tenant: tenant
+      tenant: tenantBalance
         ? {
-            id: tenant.uuid,
-            gTenantId: tenant.googleTenantId,
-            name: tenant.name,
+            id: tenantBalance.id,
+            gTenantId: tenantBalance.gTenantId,
+            name: tenantBalance.name,
           }
         : null,
       terms: {

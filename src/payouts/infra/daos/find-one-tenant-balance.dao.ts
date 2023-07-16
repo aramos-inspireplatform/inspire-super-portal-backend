@@ -65,7 +65,9 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
         'tenantBalances.settlementCurrency',
         'tenantBalanceSettlementCurrency',
       )
-      .where('tenants.id = :tenantId', { tenantId: attrs.tenantId });
+      .where('tenants.googleTenantId = :gTenantId', {
+        gTenantId: attrs.gTenantId,
+      });
 
     if (attrs.authUser.isAgencyAdmin()) {
       if (!attrs.authUser.agencies?.length) return null;

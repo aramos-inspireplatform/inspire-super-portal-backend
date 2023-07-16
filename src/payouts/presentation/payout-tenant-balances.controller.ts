@@ -44,22 +44,22 @@ export class PayoutTenantBalancesController {
     return tenantBalances;
   }
 
-  @Get('/:tenantId')
+  @Get('/:gTenantId')
   @AuthenticatedRoute()
   @ApiParam({
-    name: 'tenantId',
+    name: 'gTenantId',
     example: 'cd3b78f4-9a07-4eef-914a-60298492fbf1',
     description: 'The tenant unique ID.',
   })
   @ApiOkResponse({ type: FindOneTenantBalanceOutput })
   async findOne(
     @UserAuth() authUser: UserAuthDto,
-    @Param('tenantId') tenantId: string,
+    @Param('gTenantId') gTenantId: string,
     @Query() inputDto: FindOneTenantBalanceInputDto,
   ) {
     const tenantBalance = await this.findOneTenantBalanceQuery.execute({
       authUser: authUser,
-      tenantId: tenantId,
+      gTenantId: gTenantId,
       settlementCurrencyIsoCode: inputDto.settlementCurrencyIsoCode,
     });
 
