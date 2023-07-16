@@ -3,10 +3,11 @@ import {
   Controller,
   Get,
   Inject,
-  Param,
   Post,
   Query,
   Req,
+  Param,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
@@ -14,14 +15,17 @@ import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
 import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
 import { IFindOnePaymentsPayoutQuery } from '~/payouts/application/queries/contracts/find-one-payments-payout.query.contract';
-import { FindOnePayoutSummaryPreviewQuery } from '~/payouts/application/queries/find-one-payout-summary-preview.query';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
-import { FindOnePayoutSummaryPreviewInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary-preview.input.dto';
 import { FindAllPaymentsPeriodPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period-paged.output';
 import { FindOnePaymentsPayoutOutput } from '~/payouts/presentation/dtos/responses/find-one-payments-payout.output';
-import { PreviewPayoutSummaryOutputDto } from '~/payouts/presentation/dtos/responses/preview-payout-summary.output';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
+import { FindOnePayoutSummaryPreviewInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary-preview.input.dto';
+import { FindOnePayoutSummaryPreviewOutputDto } from '~/payouts/presentation/dtos/responses/find-one-payout-summary-preview.output';
+import { FindOnePayoutSummaryPreviewQuery } from '~/payouts/application/queries/find-one-payout-summary-preview.query';
+import { FindOnePayoutSummaryInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary.input.dto';
+import { FindOnePayoutSummaryQuery } from '~/payouts/application/queries/find-one-payout-summary.query';
+import { FindOnePayoutSummaryOutputDto } from '~/payouts/presentation/dtos/responses/find-one-payout-summary.output';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 
@@ -32,9 +36,10 @@ export class PayoutController {
   constructor(
     @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_PAYOUT_QUERY)
     private readonly findAllTenantPayoutsQuery: IFindAllTenantPayoutsQuery,
-
-    @Inject(PayoutProvidersSymbols.FIND_ONE_PAYMENTS_PAYOUT_QUERY)
+    @Inject(PayoutProvidersSymbols.FIND_ONE_TENANT_PAYOUT_QUERY)
     private readonly findOnePaymentsPayoutQuery: IFindOnePaymentsPayoutQuery,
+    @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_QUERY)
+    private readonly findOnePayoutSummaryQuery: FindOnePayoutSummaryQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_PREVIEW_QUERY)
     private readonly findOnePayoutSummaryPreviewQuery: FindOnePayoutSummaryPreviewQuery,
   ) {}
@@ -58,9 +63,26 @@ export class PayoutController {
     return payouts;
   }
 
+  @Get('/:payoutId/summary')
+  @AuthenticatedRoute()
+  @ApiOkResponse({ type: FindOnePayoutSummaryOutputDto })
+  async findOneSummary(
+    @Req() request: FastifyRequest,
+    @Param('payoutId', ParseUUIDPipe) payoutId: string,
+    @Query() inputDto: FindOnePayoutSummaryInputDto,
+  ) {
+    const payoutSummaryPreview = await this.findOnePayoutSummaryQuery.execute({
+      accessToken: request.headers.authorization,
+      gTenantId: inputDto.gTenantId,
+      payoutId,
+    });
+
+    return payoutSummaryPreview;
+  }
+
   @Post('/summary/preview')
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: PreviewPayoutSummaryOutputDto })
+  @ApiOkResponse({ type: FindOnePayoutSummaryPreviewOutputDto })
   async findOneSummaryPreview(
     @Req() request: FastifyRequest,
     @Body() inputDto: FindOnePayoutSummaryPreviewInputDto,

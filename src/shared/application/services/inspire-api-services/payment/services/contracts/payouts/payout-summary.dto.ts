@@ -1,19 +1,11 @@
-export interface IFindOnePayoutSummaryPreviewDao {
-  execute(
-    params: IFindOnePayoutSummaryPreviewDao.Input,
-  ): IFindOnePayoutSummaryPreviewDao.Output;
-}
-
-export namespace IFindOnePayoutSummaryPreviewDao {
-  export type Input = {
+export namespace PayoutSummaryDto {
+  export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
-    payments: Payment[];
-    adjustmentFees: AdjustmentFee[];
     payoutId: string;
   };
 
-  export type Output = Promise<PayoutSummaryPreview>;
+  export type Result = Promise<PayoutSummaryPreview>;
 
   // Additional types
   export type Payment = {
@@ -31,10 +23,8 @@ export namespace IFindOnePayoutSummaryPreviewDao {
     feeAmount: number;
     payableAmount: number;
     profitAmount: number;
-    paymentsReceivedCount: number;
     paymentsFoundCount: number;
     adjustmentFeesAmount: number;
-    adjustmentFeesReceivedCount: number;
     adjustmentFeesFoundCount: number;
     feeGroups: string[];
   };

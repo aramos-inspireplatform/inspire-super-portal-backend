@@ -6,10 +6,10 @@ import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols'
 export class FindOnePaymentsPayoutQueryFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide: PayoutProvidersSymbols.FIND_ONE_PAYMENTS_PAYOUT_QUERY,
+      provide: PayoutProvidersSymbols.FIND_ONE_TENANT_PAYOUT_QUERY,
       useFactory: (findOnePaymentsPayoutDao: IFindOnePaymentsPayoutDao) =>
         new FindOnePaymentsPayoutQuery(findOnePaymentsPayoutDao),
-      inject: [PayoutProvidersSymbols.FIND_ONE_PAYMENTS_PAYOUT_DAO],
+      inject: [PayoutProvidersSymbols.FIND_ONE_TENANT_PAYOUT_DAO],
     };
   }
 }

@@ -7,7 +7,7 @@ import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/
 export class FindOnePaymentsPayoutDaoFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide: PayoutProvidersSymbols.FIND_ONE_PAYMENTS_PAYOUT_DAO,
+      provide: PayoutProvidersSymbols.FIND_ONE_TENANT_PAYOUT_DAO,
       useFactory: (dataSource: DataSource) =>
         new FindOnePaymentsPayoutDao(dataSource),
       inject: [DatabaseProvidersSymbols.DATA_SOURCE],

@@ -29,6 +29,8 @@ export class FindOnePayoutSummaryPreviewQuery
           adjustmentFeesAmount: payoutSummaryPreview.adjustmentFeesAmount,
           adjustmentFeesReceivedCount:
             payoutSummaryPreview.adjustmentFeesReceivedCount,
+          adjustmentFeesFoundCount:
+            payoutSummaryPreview.adjustmentFeesFoundCount,
           feeGroups: payoutSummaryPreview.feeGroups,
         }
       : null;

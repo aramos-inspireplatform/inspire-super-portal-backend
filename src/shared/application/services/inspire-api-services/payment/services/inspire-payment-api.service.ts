@@ -5,6 +5,7 @@ import { FindAllPaymentsPeriodPagedDto } from '~/shared/application/services/ins
 import { PayoutSummaryPreviewDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary-preview.dto';
 import { FindAllPayoutPaymentsPagedDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payout-payments-paged.dto';
 import { FindAllPayoutAdjustmentsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payout-adjustments/find-all-payout-adjustments.dto';
+import { PayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
   private readonly PAYMENT_API_BASE_URL = `${process.env.PAYMENT_API_URL}`;
@@ -53,6 +54,22 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
     });
 
     return payments.data.body.data;
+  }
+
+  async findOnePayoutSummary(
+    attrs: PayoutSummaryDto.InputAttrs,
+  ): PayoutSummaryDto.Result {
+    const url = `${this.PAYOUT_API_BASE_URL}/${attrs.payoutId}/summary`;
+
+    const payoutSummary = await this.httpClient.get<any>(url, {
+      headers: {
+        authorization: attrs.accessToken,
+        tenant: attrs.gTenantId,
+        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+      },
+    });
+
+    return payoutSummary.data.body.data;
   }
 
   async findOnePayoutSummaryPreview(
