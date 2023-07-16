@@ -1,9 +1,12 @@
 import { UserTypesEnum } from '~/auth/domain/enums/user-types.enum.dto';
 
 export class UserAuthDto {
+  readonly userId: string; // "86238707-3866-410d-9fa0-fa76018261ab"
   readonly userObjectId: string; // 6153611e2daa238fc1f67ac4
   readonly userTypeSlug: string; // "system_admin"
   readonly userName: string; // "Super User"
+  readonly userFirstName: string; // "Super"
+  readonly userLastName: string; // "User"
   readonly userEmail: string; // "teste@xyz.com"
   readonly authTime: number; // 1687223100485
   readonly iat: number;
@@ -12,9 +15,12 @@ export class UserAuthDto {
 
   constructor(
     user?: {
+      userUuid?: string | null;
       userId?: string | null;
       userType?: string | null;
       name?: string | null;
+      firstName?: string | null;
+      lastName?: string | null;
       email?: string | null;
       authTime?: number | null;
       iat?: number | null;
@@ -22,9 +28,12 @@ export class UserAuthDto {
     },
     agencies?: Agency[] | null,
   ) {
+    this.userId = user?.userUuid;
     this.userObjectId = user?.userId;
     this.userTypeSlug = user?.userType;
     this.userName = user?.name;
+    this.userFirstName = user?.firstName;
+    this.userLastName = user?.lastName;
     this.userEmail = user?.email;
     this.authTime = user?.authTime;
     this.iat = user?.iat;
