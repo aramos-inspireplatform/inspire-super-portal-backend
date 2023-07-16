@@ -1,12 +1,12 @@
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
 
-export interface IFindOnePaymentsPayoutQuery {
+export interface IFindOneTenantPayoutDao {
   execute(
-    params: IFindOnePaymentsPayoutQuery.Input,
-  ): IFindOnePaymentsPayoutQuery.Output;
+    params: IFindOneTenantPayoutDao.Input,
+  ): IFindOneTenantPayoutDao.Output;
 }
 
-export namespace IFindOnePaymentsPayoutQuery {
+export namespace IFindOneTenantPayoutDao {
   export type Input = {
     authUser: UserAuthDto;
     payoutId: string;

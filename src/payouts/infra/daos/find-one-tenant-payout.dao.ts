@@ -1,8 +1,8 @@
 import { DataSource, Repository } from 'typeorm';
-import { IFindOnePaymentsPayoutDao } from '~/payouts/application/daos/find-one-payments-payout.dao.contract';
+import { IFindOneTenantPayoutDao } from '~/payouts/application/daos/find-one-tenant-payout.dao.contract';
 import { TenantPayouts } from '~/shared/infra/database/entities';
 
-export class FindOnePaymentsPayoutDao implements IFindOnePaymentsPayoutDao {
+export class FindOneTenantPayoutDao implements IFindOneTenantPayoutDao {
   private payoutRepository: Repository<TenantPayouts>;
 
   constructor(private readonly dataSource: DataSource) {
@@ -10,8 +10,8 @@ export class FindOnePaymentsPayoutDao implements IFindOnePaymentsPayoutDao {
   }
 
   async execute(
-    attrs: IFindOnePaymentsPayoutDao.Input,
-  ): IFindOnePaymentsPayoutDao.Output {
+    attrs: IFindOneTenantPayoutDao.Input,
+  ): IFindOneTenantPayoutDao.Output {
     const query = this.payoutRepository
       .createQueryBuilder('payouts')
       .select([

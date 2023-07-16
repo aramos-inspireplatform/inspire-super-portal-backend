@@ -1,17 +1,17 @@
 import { NotFoundException } from '@nestjs/common';
-import { IFindOnePaymentsPayoutDao } from '~/payouts/application/daos/find-one-payments-payout.dao.contract';
-import { IFindOnePaymentsPayoutQuery } from '~/payouts/application/queries/contracts/find-one-payments-payout.query.contract';
+import { IFindOneTenantPayoutDao } from '~/payouts/application/daos/find-one-tenant-payout.dao.contract';
+import { IFindOneTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-one-tenant-payout.query.contract';
 import { PayoutsExceptionsConstants } from '~/payouts/domain/exceptions/payouts-exceptions.enum';
 
-export class FindOnePaymentsPayoutQuery implements IFindOnePaymentsPayoutQuery {
+export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
   constructor(
-    private readonly findOneTenantBalanceDao: IFindOnePaymentsPayoutDao,
+    private readonly findOneTenantPayoutDao: IFindOneTenantPayoutDao,
   ) {}
 
   async execute(
-    attrs: IFindOnePaymentsPayoutQuery.Input,
-  ): IFindOnePaymentsPayoutQuery.Output {
-    const payout = await this.findOneTenantBalanceDao.execute({
+    attrs: IFindOneTenantPayoutQuery.Input,
+  ): IFindOneTenantPayoutQuery.Output {
+    const payout = await this.findOneTenantPayoutDao.execute({
       authUser: attrs.authUser,
       payoutId: attrs.payoutId,
     });
