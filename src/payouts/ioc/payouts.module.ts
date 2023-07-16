@@ -21,6 +21,8 @@ import { FindAllPayoutPaymentsPagedDaoFactoryProvider } from '~/payouts/ioc/prov
 import { PayoutAdjustmentsController } from '~/payouts/presentation/payout-adjustments.controller';
 import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutments-query-factory.provider';
 import { FindAllPayoutAdjustmentsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-payout-adjustments-dao-factory.provider';
+import { FindOnePayoutSummaryQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-payout-summary-query-factory.provider';
+import { FindOnePayoutSummaryDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-payout-summary-dao-factory.provider';
 
 @Module({
   providers: [
@@ -38,6 +40,8 @@ import { FindAllPayoutAdjustmentsDaoFactoryProvider } from '~/payouts/ioc/provid
     FindAllPayoutAdjustmentsDaoFactoryProvider.register(),
     FindAllPayoutAdjustmentTypesQueryFactoryProvider.register(),
     FindAllPayoutAdjustmentTypesDaoFactoryProvider.register(),
+    FindOnePayoutSummaryQueryFactoryProvider.register(),
+    FindOnePayoutSummaryDaoFactoryProvider.register(),
     FindOnePayoutSummaryPreviewQueryFactoryProvider.register(),
     FindOnePayoutSummaryPreviewDaoFactoryProvider.register(),
     FindOneCurrencyDaoFactoryProvider.register(),
