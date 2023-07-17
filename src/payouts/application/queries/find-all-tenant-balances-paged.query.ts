@@ -1,15 +1,17 @@
-import { IFindAllTenantBalancesDao } from '~/payouts/application/daos/find-all-tenant-balances.dao.contract';
-import { IFindAllTenantBalancesQuery } from '~/payouts/application/queries/contracts/find-all-tenant-balances.query.contract';
+import { IFindAllTenantBalancesPagedDao } from '~/payouts/application/daos/find-all-tenant-balances-paged.dao.contract';
+import { IFindAllTenantBalancesPagedQuery } from '~/payouts/application/queries/contracts/find-all-tenant-balances-paged.query.contract';
 
-export class FindAllTenantBalancesQuery implements IFindAllTenantBalancesQuery {
+export class FindAllTenantBalancesPagedQuery
+  implements IFindAllTenantBalancesPagedQuery
+{
   constructor(
-    private readonly findAllTenantBalancesDao: IFindAllTenantBalancesDao,
+    private readonly findAllTenantBalancesPagedDao: IFindAllTenantBalancesPagedDao,
   ) {}
 
   async execute(
-    attrs: IFindAllTenantBalancesQuery.Input,
-  ): IFindAllTenantBalancesQuery.Output {
-    const tenantBalances = await this.findAllTenantBalancesDao.execute({
+    attrs: IFindAllTenantBalancesPagedQuery.Input,
+  ): IFindAllTenantBalancesPagedQuery.Output {
+    const tenantBalances = await this.findAllTenantBalancesPagedDao.execute({
       ...attrs,
     });
     if (tenantBalances instanceof Error) throw tenantBalances;

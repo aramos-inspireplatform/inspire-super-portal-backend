@@ -13,7 +13,7 @@ import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticat
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { FindAllPaymentsPeriodPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period-paged.output';
-import { FindAllPaymentsPeriodPagedInputDto } from '~/payouts/presentation/dtos/requests/find-period-payout-payments.input.dto';
+import { FindAllPaymentsPeriodPagedInputDto } from '~/payouts/presentation/dtos/requests/find-all-payments-period-paged.input.dto';
 import { IFindAllPayoutPaymentsPagedQuery } from '~/payouts/application/queries/contracts/find-all-payout-payments-paged.query.contract';
 import { FindAllPayoutPaymentsPagedInputDto } from '~/payouts/presentation/dtos/requests/find-all-payout-payments-paged.input.dto';
 import { FindAllPayoutPaymentsPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payout-payments-paged.output';
@@ -29,16 +29,16 @@ export class PayoutPaymentsController {
   constructor(
     @Inject(PayoutProvidersSymbols.FIND_ALL_PAYMENTS_PERIOD_PAGED_QUERY)
     private readonly findAllPaymentsPeriodPagedQuery: IFindAllPaymentsPeriodPagedQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYOUT_PAYMENTS_PAGED_QUERY)
-    private readonly findAllPayoutPaymentsPagedQuery: IFindAllPayoutPaymentsPagedQuery,
     @Inject(PayoutProvidersSymbols.FIND_ALL_PAYMENTS_PERIOD_QUERY)
     private readonly findAllPaymentsPeriodQuery: IFindAllPaymentsPeriodQuery,
+    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYOUT_PAYMENTS_PAGED_QUERY)
+    private readonly findAllPayoutPaymentsPagedQuery: IFindAllPayoutPaymentsPagedQuery,
   ) {}
 
   @Get('/payments/period')
   @AuthenticatedRoute()
   @ApiOkResponse({ type: FindAllPaymentsPeriodPagedOutputDto })
-  async findPeriodPeriod(
+  async findAllPeriodPaged(
     @Req() request: FastifyRequest,
     @Query() inputDto: FindAllPaymentsPeriodPagedInputDto,
   ) {
@@ -60,7 +60,7 @@ export class PayoutPaymentsController {
   @Get('/payments/period/select-all')
   @AuthenticatedRoute()
   @ApiOkResponse({ type: FindAllPaymentsPeriodOutputDto, isArray: true })
-  async findAll(
+  async findAllPeriod(
     @Req() request: FastifyRequest,
     @Query() inputDto: FindAllPaymentsPeriodInputDto,
   ) {
@@ -79,7 +79,7 @@ export class PayoutPaymentsController {
   @Get('/:payoutId/payments')
   @AuthenticatedRoute()
   @ApiOkResponse({ type: FindAllPayoutPaymentsPagedOutputDto })
-  async findAllPayout(
+  async findAllPayoutPaged(
     @Req() request: FastifyRequest,
     @Param('payoutId', ParseUUIDPipe) payoutId: string,
     @Query() inputDto: FindAllPayoutPaymentsPagedInputDto,
