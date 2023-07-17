@@ -68,9 +68,6 @@ export class RequestCreatedEventUseCase {
     };
 
     const url = requestModule.module.deployUrl;
-    console.log('tenantDetails:', tenantDetails);
-    console.log('payload:', payload);
-    console.log('url:', url);
 
     try {
       const response = await this.httpClient.post<InspireHttpResponse<any>>(

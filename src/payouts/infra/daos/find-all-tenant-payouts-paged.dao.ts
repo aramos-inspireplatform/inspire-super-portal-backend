@@ -51,7 +51,8 @@ export class FindAllTenantPayoutsPagedDao
         'tenantPayouts.termsRecurringInterval',
         'termsRecurringInterval',
       )
-      .leftJoin('tenantPayouts.processorUser', 'processorUser');
+      .leftJoin('tenantPayouts.processorUser', 'processorUser')
+      .orderBy('tenantPayouts.processedDate', 'DESC');
 
     if (attrs.authUser.isAgencyAdmin()) {
       if (!attrs.authUser.agencies?.length) return null;
@@ -61,14 +62,11 @@ export class FindAllTenantPayoutsPagedDao
       });
     }
 
-    query.orderBy('tenantPayouts.createdDate', 'DESC');
-
     const [payouts, count] = await query
       .skip(attrs.paginationInput.skip())
       .take(attrs.paginationInput.take())
       .getManyAndCount();
 
-    console.log(payouts);
     const result = new PaginationOutput({
       rows: payouts?.map((payout) => ({
         id: payout.id,
