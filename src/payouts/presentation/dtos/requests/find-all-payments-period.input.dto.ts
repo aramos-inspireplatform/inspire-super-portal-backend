@@ -7,6 +7,7 @@ import {
   IsDate,
   IsOptional,
 } from 'class-validator';
+import { DateRage } from '~/shared/infra/nestjs/decorators/data-range.dto.decorator';
 
 export class FindAllPaymentsPeriodInputDto {
   @ApiProperty({
@@ -25,6 +26,7 @@ export class FindAllPaymentsPeriodInputDto {
   @ApiProperty({ example: new Date() })
   @IsNotEmpty()
   @IsDate()
+  @DateRage('periodStartDate', process.env.PAYOUT_MAX_PERIOD_RANGE ?? null)
   @Type(() => Date)
   periodEndDate: Date;
 
