@@ -43,8 +43,8 @@ export class FindOneTenantPayoutDao implements IFindOneTenantPayoutDao {
           periodEndDate: payout.periodStartDate,
           createdDate: payout.createdDate,
           processedDate: payout.processedDate,
-          expectedArrivalDate: payout.expectedArrivalDate,
           paidDate: payout.paidDate,
+          expectedArrivalDate: payout.expectedArrivalDate,
           terms: payout.terms
             ? {
                 recurringIntervalCount: payout.terms.recurringIntervalCount,

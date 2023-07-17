@@ -24,8 +24,8 @@ export namespace IFindOneTenantPayoutQuery {
     settlementCurrency: SettlementCurrency;
     createdDate: Date;
     processedDate: Date;
-    expectedArrivalDate: Date;
     paidDate: string;
+    expectedArrivalDate: Date;
     tenant: Tenant;
     terms: Terms;
     periodStartDate: Date;

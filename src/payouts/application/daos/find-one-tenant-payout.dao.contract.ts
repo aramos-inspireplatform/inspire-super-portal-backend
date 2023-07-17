@@ -24,8 +24,8 @@ export namespace IFindOneTenantPayoutDao {
     settlementCurrency: SettlementCurrency;
     createdDate: Date;
     processedDate: Date;
-    expectedArrivalDate: Date;
     paidDate: string;
+    expectedArrivalDate: Date;
     terms: Terms;
     periodStartDate: Date;
     periodEndDate: Date;

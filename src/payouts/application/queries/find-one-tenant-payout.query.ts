@@ -49,8 +49,8 @@ export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
       periodEndDate: payout.periodEndDate,
       createdDate: payout.createdDate,
       processedDate: payout.processedDate,
-      expectedArrivalDate: payout.expectedArrivalDate,
       paidDate: payout.paidDate,
+      expectedArrivalDate: payout.expectedArrivalDate,
       tenant: tenantBalance
         ? {
             id: tenantBalance.id,
