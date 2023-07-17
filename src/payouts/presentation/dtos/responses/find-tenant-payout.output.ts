@@ -39,6 +39,7 @@ export class FindTenantPayoutOutput extends BaseDto {
   @ApiProperty({
     example: {
       id: '89b13e8c-8cea-4d8d-b3f2-6e460d640795',
+      name: 'User Test',
       firstName: 'User',
       lastName: 'Test',
     },

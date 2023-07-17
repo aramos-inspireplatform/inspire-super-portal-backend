@@ -37,6 +37,7 @@ export class FindAllTenantPayoutPagedQuery
           processorUser: payout.processorUser
             ? {
                 id: payout.processorUser.id,
+                name: payout.processorUser.name,
                 firstName: payout.processorUser.firstName,
                 lastName: payout.processorUser.lastName,
               }
