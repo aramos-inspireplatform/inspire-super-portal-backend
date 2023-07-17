@@ -13,4 +13,6 @@ export const SqlScriptPaths = {
   ADD_INTEGRATION_CODE_DOWN: `${SCRIPTS_FOLDER}/1686720397094-add-integration-code.down.sql`,
   CHANGES_FOR_PAYOUT_UP: `${SCRIPTS_FOLDER}/1689102592879-changes-for-payout.up.sql`,
   CHANGES_FOR_PAYOUT_DOWN: `${SCRIPTS_FOLDER}/1689102592879-changes-for-payout.down.sql`,
+  ADD_TENANT_PAYOUTS_PAY_INFO_UP: `${SCRIPTS_FOLDER}/1689551860832-add-tenant-payouts-pay-info.up.sql`,
+  ADD_TENANT_PAYOUTS_PAY_INFO_DOWN: `${SCRIPTS_FOLDER}/1689551860832-add-tenant-payouts-pay-info.down.sql`,
 } as const;

@@ -7,5 +7,9 @@
   "[yaml]": {
     "editor.defaultFormatter": "dbaeumer.vscode-eslint"
   },
-  "cSpell.words": ["srcv"]
+  "cSpell.words": [
+    "daos",
+    "dtos",
+    "fastify"
+  ]
 }

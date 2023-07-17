@@ -21,7 +21,8 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
       throw new NotFoundException(CurrenciesExceptionsConstants.NOT_FOUND);
 
     const tenantBalance = await this.findOneTenantBalanceDao.execute({
-      tenantId: attrs.tenantId,
+      authUser: attrs.authUser,
+      gTenantId: attrs.gTenantId,
       settlementCurrencyId: currency.id,
     });
     if (!tenantBalance)
@@ -60,7 +61,7 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
               name: tenantBalance.lastPayout.status.name,
               slug: tenantBalance.lastPayout.status.slug,
             },
-            amount: tenantBalance.lastPayout.amount,
+            amount: Number(tenantBalance.lastPayout.amount),
             settlementCurrency: {
               id: tenantBalance.lastPayout.settlementCurrency.id,
               name: tenantBalance.lastPayout.settlementCurrency.name,
@@ -69,13 +70,14 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
             },
             periodStartDate: tenantBalance.lastPayout.periodStartDate,
             periodEndDate: tenantBalance.lastPayout.periodEndDate,
+            processedDate: tenantBalance.lastPayout.processedDate,
           }
         : null,
-      totalPaidAmount: tenantBalance.totalPaidAmount,
+      totalPaidAmount: Number(tenantBalance.totalPaidAmount),
       balance: tenantBalance.balance
         ? {
             id: tenantBalance.balance.id,
-            amount: tenantBalance.balance.amount,
+            amount: Number(tenantBalance.balance.amount),
             settlementCurrency: {
               id: tenantBalance.balance.settlementCurrency.id,
               name: tenantBalance.balance.settlementCurrency.name,

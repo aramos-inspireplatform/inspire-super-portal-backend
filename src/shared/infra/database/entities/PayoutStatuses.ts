@@ -1,6 +1,6 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { TenantPayouts } from './TenantPayouts';
+import { Column, Entity, Index, OneToMany, Relation } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
+import { TenantPayouts } from './TenantPayouts';
 
 @Index('idx__uq__payout_statuses', ['deletedDate', 'slug'], { unique: true })
 @Index('pk__payout_statuses', ['id'], { unique: true })
@@ -15,4 +15,7 @@ export class PayoutStatuses extends BaseEntity {
 
   @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.payoutStatus)
   tenantPayouts: TenantPayouts[];
+
+  @OneToMany(() => TenantPayouts, (payouts) => payouts.payoutStatus)
+  payoutStatus: Relation<PayoutStatuses>;
 }

@@ -20,7 +20,7 @@ export class CreateTenantCommand implements ICreateTenantCommand {
   async execute(
     attrs: ICreateTenantCommand.Input,
   ): ICreateTenantCommand.Output {
-    const tenant = await this.inspireTenantService.create({
+    const tenant = await this.inspireTenantService.createTenant({
       accessToken: attrs.accessToken,
       currentUser: attrs.currentUserId,
       tenant: {

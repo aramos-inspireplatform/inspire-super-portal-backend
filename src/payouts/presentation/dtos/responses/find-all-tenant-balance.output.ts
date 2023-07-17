@@ -1,8 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
-import { IsString, IsUUID } from 'class-validator';
 import { BaseDto } from '~/shared/presentation/base.dto';
-export class FindOneTenantBalanceOutput extends BaseDto {
+export class FindAllTenantBalanceOutput extends BaseDto {
   @ApiProperty({
     example: '74deb067-2bf6-45b1-991d-a0f22ab0ae3a',
   })
@@ -64,6 +62,7 @@ export class FindOneTenantBalanceOutput extends BaseDto {
       },
       periodStartDate: '2023-01-01',
       periodEndDate: '2023-01-31',
+      processedDate: '2023-07-14 10:13:48.860 -0300',
     },
   })
   lastPayout: object;
@@ -74,16 +73,18 @@ export class FindOneTenantBalanceOutput extends BaseDto {
   totalPaidAmount: number;
 
   @ApiProperty({
-    example: {
-      id: '05d1c20c-d0d5-47ee-bed9-accb0dbeb2fb',
-      amount: '95000.000000',
-      settlementCurrency: {
-        id: 'ef579caf-a6da-4d53-80cb-a67bf4742a3e',
-        name: 'United States dollar',
-        isoCode: 'USD',
-        symbol: '$',
+    example: [
+      {
+        id: '05d1c20c-d0d5-47ee-bed9-accb0dbeb2fb',
+        amount: '95000.000000',
+        settlementCurrency: {
+          id: 'ef579caf-a6da-4d53-80cb-a67bf4742a3e',
+          name: 'United States dollar',
+          isoCode: 'USD',
+          symbol: '$',
+        },
       },
-    },
+    ],
   })
-  balance: object;
+  balances: object;
 }

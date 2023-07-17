@@ -73,6 +73,12 @@ export class TenantPayouts extends BaseEntity {
   })
   processedDate: Date | null;
 
+  @Column('timestamp with time zone', {
+    name: 'paid_date',
+    nullable: true,
+  })
+  paidDate: Date | null;
+
   @ManyToOne(() => Users, (users) => users.creatorUsersId, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
@@ -102,6 +108,13 @@ export class TenantPayouts extends BaseEntity {
   @JoinColumn([{ name: 'processor_users_id', referencedColumnName: 'id' }])
   processorUsers: Users;
 
+  @ManyToOne(() => Users, (users) => users.paidPayouts, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT',
+  })
+  @JoinColumn([{ name: 'payer_users_id', referencedColumnName: 'id' }])
+  payerUser: Users;
+
   @ManyToOne(() => Currencies, (currencies) => currencies.tenantPayouts, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
@@ -116,7 +129,7 @@ export class TenantPayouts extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenantsId: Tenants;
+  tenant: Tenants;
 
   @ManyToOne(
     () => RecurringIntervals,
@@ -136,5 +149,5 @@ export class TenantPayouts extends BaseEntity {
   updaterUsers: Users;
 
   @OneToMany(() => Tenants, (tenants) => tenants.lastTenantPayout)
-  tenants: Tenants[];
+  lastPayoutTenants: Tenants[];
 }

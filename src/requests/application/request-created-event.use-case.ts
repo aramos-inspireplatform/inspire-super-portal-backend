@@ -8,7 +8,7 @@ import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
-import { InspireTenantApiServiceDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.dto';
+import { InspireTenantApiServiceTenantsDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.tenants.dto';
 
 export class RequestCreatedEventUseCase {
   constructor(
@@ -54,7 +54,7 @@ export class RequestCreatedEventUseCase {
     requestModuleAttempt: RequestModuleAttempts,
     requestModule: RequestModules,
     request: Request,
-    tenantDetails: InspireTenantApiServiceDto.TenantDetails,
+    tenantDetails: InspireTenantApiServiceTenantsDto.TenantDetails,
     attrs: RequestCreatedEventUseCase.InputAttrs,
   ) {
     const payload = {

@@ -1,3 +1,5 @@
+import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
+
 export interface IFindOneTenantBalanceDao {
   execute(
     params: IFindOneTenantBalanceDao.Input,
@@ -6,7 +8,8 @@ export interface IFindOneTenantBalanceDao {
 
 export namespace IFindOneTenantBalanceDao {
   export type Input = {
-    tenantId: string;
+    authUser: UserAuthDto;
+    gTenantId: string;
     settlementCurrencyId: string;
   };
 
@@ -54,6 +57,7 @@ export namespace IFindOneTenantBalanceDao {
     settlementCurrency: Currency;
     periodStartDate: Date;
     periodEndDate: Date;
+    processedDate: Date;
   };
 
   type PayoutStatus = {

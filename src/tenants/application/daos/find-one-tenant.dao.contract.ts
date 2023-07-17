@@ -1,8 +1,8 @@
-export interface IFindTenantDao {
-  execute(params: IFindTenantDao.Input): IFindTenantDao.Output;
+export interface IFindOneTenantDao {
+  execute(params: IFindOneTenantDao.Input): IFindOneTenantDao.Output;
 }
 
-export namespace IFindTenantDao {
+export namespace IFindOneTenantDao {
   export type Input = {
     accessToken: string;
     gTenantId: string;
@@ -10,6 +10,7 @@ export namespace IFindTenantDao {
 
   export type Output = Promise<{
     id: string;
+    uuid: string;
     name: string;
     slug: string;
     googleTenantId: string;

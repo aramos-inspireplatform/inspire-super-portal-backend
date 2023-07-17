@@ -1,13 +1,12 @@
 import { DataSource, Repository } from 'typeorm';
 import { IFindOneTenantBalanceDao } from '~/payouts/application/daos/find-one-tenant-balance.dao.contract';
 import { Tenants } from '~/shared/infra/database/entities';
-import { Tenant } from '~/tenants/domain/entities/tenant.entity';
 
 export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
-  private tenantRepository: Repository<Tenant>;
+  private tenantRepository: Repository<Tenants>;
 
   constructor(private readonly dataSource: DataSource) {
-    this.tenantRepository = this.dataSource.getRepository<Tenant>(Tenants);
+    this.tenantRepository = this.dataSource.getRepository(Tenants);
   }
 
   async execute(
@@ -33,6 +32,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
         'lastTenantPayout.amount',
         'lastTenantPayout.periodStartDate',
         'lastTenantPayout.periodEndDate',
+        'lastTenantPayout.processedDate',
         'lastTenantPayoutStatus.id',
         'lastTenantPayoutStatus.name',
         'lastTenantPayoutStatus.slug',
@@ -65,7 +65,17 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
         'tenantBalances.settlementCurrency',
         'tenantBalanceSettlementCurrency',
       )
-      .where('tenants.id = :tenantId', { tenantId: attrs.tenantId });
+      .where('tenants.googleTenantId = :gTenantId', {
+        gTenantId: attrs.gTenantId,
+      });
+
+    if (attrs.authUser.isAgencyAdmin()) {
+      if (!attrs.authUser.agencies?.length) return null;
+
+      query.andWhere('tenants.agencyId in (:...agenciesIds)', {
+        agenciesIds: attrs.authUser.agencies.map((agency) => agency.id),
+      });
+    }
 
     const tenantBalance = await query.getOne();
 
@@ -112,6 +122,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
                 },
                 periodStartDate: tenantBalance.lastTenantPayout.periodStartDate,
                 periodEndDate: tenantBalance.lastTenantPayout.periodEndDate,
+                processedDate: tenantBalance.lastTenantPayout.processedDate,
               }
             : null,
           totalPaidAmount: tenantBalance.totalPaidAmount,

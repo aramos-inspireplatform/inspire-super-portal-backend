@@ -1,4 +1,4 @@
-export namespace InspireTenantApiServiceDto {
+export namespace InspireTenantApiServiceTenantsDto {
   export type Tenants = {
     rows: Tenant[];
     count: number;
@@ -106,8 +106,8 @@ export namespace InspireTenantApiServiceDto {
     slug: string;
   };
 
-  // FindAll
-  export type FindAllInputAttrs = {
+  // FindAllTenants
+  export type FindAllTenantsInputAttrs = {
     accessToken: string;
     pagination: {
       page: number;
@@ -116,17 +116,17 @@ export namespace InspireTenantApiServiceDto {
       keywords?: string;
     };
   };
-  export type FindAllResult = Promise<Tenants>;
+  export type FindAllTenantsResult = Promise<Tenants>;
 
-  // FindOne
-  export type FindOneInputAttrs = {
+  // FindOneTenant
+  export type FindOneTenantInputAttrs = {
     accessToken: string;
     gTenantId: string;
   };
-  export type FindOneResult = Promise<Tenant | Error>;
+  export type FindOneTenantResult = Promise<Tenant | Error>;
 
-  // Create
-  export type CreateInputAttrs = {
+  // CreateTenant
+  export type CreateTenantInputAttrs = {
     accessToken: string;
     currentUser: string;
     tenant: {
@@ -140,7 +140,13 @@ export namespace InspireTenantApiServiceDto {
       languageId?: string;
     };
   };
-  export type CreateResult = Promise<Tenant | Error>;
+  export type CreateTenantResult = Promise<Tenant | Error>;
+
+  // FindOneAdminUser
+  export type FindOneAdminUserInputAttrs = {
+    accessToken: string;
+  };
+  export type FindOneAdminUserResult = Promise<Tenant | Error>;
 
   // Deprecated below ------------------------------------------------
   export type TenantUserUserDetails = {
