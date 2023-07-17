@@ -2,7 +2,7 @@ import {
   EntityManager,
   EntityTarget,
   FindOptionsWhere,
-  ObjectId,
+  //ObjectId,
   Repository,
   UpdateResult,
 } from 'typeorm';
@@ -20,8 +20,8 @@ export class BaseRepository<T> extends Repository<T> {
       | number[]
       | Date
       | Date[]
-      | ObjectId
-      | ObjectId[]
+      //| ObjectId
+      //| ObjectId[]
       | FindOptionsWhere<T>,
   ): Promise<UpdateResult> {
     return this.softDelete(criteria);

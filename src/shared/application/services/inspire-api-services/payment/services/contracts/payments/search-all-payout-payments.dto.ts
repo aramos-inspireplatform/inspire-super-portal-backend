@@ -1,11 +1,5 @@
-export interface ISearchAllPayoutPaymentsQuery {
-  execute(
-    attrs: ISearchAllPayoutPaymentsQuery.Input,
-  ): Promise<ISearchAllPayoutPaymentsQuery.Output>;
-}
-
-export namespace ISearchAllPayoutPaymentsQuery {
-  export type Input = {
+export namespace SearchAllPayoutPaymentsDto {
+  export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
     periodStartDate: Date;
@@ -13,9 +7,9 @@ export namespace ISearchAllPayoutPaymentsQuery {
     settlementCurrencyIsoCode: string;
     payoutId?: string | null;
   };
+  export type Result = Promise<Payment[]>;
 
-  export type Output = Promise<Payment[]>;
-
+  // Additional types
   export type Payment = {
     id: string;
     date: Date;

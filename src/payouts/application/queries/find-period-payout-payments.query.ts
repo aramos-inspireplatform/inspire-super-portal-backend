@@ -1,19 +1,3 @@
-<<<<<<< HEAD:src/payouts/application/queries/find-period-payout-payments.query.ts
-import { IFindPeriodPayoutPaymentsDao } from '~/payouts/application/daos/find-period-payments.dao.contract';
-import { IFindPeriodPayoutPaymentsQuery } from '~/payouts/application/queries/contracts/find-period-payments.query.contract';
-
-export class FindPeriodPayoutPaymentsQuery
-  implements IFindPeriodPayoutPaymentsQuery
-{
-  constructor(
-    private readonly findAllPayoutPaymentsDao: IFindPeriodPayoutPaymentsDao,
-  ) {}
-
-  async execute(
-    attrs: IFindPeriodPayoutPaymentsQuery.Input,
-  ): IFindPeriodPayoutPaymentsQuery.Output {
-    const payments = await this.findAllPayoutPaymentsDao.execute({
-=======
 import { IFindAllPaymentsPeriodPagedDao } from '~/payouts/application/daos/find-all-payments-period-paged.dao.contract';
 import { IFindAllPaymentsPeriodPagedQuery } from '~/payouts/application/queries/contracts/find-all-payments-period-paged.query.contract';
 
@@ -28,7 +12,6 @@ export class FindAllPaymentsPeriodPagedQuery
     attrs: IFindAllPaymentsPeriodPagedQuery.Input,
   ): IFindAllPaymentsPeriodPagedQuery.Output {
     const payments = await this.findAllPaymentsPeriodPagedDao.execute({
->>>>>>> develop-softo-create-payout:src/payouts/application/queries/find-all-payments-period-paged.query.ts
       ...attrs,
     });
     if (payments instanceof Error) throw payments;

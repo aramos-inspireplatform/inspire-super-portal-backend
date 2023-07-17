@@ -21,18 +21,14 @@ export class SearchAllPayoutPaymentsQuery
     });
     if (payments instanceof Error) throw payments;
 
-    return {
-      rows: payments.map((payment) => {
-        return {
-          id: payment.id,
-          date: payment.date,
-          amount: payment.amount,
-          feeAmount: payment.feeAmount,
-          payableAmount: payment.payableAmount,
-          profitAmount: payment.profitAmount,
-          receivedAmount: payment.receivedAmount,
-        };
-      }),
-    };
+    return payments?.map((payment) => ({
+      id: payment.id,
+      date: payment.date,
+      amount: payment.amount,
+      feeAmount: payment.feeAmount,
+      payableAmount: payment.payableAmount,
+      profitAmount: payment.profitAmount,
+      receivedAmount: payment.receivedAmount,
+    }));
   }
 }

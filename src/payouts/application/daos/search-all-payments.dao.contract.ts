@@ -1,7 +1,7 @@
 export interface ISearchAllPayoutPaymentsDao {
   execute(
     attrs: ISearchAllPayoutPaymentsDao.Input,
-  ): Promise<ISearchAllPayoutPaymentsDao.Output>;
+  ): ISearchAllPayoutPaymentsDao.Output;
 }
 
 export namespace ISearchAllPayoutPaymentsDao {
@@ -14,27 +14,16 @@ export namespace ISearchAllPayoutPaymentsDao {
     payoutId?: string | null;
   };
 
+  export type Output = Promise<Payment[]>;
+
+  // Additional types
   export type Payment = {
     id: string;
     date: Date;
-    status: string;
     amount: number;
-    receivedAmount: number;
     feeAmount: number;
     payableAmount: number;
     profitAmount: number;
-    paymentProcessorName: string;
-    paymentMethodName: string;
-    creditCardBrandName: string;
-    installments: number;
-    paymentProcessorId: string;
-    reconciliationMethod: string;
-    paymentProcessorConfirmation: string;
+    receivedAmount: number;
   };
-
-  //export type Output = QueryPaginatedOutput<Payment>;
-  export type Output = Payment[];
-
-  // Additional types
-  //export type Payment = {};
 }

@@ -13,13 +13,9 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
-import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
-import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
 import { IFindOneTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-one-tenant-payout.query.contract';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
-import { FindAllPaymentsPeriodPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period-paged.output';
 import { FindOneTenantPayoutOutput } from '~/payouts/presentation/dtos/responses/find-one-tenant-payout.output';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
@@ -51,7 +47,7 @@ export class PayoutController {
 
   @Get()
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: FindAllTenantsPeriodPagedOutputDto })
+  @ApiOkResponse({ type: FindAllTenantPayoutsOutputDto })
   async findAll(
     @Req() request: FastifyRequest,
     @Query() searchParams: CommonPaginateDto,

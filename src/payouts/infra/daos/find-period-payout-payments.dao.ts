@@ -1,33 +1,18 @@
-<<<<<<< HEAD:src/payouts/infra/daos/find-period-payout-payments.dao.ts
-import { IFindPeriodPayoutPaymentsDao } from '~/payouts/application/daos/find-period-payments.dao.contract';
-import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
-
-export class FindPeriodPayoutPaymentsDao
-  implements IFindPeriodPayoutPaymentsDao
-=======
 import { IFindAllPaymentsPeriodPagedDao } from '~/payouts/application/daos/find-all-payments-period-paged.dao.contract';
 import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
 
 export class FindAllPaymentsPeriodPagedDao
   implements IFindAllPaymentsPeriodPagedDao
->>>>>>> develop-softo-create-payout:src/payouts/infra/daos/find-all-payments-period-paged.dao.ts
 {
   constructor(
     private readonly inspirePaymentApiService: IInspirePaymentApiService,
   ) {}
 
   async execute(
-<<<<<<< HEAD:src/payouts/infra/daos/find-period-payout-payments.dao.ts
-    attrs: IFindPeriodPayoutPaymentsDao.Input,
-  ): IFindPeriodPayoutPaymentsDao.Output {
-    const payments =
-      await this.inspirePaymentApiService.findPeriodPayoutPayments({
-=======
     attrs: IFindAllPaymentsPeriodPagedDao.Input,
   ): IFindAllPaymentsPeriodPagedDao.Output {
     const payments =
       await this.inspirePaymentApiService.findAllPaymentsPeriodPaged({
->>>>>>> develop-softo-create-payout:src/payouts/infra/daos/find-all-payments-period-paged.dao.ts
         ...attrs,
         pagination: {
           page: attrs.pagination.page,
@@ -36,10 +21,6 @@ export class FindAllPaymentsPeriodPagedDao
           keywords: attrs.pagination.keywords,
         },
       });
-<<<<<<< HEAD:src/payouts/infra/daos/find-period-payout-payments.dao.ts
-    if (payments instanceof Error) throw payments;
-=======
->>>>>>> develop-softo-create-payout:src/payouts/infra/daos/find-all-payments-period-paged.dao.ts
 
     return {
       rows: payments.rows.map((payment) => ({

@@ -7,8 +7,8 @@ export class SearchAllPayoutPaymentsQueryFactoryProvider {
   static register(): FactoryProvider {
     return {
       provide: PayoutProvidersSymbols.SEARCH_ALL_PAYMENTS_QUERY,
-      useFactory: (findAllPayoutPaymentsDao: ISearchAllPayoutPaymentsDao) =>
-        new SearchAllPayoutPaymentsQuery(findAllPayoutPaymentsDao),
+      useFactory: (searchAllPayoutPaymentsDao: ISearchAllPayoutPaymentsDao) =>
+        new SearchAllPayoutPaymentsQuery(searchAllPayoutPaymentsDao),
       inject: [PayoutProvidersSymbols.SEARCH_ALL_PAYMENTS_DAO],
     };
   }

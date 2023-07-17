@@ -1,14 +1,5 @@
 import { QueryPaginatedOutput } from '~/shared/types/query-paginated-output.type';
 
-<<<<<<< HEAD:src/payouts/application/queries/contracts/find-period-payments.query.contract.ts
-export interface IFindPeriodPayoutPaymentsQuery {
-  execute(
-    params: IFindPeriodPayoutPaymentsQuery.Input,
-  ): IFindPeriodPayoutPaymentsQuery.Output;
-}
-
-export namespace IFindPeriodPayoutPaymentsQuery {
-=======
 export interface IFindAllPaymentsPeriodPagedQuery {
   execute(
     params: IFindAllPaymentsPeriodPagedQuery.Input,
@@ -16,7 +7,6 @@ export interface IFindAllPaymentsPeriodPagedQuery {
 }
 
 export namespace IFindAllPaymentsPeriodPagedQuery {
->>>>>>> develop-softo-create-payout:src/payouts/application/queries/contracts/find-all-payments-period-paged.query.contract.ts
   export type Input = {
     accessToken: string;
     gTenantId: string;

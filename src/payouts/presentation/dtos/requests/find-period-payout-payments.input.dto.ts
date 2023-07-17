@@ -9,11 +9,7 @@ import {
 } from 'class-validator';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 
-<<<<<<< HEAD:src/payouts/presentation/dtos/requests/find-period-payout-payments.input.dto.ts
-export class FindPeriodPayoutPaymentsInputDto extends CommonPaginateDto {
-=======
 export class FindAllPaymentsPeriodPagedInputDto extends CommonPaginateDto {
->>>>>>> develop-softo-create-payout:src/payouts/presentation/dtos/requests/find-all-payments-period-paged.input.dto.ts
   @ApiProperty({
     example: 'teste-hnmkt',
   })

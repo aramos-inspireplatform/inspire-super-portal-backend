@@ -1,5 +1,6 @@
 import { FindAllPaymentsPeriodPagedDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payments-period-paged.dto';
 import { FindAllPayoutPaymentsPagedDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payout-payments-paged.dto';
+import { SearchAllPayoutPaymentsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/search-all-payout-payments.dto';
 import { FindAllPayoutAdjustmentTypesDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payout-adjustment-types/find-all-payout-adjustment-types.dto';
 import { FindAllPayoutAdjustmentsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payout-adjustments/find-all-payout-adjustments.dto';
 import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
@@ -32,4 +33,8 @@ export interface IInspirePaymentApiService {
   findAllPayoutAdjustmentTypes(
     attrs: FindAllPayoutAdjustmentTypesDto.InputAttrs,
   ): FindAllPayoutAdjustmentTypesDto.Result;
+
+  searchAllPayoutPayments(
+    attrs: SearchAllPayoutPaymentsDto.InputAttrs,
+  ): SearchAllPayoutPaymentsDto.Result;
 }

@@ -8,7 +8,7 @@ export class SearchAllPayoutPaymentsDao implements ISearchAllPayoutPaymentsDao {
 
   async execute(
     attrs: ISearchAllPayoutPaymentsDao.Input,
-  ): Promise<ISearchAllPayoutPaymentsDao.Output> {
+  ): ISearchAllPayoutPaymentsDao.Output {
     const payments =
       await this.inspirePaymentApiService.searchAllPayoutPayments({
         accessToken: attrs.accessToken,
@@ -20,6 +20,14 @@ export class SearchAllPayoutPaymentsDao implements ISearchAllPayoutPaymentsDao {
       });
     if (payments instanceof Error) throw payments;
 
-    return payments;
+    return payments?.map((payment) => ({
+      id: payment.id,
+      date: payment.date,
+      amount: payment.amount,
+      receivedAmount: payment.receivedAmount,
+      feeAmount: payment.feeAmount,
+      payableAmount: payment.payableAmount,
+      profitAmount: payment.profitAmount,
+    }));
   }
 }
