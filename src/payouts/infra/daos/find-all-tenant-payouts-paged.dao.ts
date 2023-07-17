@@ -2,6 +2,7 @@ import { DataSource, Repository } from 'typeorm';
 import { IFindAllTenantPayoutsPagedDao } from '~/payouts/application/daos/find-all-tenant-payouts-paged.dao.contract';
 import { PaginationOutput } from '~/shared/application/services/pagination';
 import { TenantPayouts } from '~/shared/infra/database/entities';
+import '~/shared/infra/database/entities/extensions/Users.extension';
 
 export class FindAllTenantPayoutsPagedDao
   implements IFindAllTenantPayoutsPagedDao
@@ -87,8 +88,9 @@ export class FindAllTenantPayoutsPagedDao
         processorUser: payout.processorUser
           ? {
               id: payout.processorUser.id,
-              firstName: payout.processorUser.firstName,
-              lastName: payout.processorUser.lastName,
+              name: payout.processorUser.getName(),
+              firstName: payout.processorUser.getFirstName(),
+              lastName: payout.processorUser.getLastName(),
             }
           : null,
         status: payout.payoutStatus

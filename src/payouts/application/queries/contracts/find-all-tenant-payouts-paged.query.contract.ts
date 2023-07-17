@@ -34,6 +34,7 @@ export namespace IFindAllTenantPayoutsPagedQuery {
 
   type ProcessorUser = {
     id: string;
+    name: string;
     firstName: string;
     lastName: string;
   };
