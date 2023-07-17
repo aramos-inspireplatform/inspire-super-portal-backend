@@ -16,7 +16,6 @@ import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
 import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
 import { IFindOneTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-one-tenant-payout.query.contract';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
-import { FindAllPaymentsPeriodPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period-paged.output';
 import { FindOneTenantPayoutOutput } from '~/payouts/presentation/dtos/responses/find-one-tenant-payout.output';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
@@ -29,6 +28,7 @@ import { FindOnePayoutSummaryOutputDto } from '~/payouts/presentation/dtos/respo
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { FindOnePayoutInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout.input.dto';
+import { FindAllTenantPayoutsOutputDto } from '~/payouts/presentation/dtos/responses/find-all-tenant-payout.output';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
@@ -47,7 +47,7 @@ export class PayoutController {
 
   @Get()
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: FindAllPaymentsPeriodPagedOutputDto })
+  @ApiOkResponse({ type: FindAllTenantPayoutsOutputDto })
   async findAll(
     @Req() request: FastifyRequest,
     @Query() searchParams: CommonPaginateDto,

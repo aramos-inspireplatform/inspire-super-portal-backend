@@ -7,6 +7,7 @@ import { Tenant } from '~/tenants/domain/entities/tenant.entity';
 import { UsersEntity } from '~/users/domain/entities/users.entity';
 
 export class TenantPayoutsEntity extends BaseDomainEntity {
+  alternativeId: string;
   payoutAlternativeId: string;
   periodStartDate: Date;
   periodEndDate: Date;
@@ -29,6 +30,7 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
 
   constructor(attrs: InstanceProperties<TenantPayoutsEntity>) {
     super(attrs);
+    this.alternativeId = attrs?.alternativeId;
     this.payoutAlternativeId = attrs?.payoutAlternativeId;
     this.periodStartDate = attrs?.periodStartDate;
     this.periodEndDate = attrs?.periodEndDate;

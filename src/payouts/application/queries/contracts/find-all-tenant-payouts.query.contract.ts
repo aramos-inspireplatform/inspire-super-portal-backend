@@ -1,3 +1,4 @@
+import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { QueryPaginatedOutput } from '~/shared/types/query-paginated-output.type';
 
@@ -12,24 +13,5 @@ export namespace IFindAllTenantPayoutsQuery {
     pagination: PaginationInput;
   };
 
-  export type Output = QueryPaginatedOutput<TenantPayouts>;
-
-  // Additional types
-  export type TenantPayouts = {
-    // id: string;
-    // date: Date;
-    // status: string;
-    // amount: number;
-    // receivedAmount: number;
-    // feeAmount: number;
-    // payableAmount: number;
-    // profitAmount: number;
-    // paymentProcessorName: string;
-    // paymentMethodName: string;
-    // creditCardBrandName: string;
-    // installments: number;
-    // paymentProcessorId: string;
-    // reconciliationMethod: string;
-    // paymentProcessorConfirmation: string;
-  };
+  export type Output = QueryPaginatedOutput<TenantPayoutsEntity>;
 }

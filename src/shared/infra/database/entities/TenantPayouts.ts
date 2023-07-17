@@ -12,6 +12,7 @@ import { Currencies } from './Currencies';
 import { Tenants } from './Tenants';
 import { RecurringIntervals } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
+import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
 @Index('pk__tenant_payouts', ['id'], { unique: true })
 @Entity('tenant_payouts', { schema: 'public' })
@@ -25,22 +26,41 @@ export class TenantPayouts extends BaseEntity {
   @Column('date', { name: 'period_end_date' })
   periodEndDate: Date;
 
-  @Column('numeric', { name: 'amount', precision: 15, scale: 6 })
+  @Column('numeric', {
+    name: 'amount',
+    precision: 15,
+    scale: 6,
+    transformer: new ColumnNumericTransformer(),
+  })
   amount: number;
 
-  @Column('smallint', { name: 'terms_recurring_interval_count' })
+  @Column('smallint', {
+    name: 'terms_recurring_interval_count',
+    transformer: new ColumnNumericTransformer(),
+  })
   termsRecurringIntervalCount: number;
 
-  @Column('numeric', { name: 'customer_gross_amount', precision: 15, scale: 6 })
+  @Column('numeric', {
+    name: 'customer_gross_amount',
+    precision: 15,
+    scale: 6,
+    transformer: new ColumnNumericTransformer(),
+  })
   customerGrossAmount: number;
 
-  @Column('numeric', { name: 'customer_fee_amount', precision: 15, scale: 6 })
+  @Column('numeric', {
+    name: 'customer_fee_amount',
+    precision: 15,
+    scale: 6,
+    transformer: new ColumnNumericTransformer(),
+  })
   customerFeeAmount: number;
 
   @Column('numeric', {
     name: 'payment_gateway_net_amount',
     precision: 15,
     scale: 6,
+    transformer: new ColumnNumericTransformer(),
   })
   paymentGatewayNetAmount: number;
 
