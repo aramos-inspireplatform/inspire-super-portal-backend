@@ -22,7 +22,7 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
 
     const tenantBalance = await this.findOneTenantBalanceDao.execute({
       authUser: attrs.authUser,
-      tenantId: attrs.tenantId,
+      gTenantId: attrs.gTenantId,
       settlementCurrencyId: currency.id,
     });
     if (!tenantBalance)

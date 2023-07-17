@@ -2,13 +2,13 @@ import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { QueryPaginatedOutput } from '~/shared/types/query-paginated-output.type';
 
-export interface IFindAllTenantBalancesQuery {
+export interface IFindAllTenantBalancesPagedQuery {
   execute(
-    params: IFindAllTenantBalancesQuery.Input,
-  ): IFindAllTenantBalancesQuery.Output;
+    params: IFindAllTenantBalancesPagedQuery.Input,
+  ): IFindAllTenantBalancesPagedQuery.Output;
 }
 
-export namespace IFindAllTenantBalancesQuery {
+export namespace IFindAllTenantBalancesPagedQuery {
   export type Input = {
     authUser: UserAuthDto;
     paginationInput: PaginationInput;

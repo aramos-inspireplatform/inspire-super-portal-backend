@@ -4,13 +4,13 @@ import {
   PaginationOutput,
 } from '~/shared/application/services/pagination';
 
-export interface IFindAllTenantBalancesDao {
+export interface IFindAllTenantBalancesPagedDao {
   execute(
-    params: IFindAllTenantBalancesDao.Input,
-  ): Promise<IFindAllTenantBalancesDao.Output>;
+    params: IFindAllTenantBalancesPagedDao.Input,
+  ): Promise<IFindAllTenantBalancesPagedDao.Output>;
 }
 
-export namespace IFindAllTenantBalancesDao {
+export namespace IFindAllTenantBalancesPagedDao {
   export type Input = {
     authUser: UserAuthDto;
     paginationInput: PaginationInput;

@@ -1,4 +1,4 @@
-export namespace PayoutSummaryPreviewDto {
+export namespace FindOnePayoutSummaryPreviewDto {
   export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
@@ -29,6 +29,7 @@ export namespace PayoutSummaryPreviewDto {
     paymentsFoundCount: number;
     adjustmentFeesAmount: number;
     adjustmentFeesReceivedCount: number;
+    adjustmentFeesFoundCount: number;
     feeGroups: string[];
   };
 }

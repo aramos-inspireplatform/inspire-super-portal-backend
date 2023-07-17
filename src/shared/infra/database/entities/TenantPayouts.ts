@@ -12,12 +12,13 @@ import { Currencies } from './Currencies';
 import { Tenants } from './Tenants';
 import { RecurringIntervals } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
+import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
 @Index('pk__tenant_payouts', ['id'], { unique: true })
 @Entity('tenant_payouts', { schema: 'public' })
 export class TenantPayouts extends BaseEntity {
   @Column('bigint', { name: 'payout_alternative_id' })
-  payoutAlternativeId: string;
+  payoutAlternativeId: number;
 
   @Column('date', { name: 'period_start_date' })
   periodStartDate: Date;
@@ -25,22 +26,41 @@ export class TenantPayouts extends BaseEntity {
   @Column('date', { name: 'period_end_date' })
   periodEndDate: Date;
 
-  @Column('numeric', { name: 'amount', precision: 15, scale: 6 })
+  @Column('numeric', {
+    name: 'amount',
+    precision: 15,
+    scale: 6,
+    transformer: new ColumnNumericTransformer(),
+  })
   amount: number;
 
-  @Column('smallint', { name: 'terms_recurring_interval_count' })
+  @Column('smallint', {
+    name: 'terms_recurring_interval_count',
+    transformer: new ColumnNumericTransformer(),
+  })
   termsRecurringIntervalCount: number;
 
-  @Column('numeric', { name: 'customer_gross_amount', precision: 15, scale: 6 })
+  @Column('numeric', {
+    name: 'customer_gross_amount',
+    precision: 15,
+    scale: 6,
+    transformer: new ColumnNumericTransformer(),
+  })
   customerGrossAmount: number;
 
-  @Column('numeric', { name: 'customer_fee_amount', precision: 15, scale: 6 })
+  @Column('numeric', {
+    name: 'customer_fee_amount',
+    precision: 15,
+    scale: 6,
+    transformer: new ColumnNumericTransformer(),
+  })
   customerFeeAmount: number;
 
   @Column('numeric', {
     name: 'payment_gateway_net_amount',
     precision: 15,
     scale: 6,
+    transformer: new ColumnNumericTransformer(),
   })
   paymentGatewayNetAmount: number;
 
@@ -52,6 +72,12 @@ export class TenantPayouts extends BaseEntity {
     nullable: true,
   })
   processedDate: Date | null;
+
+  @Column('timestamp with time zone', {
+    name: 'paid_date',
+    nullable: true,
+  })
+  paidDate: Date | null;
 
   @ManyToOne(() => Users, (users) => users.creatorUsersId, {
     onDelete: 'RESTRICT',
@@ -80,7 +106,14 @@ export class TenantPayouts extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'processor_users_id', referencedColumnName: 'id' }])
-  processorUsers: Users;
+  processorUser: Users;
+
+  @ManyToOne(() => Users, (users) => users.paidPayouts, {
+    onDelete: 'RESTRICT',
+    onUpdate: 'RESTRICT',
+  })
+  @JoinColumn([{ name: 'payer_users_id', referencedColumnName: 'id' }])
+  payerUser: Users;
 
   @ManyToOne(() => Currencies, (currencies) => currencies.tenantPayouts, {
     onDelete: 'RESTRICT',
@@ -96,7 +129,7 @@ export class TenantPayouts extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenantsId: Tenants;
+  tenant: Tenants;
 
   @ManyToOne(
     () => RecurringIntervals,
@@ -106,7 +139,7 @@ export class TenantPayouts extends BaseEntity {
   @JoinColumn([
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
-  termsRecurringIntervals: RecurringIntervals;
+  termsRecurringInterval: RecurringIntervals;
 
   @ManyToOne(() => Users, (users) => users.updaterUsersId, {
     onDelete: 'RESTRICT',
@@ -116,5 +149,5 @@ export class TenantPayouts extends BaseEntity {
   updaterUsers: Users;
 
   @OneToMany(() => Tenants, (tenants) => tenants.lastTenantPayout)
-  tenants: Tenants[];
+  lastPayoutTenants: Tenants[];
 }

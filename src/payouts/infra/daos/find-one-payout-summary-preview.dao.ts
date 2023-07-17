@@ -28,6 +28,8 @@ export class FindOnePayoutSummaryPreviewDao
           adjustmentFeesAmount: payoutSummaryPreview.adjustmentFeesAmount,
           adjustmentFeesReceivedCount:
             payoutSummaryPreview.adjustmentFeesReceivedCount,
+          adjustmentFeesFoundCount:
+            payoutSummaryPreview.adjustmentFeesFoundCount,
           feeGroups: payoutSummaryPreview.feeGroups,
         }
       : null;

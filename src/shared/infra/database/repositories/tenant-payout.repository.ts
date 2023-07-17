@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
 import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
-import { ITenantPayoutsRepository } from '~/payouts/infra/contracts/repository/tenant-payouts.repository.contract';
 import { TenantPayouts } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
+import { ITenantPayoutsRepository } from '~/payouts/infra/contracts/repository/tenant-payouts.repository.contract';
 
 @Injectable()
 export class TenantPayoutsRepository implements ITenantPayoutsRepository {
@@ -27,12 +27,12 @@ export class TenantPayoutsRepository implements ITenantPayoutsRepository {
         creatorUsers: true,
         deleterUsers: true,
         payoutStatus: true,
-        processorUsers: true,
+        processorUser: true,
         settlementCurrency: true,
-        tenantsId: true,
-        termsRecurringIntervals: true,
+        tenant: true,
+        termsRecurringInterval: true,
         updaterUsers: true,
-        tenants: true,
+        lastPayoutTenants: true,
       },
     });
     return [

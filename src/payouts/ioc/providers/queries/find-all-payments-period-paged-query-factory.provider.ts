@@ -3,7 +3,7 @@ import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols'
 import { IFindAllPaymentsPeriodPagedDao } from '~/payouts/application/daos/find-all-payments-period-paged.dao.contract';
 import { FindAllPaymentsPeriodPagedQuery } from '~/payouts/application/queries/find-all-payments-period-paged.query';
 
-export class FindAllPaymentsPeriodQueryFactoryProvider {
+export class FindAllPaymentsPeriodPagedQueryFactoryProvider {
   static register(): FactoryProvider {
     return {
       provide: PayoutProvidersSymbols.FIND_ALL_PAYMENTS_PERIOD_PAGED_QUERY,

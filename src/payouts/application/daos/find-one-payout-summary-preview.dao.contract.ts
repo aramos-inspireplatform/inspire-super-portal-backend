@@ -35,6 +35,7 @@ export namespace IFindOnePayoutSummaryPreviewDao {
     paymentsFoundCount: number;
     adjustmentFeesAmount: number;
     adjustmentFeesReceivedCount: number;
+    adjustmentFeesFoundCount: number;
     feeGroups: string[];
   };
 }

@@ -22,9 +22,12 @@ export class Users extends BaseEntity {
 
   @OneToMany(
     () => TenantPayouts,
-    (tenantPayouts) => tenantPayouts.processorUsers,
+    (tenantPayouts) => tenantPayouts.processorUser,
   )
   processorUsersId: TenantPayouts[];
+
+  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.payerUser)
+  paidPayouts: TenantPayouts[];
 
   @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.updaterUsers)
   updaterUsersId: TenantPayouts[];
