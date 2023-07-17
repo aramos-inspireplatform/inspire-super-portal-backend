@@ -2,8 +2,9 @@ import { FindAllPaymentsPeriodPagedDto } from '~/shared/application/services/ins
 import { FindAllPayoutPaymentsPagedDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payout-payments-paged.dto';
 import { FindAllPayoutAdjustmentTypesDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payout-adjustment-types/find-all-payout-adjustment-types.dto';
 import { FindAllPayoutAdjustmentsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payout-adjustments/find-all-payout-adjustments.dto';
-import { PayoutSummaryPreviewDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary-preview.dto';
-import { PayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
+import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
+import { FindOnePayoutSummaryPreviewDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary-preview.dto';
+import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
 
 export interface IInspirePaymentApiService {
   findAllPaymentsPeriodPaged(
@@ -14,13 +15,15 @@ export interface IInspirePaymentApiService {
     attrs: FindAllPayoutPaymentsPagedDto.InputAttrs,
   ): FindAllPayoutPaymentsPagedDto.Result;
 
+  findOnePayout(attrs: FindOnePayoutDto.InputAttrs): FindOnePayoutDto.Result;
+
   findOnePayoutSummary(
-    attrs: PayoutSummaryDto.InputAttrs,
-  ): PayoutSummaryDto.Result;
+    attrs: FindOnePayoutSummaryDto.InputAttrs,
+  ): FindOnePayoutSummaryDto.Result;
 
   findOnePayoutSummaryPreview(
-    attrs: PayoutSummaryPreviewDto.InputAttrs,
-  ): PayoutSummaryPreviewDto.Result;
+    attrs: FindOnePayoutSummaryPreviewDto.InputAttrs,
+  ): FindOnePayoutSummaryPreviewDto.Result;
 
   findAllPayoutAdjustments(
     attrs: FindAllPayoutAdjustmentsDto.InputAttrs,

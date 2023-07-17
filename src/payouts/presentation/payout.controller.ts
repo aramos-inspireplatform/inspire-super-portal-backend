@@ -1,21 +1,23 @@
 import {
+  Body,
   Controller,
   Get,
-  Post,
   Inject,
+  Post,
   Query,
   Req,
-  Body,
   Param,
   ParseUUIDPipe,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
-import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
-import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
+import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
+import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
+import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
+import { IFindOneTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-one-tenant-payout.query.contract';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { FindAllPaymentsPeriodPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period-paged.output';
-import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
+import { FindOneTenantPayoutOutput } from '~/payouts/presentation/dtos/responses/find-one-tenant-payout.output';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { FindOnePayoutSummaryPreviewInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary-preview.input.dto';
@@ -24,6 +26,9 @@ import { FindOnePayoutSummaryPreviewQuery } from '~/payouts/application/queries/
 import { FindOnePayoutSummaryInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary.input.dto';
 import { FindOnePayoutSummaryQuery } from '~/payouts/application/queries/find-one-payout-summary.query';
 import { FindOnePayoutSummaryOutputDto } from '~/payouts/presentation/dtos/responses/find-one-payout-summary.output';
+import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
+import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
+import { FindOnePayoutInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout.input.dto';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
@@ -32,6 +37,8 @@ export class PayoutController {
   constructor(
     @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_PAYOUT_QUERY)
     private readonly findAllTenantPayoutsQuery: IFindAllTenantPayoutsQuery,
+    @Inject(PayoutProvidersSymbols.FIND_ONE_TENANT_PAYOUT_QUERY)
+    private readonly findOneTenantPayoutQuery: IFindOneTenantPayoutQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_QUERY)
     private readonly findOnePayoutSummaryQuery: FindOnePayoutSummaryQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_PREVIEW_QUERY)
@@ -57,6 +64,25 @@ export class PayoutController {
     return payouts;
   }
 
+  @Get('/:payoutId')
+  @AuthenticatedRoute()
+  @ApiOkResponse({ type: FindOneTenantPayoutOutput })
+  async findOne(
+    @Req() request: FastifyRequest,
+    @UserAuth() authUser: UserAuthDto,
+    @Param('payoutId') payoutId: string,
+    @Query() inputDto: FindOnePayoutInputDto,
+  ) {
+    const payout = await this.findOneTenantPayoutQuery.execute({
+      authUser: authUser,
+      accessToken: request.headers.authorization,
+      gTenantId: inputDto.gTenantId,
+      payoutId: payoutId,
+    });
+
+    return payout;
+  }
+
   @Get('/:payoutId/summary')
   @AuthenticatedRoute()
   @ApiOkResponse({ type: FindOnePayoutSummaryOutputDto })
@@ -65,14 +91,13 @@ export class PayoutController {
     @Param('payoutId', ParseUUIDPipe) payoutId: string,
     @Query() inputDto: FindOnePayoutSummaryInputDto,
   ) {
-    console.log(inputDto);
-    const payoutSummaryPreview = await this.findOnePayoutSummaryQuery.execute({
+    const payoutSummary = await this.findOnePayoutSummaryQuery.execute({
       accessToken: request.headers.authorization,
       gTenantId: inputDto.gTenantId,
       payoutId,
     });
 
-    return payoutSummaryPreview;
+    return payoutSummary;
   }
 
   @Post('/summary/preview')

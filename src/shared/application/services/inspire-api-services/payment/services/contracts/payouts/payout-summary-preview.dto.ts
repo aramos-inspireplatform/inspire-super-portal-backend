@@ -1,4 +1,4 @@
-export namespace PayoutSummaryPreviewDto {
+export namespace FindOnePayoutSummaryPreviewDto {
   export type InputAttrs = {
     accessToken: string;
     gTenantId: string;

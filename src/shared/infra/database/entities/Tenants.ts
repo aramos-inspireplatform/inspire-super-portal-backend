@@ -47,13 +47,17 @@ export class Tenants extends BaseEntity {
   @OneToMany(() => TenantBalances, (tenantBalances) => tenantBalances.tenant)
   tenantBalances: TenantBalances[];
 
-  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenantsId)
+  @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenant)
   tenantPayouts: TenantPayouts[];
 
-  @ManyToOne(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenants, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT',
-  })
+  @ManyToOne(
+    () => TenantPayouts,
+    (tenantPayouts) => tenantPayouts.lastPayoutTenants,
+    {
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+    },
+  )
   @JoinColumn([{ name: 'last_tenant_payouts_id', referencedColumnName: 'id' }])
   lastTenantPayout: TenantPayouts;
 
