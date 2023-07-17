@@ -1,17 +1,19 @@
 import { DataSource, Repository } from 'typeorm';
-import { IFindAllTenantBalancesDao } from '~/payouts/application/daos/find-all-tenant-balances.dao.contract';
+import { IFindAllTenantBalancesPagedDao } from '~/payouts/application/daos/find-all-tenant-balances-paged.dao.contract';
 import { PaginationOutput } from '~/shared/application/services/pagination';
 import { Tenants } from '~/shared/infra/database/entities';
 
-export class FindAllTenantBalancesDao implements IFindAllTenantBalancesDao {
+export class FindAllTenantBalancesPagedDao
+  implements IFindAllTenantBalancesPagedDao
+{
   private tenantRepository: Repository<Tenants>;
 
   constructor(private readonly dataSource: DataSource) {
     this.tenantRepository = this.dataSource.getRepository(Tenants);
   }
   async execute(
-    attrs: IFindAllTenantBalancesDao.Input,
-  ): Promise<IFindAllTenantBalancesDao.Output> {
+    attrs: IFindAllTenantBalancesPagedDao.Input,
+  ): Promise<IFindAllTenantBalancesPagedDao.Output> {
     const query = this.tenantRepository
       .createQueryBuilder('tenants')
       .select([

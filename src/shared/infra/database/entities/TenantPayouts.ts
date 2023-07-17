@@ -18,7 +18,7 @@ import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/Column
 @Entity('tenant_payouts', { schema: 'public' })
 export class TenantPayouts extends BaseEntity {
   @Column('bigint', { name: 'payout_alternative_id' })
-  payoutAlternativeId: string;
+  payoutAlternativeId: number;
 
   @Column('date', { name: 'period_start_date' })
   periodStartDate: Date;
@@ -106,7 +106,7 @@ export class TenantPayouts extends BaseEntity {
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'processor_users_id', referencedColumnName: 'id' }])
-  processorUsers: Users;
+  processorUser: Users;
 
   @ManyToOne(() => Users, (users) => users.paidPayouts, {
     onDelete: 'RESTRICT',
@@ -139,7 +139,7 @@ export class TenantPayouts extends BaseEntity {
   @JoinColumn([
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
-  termsRecurringIntervals: RecurringIntervals;
+  termsRecurringInterval: RecurringIntervals;
 
   @ManyToOne(() => Users, (users) => users.updaterUsersId, {
     onDelete: 'RESTRICT',

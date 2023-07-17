@@ -13,7 +13,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
-import { IFindAllTenantPayoutsQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts.query.contract';
+import { IFindAllTenantPayoutsPagedQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts-paged.query.contract';
 import { IFindOneTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-one-tenant-payout.query.contract';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { FindOneTenantPayoutOutput } from '~/payouts/presentation/dtos/responses/find-one-tenant-payout.output';
@@ -28,15 +28,15 @@ import { FindOnePayoutSummaryOutputDto } from '~/payouts/presentation/dtos/respo
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { FindOnePayoutInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout.input.dto';
-import { FindAllTenantPayoutsOutputDto } from '~/payouts/presentation/dtos/responses/find-all-tenant-payout.output';
+import { FindAllTenantPayoutsPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-tenant-payouts-paged.output';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
 @CustomApiExtraModels()
 export class PayoutController {
   constructor(
-    @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_PAYOUT_QUERY)
-    private readonly findAllTenantPayoutsQuery: IFindAllTenantPayoutsQuery,
+    @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_PAYOUT_PAGED_QUERY)
+    private readonly findAllTenantPayoutsPagedQuery: IFindAllTenantPayoutsPagedQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_TENANT_PAYOUT_QUERY)
     private readonly findOneTenantPayoutQuery: IFindOneTenantPayoutQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_QUERY)
@@ -47,13 +47,15 @@ export class PayoutController {
 
   @Get()
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: FindAllTenantPayoutsOutputDto })
-  async findAll(
+  @ApiOkResponse({ type: FindAllTenantPayoutsPagedOutputDto })
+  async findAllPaged(
     @Req() request: FastifyRequest,
+    @UserAuth() authUser: UserAuthDto,
     @Query() searchParams: CommonPaginateDto,
   ) {
-    const payouts = await this.findAllTenantPayoutsQuery.execute({
-      pagination: new PaginationInput({
+    const payouts = await this.findAllTenantPayoutsPagedQuery.execute({
+      authUser,
+      paginationInput: new PaginationInput({
         keywords: searchParams.keywords,
         page: searchParams.page,
         size: searchParams.pagesize,

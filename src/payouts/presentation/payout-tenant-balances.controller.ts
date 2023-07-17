@@ -2,11 +2,11 @@ import { Controller, Get, Inject, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiParam, ApiTags } from '@nestjs/swagger';
 import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
-import { FindAllTenantBalancesQuery } from '~/payouts/application/queries/find-all-tenant-balances.query';
+import { FindAllTenantBalancesPagedQuery } from '~/payouts/application/queries/find-all-tenant-balances-paged.query';
 import { FindOneTenantBalanceQuery } from '~/payouts/application/queries/find-one-tenant-balance.query';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { FindOneTenantBalanceInputDto } from '~/payouts/presentation/dtos/requests/find-one-tenant-balance.input.dto';
-import { FindAllTenantBalancesOutputDto } from '~/payouts/presentation/dtos/responses/find-all-tenant-balances.output';
+import { FindAllTenantBalancesPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-tenant-balances-paged.output';
 import { FindOneTenantBalanceOutput } from '~/payouts/presentation/dtos/responses/find-one-tenant-balance.output';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
@@ -18,20 +18,20 @@ import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-pagin
 @CustomApiExtraModels()
 export class PayoutTenantBalancesController {
   constructor(
-    @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_BALANCES_QUERY)
-    private readonly findAllTenantBalancesQuery: FindAllTenantBalancesQuery,
+    @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_BALANCES_PAGED_QUERY)
+    private readonly findAllTenantBalancesPagedQuery: FindAllTenantBalancesPagedQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_TENANT_BALANCE_QUERY)
     private readonly findOneTenantBalanceQuery: FindOneTenantBalanceQuery,
   ) {}
 
   @Get()
   @AuthenticatedRoute()
-  @ApiOkResponse({ type: FindAllTenantBalancesOutputDto })
-  async findAll(
+  @ApiOkResponse({ type: FindAllTenantBalancesPagedOutputDto })
+  async findAllPaged(
     @UserAuth() authUser: UserAuthDto,
     @Query() searchParams: CommonPaginateDto,
   ) {
-    const tenantBalances = await this.findAllTenantBalancesQuery.execute({
+    const tenantBalances = await this.findAllTenantBalancesPagedQuery.execute({
       authUser,
       paginationInput: new PaginationInput({
         keywords: searchParams.keywords,

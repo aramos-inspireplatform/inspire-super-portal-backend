@@ -7,8 +7,8 @@ import { Tenant } from '~/tenants/domain/entities/tenant.entity';
 import { UsersEntity } from '~/users/domain/entities/users.entity';
 
 export class TenantPayoutsEntity extends BaseDomainEntity {
-  alternativeId: string;
-  payoutAlternativeId: string;
+  alternativeId: number;
+  payoutAlternativeId: number;
   periodStartDate: Date;
   periodEndDate: Date;
   amount: number;
@@ -21,10 +21,10 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
   creatorUsers: UsersEntity;
   deleterUsers: UsersEntity;
   payoutStatus: PayoutStatusesEntity;
-  processorUsers: UsersEntity;
+  processorUser: UsersEntity;
   settlementCurrency: Currencies;
   tenant: Tenant;
-  termsRecurringIntervals: RecurringInterval;
+  termsRecurringInterval: RecurringInterval;
   updaterUsers: UsersEntity;
   lastPayoutTenants: Tenant[];
 
@@ -44,10 +44,10 @@ export class TenantPayoutsEntity extends BaseDomainEntity {
     this.creatorUsers = attrs?.creatorUsers;
     this.deleterUsers = attrs?.deleterUsers;
     this.payoutStatus = attrs?.payoutStatus;
-    this.processorUsers = attrs?.processorUsers;
+    this.processorUser = attrs?.processorUser;
     this.settlementCurrency = attrs?.settlementCurrency;
     this.tenant = attrs?.tenant;
-    this.termsRecurringIntervals = attrs?.termsRecurringIntervals;
+    this.termsRecurringInterval = attrs?.termsRecurringInterval;
     this.updaterUsers = attrs?.updaterUsers;
     this.lastPayoutTenants = attrs?.lastPayoutTenants;
   }

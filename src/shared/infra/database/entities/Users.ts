@@ -22,7 +22,7 @@ export class Users extends BaseEntity {
 
   @OneToMany(
     () => TenantPayouts,
-    (tenantPayouts) => tenantPayouts.processorUsers,
+    (tenantPayouts) => tenantPayouts.processorUser,
   )
   processorUsersId: TenantPayouts[];
 

@@ -9,7 +9,7 @@ export function createRandomTenantPayout(
 ): Partial<TenantPayoutsEntity> {
   return {
     id: faker.string.uuid(),
-    payoutAlternativeId: faker.number.int({ max: 10000, min: 1 }).toString(),
+    payoutAlternativeId: faker.number.int({ max: 10000, min: 1 }),
     periodStartDate: faker.date.anytime(),
     periodEndDate: faker.date.anytime(),
     amount: faker.number.int({ max: 10000, min: 1000 }),
@@ -21,10 +21,10 @@ export function createRandomTenantPayout(
     processedDate: faker.date.anytime(),
     creatorUsers: userId as any,
     payoutStatus: '2eca46d3-40e3-4555-afa6-d8d52b04fa2e' as any,
-    processorUsers: userId as any,
+    processorUser: userId as any,
     settlementCurrency: 'bb2d5ae7-e161-4f24-a0fc-435b1f5f6ac2' as any,
     tenant: tenantId as any,
-    termsRecurringIntervals: 'cd44a946-bfdd-4370-b2cc-1b3f0df311fd' as any,
+    termsRecurringInterval: 'cd44a946-bfdd-4370-b2cc-1b3f0df311fd' as any,
     createdDate: faker.date.anytime(),
   };
 }

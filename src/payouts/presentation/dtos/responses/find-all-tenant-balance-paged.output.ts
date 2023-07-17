@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { BaseDto } from '~/shared/presentation/base.dto';
-export class FindAllTenantBalanceOutput extends BaseDto {
+export class FindAllTenantBalancePagedOutput extends BaseDto {
   @ApiProperty({
     example: '74deb067-2bf6-45b1-991d-a0f22ab0ae3a',
   })

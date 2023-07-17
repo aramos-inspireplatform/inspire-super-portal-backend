@@ -21,7 +21,7 @@ export class RecurringIntervals extends BaseEntity {
 
   @OneToMany(
     () => TenantPayouts,
-    (tenantPayouts) => tenantPayouts.termsRecurringIntervals,
+    (tenantPayouts) => tenantPayouts.termsRecurringInterval,
   )
   tenantPayouts: TenantPayouts[];
 

@@ -4,15 +4,15 @@ import { FindAllPaymentsPeriodPagedDaoFactoryProvider } from '~/payouts/ioc/prov
 import { FindAllPayoutAdjustmentTypesDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-payout-adjustment-types-dao-factory.provider';
 import { FindAllPayoutAdjustmentsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-payout-adjustments-dao-factory.provider';
 import { FindAllPayoutPaymentsPagedDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-payout-payments-paged-dao-factory.provider';
-import { FindAllTenantBalancesDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-tenant-balances-dao-factory.provider';
-import { FindAllTenantPayoutsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-tenant-payouts-dao-factory.provider';
+import { FindAllTenantBalancesPagedDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-tenant-balances-paged-dao-factory.provider';
+import { FindAllTenantPayoutsPagedDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-tenant-payouts-paged-dao-factory.provider';
 import { FindOneTenantPayoutDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-tenant-payout-dao-factory.provider';
 import { FindOnePayoutSummaryPreviewDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-payout-summary-preview-dao-factory.provider';
 import { FindOneTenantBalanceDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-tenant-balance-dao-factory.provider';
 import { FindAllPaymentsPeriodPagedQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payments-period-paged-query-factory.provider';
-import { FindAllPayoutAdjustmentTypesQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutment-types-query-factory.provider';
-import { FindAllTenantBalancesQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-tenant-balances-query-factory.provider';
-import { FindAllTenantPayoutsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-tenant-payouts-query-factory.provider';
+import { FindAllPayoutAdjustmentTypesQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjustment-types-query-factory.provider';
+import { FindAllTenantBalancesPagedQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-tenant-balances-paged-query-factory.provider';
+import { FindAllTenantPayoutsPagedQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-tenant-payouts-paged-query-factory.provider';
 import { FindOneTenantPayoutQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-tenant-payout-query-factory.provider';
 import { FindOnePayoutSummaryPreviewQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-payout-summary-preview-query-factory.provider';
 import { FindOneTenantBalanceQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-tenant-balance-query-factory.provider';
@@ -37,10 +37,10 @@ import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/prov
     FindAllPaymentsPeriodDaoFactoryProvider.register(),
     FindAllPayoutPaymentsQueryFactoryProvider.register(),
     FindAllPayoutPaymentsPagedDaoFactoryProvider.register(),
-    FindAllTenantPayoutsQueryFactoryProvider.register(),
-    FindAllTenantPayoutsDaoFactoryProvider.register(),
-    FindAllTenantBalancesQueryFactoryProvider.register(),
-    FindAllTenantBalancesDaoFactoryProvider.register(),
+    FindAllTenantPayoutsPagedQueryFactoryProvider.register(),
+    FindAllTenantPayoutsPagedDaoFactoryProvider.register(),
+    FindAllTenantBalancesPagedQueryFactoryProvider.register(),
+    FindAllTenantBalancesPagedDaoFactoryProvider.register(),
     FindOneTenantBalanceQueryFactoryProvider.register(),
     FindOneTenantBalanceDaoFactoryProvider.register(),
     FindAllPayoutAdjustmentsQueryFactoryProvider.register(),
