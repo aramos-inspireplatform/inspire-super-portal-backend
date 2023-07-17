@@ -9,7 +9,7 @@ import { FindAllTenantPayoutsDaoFactoryProvider } from '~/payouts/ioc/providers/
 import { FindOneTenantPayoutDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-tenant-payout-dao-factory.provider';
 import { FindOnePayoutSummaryPreviewDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-payout-summary-preview-dao-factory.provider';
 import { FindOneTenantBalanceDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-tenant-balance-dao-factory.provider';
-import { FindAllPaymentsPeriodQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payments-period-paged-query-factory.provider';
+import { FindAllPaymentsPeriodPagedQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payments-period-paged-query-factory.provider';
 import { FindAllPayoutAdjustmentTypesQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutment-types-query-factory.provider';
 import { FindAllTenantBalancesQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-tenant-balances-query-factory.provider';
 import { FindAllTenantPayoutsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-tenant-payouts-query-factory.provider';
@@ -24,19 +24,19 @@ import { PayoutController } from '~/payouts/presentation/payout.controller';
 import { FindOnePayoutSummaryQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-one-payout-summary-query-factory.provider';
 import { FindOnePayoutSummaryDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-one-payout-summary-dao-factory.provider';
 import { FindOneTenantDaoFactoryProvider } from '~/tenants/ioc/providers/daos/find-tenant-dao-factory.provider';
-import { SearchAllPayoutPaymentsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/search-all-payout-payments-dao-factory.provider';
-import { SearchAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/search-all-payout-payments-query-factory.provider';
+import { FindAllPaymentsPeriodDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-payments-period-dao-factory.provider';
+import { FindAllPaymentsPeriodQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payments-period-query-factory.provider';
 import { FindAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-payments-paged-query-factory.provider';
 import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutments-query-factory.provider';
 
 @Module({
   providers: [
-    FindAllPaymentsPeriodQueryFactoryProvider.register(),
+    FindAllPaymentsPeriodPagedQueryFactoryProvider.register(),
     FindAllPaymentsPeriodPagedDaoFactoryProvider.register(),
+    FindAllPaymentsPeriodQueryFactoryProvider.register(),
+    FindAllPaymentsPeriodDaoFactoryProvider.register(),
     FindAllPayoutPaymentsQueryFactoryProvider.register(),
     FindAllPayoutPaymentsPagedDaoFactoryProvider.register(),
-    SearchAllPayoutPaymentsDaoFactoryProvider.register(),
-    SearchAllPayoutPaymentsQueryFactoryProvider.register(),
     FindAllTenantPayoutsQueryFactoryProvider.register(),
     FindAllTenantPayoutsDaoFactoryProvider.register(),
     FindAllTenantBalancesQueryFactoryProvider.register(),
@@ -51,12 +51,11 @@ import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/prov
     FindOnePayoutSummaryDaoFactoryProvider.register(),
     FindOnePayoutSummaryPreviewQueryFactoryProvider.register(),
     FindOnePayoutSummaryPreviewDaoFactoryProvider.register(),
-    FindOneCurrencyDaoFactoryProvider.register(),
     FindOneTenantPayoutDaoFactoryProvider.register(),
     FindOneTenantPayoutQueryFactoryProvider.register(),
     FindOneTenantDaoFactoryProvider.register(),
-    SearchAllPayoutPaymentsQueryFactoryProvider.register(),
-    SearchAllPayoutPaymentsDaoFactoryProvider.register(),
+    FindAllPaymentsPeriodPagedQueryFactoryProvider.register(),
+    FindOneCurrencyDaoFactoryProvider.register(),
   ],
   controllers: [
     PayoutController,

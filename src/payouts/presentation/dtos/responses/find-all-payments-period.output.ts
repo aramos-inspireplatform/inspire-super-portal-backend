@@ -1,6 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-export class SearchAllPayoutPaymentOutput {
+import { BaseDto } from '~/shared/presentation/base.dto';
+
+export class FindAllPaymentsPeriodOutputDto extends BaseDto {
   @Expose()
   @ApiProperty({
     example: '29dcf80d-900b-430c-b3ef-705172ab68cc',

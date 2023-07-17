@@ -1,10 +1,10 @@
-export interface ISearchAllPayoutPaymentsDao {
+export interface IFindAllPaymentsPeriodDao {
   execute(
-    attrs: ISearchAllPayoutPaymentsDao.Input,
-  ): ISearchAllPayoutPaymentsDao.Output;
+    attrs: IFindAllPaymentsPeriodDao.Input,
+  ): IFindAllPaymentsPeriodDao.Output;
 }
 
-export namespace ISearchAllPayoutPaymentsDao {
+export namespace IFindAllPaymentsPeriodDao {
   export type Input = {
     accessToken: string;
     gTenantId: string;

@@ -1,17 +1,17 @@
-import { ISearchAllPayoutPaymentsDao } from '~/payouts/application/daos/search-all-payments.dao.contract';
-import { ISearchAllPayoutPaymentsQuery } from '~/payouts/application/queries/contracts/search-all-payments.query.contract';
+import { IFindAllPaymentsPeriodDao } from '~/payouts/application/daos/find-all-payments-period.dao.contract';
+import { IFindAllPaymentsPeriodQuery } from '~/payouts/application/queries/contracts/find-all-payments-period.query.contract';
 
 export class SearchAllPayoutPaymentsQuery
-  implements ISearchAllPayoutPaymentsQuery
+  implements IFindAllPaymentsPeriodQuery
 {
   constructor(
-    private readonly searchAllPayoutPaymentsDao: ISearchAllPayoutPaymentsDao,
+    private readonly findAllPaymentsPeriodDao: IFindAllPaymentsPeriodDao,
   ) {}
 
   async execute(
-    attrs: ISearchAllPayoutPaymentsQuery.Input,
-  ): Promise<ISearchAllPayoutPaymentsQuery.Output> {
-    const payments = await this.searchAllPayoutPaymentsDao.execute({
+    attrs: IFindAllPaymentsPeriodQuery.Input,
+  ): Promise<IFindAllPaymentsPeriodQuery.Output> {
+    const payments = await this.findAllPaymentsPeriodDao.execute({
       accessToken: attrs.accessToken,
       gTenantId: attrs.gTenantId,
       periodStartDate: attrs.periodStartDate,

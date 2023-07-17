@@ -7,7 +7,7 @@ import { FindAllPayoutPaymentsPagedDto } from '~/shared/application/services/ins
 import { FindAllPayoutAdjustmentsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payout-adjustments/find-all-payout-adjustments.dto';
 import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
 import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
-import { SearchAllPayoutPaymentsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/search-all-payout-payments.dto';
+import { FindAllPaymentsPeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payments-period.dto';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
   private readonly PAYMENT_API_BASE_URL = `${process.env.PAYMENT_API_URL}`;
@@ -33,6 +33,28 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
         settlementCurrencyIsoCode: attrs.settlementCurrencyIsoCode,
         payoutId: attrs.payoutId,
         ...attrs.pagination,
+      },
+    });
+
+    return payments.data.body.data;
+  }
+
+  async findAllPaymentsPeriod(
+    attrs: FindAllPaymentsPeriodDto.InputAttrs,
+  ): FindAllPaymentsPeriodDto.Result {
+    const url = `${this.PAYOUT_API_BASE_URL}/payments/period/select-all`;
+
+    const payments = await this.httpClient.get<any>(url, {
+      headers: {
+        authorization: attrs.accessToken,
+        tenant: attrs.gTenantId,
+        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+      },
+      params: {
+        periodStartDate: attrs.periodStartDate,
+        periodEndDate: attrs.periodEndDate,
+        settlementCurrencyIsoCode: attrs.settlementCurrencyIsoCode,
+        payoutId: attrs.payoutId,
       },
     });
 
@@ -144,28 +166,6 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
     });
 
     return adjustmentTypes.data.body.data;
-  }
-
-  async searchAllPayoutPayments(
-    attrs: SearchAllPayoutPaymentsDto.InputAttrs,
-  ): SearchAllPayoutPaymentsDto.Result {
-    const url = `${this.PAYOUT_API_BASE_URL}/payments/period/select-all`;
-
-    const payments = await this.httpClient.get<any>(url, {
-      headers: {
-        authorization: attrs.accessToken,
-        tenant: attrs.gTenantId,
-        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
-      },
-      params: {
-        periodStartDate: attrs.periodStartDate,
-        periodEndDate: attrs.periodEndDate,
-        settlementCurrencyIsoCode: attrs.settlementCurrencyIsoCode,
-        payoutId: attrs.payoutId,
-      },
-    });
-
-    return payments.data.body.data;
   }
 }
 

@@ -8,7 +8,7 @@ import {
   IsOptional,
 } from 'class-validator';
 
-export class SearchAllPayoutPaymentsInputDto {
+export class FindAllPaymentsPeriodInputDto {
   @ApiProperty({
     example: 'teste-hnmkt',
   })

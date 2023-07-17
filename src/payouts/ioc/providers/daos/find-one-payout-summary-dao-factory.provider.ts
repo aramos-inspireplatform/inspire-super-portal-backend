@@ -1,5 +1,4 @@
 import { FactoryProvider } from '@nestjs/common';
-import { SearchAllPayoutPaymentsDao } from '~/payouts/infra/daos/search-all-payout-payments.dao';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
 import { InspireApiServicesProvidersSymbols } from '~/shared/application/services/inspire-api-services/shared/symbols/inspire-api-services-providers.symbols';
