@@ -27,7 +27,7 @@
     "migration:create": "NODE_ENV=development echo 'Enter Migration Name' && read migration_name && ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js migration:create src/shared/infra/database/migrations/$migration_name",
     "migration-dev:run": "NODE_ENV=development npm run typeorm migration:run",
     "migration-dev:revert": "NODE_ENV=development npm run typeorm migration:revert",
-    "entity-generator": "typeorm-model-generator -h localhost -p 5434 -d inspire_super_portal -u postgres -x postgres -e postgres -o generated-entities"
+    "seed:run": "npm run build && node dist/shared/infra/database/seed/seed.js"
   },
   "dependencies": {
     "@fastify/compress": "^6.2.0",
@@ -63,11 +63,10 @@
     "pg": "^8.10.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0",
-    "typeorm": "^0.3.6",
-    "typeorm-model-generator": "^0.4.6"
+    "typeorm": "^0.3.6"
   },
   "devDependencies": {
-    "@faker-js/faker": "^7.6.0",
+    "@faker-js/faker": "^8.0.2",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",

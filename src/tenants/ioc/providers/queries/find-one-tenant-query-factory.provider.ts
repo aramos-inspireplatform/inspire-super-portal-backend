@@ -1,7 +1,7 @@
 import { FactoryProvider } from '@nestjs/common';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
 import { FindOneTenantQuery } from '~/tenants/application/queries/find-one-tenant.query';
-import { IFindTenantDao as IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
+import { IFindOneTenantDao as IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
 
 export class FindOneTenantQueryFactoryProvider {
   static register(): FactoryProvider {

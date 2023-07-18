@@ -15,7 +15,7 @@ export class BaseEntity extends TypeOrmBaseEntity {
   id: string;
 
   @Column({ type: 'bigint', name: 'alternative_id' })
-  alternativeId: string;
+  alternativeId: number;
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_date' })
   createdDate: Date;

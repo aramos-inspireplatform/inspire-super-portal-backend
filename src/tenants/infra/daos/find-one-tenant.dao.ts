@@ -1,5 +1,5 @@
 import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
-import { IFindTenantDao as IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
+import { IFindOneTenantDao as IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 
 export class FindOneTenantDao implements IFindOneTenantDao {
@@ -9,7 +9,7 @@ export class FindOneTenantDao implements IFindOneTenantDao {
   ) {}
 
   async execute(attrs: IFindOneTenantDao.Input): IFindOneTenantDao.Output {
-    const tenant = await this.inspireTenantApiService.findOne({
+    const tenant = await this.inspireTenantApiService.findOneTenant({
       accessToken: attrs.accessToken,
       gTenantId: attrs.gTenantId,
     });
@@ -17,6 +17,7 @@ export class FindOneTenantDao implements IFindOneTenantDao {
 
     return {
       id: tenant.id,
+      uuid: tenant.uuid,
       name: tenant.name,
       slug: tenant.slug,
       googleTenantId: tenant.googleTenantId,

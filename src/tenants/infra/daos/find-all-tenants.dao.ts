@@ -9,7 +9,7 @@ export class FindAllTenantsDao implements IFindAllTenantsDao {
   ) {}
 
   async execute(attrs: IFindAllTenantsDao.Input): IFindAllTenantsDao.Output {
-    const tenants = await this.inspireTenantApiService.findAll({
+    const tenants = await this.inspireTenantApiService.findAllTenants({
       accessToken: attrs.accessToken,
       pagination: attrs.pagination,
     });

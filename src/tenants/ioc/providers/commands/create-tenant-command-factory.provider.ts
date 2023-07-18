@@ -7,6 +7,8 @@ import { CreateTenantCommand } from '~/tenants/application/commands/create-tenan
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { ITenantStatusesRepository } from '~/tenants/domain/repositories/tenant-statuses-repository.contract';
 import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
+import { IRecurringIntervalsRepository } from '~/tenants/domain/repositories/recurring-intervals-repository.contract';
+import { RecurringIntervalsRepository } from '~/tenants/infra/repositories/recurring-intervals.repository';
 
 export class CreateTenantCommandFactoryProvider {
   static register(): FactoryProvider {
@@ -16,16 +18,19 @@ export class CreateTenantCommandFactoryProvider {
         inspireTenantService: IInspireTenantApiService,
         tenantRepository: ITenantRepository,
         tenantStatusesRepository: ITenantStatusesRepository,
+        recurringIntervalsRepository: IRecurringIntervalsRepository,
       ) =>
         new CreateTenantCommand(
           inspireTenantService,
           tenantRepository,
           tenantStatusesRepository,
+          recurringIntervalsRepository,
         ),
       inject: [
         InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
         TenantsRepository,
         TenantStatusesRepository,
+        RecurringIntervalsRepository,
       ],
     };
   }
