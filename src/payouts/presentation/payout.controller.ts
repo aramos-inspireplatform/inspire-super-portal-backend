@@ -50,11 +50,11 @@ export class PayoutController {
   @ApiOkResponse({ type: FindAllTenantPayoutsPagedOutputDto })
   async findAllPaged(
     @Req() request: FastifyRequest,
-    @UserAuth() authUser: UserAuthDto,
+    @UserAuth() userAuth: UserAuthDto,
     @Query() searchParams: CommonPaginateDto,
   ) {
     const payouts = await this.findAllTenantPayoutsPagedQuery.execute({
-      authUser,
+      userAuth: userAuth,
       paginationInput: new PaginationInput({
         keywords: searchParams.keywords,
         page: searchParams.page,
@@ -71,12 +71,12 @@ export class PayoutController {
   @ApiOkResponse({ type: FindOneTenantPayoutOutput })
   async findOne(
     @Req() request: FastifyRequest,
-    @UserAuth() authUser: UserAuthDto,
+    @UserAuth() userAuth: UserAuthDto,
     @Param('payoutId') payoutId: string,
     @Query() inputDto: FindOnePayoutInputDto,
   ) {
     const payout = await this.findOneTenantPayoutQuery.execute({
-      authUser: authUser,
+      userAuth: userAuth,
       accessToken: request.headers.authorization,
       gTenantId: inputDto.gTenantId,
       payoutId: payoutId,

@@ -12,7 +12,7 @@ export interface IFindAllTenantBalancesPagedDao {
 
 export namespace IFindAllTenantBalancesPagedDao {
   export type Input = {
-    authUser: UserAuthDto;
+    userAuth: UserAuthDto;
     paginationInput: PaginationInput;
   };
 

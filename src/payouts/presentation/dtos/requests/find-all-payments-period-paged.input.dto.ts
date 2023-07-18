@@ -7,6 +7,7 @@ import {
   IsDate,
   IsOptional,
 } from 'class-validator';
+import { DateRage } from '~/shared/infra/nestjs/decorators/data-range.dto.decorator';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 
 export class FindAllPaymentsPeriodPagedInputDto extends CommonPaginateDto {
@@ -26,6 +27,7 @@ export class FindAllPaymentsPeriodPagedInputDto extends CommonPaginateDto {
   @ApiProperty({ example: new Date() })
   @IsNotEmpty()
   @IsDate()
+  @DateRage('periodStartDate', process.env.PAYOUT_MAX_PERIOD_RANGE ?? null)
   @Type(() => Date)
   periodEndDate: Date;
 

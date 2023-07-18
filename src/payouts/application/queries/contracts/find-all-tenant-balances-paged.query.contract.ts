@@ -10,7 +10,7 @@ export interface IFindAllTenantBalancesPagedQuery {
 
 export namespace IFindAllTenantBalancesPagedQuery {
   export type Input = {
-    authUser: UserAuthDto;
+    userAuth: UserAuthDto;
     paginationInput: PaginationInput;
   };
 

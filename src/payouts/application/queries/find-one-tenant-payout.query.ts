@@ -20,7 +20,7 @@ export class FindOneTenantPayoutQuery implements IFindOneTenantPayoutQuery {
       throw new NotFoundException(PayoutsExceptionsConstants.PAYOUT_NOT_FOUND);
 
     const tenantBalance = await this.findOneTenantBalanceDao.execute({
-      authUser: attrs.authUser,
+      userAuth: attrs.userAuth,
       gTenantId: attrs.gTenantId,
       settlementCurrencyId: payout.settlementCurrency.id,
     });

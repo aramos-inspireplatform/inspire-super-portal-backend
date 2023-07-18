@@ -69,11 +69,11 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
         gTenantId: attrs.gTenantId,
       });
 
-    if (attrs.authUser.isAgencyAdmin()) {
-      if (!attrs.authUser.agencies?.length) return null;
+    if (attrs.userAuth.isAgencyAdmin()) {
+      if (!attrs.userAuth.agencies?.length) return null;
 
       query.andWhere('tenants.agencyId in (:...agenciesIds)', {
-        agenciesIds: attrs.authUser.agencies.map((agency) => agency.id),
+        agenciesIds: attrs.userAuth.agencies.map((agency) => agency.id),
       });
     }
 

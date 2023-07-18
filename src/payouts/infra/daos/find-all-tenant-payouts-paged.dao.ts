@@ -55,11 +55,11 @@ export class FindAllTenantPayoutsPagedDao
       .leftJoin('tenantPayouts.processorUser', 'processorUser')
       .orderBy('tenantPayouts.processedDate', 'DESC');
 
-    if (attrs.authUser.isAgencyAdmin()) {
-      if (!attrs.authUser.agencies?.length) return null;
+    if (attrs.userAuth.isAgencyAdmin()) {
+      if (!attrs.userAuth.agencies?.length) return null;
 
       query.where('tenant.agencyId in (:...agenciesIds)', {
-        agenciesIds: attrs.authUser.agencies.map((agency) => agency.id),
+        agenciesIds: attrs.userAuth.agencies.map((agency) => agency.id),
       });
     }
 
