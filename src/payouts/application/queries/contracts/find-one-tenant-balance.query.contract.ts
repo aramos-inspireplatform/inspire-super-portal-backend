@@ -8,7 +8,7 @@ export interface IFindOneTenantBalanceQuery {
 
 export namespace IFindOneTenantBalanceQuery {
   export type Input = {
-    authUser: UserAuthDto;
+    userAuth: UserAuthDto;
     gTenantId: string;
     settlementCurrencyIsoCode: string;
   };

@@ -9,7 +9,7 @@ import { InspireApiServicesProvidersSymbols } from '~/shared/application/service
 import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 
 @Injectable()
-export class AuthUserGuard implements CanActivate {
+export class UserAuthGuard implements CanActivate {
   constructor(
     @Inject(InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE)
     private readonly inspireTenantApiService: IInspireTenantApiService,
@@ -30,7 +30,7 @@ export class AuthUserGuard implements CanActivate {
       userAuth.updateAgencies(agencyAdminUser?.agencies);
     }
 
-    request.user.authUser = userAuth;
+    request.userAuth = userAuth;
 
     return true;
   }

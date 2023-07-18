@@ -28,11 +28,11 @@ export class PayoutTenantBalancesController {
   @AuthenticatedRoute()
   @ApiOkResponse({ type: FindAllTenantBalancesPagedOutputDto })
   async findAllPaged(
-    @UserAuth() authUser: UserAuthDto,
+    @UserAuth() userAuth: UserAuthDto,
     @Query() searchParams: CommonPaginateDto,
   ) {
     const tenantBalances = await this.findAllTenantBalancesPagedQuery.execute({
-      authUser,
+      userAuth: userAuth,
       paginationInput: new PaginationInput({
         keywords: searchParams.keywords,
         page: searchParams.page,
@@ -53,12 +53,12 @@ export class PayoutTenantBalancesController {
   })
   @ApiOkResponse({ type: FindOneTenantBalanceOutput })
   async findOne(
-    @UserAuth() authUser: UserAuthDto,
+    @UserAuth() userAuth: UserAuthDto,
     @Param('gTenantId') gTenantId: string,
     @Query() inputDto: FindOneTenantBalanceInputDto,
   ) {
     const tenantBalance = await this.findOneTenantBalanceQuery.execute({
-      authUser: authUser,
+      userAuth: userAuth,
       gTenantId: gTenantId,
       settlementCurrencyIsoCode: inputDto.settlementCurrencyIsoCode,
     });

@@ -9,7 +9,7 @@ export const UserAuth = createParamDecorator(
   async (_data, ctx: ExecutionContext): Promise<UserAuthDto> => {
     try {
       const req = ctx.switchToHttp().getRequest();
-      return req?.user?.authUser;
+      return req?.userAuth;
     } catch (error) {
       throw new UnauthorizedException();
     }

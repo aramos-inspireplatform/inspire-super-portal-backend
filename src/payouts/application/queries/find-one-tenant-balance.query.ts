@@ -21,7 +21,7 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
       throw new NotFoundException(CurrenciesExceptionsConstants.NOT_FOUND);
 
     const tenantBalance = await this.findOneTenantBalanceDao.execute({
-      authUser: attrs.authUser,
+      userAuth: attrs.userAuth,
       gTenantId: attrs.gTenantId,
       settlementCurrencyId: currency.id,
     });
