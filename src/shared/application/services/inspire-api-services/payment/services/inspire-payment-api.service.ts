@@ -8,6 +8,7 @@ import { FindAllPayoutAdjustmentsDto } from '~/shared/application/services/inspi
 import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
 import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
 import { FindAllPaymentsPeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payments-period.dto';
+import { ICreatePayoutBexsDao } from '~/payouts/application/daos/create-payout-bexs.dao.contract';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
   private readonly PAYMENT_API_BASE_URL = `${process.env.PAYMENT_API_URL}`;
@@ -167,9 +168,18 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
 
     return adjustmentTypes.data.body.data;
   }
-}
 
-// export namespace InspirePaymentApiService {
-//   export type FindAllHttpResponse =
-//     InspireHttpPaginatedResponse<InspirePaymentApiServiceDto.Payments>;
-// }
+  async createPayoutBexs(attrs: ICreatePayoutBexsDao.Input) {
+    const url = `${this.PAYOUT_API_BASE_URL}/payments/bexs`;
+
+    const file = await this.httpClient.get<any>(url, {
+      headers: {
+        authorization: attrs.accessToken,
+        tenant: attrs.gTenantId,
+        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+      },
+    });
+
+    return file.data.body.data;
+  }
+}

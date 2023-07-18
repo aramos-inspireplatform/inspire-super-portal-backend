@@ -6,6 +6,7 @@ import { FindAllPayoutAdjustmentsDto } from '~/shared/application/services/inspi
 import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
 import { FindOnePayoutSummaryPreviewDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary-preview.dto';
 import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
+import { ICreatePayoutBexsDao } from '~/payouts/application/daos/create-payout-bexs.dao.contract';
 
 export interface IInspirePaymentApiService {
   findAllPaymentsPeriodPaged(
@@ -37,4 +38,8 @@ export interface IInspirePaymentApiService {
   findAllPaymentsPeriod(
     attrs: FindAllPaymentsPeriodDto.InputAttrs,
   ): FindAllPaymentsPeriodDto.Result;
+
+  createPayoutBexs(
+    attrs: ICreatePayoutBexsDao.Input,
+  ): Promise<ICreatePayoutBexsDao.Output>;
 }
