@@ -10,7 +10,7 @@ export namespace IFindOneTenantPayoutDao {
   export type Input = {
     accessToken: string;
     gTenantId: string;
-    authUser: UserAuthDto;
+    userAuth: UserAuthDto;
     payoutId: string;
   };
 
