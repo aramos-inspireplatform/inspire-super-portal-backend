@@ -206,6 +206,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
       periodEndDate,
       termsRecurringIntervalCount,
       termsRecurringIntervalId,
+      selectAllPayments,
     } = attrs;
 
     let url = `${this.PAYOUT_API_BASE_URL}`;
@@ -223,6 +224,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
         periodEndDate,
         termsRecurringIntervalCount,
         termsRecurringIntervalId,
+        selectAllPayments,
       },
       {
         headers: {

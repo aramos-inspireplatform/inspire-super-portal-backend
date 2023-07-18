@@ -27,6 +27,7 @@ export namespace ICreatePayoutCommand {
     termsRecurringIntervalId: string;
     selectedPayments: string[];
     adjustmentFees: AdjustmentFee[];
+    selectAllPayments: boolean;
   };
   export type Output = void;
 }

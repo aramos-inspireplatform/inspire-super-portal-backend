@@ -145,6 +145,7 @@ export class PayoutController {
       adjustmentFees: inputDto.adjustmentFees,
       termsRecurringIntervalCount: inputDto.termsRecurringIntervalCount,
       termsRecurringIntervalId: inputDto.termsRecurringIntervalId,
+      selectAllPayments: inputDto.selectAllPayments,
     });
   }
 }

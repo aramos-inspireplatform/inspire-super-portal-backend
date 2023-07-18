@@ -14,6 +14,7 @@ import {
   IsEnum,
   IsNumber,
   ValidateNested,
+  IsBoolean,
 } from 'class-validator';
 import { CreatePayoutCommandType } from '~/payouts/domain/enums';
 import { CreatePayoutAdjustmentFeeInputDto } from '~/payouts/presentation/dtos/requests/create-payout-adjustment-fee.input.dto';
@@ -71,11 +72,20 @@ export class CreatePayoutInputDto {
   periodEndDate: Date;
 
   @ApiProperty({
+    example: false,
+    required: false,
+  })
+  @IsOptional()
+  @IsBoolean()
+  selectAllPayments: boolean;
+
+  @ApiProperty({
     example: ['7fcd36e4-3fec-4033-8a07-d95cd193fc7a'],
   })
   @ValidateIf(
     (item: CreatePayoutInputDto) =>
-      item.command === CreatePayoutCommandType.PROCESS,
+      item.command === CreatePayoutCommandType.PROCESS &&
+      !item.selectAllPayments,
   )
   @IsArray()
   @ArrayMinSize(1)

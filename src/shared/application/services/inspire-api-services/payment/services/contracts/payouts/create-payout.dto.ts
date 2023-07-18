@@ -18,6 +18,7 @@ export namespace CreatePayoutDto {
     termsRecurringIntervalId: string;
     selectedPayments: string[];
     adjustmentFees: AdjustmentFee[];
+    selectAllPayments: boolean;
   };
 
   export type Result = Promise<void>;

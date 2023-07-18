@@ -22,6 +22,7 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
       termsRecurringIntervalId,
       selectedPayments,
       adjustmentFees,
+      selectAllPayments,
     } = input;
 
     return this.inspirePaymentApiService.createPayoutCommand({
@@ -35,6 +36,7 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
       termsRecurringIntervalId,
       selectedPayments,
       adjustmentFees,
+      selectAllPayments,
     });
   }
 }
