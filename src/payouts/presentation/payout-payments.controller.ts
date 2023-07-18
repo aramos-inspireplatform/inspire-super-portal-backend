@@ -1,9 +1,11 @@
 import {
+  Body,
   Controller,
   Get,
   Inject,
   Param,
   ParseUUIDPipe,
+  Post,
   Query,
   Req,
 } from '@nestjs/common';
@@ -21,6 +23,8 @@ import { IFindAllPaymentsPeriodQuery } from '~/payouts/application/queries/contr
 import { FindAllPaymentsPeriodInputDto } from '~/payouts/presentation/dtos/requests/find-all-payments-period.input.dto';
 import { FindAllPaymentsPeriodOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period.output';
 import { IFindAllPaymentsPeriodPagedQuery } from '~/payouts/application/queries/contracts/find-all-payments-period-paged.query.contract';
+import { CreatePayoutBexsInputDto } from '~/payouts/presentation/dtos/requests/create-payout-bexs.input';
+import { ICreatePayoutBexsQuery } from '~/payouts/application/queries/contracts/create-payout-bexs.query.contract';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
@@ -33,6 +37,8 @@ export class PayoutPaymentsController {
     private readonly findAllPaymentsPeriodQuery: IFindAllPaymentsPeriodQuery,
     @Inject(PayoutProvidersSymbols.FIND_ALL_PAYOUT_PAYMENTS_PAGED_QUERY)
     private readonly findAllPayoutPaymentsPagedQuery: IFindAllPayoutPaymentsPagedQuery,
+    @Inject(PayoutProvidersSymbols.CREATE_PAYOUT_BEXS_QUERY)
+    private readonly createPayoutBexsQuery: ICreatePayoutBexsQuery,
   ) {}
 
   @Get('/payments/period')
@@ -94,5 +100,23 @@ export class PayoutPaymentsController {
     });
 
     return payments;
+  }
+
+  @Post('/payments/bexs')
+  @AuthenticatedRoute()
+  @ApiOkResponse()
+  async createPayoutBexs(
+    @Req() request: FastifyRequest,
+    @Query() inputDto: CreatePayoutBexsInputDto,
+  ) {
+    const buffer = await (await request.file()).toBuffer();
+    const response = await this.createPayoutBexsQuery.execute({
+      accessToken: request.headers.authorization,
+      gTenantId: inputDto.gTenantId,
+      periodStartDate: inputDto.periodStartDate,
+      periodEndDate: inputDto.periodEndDate,
+      file: buffer,
+    });
+    return response;
   }
 }
