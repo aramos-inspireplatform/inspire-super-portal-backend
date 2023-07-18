@@ -177,7 +177,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
     const { transactionId, status } = attrs;
     const url = `${this.TRANSACTION_API_BASE_URL}/${transactionId}/manual-reconciled/${status}`;
 
-    await this.httpClient.post<any>(
+    const result = await this.httpClient.post<any>(
       url,
       {},
       {
@@ -188,6 +188,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
         },
       },
     );
+    return result.data;
   }
 }
 

@@ -1,4 +1,4 @@
-import { Controller, Post, Inject, Param, Req, Body } from '@nestjs/common';
+import { Controller, Post, Inject, Param, Req, Body, HttpCode } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
@@ -20,6 +20,7 @@ export class TransactionsController {
   ) {}
 
   @Post(':transactionId/manual-reconciled/:status')
+  @HttpCode(200)
   @ApiOperation({
     description: 'Method to mark if the transaction was reconciled manually.',
   })

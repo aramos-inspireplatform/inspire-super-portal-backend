@@ -13,7 +13,7 @@ export class ManualReconciledCommand implements IManualReconciledCommand {
   ): Promise<IManualReconciledCommand.Output> {
     const { transactionId, status, accessToken, gTenantId } = input;
 
-    await this.inspirePaymentApiService.manualReconciledCommand({
+    return this.inspirePaymentApiService.manualReconciledCommand({
       transactionId,
       status,
       accessToken,
