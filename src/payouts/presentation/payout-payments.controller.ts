@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -109,7 +110,15 @@ export class PayoutPaymentsController {
     @Req() request: FastifyRequest,
     @Query() inputDto: CreatePayoutBexsInputDto,
   ) {
-    const buffer = await (await request.file()).toBuffer();
+    const file = await request.file({
+      limits: { fileSize: 1024 * 1024 * 5 }, //Limit 5mb
+    });
+
+    if (!file) {
+      throw new BadRequestException('File is required');
+    }
+    const buffer = await file.toBuffer();
+
     const response = await this.createPayoutBexsQuery.execute({
       accessToken: request.headers.authorization,
       gTenantId: inputDto.gTenantId,
