@@ -5,10 +5,12 @@ import {
   InspireHttpResponse,
 } from '~/shared/types/inspire-http-response.type';
 import { Module } from '~/requests/domain/entities/module.entity';
-import { InspireTenantApiServiceDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.dto';
+import { InspireTenantApiServiceTenantsDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.tenants.dto';
+import { InspireTenantApiServiceAdminUsersDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.admin-users.dto';
 
 export class InspireTenantApiService implements IInspireTenantApiService {
-  private readonly V2_BASE_URL = `${process.env.TENANT_URL}/v2/tenants`;
+  private readonly TENANT_V2_BASE_URL = `${process.env.TENANT_URL}/v2/tenants`;
+  private readonly ADMIN_USERS_BASE_URL = `${process.env.TENANT_URL}/user/admin-users`;
 
   private readonly GET_USER_DETAILS_URL = `${process.env.TENANT_URL}/user/me`;
   private readonly TENANT_DETAILS_URL = `${process.env.TENANT_URL}/tenants`;
@@ -19,10 +21,11 @@ export class InspireTenantApiService implements IInspireTenantApiService {
 
   constructor(private readonly httpClient: IHttpClient) {}
 
-  async findAll(
-    attrs: InspireTenantApiServiceDto.FindAllInputAttrs,
-  ): InspireTenantApiServiceDto.FindAllResult {
-    const url = `${this.V2_BASE_URL}`;
+  // Tenants
+  async findAllTenants(
+    attrs: InspireTenantApiServiceTenantsDto.FindAllTenantsInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.FindAllTenantsResult {
+    const url = `${this.TENANT_V2_BASE_URL}`;
 
     const tenants = await this.httpClient.get<any>(url, {
       headers: {
@@ -36,13 +39,13 @@ export class InspireTenantApiService implements IInspireTenantApiService {
     return tenants.data.body.data;
   }
 
-  async findOne(
-    attrs: InspireTenantApiServiceDto.FindOneInputAttrs,
-  ): InspireTenantApiServiceDto.FindOneResult {
-    const url = `${this.V2_BASE_URL}/${attrs.gTenantId}`;
+  async findOneTenant(
+    attrs: InspireTenantApiServiceTenantsDto.FindOneTenantInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.FindOneTenantResult {
+    const url = `${this.TENANT_V2_BASE_URL}/${attrs.gTenantId}`;
 
     const tenant =
-      await this.httpClient.get<InspireTenantApiService.FindOneHttpResponse>(
+      await this.httpClient.get<InspireTenantApiService.FindOneTenantHttpResponse>(
         url,
         {
           headers: {
@@ -54,13 +57,13 @@ export class InspireTenantApiService implements IInspireTenantApiService {
     return tenant.data.body.data;
   }
 
-  async create(
-    attrs: InspireTenantApiServiceDto.CreateInputAttrs,
-  ): InspireTenantApiServiceDto.CreateResult {
-    const url = `${this.V2_BASE_URL}`;
+  async createTenant(
+    attrs: InspireTenantApiServiceTenantsDto.CreateTenantInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.CreateTenantResult {
+    const url = `${this.TENANT_V2_BASE_URL}`;
 
     const tenant =
-      await this.httpClient.post<InspireTenantApiService.CreateHttpResponse>(
+      await this.httpClient.post<InspireTenantApiService.CreateTenantHttpResponse>(
         url,
         attrs.tenant,
         {
@@ -71,6 +74,25 @@ export class InspireTenantApiService implements IInspireTenantApiService {
       );
 
     return tenant.data.body.data;
+  }
+
+  // Admin Users
+  async findOneAdminUser(
+    attrs: InspireTenantApiServiceAdminUsersDto.FindOneInputAttrs,
+  ): InspireTenantApiServiceAdminUsersDto.FindOneResult {
+    const url = `${this.ADMIN_USERS_BASE_URL}/${attrs.userObjectId}`;
+
+    const adminUser =
+      await this.httpClient.get<InspireTenantApiService.FindOneAdminUserHttpResponse>(
+        url,
+        {
+          headers: {
+            authorization: attrs.accessToken,
+          },
+        },
+      );
+
+    return adminUser.data.body.data;
   }
 
   // async activate(
@@ -94,8 +116,8 @@ export class InspireTenantApiService implements IInspireTenantApiService {
 
   // Deprecated below ----------------------------
   async getTenantDetails(
-    attrs: InspireTenantApiServiceDto.GetTenantDetailsInputAttrs,
-  ): InspireTenantApiServiceDto.TenantDetailsResult {
+    attrs: InspireTenantApiServiceTenantsDto.GetTenantDetailsInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.TenantDetailsResult {
     const url = `${this.TENANT_DETAILS_URL}/${attrs.integrationCode}/integration-data`;
     const responseOrError =
       await this.httpClient.get<InspireTenantApiService.TenantDetailsHttpResponse>(
@@ -147,9 +169,9 @@ export class InspireTenantApiService implements IInspireTenantApiService {
   async getTenantAndUserDetails(attrs: {
     googleTenantId: string;
     tenantIntegrationKey: string;
-  }): Promise<InspireTenantApiServiceDto.TenantDetails> {
+  }): Promise<InspireTenantApiServiceTenantsDto.TenantDetails> {
     const response = await this.httpClient.get<
-      InspireHttpResponse<InspireTenantApiServiceDto.TenantDetails>
+      InspireHttpResponse<InspireTenantApiServiceTenantsDto.TenantDetails>
     >(
       `${this.TENANT_INTEGRATION_ROUTE}/${attrs.googleTenantId}/integration-data`,
       {
@@ -164,7 +186,7 @@ export class InspireTenantApiService implements IInspireTenantApiService {
 
   async getTenantJwtTokenUserDetails({
     accessToken,
-  }: InspireTenantApiServiceDto.GetTenantUserDetailsInputAttrs): InspireTenantApiServiceDto.UserDetailsResult {
+  }: InspireTenantApiServiceTenantsDto.GetTenantUserDetailsInputAttrs): InspireTenantApiServiceTenantsDto.UserDetailsResult {
     const responseOrError =
       await this.httpClient.get<InspireTenantApiService.UserDetailsHttpResponse>(
         this.GET_USER_DETAILS_URL,
@@ -175,22 +197,27 @@ export class InspireTenantApiService implements IInspireTenantApiService {
 }
 
 export namespace InspireTenantApiService {
-  export type FindAllHttpResponse =
-    InspireHttpPaginatedResponse<InspireTenantApiServiceDto.Tenants>;
+  // Tenants
+  export type FindAllTenantsHttpResponse =
+    InspireHttpPaginatedResponse<InspireTenantApiServiceTenantsDto.Tenants>;
 
-  export type FindOneHttpResponse =
-    InspireHttpResponse<InspireTenantApiServiceDto.Tenant>;
+  export type FindOneTenantHttpResponse =
+    InspireHttpResponse<InspireTenantApiServiceTenantsDto.Tenant>;
 
-  export type CreateHttpResponse =
-    InspireHttpResponse<InspireTenantApiServiceDto.Tenant>;
+  export type CreateTenantHttpResponse =
+    InspireHttpResponse<InspireTenantApiServiceTenantsDto.Tenant>;
+
+  // Admin users
+  export type FindOneAdminUserHttpResponse =
+    InspireHttpResponse<InspireTenantApiServiceAdminUsersDto.AdminUser>;
 
   // Deprecated below -------------------------------------
   export type UserDetailsHttpResponse =
-    InspireHttpResponse<InspireTenantApiServiceDto.TenantUserUserDetails>;
+    InspireHttpResponse<InspireTenantApiServiceTenantsDto.TenantUserUserDetails>;
 
   export type TenantDetailsHttpResponse =
-    InspireHttpResponse<InspireTenantApiServiceDto.TenantDetails>;
+    InspireHttpResponse<InspireTenantApiServiceTenantsDto.TenantDetails>;
 
   export type InspireUserResponse =
-    InspireHttpPaginatedResponse<InspireTenantApiServiceDto.TenantUserUserDetails>;
+    InspireHttpPaginatedResponse<InspireTenantApiServiceTenantsDto.TenantUserUserDetails>;
 }

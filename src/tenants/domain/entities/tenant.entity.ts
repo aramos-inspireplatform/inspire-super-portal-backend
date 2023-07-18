@@ -1,30 +1,33 @@
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import { InstanceProperties } from '~/shared/types/class-properties.type';
 import { TenantStatus } from '~/tenants/domain/entities/tenant-statuses.entity';
+import { RecurringInterval } from '~/tenants/domain/entities/recurring-intervals.entity';
+import { TenantPayoutsEntity } from '~/payouts/domain/entities/tenant-payouts.entity';
+import { TenantBalancesEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 
 export class Tenant extends BaseDomainEntity {
   name: string;
-
-  integrationCode: string;
-
-  tenantId: string;
-
-  createdByUserId: string;
-
-  createdByUserEmail: string;
-
+  googleTenantId: string;
+  agencyId: string;
+  agencyName: string;
+  termsRecurringIntervalCount: number;
+  termsRecurringInterval: RecurringInterval;
   tenantStatus: TenantStatus;
-
-  slug?: string;
+  totalPaidAmount: number;
+  lastTenantPayout: TenantPayoutsEntity;
+  tenantBalances: TenantBalancesEntity[];
 
   constructor(attrs: InstanceProperties<Tenant>) {
     super(attrs);
-    this.name = attrs?.name;
-    this.integrationCode = attrs?.integrationCode;
-    this.tenantId = attrs?.tenantId;
-    this.createdByUserId = attrs?.createdByUserId;
-    this.createdByUserEmail = attrs?.createdByUserEmail;
-    this.tenantStatus = attrs?.tenantStatus;
-    this.slug = attrs?.slug;
+    this.name = attrs.name;
+    this.googleTenantId = attrs.googleTenantId;
+    this.agencyId = attrs.agencyId;
+    this.agencyName = attrs.agencyName;
+    this.termsRecurringIntervalCount = attrs.termsRecurringIntervalCount;
+    this.termsRecurringInterval = attrs.termsRecurringInterval;
+    this.tenantStatus = attrs.tenantStatus;
+    this.totalPaidAmount = attrs.totalPaidAmount;
+    this.lastTenantPayout = attrs.lastTenantPayout;
+    this.tenantBalances = attrs.tenantBalances;
   }
 }

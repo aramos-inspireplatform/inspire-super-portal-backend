@@ -62,7 +62,9 @@ export class TenantsRepository implements ITenantRepository {
     const tenant = await this.repository
       .createQueryBuilder('tenants')
       .leftJoinAndSelect('tenants.tenantStatus', 'tenantStatus')
-      .where('tenants.tenantId = :gTenantId', { gTenantId: attrs.gTenantId })
+      .where('tenants.googleTenantId = :gTenantId', {
+        gTenantId: attrs.gTenantId,
+      })
       .getOne();
 
     return tenant ? new Tenant(tenant) : null;
