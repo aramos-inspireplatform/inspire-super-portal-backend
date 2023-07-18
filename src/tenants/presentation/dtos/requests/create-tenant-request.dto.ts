@@ -69,6 +69,6 @@ export class CreateTenantRequestBodyDto {
     example: 'cd44a946-bfdd-4370-b2cc-1b3f0df311fd',
     required: true,
   })
-  @IsMongoId()
+  @IsNotEmpty()
   termsRecurringIntervalId: string;
 }
