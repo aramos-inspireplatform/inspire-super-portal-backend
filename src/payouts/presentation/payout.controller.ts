@@ -8,8 +8,9 @@ import {
   Req,
   Param,
   ParseUUIDPipe,
+  Put,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiPropertyOptional, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
@@ -29,6 +30,9 @@ import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticat
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { FindOnePayoutInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout.input.dto';
 import { FindAllTenantPayoutsPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-tenant-payouts-paged.output';
+import { CreatePayoutInputDto } from '~/payouts/presentation/dtos/requests/create-payout.input.dto';
+import { CreatePayoutParamsDto } from '~/payouts/presentation/dtos/requests/create-payout.params.dto';
+import { CreatePayoutCommand } from '~/payouts/application/commands';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
@@ -43,6 +47,8 @@ export class PayoutController {
     private readonly findOnePayoutSummaryQuery: FindOnePayoutSummaryQuery,
     @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_PREVIEW_QUERY)
     private readonly findOnePayoutSummaryPreviewQuery: FindOnePayoutSummaryPreviewQuery,
+    @Inject(PayoutProvidersSymbols.CREATE_PAYOUT_COMMAND)
+    private readonly createPayoutCommand: CreatePayoutCommand,
   ) {}
 
   @Get()
@@ -119,5 +125,26 @@ export class PayoutController {
       });
 
     return payoutSummaryPreview;
+  }
+
+  @Put(':payoutId?')
+  @AuthenticatedRoute()
+  async create(
+    @Req() request: FastifyRequest,
+    @Param() { payoutId }: CreatePayoutParamsDto,
+    @Body() inputDto: CreatePayoutInputDto,
+  ) {
+    return this.createPayoutCommand.execute({
+      payoutId,
+      accessToken: request.headers.authorization,
+      gTenantId: inputDto.gTenantId,
+      command: inputDto.command,
+      periodStartDate: inputDto.periodStartDate,
+      periodEndDate: inputDto.periodEndDate,
+      selectedPayments: inputDto.selectedPayments,
+      adjustmentFees: inputDto.adjustmentFees,
+      termsRecurringIntervalCount: inputDto.termsRecurringIntervalCount,
+      termsRecurringIntervalId: inputDto.termsRecurringIntervalId,
+    });
   }
 }

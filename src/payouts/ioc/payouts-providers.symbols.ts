@@ -45,4 +45,5 @@ export const PayoutProvidersSymbols = {
   FIND_ONE_PAYOUT_SUMMARY_PREVIEW_DAO: Symbol(
     'FIND_ONE_PAYOUT_SUMMARY_PREVIEW_DAO',
   ),
+  CREATE_PAYOUT_COMMAND: Symbol('CREATE_PAYOUT_COMMAND'),
 } as const;

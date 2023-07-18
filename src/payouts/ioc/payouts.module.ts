@@ -28,6 +28,7 @@ import { FindAllPaymentsPeriodDaoFactoryProvider } from '~/payouts/ioc/providers
 import { FindAllPaymentsPeriodQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payments-period-query-factory.provider';
 import { FindAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-payments-paged-query-factory.provider';
 import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutments-query-factory.provider';
+import { CreatePayoutCommandFactoryProvider } from '~/payouts/ioc/providers/commands/create-payout-command-factory.provider';
 
 @Module({
   providers: [
@@ -56,6 +57,7 @@ import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/prov
     FindOneTenantDaoFactoryProvider.register(),
     FindAllPaymentsPeriodPagedQueryFactoryProvider.register(),
     FindOneCurrencyDaoFactoryProvider.register(),
+    CreatePayoutCommandFactoryProvider.register(),
   ],
   controllers: [
     PayoutController,
