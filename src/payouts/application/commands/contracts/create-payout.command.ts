@@ -23,11 +23,9 @@ export namespace ICreatePayoutCommand {
     command: CreatePayoutCommandType;
     periodStartDate: Date;
     periodEndDate: Date;
-    termsRecurringIntervalCount: number;
-    termsRecurringIntervalId: string;
     selectedPayments: string[];
     adjustmentFees: AdjustmentFee[];
     selectAllPayments: boolean;
   };
-  export type Output = void;
+  export type Output = any;
 }

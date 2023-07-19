@@ -234,7 +234,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
         },
       },
     );
-    return result.data;
+    return result.data.body.data;
   }
 }
 

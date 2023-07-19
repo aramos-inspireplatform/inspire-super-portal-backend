@@ -31,22 +31,6 @@ export class CreatePayoutInputDto {
   gTenantId: string;
 
   @ApiProperty({
-    example: 10,
-    required: true,
-  })
-  @IsNotEmpty()
-  @IsNumber()
-  termsRecurringIntervalCount: number;
-
-  @ApiProperty({
-    example: '7fcd36e4-3fec-4033-8a07-d95cd193fc7a',
-    required: true,
-  })
-  @IsNotEmpty()
-  @IsUUID()
-  termsRecurringIntervalId: string;
-
-  @ApiProperty({
     example: CreatePayoutCommandType.DRAFT,
     required: true,
   })

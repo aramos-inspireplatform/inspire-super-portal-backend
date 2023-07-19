@@ -21,5 +21,26 @@ export namespace CreatePayoutDto {
     selectAllPayments: boolean;
   };
 
-  export type Result = Promise<void>;
+  export type Response = {
+    id: string;
+    alternativeId: number;
+    statusId: string;
+    periodStartDate: Date;
+    periodEndDate: Date;
+    amount: number;
+    termsRecurringIntervalCount: number;
+    termsRecurringIntervalId: string;
+    customerGrossAmount: number;
+    customerFeeAmount: number;
+    paymentGatewayNetAmount: number;
+    settlementCurrencyId: string;
+    processedDate: Date;
+    processorUserId: string;
+    createdDate: Date;
+    creatorUserId: string;
+    updatedDate: Date;
+    updaterUserId: string;
+  };
+
+  export type Result = Promise<Response>;
 }

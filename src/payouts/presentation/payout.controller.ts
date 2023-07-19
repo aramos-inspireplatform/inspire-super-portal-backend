@@ -33,6 +33,7 @@ import { FindAllTenantPayoutsPagedOutputDto } from '~/payouts/presentation/dtos/
 import { CreatePayoutInputDto } from '~/payouts/presentation/dtos/requests/create-payout.input.dto';
 import { CreatePayoutParamsDto } from '~/payouts/presentation/dtos/requests/create-payout.params.dto';
 import { CreatePayoutCommand } from '~/payouts/application/commands';
+import { CreatePayoutOutputDto } from '~/payouts/presentation/dtos/responses/create-payout.output';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
@@ -129,6 +130,7 @@ export class PayoutController {
 
   @Put(':payoutId?')
   @AuthenticatedRoute()
+  @ApiOkResponse({ type: CreatePayoutOutputDto })
   async create(
     @Req() request: FastifyRequest,
     @Param() { payoutId }: CreatePayoutParamsDto,
@@ -143,8 +145,6 @@ export class PayoutController {
       periodEndDate: inputDto.periodEndDate,
       selectedPayments: inputDto.selectedPayments,
       adjustmentFees: inputDto.adjustmentFees,
-      termsRecurringIntervalCount: inputDto.termsRecurringIntervalCount,
-      termsRecurringIntervalId: inputDto.termsRecurringIntervalId,
       selectAllPayments: inputDto.selectAllPayments,
     });
   }
