@@ -27,5 +27,5 @@ export namespace ICreatePayoutCommand {
     adjustmentFees: AdjustmentFee[];
     selectAllPayments: boolean;
   };
-  export type Output = any;
+  export type Output = { id: string };
 }
