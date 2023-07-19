@@ -6,6 +6,8 @@ import {
   IsUUID,
   IsString,
   IsNumber,
+  MaxLength,
+  Min,
 } from 'class-validator';
 
 export class CreatePayoutAdjustmentFeeInputDto {
@@ -23,16 +25,19 @@ export class CreatePayoutAdjustmentFeeInputDto {
   @ApiProperty({ example: 5.32 })
   @IsNotEmpty()
   @IsNumber()
+  @Min(0.1)
   amount: number;
 
   @ApiProperty({ example: 'Lorem Ipsum' })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
+  @MaxLength(300)
   note: string;
 
   @ApiProperty({ example: 'Lorem Ipsum' })
   @IsNotEmpty()
   @IsString()
+  @MaxLength(60)
   description: string;
 
   @ApiProperty({ example: '2023-06-01' })
