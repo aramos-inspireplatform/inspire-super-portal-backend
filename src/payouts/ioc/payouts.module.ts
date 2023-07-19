@@ -28,8 +28,9 @@ import { FindAllPaymentsPeriodDaoFactoryProvider } from '~/payouts/ioc/providers
 import { FindAllPaymentsPeriodQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payments-period-query-factory.provider';
 import { FindAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-payments-paged-query-factory.provider';
 import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutments-query-factory.provider';
-import { CreatePayoutBexsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/create-payout-bexs-query-factory.provider';
-import { CreatePayoutBexsDaoFactoryProvider } from '~/payouts/ioc/providers/daos/create-payout-bexs-dao-factory.provider';
+import { ReconciliationsController } from '~/payouts/presentation/reconciliations.controller';
+import { ReconcileStripeCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconcile-stripe-command-factory.provider';
+import { ReconcileBexsCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconcile-bexs-command-factory.provider';
 
 @Module({
   providers: [
@@ -58,8 +59,8 @@ import { CreatePayoutBexsDaoFactoryProvider } from '~/payouts/ioc/providers/daos
     FindOneTenantDaoFactoryProvider.register(),
     FindAllPaymentsPeriodPagedQueryFactoryProvider.register(),
     FindOneCurrencyDaoFactoryProvider.register(),
-    CreatePayoutBexsQueryFactoryProvider.register(),
-    CreatePayoutBexsDaoFactoryProvider.register(),
+    ReconcileStripeCommandFactoryProvider.register(),
+    ReconcileBexsCommandFactoryProvider.register(),
   ],
   controllers: [
     PayoutController,
@@ -67,6 +68,7 @@ import { CreatePayoutBexsDaoFactoryProvider } from '~/payouts/ioc/providers/daos
     PayoutPaymentsController,
     PayoutAdjustmentsController,
     PayoutAdjustmentTypesController,
+    ReconciliationsController,
   ],
 })
 export class PayoutsModule {}
