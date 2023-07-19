@@ -170,15 +170,21 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
   }
 
   async createPayoutBexs(attrs: ICreatePayoutBexsDao.Input) {
-    const url = `${this.PAYOUT_API_BASE_URL}/payments/bexs`;
-
-    const file = await this.httpClient.get<any>(url, {
-      headers: {
-        authorization: attrs.accessToken,
-        tenant: attrs.gTenantId,
-        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+    const url = `${this.PAYOUT_API_BASE_URL}/payments/bexs?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}`;
+    const file = await this.httpClient.post<any>(
+      url,
+      {
+        file: attrs.file,
       },
-    });
+      {
+        headers: {
+          authorization: attrs.accessToken,
+          tenant: attrs.gTenantId,
+          'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+          'content-type': 'multipart/form-data',
+        },
+      },
+    );
 
     return file.data.body.data;
   }
