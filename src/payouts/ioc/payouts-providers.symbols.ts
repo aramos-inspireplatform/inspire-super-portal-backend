@@ -45,4 +45,5 @@ export const PayoutProvidersSymbols = {
   FIND_ONE_PAYOUT_SUMMARY_PREVIEW_DAO: Symbol(
     'FIND_ONE_PAYOUT_SUMMARY_PREVIEW_DAO',
   ),
+  RECONCILE_STRIPE_COMMAND: Symbol('RECONCILE_STRIPE_COMMAND'),
 } as const;
