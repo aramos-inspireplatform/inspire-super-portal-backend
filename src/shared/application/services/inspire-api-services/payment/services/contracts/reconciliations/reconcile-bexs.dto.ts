@@ -1,13 +1,12 @@
-import { MultipartFile } from '@fastify/multipart';
-
 export namespace ReconcileBexsDto {
   export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
     periodStartDate: Date;
     periodEndDate: Date;
-    file: MultipartFile;
+    filename: string;
+    buffer: Buffer;
   };
 
-  export type Result = Promise<void>;
+  export type Result = Promise<boolean>;
 }

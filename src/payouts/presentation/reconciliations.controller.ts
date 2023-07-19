@@ -4,6 +4,7 @@ import {
   Controller,
   Inject,
   Post,
+  Query,
   Req,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
@@ -47,7 +48,7 @@ export class ReconciliationsController {
   @ApiOkResponse()
   async reconcileBexs(
     @Req() request: FastifyRequest,
-    @Body() inputDto: ReconcileBexsInputDto,
+    @Query() inputDto: ReconcileBexsInputDto,
   ) {
     const file = await request.file({
       limits: { fileSize: 1024 * 1024 * 5 }, // Limit 5mb

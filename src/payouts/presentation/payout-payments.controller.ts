@@ -38,8 +38,6 @@ export class PayoutPaymentsController {
     private readonly findAllPaymentsPeriodQuery: IFindAllPaymentsPeriodQuery,
     @Inject(PayoutProvidersSymbols.FIND_ALL_PAYOUT_PAYMENTS_PAGED_QUERY)
     private readonly findAllPayoutPaymentsPagedQuery: IFindAllPayoutPaymentsPagedQuery,
-    @Inject(PayoutProvidersSymbols.CREATE_PAYOUT_BEXS_QUERY)
-    private readonly createPayoutBexsQuery: ICreatePayoutBexsQuery,
   ) {}
 
   @Get('/payments/period')
@@ -101,31 +99,5 @@ export class PayoutPaymentsController {
     });
 
     return payments;
-  }
-
-  @Post('/payments/bexs')
-  @AuthenticatedRoute()
-  @ApiOkResponse()
-  async createPayoutBexs(
-    @Req() request: FastifyRequest,
-    @Query() inputDto: CreatePayoutBexsInputDto,
-  ) {
-    const file = await request.file({
-      limits: { fileSize: 1024 * 1024 * 5 }, //Limit 5mb
-    });
-
-    if (!file) {
-      throw new BadRequestException('File is required');
-    }
-    const buffer = await file.toBuffer();
-
-    const response = await this.createPayoutBexsQuery.execute({
-      accessToken: request.headers.authorization,
-      gTenantId: inputDto.gTenantId,
-      periodStartDate: inputDto.periodStartDate,
-      periodEndDate: inputDto.periodEndDate,
-      file: buffer,
-    });
-    return response;
   }
 }
