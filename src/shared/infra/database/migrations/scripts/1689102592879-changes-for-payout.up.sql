@@ -106,8 +106,6 @@ COMMENT ON COLUMN public.users.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.users.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.users OWNER TO postgres;
--- ddl-end --
 
 CREATE TABLE public.recurring_intervals (
 	id uuid NOT NULL,
@@ -136,8 +134,6 @@ COMMENT ON COLUMN public.recurring_intervals.created_date IS E'The date of creat
 COMMENT ON COLUMN public.recurring_intervals.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.recurring_intervals.deleted_date IS E'The date of delete. Used by the soft delete.';
--- ddl-end --
-ALTER TABLE public.recurring_intervals OWNER TO postgres;
 -- ddl-end --
 
 INSERT INTO recurring_intervals (id, "name", "interval", is_active, created_date, updated_date, deleted_date) VALUES('cd44a946-bfdd-4370-b2cc-1b3f0df311fd', 'Daily', 'day', true, CURRENT_TIMESTAMP, NULL, NULL);
@@ -213,8 +209,6 @@ COMMENT ON COLUMN public.tenant_balances.updated_date IS E'The date of last upda
 -- ddl-end --
 COMMENT ON COLUMN public.tenant_balances.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.tenant_balances OWNER TO postgres;
--- ddl-end --
 
 CREATE TABLE public.currencies (
 	id uuid NOT NULL,
@@ -243,8 +237,6 @@ COMMENT ON COLUMN public.currencies.created_date IS E'The date of create.';
 COMMENT ON COLUMN public.currencies.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.currencies.deleted_date IS E'The date of delete. Used by the soft delete.';
--- ddl-end --
-ALTER TABLE public.currencies OWNER TO postgres;
 -- ddl-end --
 
 INSERT INTO currencies (id, "name", symbol, iso_code, created_date, updated_date, deleted_date) VALUES('0cea1993-1b24-41e7-88dc-5a330f1f5af1', 'Algerian dinar', 'د.ج ', 'DZD', CURRENT_TIMESTAMP, NULL, NULL);
@@ -367,8 +359,6 @@ COMMENT ON COLUMN public.tenant_payouts.updated_date IS E'The date of last updat
 -- ddl-end --
 COMMENT ON COLUMN public.tenant_payouts.deleted_date IS E'The date of delete. Used by the soft delete.';
 -- ddl-end --
-ALTER TABLE public.tenant_payouts OWNER TO postgres;
--- ddl-end --
 
 CREATE TABLE public.payout_statuses (
 	id uuid NOT NULL,
@@ -394,8 +384,6 @@ COMMENT ON COLUMN public.payout_statuses.created_date IS E'The date of create.';
 COMMENT ON COLUMN public.payout_statuses.updated_date IS E'The date of last update.';
 -- ddl-end --
 COMMENT ON COLUMN public.payout_statuses.deleted_date IS E'The date of delete. Used by the soft delete.';
--- ddl-end --
-ALTER TABLE public.payout_statuses OWNER TO postgres;
 -- ddl-end --
 
 CREATE UNIQUE INDEX idx__uq__payout_statuses ON public.payout_statuses
