@@ -21,8 +21,11 @@ export class ReconcileBexsCommand implements IReconcileBexsCommand {
     const buffer = await attrs.file.toBuffer();
 
     await this.inspirePaymentService.reconcileBexs({
+      accessToken: attrs.accessToken,
+      gTenantId: attrs.gTenantId,
+      periodStartDate: attrs.periodStartDate,
+      periodEndDate: attrs.periodEndDate,
       buffer,
-      ...attrs,
     });
   }
 }
