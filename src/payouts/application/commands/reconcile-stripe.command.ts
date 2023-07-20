@@ -10,7 +10,10 @@ export class ReconcileStripeCommand implements IReconcileStripeCommand {
     attrs: IReconcileStripeCommand.Input,
   ): IReconcileStripeCommand.Output {
     await this.inspirePaymentService.reconcileStripe({
-      ...attrs,
+      accessToken: attrs.accessToken,
+      gTenantId: attrs.gTenantId,
+      periodStartDate: attrs.periodStartDate,
+      periodEndDate: attrs.periodEndDate,
     });
   }
 }
