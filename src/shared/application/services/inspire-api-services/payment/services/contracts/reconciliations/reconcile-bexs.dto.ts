@@ -4,7 +4,6 @@ export namespace ReconcileBexsDto {
     gTenantId: string;
     periodStartDate: Date;
     periodEndDate: Date;
-    filename: string;
     buffer: Buffer;
   };
 

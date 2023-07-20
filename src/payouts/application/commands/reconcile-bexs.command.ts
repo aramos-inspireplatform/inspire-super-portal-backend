@@ -10,10 +10,8 @@ export class ReconcileBexsCommand implements IReconcileBexsCommand {
     attrs: IReconcileBexsCommand.Input,
   ): IReconcileBexsCommand.Output {
     const buffer = await attrs.file.toBuffer();
-    console.log(attrs.file.filename);
     await this.inspirePaymentService.reconcileBexs({
       buffer,
-      filename: attrs.file.filename,
       ...attrs,
     });
   }

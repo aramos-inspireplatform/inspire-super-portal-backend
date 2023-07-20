@@ -219,7 +219,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
   async reconcileBexs(
     attrs: ReconcileBexsDto.InputAttrs,
   ): ReconcileBexsDto.Result {
-    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations/bexs?fileName=${attrs.filename}&periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}`;
+    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations/bexs?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}`;
 
     const reconcileBexs = await this.httpClient.post<any>(
       url,
