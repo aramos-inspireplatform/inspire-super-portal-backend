@@ -54,10 +54,6 @@ export class ReconciliationsController {
       limits: { fileSize: 1024 * 1024 * 5 }, // Limit 5mb
     });
 
-    if (!file) {
-      throw new BadRequestException('File is required');
-    }
-
     await this.reconcileBexsCommand.execute({
       accessToken: request.headers.authorization,
       gTenantId: inputDto.gTenantId,
