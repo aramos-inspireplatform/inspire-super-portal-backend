@@ -22,7 +22,6 @@ async function bootstrap() {
       snapshot: true,
     },
   );
-
   usePipesFactory(app);
   useGlobalInterceptors(app);
   corstFactory(app);

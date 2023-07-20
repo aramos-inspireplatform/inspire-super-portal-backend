@@ -78,6 +78,31 @@ export class AxiosHttpClientAdapter implements IHttpClient {
     }
   }
 
+  async put<TResponse, TConfig = any>(
+    url: string,
+    data?: any,
+    config?: TConfig,
+  ): Promise<IHttpClient.HttpClientResponse<TResponse>> {
+    try {
+      console.log('data', config);
+      const response = await firstValueFrom(
+        this.httpService.put(url, data, config),
+      );
+      return response;
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      this.logError(axiosError, 'put');
+      throw new HttpException(
+        (axiosError?.response?.data as any).body,
+        axiosError?.response?.status,
+        {
+          cause: axiosError?.cause,
+          description: axiosError?.name,
+        },
+      );
+    }
+  }
+
   private logError(error: any, method: string) {
     Logger.error(
       JSON.stringify(error, null, 4),
