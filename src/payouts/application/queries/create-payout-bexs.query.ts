@@ -14,7 +14,6 @@ export class CreatePayoutBexsQuery implements ICreatePayoutBexsQuery {
       periodEndDate: attrs.periodEndDate,
       file: attrs.file,
     });
-    //if (file instanceof Error) throw file;
 
     return file;
   }
