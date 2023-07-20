@@ -24,6 +24,12 @@ export type IHttpClient = {
     config?: TConfig,
   ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 
+  put<TResponse = any, TConfig = ReqConfig>(
+    url: string,
+    data?: any,
+    config?: TConfig,
+  ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
+
   // TODO: implements when need
 
   // delete<TResponse = any, TConfig = ReqConfig>(
@@ -33,12 +39,6 @@ export type IHttpClient = {
 
   // head<TResponse = any, TConfig = ReqConfig>(
   //   url: string,
-  //   config?: TConfig,
-  // ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
-
-  // put<TResponse = any, TConfig = ReqConfig>(
-  //   url: string,
-  //   data?: any,
   //   config?: TConfig,
   // ): Promise<IHttpClient.HttpClientResponse<TResponse>>;
 };

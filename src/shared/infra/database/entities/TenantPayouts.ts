@@ -20,6 +20,30 @@ export class TenantPayouts extends BaseEntity {
   @Column('bigint', { name: 'payout_alternative_id' })
   payoutAlternativeId: number;
 
+  @Column('uuid', { name: 'creator_users_id' })
+  creatorUserId: string;
+
+  @Column('uuid', { name: 'updater_users_id' })
+  updaterUserId: string;
+
+  @Column('uuid', { name: 'deleter_users_id' })
+  deleterUserId: string;
+
+  @Column('uuid', { name: 'processor_users_id' })
+  processorUserId: string;
+
+  @Column('uuid', { name: 'tenants_id' })
+  tenantId: string;
+
+  @Column('uuid', { name: 'settlement_currencies_id' })
+  settlementCurrencyId: string;
+
+  @Column('uuid', { name: 'payout_statuses_id' })
+  statusId: string;
+
+  @Column('uuid', { name: 'terms_recurring_intervals_id' })
+  termsRecurringIntervalId: string;
+
   @Column('date', { name: 'period_start_date' })
   periodStartDate: Date;
 

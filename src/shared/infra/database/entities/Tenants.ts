@@ -29,6 +29,12 @@ export class Tenants extends BaseEntity {
   @Column('uuid', { name: 'agencies_id', nullable: true })
   agencyId: string | null;
 
+  @Column('uuid', { name: 'terms_recurring_intervals_id', nullable: true })
+  termsRecurringIntervalId: string;
+
+  @Column('uuid', { name: 'tenant_statuses_id', nullable: true })
+  statusId: string;
+
   @Column('character varying', {
     name: 'agency_name',
     nullable: true,
