@@ -5,7 +5,7 @@ import { InspireTenantApiServiceTenantsDto } from '~/shared/application/services
 export interface IInspireTenantApiService {
   // Tenants
   findAllTenants(
-    attrs: InspireTenantApiServiceTenantsDto.FindAllTenantsInputAttrs,
+    attrs: InspireTenantApiServiceTenantsDto.FindAllInputAttrs,
   ): InspireTenantApiServiceTenantsDto.FindAllTenantsResult;
 
   findOneTenant(
