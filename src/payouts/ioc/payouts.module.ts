@@ -31,9 +31,12 @@ import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/prov
 import { ReconciliationsController } from '~/payouts/presentation/reconciliations.controller';
 import { ReconcileStripeCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconcile-stripe-command-factory.provider';
 import { ReconcileBexsCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconcile-bexs-command-factory.provider';
+import { CreatePayoutCommandFactoryProvider } from '~/payouts/ioc/providers/commands/create-payout-command-factory.provider';
+import { repositoryProviders } from '~/payouts/ioc/providers/repositories/repository.provider';
 
 @Module({
   providers: [
+    ...repositoryProviders,
     FindAllPaymentsPeriodPagedQueryFactoryProvider.register(),
     FindAllPaymentsPeriodPagedDaoFactoryProvider.register(),
     FindAllPaymentsPeriodQueryFactoryProvider.register(),
@@ -61,6 +64,7 @@ import { ReconcileBexsCommandFactoryProvider } from '~/payouts/ioc/providers/com
     FindOneCurrencyDaoFactoryProvider.register(),
     ReconcileStripeCommandFactoryProvider.register(),
     ReconcileBexsCommandFactoryProvider.register(),
+    CreatePayoutCommandFactoryProvider.register(),
   ],
   controllers: [
     PayoutController,

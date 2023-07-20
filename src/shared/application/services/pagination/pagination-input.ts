@@ -29,8 +29,8 @@ export class PaginationInput {
   }
 
   validate() {
-    if (this.getSize() > 50)
-      throw new Error('Page size should be less than 50.');
+    if (this.getSize() > 100)
+      throw new Error('Page size should be less than 100.');
   }
 
   take(): number {
