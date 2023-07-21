@@ -1,4 +1,4 @@
-import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 
 export class ListAllRequestsUseCase {
   constructor(private readonly requestRepository: IRequestRepository) {}

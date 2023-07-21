@@ -1,5 +1,5 @@
 import { NotFoundException } from '@nestjs/common';
-import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
+import { IRequestModuleRepository } from '~/requests/domain/repositories/request-module-repository.contract';
 
 export class ListOneRequestModuleUseCase {
   constructor(

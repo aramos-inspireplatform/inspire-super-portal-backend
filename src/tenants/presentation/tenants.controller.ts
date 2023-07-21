@@ -4,91 +4,88 @@ import {
   Get,
   Inject,
   Param,
-  ParseUUIDPipe,
   Post,
   Query,
   Req,
 } from '@nestjs/common';
-import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
+import { ApiDefaultResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
+import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
+import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
+import { FindOneTenantQuery } from '~/tenants/application/queries/find-one-tenant.query';
+import { FindAllTenantsQuery } from '~/tenants/application/queries/find-all-tenants.query';
+import { FindAllTenantsOutput } from '~/tenants/presentation/dtos/responses/find-all-tenants.output';
+import { FindTenantOutput } from '~/tenants/presentation/dtos/responses/find-tenant.output';
 import {
   GetUserFromRequest,
   UserFromRequest,
 } from '~/shared/presentation/decorators/get-user-from-request';
-import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import { CreateTenantUseCase } from '~/tenants/application/use-case/create-tenant.use-case';
-import { FindTenantUseCase } from '~/tenants/application/use-case/find-tenant.use-case';
-import { ListAllTenantsUseCase } from '~/tenants/application/use-case/list-all-tenants.use-case';
-import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
-import { CreateTenantRequestBodyDto } from '~/tenants/presentation/dto/input/create-tenant-request.dto';
-import { PaginatedTenantsResponseDto } from '~/tenants/presentation/dto/output/paginated-tenants-response.dto';
-import { GetTenantResponseDto } from '~/tenants/presentation/dto/output/tenant-response.dto';
-import { ListTenantsResponseDto } from './dto/output/list-tenant-response.dto';
+import { CreateTenantRequestBodyDto } from '~/tenants/presentation/dtos/requests/create-tenant-request.dto';
+import { CreateTenantCommand } from '~/tenants/application/commands/create-tenant.command';
 
-@Controller('tenants')
+@Controller('/tenants')
 @ApiTags('Tenants')
 @CustomApiExtraModels()
 export class TenantsController {
   constructor(
-    @Inject(TenantProvidersSymbols.CREATE_TENANT_USE_CASE)
-    private readonly createTenantUseCase: CreateTenantUseCase,
-    @Inject(TenantProvidersSymbols.LIST_TENANTS_USE_CASE)
-    private readonly listAllTenantsUseCase: ListAllTenantsUseCase,
-    @Inject(TenantProvidersSymbols.FIND_TENANT_USE_CASE)
-    private readonly findTenantUseCase: FindTenantUseCase,
+    @Inject(TenantProvidersSymbols.FIND_ALL_TENANTS_QUERY)
+    private readonly findAllTenantQuery: FindAllTenantsQuery,
+    @Inject(TenantProvidersSymbols.FIND_ONE_TENANT_QUERY)
+    private readonly findTenantQuery: FindOneTenantQuery,
+    @Inject(TenantProvidersSymbols.CREATE_TENANT_COMMAND)
+    private readonly createTenantCommand: CreateTenantCommand,
   ) {}
-
-  @Post()
-  @AuthenticatedRoute()
-  @ApiDefaultResponse({ type: GetTenantResponseDto })
-  async createTenant(
-    @Body() payload: CreateTenantRequestBodyDto,
-    @Req() request: FastifyRequest,
-    @GetUserFromRequest() user: UserFromRequest,
-  ) {
-    const tenant = await this.createTenantUseCase.create({
-      accessToken: request.headers.authorization,
-      tenant: payload,
-      currentUser: user.claims.userId,
-    });
-    return GetTenantResponseDto.factory(GetTenantResponseDto, tenant);
-  }
 
   @Get()
   @AuthenticatedRoute()
-  @ApiDefaultResponse({ type: PaginatedTenantsResponseDto })
-  async listAll(
+  @ApiOkResponse({ type: FindAllTenantsOutput })
+  async findAll(
     @Req() request: FastifyRequest,
-    @Query() pagination: CommonPaginateDto,
+    @Query() paginationDto: CommonPaginateDto,
   ) {
-    const tenants = await this.listAllTenantsUseCase.list({
+    const tenants = await this.findAllTenantQuery.execute({
       accessToken: request.headers.authorization,
       pagination: {
-        ...pagination,
-        pageSize: pagination.pagesize,
+        ...paginationDto,
+        pageSize: paginationDto.pagesize,
       },
     });
-    return new PaginatedTenantsResponseDto(
-      ListTenantsResponseDto.factory(ListTenantsResponseDto, tenants.rows),
-      tenants.count,
-      tenants.page,
-      tenants.pageSize,
-    );
+
+    return tenants;
   }
 
-  @Get(':id')
+  @Get(':gTenantId')
   @AuthenticatedRoute()
-  @ApiDefaultResponse({ type: GetTenantResponseDto })
+  @ApiOkResponse({ type: FindTenantOutput })
   async findOne(
     @Req() request: FastifyRequest,
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('gTenantId') gTenantId: string,
   ) {
-    const tenant = await this.findTenantUseCase.find({
+    const tenant = await this.findTenantQuery.execute({
       accessToken: request.headers.authorization,
-      tenantId: id,
+      gTenantId,
     });
-    return GetTenantResponseDto.factory(GetTenantResponseDto, tenant);
+
+    return tenant;
+  }
+
+  @Post()
+  @AuthenticatedRoute()
+  @ApiDefaultResponse({ type: FindTenantOutput })
+  async create(
+    @Body() createDto: CreateTenantRequestBodyDto,
+    @Req() request: FastifyRequest,
+    @GetUserFromRequest() user: UserFromRequest,
+  ) {
+    const tenant = await this.createTenantCommand.execute({
+      accessToken: request.headers.authorization,
+      tenant: createDto,
+      currentUserId: user.claims.userId,
+      currentUserEmail: user.claims.email,
+    });
+
+    return tenant;
   }
 }

@@ -1,9 +1,9 @@
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
 import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
-import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
-import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import { IRequestModuleRepository } from '~/requests/domain/repositories/request-module-repository.contract';
+import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
 
@@ -13,7 +13,7 @@ export class ModuleRequestBatchUseCase {
   constructor(
     private readonly requestModuleRepository: IRequestModuleRepository,
     private readonly requestRepository: IRequestRepository,
-    private readonly inspireTenantService: IInspireTenantService,
+    private readonly inspireTenantService: IInspireTenantApiService,
     protected readonly httpClient: IHttpClient,
   ) {}
 

@@ -6,7 +6,7 @@ import { RequestModuleStatus } from '~/requests/domain/entities/request-modules-
 import { RequestModules } from '~/requests/domain/entities/request-modules.entity';
 import { RequestStatus } from '~/requests/domain/entities/request-status.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
-import { Tenant } from '~/tenants/domain/entity/tenant.entity';
+import { Tenant } from '~/tenants/domain/entities/tenant.entity';
 
 export type RequestAttrs = {
   id?: string;

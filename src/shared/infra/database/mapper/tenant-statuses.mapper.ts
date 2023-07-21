@@ -1,6 +1,6 @@
 import { TenantStatuses } from '~/shared/infra/database/entities';
 import { IMapper } from '~/shared/infra/database/mapper/mapper';
-import { TenantStatus } from '~/tenants/domain/entity/tenant-statuses.entity';
+import { TenantStatus } from '~/tenants/domain/entities/tenant-statuses.entity';
 
 export const TenantStatusesMapper: IMapper<TenantStatus, TenantStatuses> = {
   domainToModel: (domain: TenantStatus): TenantStatuses => {

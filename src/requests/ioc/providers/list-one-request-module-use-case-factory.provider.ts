@@ -1,8 +1,8 @@
 import { FactoryProvider } from '@nestjs/common';
 import { ListOneRequestModuleUseCase } from '~/requests/application/list-one-request-modules.use-case';
-import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
+import { IRequestModuleRepository } from '~/requests/domain/repositories/request-module-repository.contract';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
-import { RequestModulesRepository } from '~/shared/infra/database/repositories/request-modules.repository';
+import { RequestModulesRepository } from '~/requests/infra/repositories/request-modules.repository';
 
 export class ListOneRequestModuleUseCaseFactoryProvider {
   static register(): FactoryProvider {

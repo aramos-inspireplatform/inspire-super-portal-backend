@@ -1,4 +1,4 @@
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
 import { ModuleRequestStatusesIds } from '~/requests/domain/constants/request-module-status-ids.constant';
 import { RequestModuleAttempts } from '~/requests/domain/entities/request-module-attempts.entity';
@@ -6,17 +6,18 @@ import { RequestModules } from '~/requests/domain/entities/request-modules.entit
 import { Request } from '~/requests/domain/entities/request.entity';
 import { CanOnlyReAttemptCanceledModuleRequest } from '~/requests/domain/exceptions/can-only-re-attempt-canceled-module-request.exception';
 import { RequestModuleNotFoundException } from '~/requests/domain/exceptions/request-module-not-found.exception';
-import { IRequestModuleRepository } from '~/requests/infra/contracts/repository/request-module-repository.contract';
-import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import { IRequestModuleRepository } from '~/requests/domain/repositories/request-module-repository.contract';
+import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
+import { InspireTenantApiServiceDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.dto';
 
 export class ReAttemptRequestModuleUseCase {
   constructor(
     private readonly requestModulesRepository: IRequestModuleRepository,
     private readonly httpClient: IHttpClient,
     private readonly requestRepository: IRequestRepository,
-    private readonly inspireTenantService: IInspireTenantService,
+    private readonly inspireTenantService: IInspireTenantApiService,
   ) {}
 
   async handle(attrs: ReAttemptRequestModuleUseCase.InputAttrs) {
@@ -61,7 +62,7 @@ export class ReAttemptRequestModuleUseCase {
     request: Request;
     requestModuleAttempt: RequestModuleAttempts;
     requestModule: RequestModules;
-    tenantDetails: IInspireTenantService.TenantDetails;
+    tenantDetails: InspireTenantApiServiceDto.TenantDetails;
     accessToken: string;
   }) {
     const payload = {

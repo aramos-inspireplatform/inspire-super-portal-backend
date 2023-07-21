@@ -1,4 +1,4 @@
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import {
   RequestEmailTemplates,
   RequestEmailTemplatesSubject,
@@ -6,9 +6,9 @@ import {
 import { RequestModuleAttemptStatusesIds } from '~/requests/domain/constants/request-module-attempt-status-ids.constant';
 import { WebHookStatusEnum } from '~/requests/domain/enums/web-hook-status.enum';
 import { RequestModuleAttemptNotFound } from '~/requests/domain/exceptions/request-module-attempt-not-found.exception';
-import { IModuleRepository } from '~/requests/infra/contracts/repository/module-repository.contract';
-import { IRequestModuleAttemptsRepository } from '~/requests/infra/contracts/repository/request-module-attempts-repository.contract';
-import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import { IModuleRepository } from '~/requests/domain/repositories/module-repository.contract';
+import { IRequestModuleAttemptsRepository } from '~/requests/domain/repositories/request-module-attempts-repository.contract';
+import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 import { IQueueService } from '~/shared/application/contracts/queue-service.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import {
@@ -25,7 +25,7 @@ export class RequestProvisioningWebHookUseCase {
     private readonly requestRepository: IRequestRepository,
     private readonly queueService: IQueueService,
     private readonly moduleRepository: IModuleRepository,
-    private readonly inspireTenantService: IInspireTenantService,
+    private readonly inspireTenantService: IInspireTenantApiService,
     private readonly httpClient: IHttpClient,
   ) {}
 

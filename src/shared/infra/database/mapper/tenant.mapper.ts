@@ -1,7 +1,7 @@
 import { Tenants } from '~/shared/infra/database/entities';
 import { IMapper } from '~/shared/infra/database/mapper/mapper';
 import { TenantStatusesMapper } from '~/shared/infra/database/mapper/tenant-statuses.mapper';
-import { Tenant } from '~/tenants/domain/entity/tenant.entity';
+import { Tenant } from '~/tenants/domain/entities/tenant.entity';
 
 // TODO: AQ???
 

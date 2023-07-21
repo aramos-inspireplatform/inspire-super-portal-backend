@@ -1,10 +1,10 @@
 import { FactoryProvider } from '@nestjs/common';
-import { InspireTenantProvidersSymbols } from '~/inspire-tenant/ioc/inspire-tenant-providers.symbols';
-import { IInspireTenantService } from '~/inspire-tenant/services/contracts/inspire-tenant-service.contract';
+import { InspireApiServicesProvidersSymbols } from '~/shared/application/services/inspire-api-services/shared/symbols/inspire-api-services-providers.symbols';
+import { IInspireTenantApiService } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.contract';
 import { RequestCreatedEventUseCase } from '~/requests/application/request-created-event.use-case';
-import { IRequestRepository } from '~/requests/infra/contracts/repository/request-repository.contract';
+import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
-import { RequestRepository } from '~/shared/infra/database/repositories/request.repository';
+import { RequestRepository } from '~/requests/infra/repositories/request.repository';
 import { AxiosHttpClientAdapter } from '~/shared/infra/http/axios/axios-http-client.adapter';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 
@@ -15,7 +15,7 @@ export class RequestCreatedEventUseCaseFactoryProvider {
       useFactory: (
         httpClient: IHttpClient,
         requestRepository: IRequestRepository,
-        inspireTenantService: IInspireTenantService,
+        inspireTenantService: IInspireTenantApiService,
       ) =>
         new RequestCreatedEventUseCase(
           httpClient,
@@ -25,7 +25,7 @@ export class RequestCreatedEventUseCaseFactoryProvider {
       inject: [
         AxiosHttpClientAdapter,
         RequestRepository,
-        InspireTenantProvidersSymbols.INSPIRE_TENANT_SERVICE,
+        InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
       ],
     };
   }
