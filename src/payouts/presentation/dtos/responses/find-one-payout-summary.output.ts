@@ -1,6 +1,74 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 
+class FindOnePayoutSummaryFeeOutputDto {
+  @Expose()
+  @ApiProperty({
+    example: 'Platform Fees',
+  })
+  name: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'Bexs',
+  })
+  paymentProcessor: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'Credit Card',
+    nullable: true,
+  })
+  paymentMethod: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 'Elo',
+    nullable: true,
+  })
+  cardBrand: string;
+
+  @Expose()
+  @ApiProperty({
+    example: '01/01/2023 to 01/02/2023',
+    nullable: true,
+  })
+  effectivePeriod: string;
+
+  @Expose()
+  @ApiProperty({
+    example: '2x',
+  })
+  installments: string;
+
+  @Expose()
+  @ApiProperty({
+    example: '$',
+  })
+  currency: string;
+
+  @Expose()
+  @ApiProperty({
+    example: 0.2,
+  })
+  amount: number;
+}
+
+class FindOnePayoutSummaryFeeGroupOutputDto {
+  @Expose()
+  @ApiProperty({
+    example: 'Platform Fees',
+  })
+  name: string;
+
+  @Expose()
+  @ApiProperty({
+    type: FindOnePayoutSummaryFeeOutputDto,
+    isArray: true,
+  })
+  fees: FindOnePayoutSummaryFeeOutputDto[];
+}
+
 export class FindOnePayoutSummaryOutputDto {
   @Expose()
   @ApiProperty({
@@ -52,8 +120,8 @@ export class FindOnePayoutSummaryOutputDto {
 
   @Expose()
   @ApiProperty({
-    example: [{}],
+    type: FindOnePayoutSummaryFeeGroupOutputDto,
     isArray: true,
   })
-  feeGroups: string[];
+  feeGroups: FindOnePayoutSummaryFeeGroupOutputDto[];
 }
