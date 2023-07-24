@@ -32,6 +32,8 @@ import { ReconciliationsController } from '~/payouts/presentation/reconciliation
 import { ReconcileStripeCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconcile-stripe-command-factory.provider';
 import { CreatePayoutCommandFactoryProvider } from '~/payouts/ioc/providers/commands/create-payout-command-factory.provider';
 import { repositoryProviders } from '~/payouts/ioc/providers/repositories/repository.provider';
+import { FindAllReconcilePeriodQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-reconcile-period-query.factory.provider';
+import { FindAllReconcilePeriodDaoFactoryProvider } from '~/payouts/ioc/providers/daos/find-all-reconcile-period-dao-factory.provider';
 
 @Module({
   providers: [
@@ -63,6 +65,8 @@ import { repositoryProviders } from '~/payouts/ioc/providers/repositories/reposi
     FindOneCurrencyDaoFactoryProvider.register(),
     ReconcileStripeCommandFactoryProvider.register(),
     CreatePayoutCommandFactoryProvider.register(),
+    FindAllReconcilePeriodDaoFactoryProvider.register(),
+    FindAllReconcilePeriodQueryFactoryProvider.register(),
   ],
   controllers: [
     PayoutController,

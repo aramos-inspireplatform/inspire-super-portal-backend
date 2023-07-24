@@ -11,6 +11,7 @@ import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-serv
 import { FindAllPaymentsPeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payments-period.dto';
 import { ReconcileStripeDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-stripe.dto';
 import { CreatePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/create-payout.dto';
+import { ReconcilePeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-period.dto';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
   private readonly PAYMENT_API_BASE_URL = `${process.env.PAYMENT_API_URL}`;
@@ -260,9 +261,20 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
     );
     return result.data.body.data;
   }
-}
 
-// export namespace InspirePaymentApiService {
-//   export type FindAllHttpResponse =
-//     InspireHttpPaginatedResponse<InspirePaymentApiServiceDto.Payments>;
-// }
+  async findAllReconcilePeriod(
+    attrs: ReconcilePeriodDto.InputAttrs,
+  ): ReconcilePeriodDto.Result {
+    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}&reconciliationStatusId=${attrs.reconciliationStatusId}`;
+
+    const reconcile = await this.httpClient.get<any>(url, {
+      headers: {
+        authorization: attrs.accessToken,
+        tenant: attrs.gTenantId,
+        'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+      },
+    });
+
+    return reconcile.data.body.data;
+  }
+}

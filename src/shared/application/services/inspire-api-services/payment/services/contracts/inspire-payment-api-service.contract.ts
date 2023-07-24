@@ -9,6 +9,7 @@ import { FindOnePayoutSummaryPreviewDto } from '~/shared/application/services/in
 import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
 import { ReconcileStripeDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-stripe.dto';
 import { CreatePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/create-payout.dto';
+import { ReconcilePeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-period.dto';
 
 export interface IInspirePaymentApiService {
   findAllPaymentsPeriodPaged(
@@ -52,4 +53,8 @@ export interface IInspirePaymentApiService {
   createPayoutCommand(
     attrs: CreatePayoutDto.InputAttrs,
   ): CreatePayoutDto.Result;
+
+  findAllReconcilePeriod(
+    attrs: ReconcilePeriodDto.InputAttrs,
+  ): ReconcilePeriodDto.Result;
 }
