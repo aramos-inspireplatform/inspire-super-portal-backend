@@ -265,7 +265,9 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
   async findAllReconcilePeriod(
     attrs: ReconcilePeriodDto.InputAttrs,
   ): ReconcilePeriodDto.Result {
-    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}&reconciliationStatusId=${attrs.reconciliationStatusId}`;
+    const url = attrs.reconciliationStatusId
+      ? `${this.PAYOUT_API_BASE_URL}/reconciliations?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}&reconciliationStatusId=${attrs.reconciliationStatusId}`
+      : `${this.PAYOUT_API_BASE_URL}/reconciliations?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}`;
 
     const reconcile = await this.httpClient.get<any>(url, {
       headers: {
