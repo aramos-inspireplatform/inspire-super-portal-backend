@@ -31,12 +31,14 @@ class FindOnePayoutSummaryPreviewFeeOutputDto {
   @Expose()
   @ApiProperty({
     example: new Date(),
+    nullable: true,
   })
   startDate: Date;
 
   @Expose()
   @ApiProperty({
     example: new Date(),
+    nullable: true,
   })
   endDate: Date;
 
