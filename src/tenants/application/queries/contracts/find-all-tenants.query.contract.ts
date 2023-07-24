@@ -34,6 +34,7 @@ export namespace IFindAllTenantsQuery {
     status: Status;
     termsRecurringIntervalCount: number;
     termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
   };
 
   // Additional types
@@ -73,5 +74,10 @@ export namespace IFindAllTenantsQuery {
     name: string;
     interval: string;
     isActive: boolean;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
   };
 }
