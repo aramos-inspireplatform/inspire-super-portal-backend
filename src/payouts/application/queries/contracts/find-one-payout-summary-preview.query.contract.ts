@@ -25,6 +25,25 @@ export namespace IFindOnePayoutSummaryPreviewQuery {
     amount: number;
   };
 
+  type Fee = {
+    name: string;
+    paymentProcessor: string;
+    paymentMethod: string | null;
+    cardBrand: string | null;
+    startDate: Date | null;
+    endDate: Date | null;
+    installments: string;
+    currency: string;
+    amount: number;
+  };
+
+  export type FeeGroup = {
+    name: string;
+    startDate: Date;
+    endDate: Date;
+    fees: Fee[];
+  };
+
   export type PayoutSummaryPreview = {
     incomeAmount: number;
     receivedAmount: number;
@@ -36,6 +55,6 @@ export namespace IFindOnePayoutSummaryPreviewQuery {
     adjustmentFeesAmount: number;
     adjustmentFeesReceivedCount: number;
     adjustmentFeesFoundCount: number;
-    feeGroups: string[];
+    feeGroups: FeeGroup[];
   };
 }
