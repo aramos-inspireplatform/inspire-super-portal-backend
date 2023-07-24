@@ -36,6 +36,7 @@ export namespace IFindOnePayoutSummaryQuery {
 
   export type FeeGroup = {
     name: string;
+    activePeriod: string;
     fees: Fee[];
   };
 

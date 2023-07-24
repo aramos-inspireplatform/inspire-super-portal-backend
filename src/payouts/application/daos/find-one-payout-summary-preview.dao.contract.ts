@@ -38,6 +38,7 @@ export namespace IFindOnePayoutSummaryPreviewDao {
 
   export type FeeGroup = {
     name: string;
+    activePeriod: string;
     fees: Fee[];
   };
 

@@ -30,6 +30,7 @@ export namespace FindOnePayoutSummaryDto {
 
   export type FeeGroup = {
     name: string;
+    activePeriod: string;
     fees: Fee[];
   };
 

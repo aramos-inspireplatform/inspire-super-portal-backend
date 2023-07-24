@@ -63,6 +63,13 @@ class FindOnePayoutSummaryFeeGroupOutputDto {
 
   @Expose()
   @ApiProperty({
+    example: '01/01/2023 to 01/02/2023',
+    nullable: true,
+  })
+  activePeriod: string;
+
+  @Expose()
+  @ApiProperty({
     type: FindOnePayoutSummaryFeeOutputDto,
     isArray: true,
   })
