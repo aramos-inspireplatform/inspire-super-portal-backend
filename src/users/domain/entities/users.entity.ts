@@ -6,10 +6,10 @@ export class UsersEntity extends BaseDomainEntity {
   firstName: string;
   lastName: string;
   email: string;
-  creatorUsersId: TenantPayoutsEntity[];
-  deleterUsersId: TenantPayoutsEntity[];
-  processorUsersId: TenantPayoutsEntity[];
-  updaterUsersId: TenantPayoutsEntity[];
+  creatorUsersId?: TenantPayoutsEntity[];
+  deleterUsersId?: TenantPayoutsEntity[];
+  processorUsersId?: TenantPayoutsEntity[];
+  updaterUsersId?: TenantPayoutsEntity[];
 
   constructor(attrs: InstanceProperties<UsersEntity>) {
     super(attrs);

@@ -9,6 +9,8 @@ import { ManualReconciledDto } from '~/shared/application/services/inspire-api-s
 import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
 import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
 import { FindAllPaymentsPeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payments-period.dto';
+import { ReconcileStripeDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-stripe.dto';
+import { CreatePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/create-payout.dto';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
   private readonly PAYMENT_API_BASE_URL = `${process.env.PAYMENT_API_URL}`;
@@ -189,6 +191,74 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
       },
     );
     return result.data;
+  }
+
+  async reconcileStripe(
+    attrs: ReconcileStripeDto.InputAttrs,
+  ): ReconcileStripeDto.Result {
+    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations/stripe`;
+
+    const reconcileStripe = await this.httpClient.post<any>(
+      url,
+      {
+        periodStartDate: attrs.periodStartDate,
+        periodEndDate: attrs.periodEndDate,
+      },
+      {
+        headers: {
+          authorization: attrs.accessToken,
+          tenant: attrs.gTenantId,
+          'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+        },
+      },
+    );
+
+    return reconcileStripe.data.body.data;
+  }
+
+  async createPayoutCommand(
+    attrs: CreatePayoutDto.InputAttrs,
+  ): CreatePayoutDto.Result {
+    const {
+      payoutId,
+      adjustmentFees,
+      selectedPayments,
+      accessToken,
+      gTenantId,
+      command,
+      periodStartDate,
+      periodEndDate,
+      termsRecurringIntervalCount,
+      termsRecurringIntervalId,
+      selectAllPayments,
+    } = attrs;
+
+    let url = `${this.PAYOUT_API_BASE_URL}`;
+    if (payoutId) url += `/${payoutId}`;
+
+    const result = await this.httpClient.put<any>(
+      url,
+      {
+        adjustmentFees,
+        selectedPayments,
+        accessToken,
+        gTenantId,
+        command,
+        periodStartDate,
+        periodEndDate,
+        termsRecurringIntervalCount,
+        termsRecurringIntervalId,
+        selectAllPayments,
+      },
+      {
+        headers: {
+          authorization: attrs.accessToken,
+          tenant: attrs.gTenantId,
+          'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+        },
+      },
+    );
+    return result.data.body.data;
   }
 }
 

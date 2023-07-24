@@ -28,9 +28,14 @@ import { FindAllPaymentsPeriodDaoFactoryProvider } from '~/payouts/ioc/providers
 import { FindAllPaymentsPeriodQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payments-period-query-factory.provider';
 import { FindAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-payments-paged-query-factory.provider';
 import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutments-query-factory.provider';
+import { ReconciliationsController } from '~/payouts/presentation/reconciliations.controller';
+import { ReconcileStripeCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconcile-stripe-command-factory.provider';
+import { CreatePayoutCommandFactoryProvider } from '~/payouts/ioc/providers/commands/create-payout-command-factory.provider';
+import { repositoryProviders } from '~/payouts/ioc/providers/repositories/repository.provider';
 
 @Module({
   providers: [
+    ...repositoryProviders,
     FindAllPaymentsPeriodPagedQueryFactoryProvider.register(),
     FindAllPaymentsPeriodPagedDaoFactoryProvider.register(),
     FindAllPaymentsPeriodQueryFactoryProvider.register(),
@@ -56,6 +61,8 @@ import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/prov
     FindOneTenantDaoFactoryProvider.register(),
     FindAllPaymentsPeriodPagedQueryFactoryProvider.register(),
     FindOneCurrencyDaoFactoryProvider.register(),
+    ReconcileStripeCommandFactoryProvider.register(),
+    CreatePayoutCommandFactoryProvider.register(),
   ],
   controllers: [
     PayoutController,
@@ -63,6 +70,7 @@ import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/prov
     PayoutPaymentsController,
     PayoutAdjustmentsController,
     PayoutAdjustmentTypesController,
+    ReconciliationsController,
   ],
 })
 export class PayoutsModule {}

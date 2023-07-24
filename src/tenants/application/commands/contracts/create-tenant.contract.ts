@@ -16,6 +16,8 @@ export namespace ICreateTenantCommand {
       agencyId?: string;
       timezoneId?: string;
       languageId?: string;
+      termsRecurringIntervalCount: number;
+      termsRecurringIntervalId: string;
     };
   };
 

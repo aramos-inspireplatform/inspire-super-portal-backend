@@ -44,6 +44,9 @@ export namespace InspireTenantApiServiceTenantsDto {
     agency: Agency;
     country: Country;
     status: TenantStatus;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
   };
 
   export type SupportAddress = {
@@ -106,8 +109,20 @@ export namespace InspireTenantApiServiceTenantsDto {
     slug: string;
   };
 
-  // FindAllTenants
-  export type FindAllTenantsInputAttrs = {
+  type TermsRecurringInterval = {
+    uuid: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
+  };
+
+  // FindAll
+  export type FindAllInputAttrs = {
     accessToken: string;
     pagination: {
       page: number;
@@ -138,6 +153,8 @@ export namespace InspireTenantApiServiceTenantsDto {
       agencyId?: string;
       timezoneId?: string;
       languageId?: string;
+      termsRecurringIntervalCount: number;
+      termsRecurringIntervalId: string;
     };
   };
   export type CreateTenantResult = Promise<Tenant | Error>;

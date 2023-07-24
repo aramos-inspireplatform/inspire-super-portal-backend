@@ -43,6 +43,9 @@ export namespace IFindAllTenantsDao {
     country: Country;
     status: Status;
     settings: Settings;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
   };
 
   type Agency = {
@@ -87,5 +90,17 @@ export namespace IFindAllTenantsDao {
     slug: string;
   };
 
+  type TermsRecurringInterval = {
+    uuid: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
+  };
+
   type Settings = { [property: string]: any };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
+  };
 }

@@ -32,6 +32,9 @@ export namespace IFindAllTenantsQuery {
     language: Language;
     country: Country;
     status: Status;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
   };
 
   // Additional types
@@ -64,5 +67,17 @@ export namespace IFindAllTenantsQuery {
     id: string;
     name: string;
     slug: string;
+  };
+
+  type TermsRecurringInterval = {
+    uuid: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
   };
 }

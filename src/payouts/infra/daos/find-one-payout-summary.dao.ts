@@ -11,7 +11,9 @@ export class FindOnePayoutSummaryDao implements IFindOnePayoutSummaryDao {
   ): IFindOnePayoutSummaryDao.Output {
     const payoutSummaryPreview =
       await this.inspirePaymentApiService.findOnePayoutSummary({
-        ...attrs,
+        accessToken: attrs.accessToken,
+        gTenantId: attrs.gTenantId,
+        payoutId: attrs.payoutId,
       });
 
     return payoutSummaryPreview

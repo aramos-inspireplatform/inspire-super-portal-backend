@@ -28,6 +28,7 @@ export class FindAllAdminUsersQuery implements IFindAllAdminUsersQuery {
         lastName: user.lastName?.trim(),
         title: user.title,
         email: user.email,
+        isActive: user.isActive,
         phoneNumber: user.phoneNumber,
         phoneNumberCountryId: user.phoneNumberCountryId,
         agencyCount: user.agencyCount,

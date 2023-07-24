@@ -26,6 +26,7 @@ export namespace IFindAllAdminUsersQuery {
     lastName: string;
     title: string;
     email: string;
+    isActive: boolean;
     phoneNumber: string;
     phoneNumberCountryId: string;
     agencyCount: number;

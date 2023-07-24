@@ -19,12 +19,12 @@ import { VaultsModule } from '~/vaults/ioc/vaults.module';
 import { EventEmitterModule } from '@nestjs/event-emitter';
 import { SqsConfig, SqsModule, SqsQueueType } from '@nestjs-packages/sqs';
 import { ScheduleModule } from '@nestjs/schedule';
+import { TermsRecurringIntervalModule } from '~/terms-recurring-interval/ioc/terms-recurring-interval.module';
 import { PayoutsModule } from '~/payouts/ioc/payouts.module';
 import { CurrenciesModule } from '~/currencies/ioc/currencies.module';
 import { InspireTenantApiServiceModule } from '~/shared/application/services/inspire-api-services/tenant/ioc/inspire-tenant-api-service.module';
 import { InspirePaymentApiServiceModule } from '~/shared/application/services/inspire-api-services/payment/ioc/inspire-payment-api-service.module';
 import { TransactionsModule } from '~/transactions/ioc/transactions.module';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -52,7 +52,7 @@ import { TransactionsModule } from '~/transactions/ioc/transactions.module';
     PaymentMethodsModule,
     CurrenciesModule,
     SettlementCurrenciesModule,
-    TransactionsModule,
+    TermsRecurringIntervalModule,
     EventEmitterModule.forRoot({
       global: true,
     }),

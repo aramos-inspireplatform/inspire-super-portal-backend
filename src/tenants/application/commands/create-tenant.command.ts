@@ -32,6 +32,8 @@ export class CreateTenantCommand implements ICreateTenantCommand {
         agencyId: attrs.tenant.agencyId,
         timezoneId: attrs.tenant.timezoneId,
         languageId: attrs.tenant.languageId,
+        termsRecurringIntervalCount: attrs.tenant.termsRecurringIntervalCount,
+        termsRecurringIntervalId: attrs.tenant.termsRecurringIntervalId,
       },
     });
     if (tenant instanceof Error) throw tenant;

@@ -1,0 +1,4 @@
+export const TermsRecurringIntervalProvidersSymbols = {
+  LIST_RECURRING_INTERVAL_USE_CASE: Symbol('LIST_RECURRING_INTERVAL_USE_CASE'),
+  GET_RECURRING_INTERVAL_USE_CASE: Symbol('GET_RECURRING_INTERVAL_USE_CASE'),
+} as const;

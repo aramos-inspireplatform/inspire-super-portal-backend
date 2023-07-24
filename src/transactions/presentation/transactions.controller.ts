@@ -1,4 +1,12 @@
-import { Controller, Post, Inject, Param, Req, Body, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Inject,
+  Param,
+  Req,
+  Body,
+  HttpCode,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
