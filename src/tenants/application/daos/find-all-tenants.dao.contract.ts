@@ -45,6 +45,7 @@ export namespace IFindAllTenantsDao {
     settings: Settings;
     termsRecurringIntervalCount: number;
     termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
   };
 
   type Agency = {
@@ -97,4 +98,9 @@ export namespace IFindAllTenantsDao {
   };
 
   type Settings = { [property: string]: any };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
+  };
 }

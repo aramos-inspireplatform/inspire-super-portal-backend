@@ -14,10 +14,12 @@ export namespace IFindOneAdminUserQuery {
     lastName: string;
     title: string;
     email: string;
+    isActive: boolean;
     phoneNumber: string;
     userType: UserType;
     phoneNumberCountryId: string;
     agencies: Agency[];
+    adminBlockedDate: string;
   }>;
 
   // Additional types

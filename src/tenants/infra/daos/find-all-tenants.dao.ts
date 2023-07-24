@@ -83,6 +83,7 @@ export class FindAllTenantsDao implements IFindAllTenantsDao {
               isActive: tenant.termsRecurringInterval.isActive,
             }
           : null,
+        createdBy: tenant.createdBy,
       })),
       page: tenants.page,
       pageSize: tenants.pageSize,

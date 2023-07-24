@@ -5,19 +5,19 @@ import {
   Inject,
   Param,
   Post,
-  Req,
   Query,
+  Req,
 } from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CreateTenantUserCommand } from '~/users/application/commands/create-tenant-user.command';
 import { LinkTenantUserCommand } from '~/users/application/commands/link-tenant-user.command';
+import { FindAllTenantUsersQuery } from '~/users/application/queries/find-all-tenant-users.query';
 import { UsersProvidersSymbols } from '~/users/ioc/users-providers.symbols';
 import { CreateTenantUserRequestDto } from '~/users/presentation/dtos/requests/create-tenant-user-request.dto';
-import { UserResponseDto } from '~/users/presentation/dtos/responses/user-response.dto';
-import { FindAllTenantUsersQuery } from '~/users/application/queries/find-all-tenant-users.query';
 import { FindAllTenantUsersRequestDto } from '~/users/presentation/dtos/requests/find-all-tenant-users-request.dto';
+import { UserResponseDto } from '~/users/presentation/dtos/responses/user-response.dto';
 
 @Controller('tenants/users')
 @ApiTags('Tenant Users')

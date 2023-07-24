@@ -1,5 +1,5 @@
-import { IFindAllTenantUsersQuery } from '~/users/application/queries/contracts/find-all-tenant-users.query.contract';
 import { IFindAllTenantUsersDao } from '~/users/application/daos/find-all-tenant-users.dao.contract';
+import { IFindAllTenantUsersQuery } from '~/users/application/queries/contracts/find-all-tenant-users.query.contract';
 
 export class FindAllTenantUsersQuery implements IFindAllTenantUsersQuery {
   constructor(private readonly findAllTenantUsersDao: IFindAllTenantUsersDao) {}
