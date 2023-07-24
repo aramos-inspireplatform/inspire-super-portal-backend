@@ -56,7 +56,7 @@ export class ReconciliationsController {
       gTenantId: inputDto.gTenantId,
       periodStartDate: inputDto.periodStartDate,
       periodEndDate: inputDto.periodEndDate,
-      reconciliationStatusId: inputDto.reconciliationStatusId,
+      status: inputDto.status,
     });
   }
 }

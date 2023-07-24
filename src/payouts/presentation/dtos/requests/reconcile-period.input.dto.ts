@@ -11,10 +11,10 @@ export class ReconcilePeriodInputDto {
   @IsString()
   gTenantId: string;
 
-  @ApiProperty({ example: 'b758d394-9d7b-4792-91d7-6c5cbd5d06c6' })
+  @ApiProperty({ example: 'pending' })
   @IsOptional()
   @IsString()
-  reconciliationStatusId: string;
+  status: string;
 
   @ApiProperty({ example: new Date() })
   @IsNotEmpty()

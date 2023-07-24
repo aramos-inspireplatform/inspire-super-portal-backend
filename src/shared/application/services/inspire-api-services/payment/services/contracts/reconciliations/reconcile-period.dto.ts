@@ -4,7 +4,7 @@ export namespace ReconcilePeriodDto {
     gTenantId: string;
     periodStartDate: Date;
     periodEndDate: Date;
-    reconciliationStatusId: string;
+    status: string;
   };
 
   export type Result = Promise<Reconcile[]>;

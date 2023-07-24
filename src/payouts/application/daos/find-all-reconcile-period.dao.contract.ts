@@ -10,7 +10,7 @@ export namespace IFindAllReconcilePeriodDao {
     gTenantId: string;
     periodStartDate: Date;
     periodEndDate: Date;
-    reconciliationStatusId: string;
+    status: string;
   };
 
   export type Output = Promise<Reconcile[]>;

@@ -16,7 +16,7 @@ export class FindAllReconcilePeriodQuery
       gTenantId: attrs.gTenantId,
       periodStartDate: attrs.periodStartDate,
       periodEndDate: attrs.periodEndDate,
-      reconciliationStatusId: attrs.reconciliationStatusId,
+      status: attrs.status,
     });
     if (reconciles instanceof Error) throw reconciles;
 

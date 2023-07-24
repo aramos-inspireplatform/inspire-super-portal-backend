@@ -15,7 +15,7 @@ export class FindAllReconcilePeriodDao implements IFindAllReconcilePeriodDao {
         gTenantId: attrs.gTenantId,
         periodStartDate: attrs.periodStartDate,
         periodEndDate: attrs.periodEndDate,
-        reconciliationStatusId: attrs.reconciliationStatusId,
+        status: attrs.status,
       });
 
     return reconciles
