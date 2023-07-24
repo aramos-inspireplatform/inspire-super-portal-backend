@@ -30,7 +30,8 @@ export namespace IFindOnePayoutSummaryPreviewQuery {
     paymentProcessor: string;
     paymentMethod: string | null;
     cardBrand: string | null;
-    effectivePeriod: string | null;
+    startDate: Date | null;
+    endDate: Date | null;
     installments: string;
     currency: string;
     amount: number;
@@ -38,7 +39,8 @@ export namespace IFindOnePayoutSummaryPreviewQuery {
 
   export type FeeGroup = {
     name: string;
-    activePeriod: string;
+    startDate: Date;
+    endDate: Date;
     fees: Fee[];
   };
 

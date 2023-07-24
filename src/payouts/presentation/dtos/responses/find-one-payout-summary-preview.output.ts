@@ -30,10 +30,15 @@ class FindOnePayoutSummaryPreviewFeeOutputDto {
 
   @Expose()
   @ApiProperty({
-    example: '01/01/2023 to 01/02/2023',
-    nullable: true,
+    example: new Date(),
   })
-  effectivePeriod: string;
+  startDate: Date;
+
+  @Expose()
+  @ApiProperty({
+    example: new Date(),
+  })
+  endDate: Date;
 
   @Expose()
   @ApiProperty({
@@ -63,10 +68,15 @@ class FindOnePayoutSummaryPreviewFeeGroupOutputDto {
 
   @Expose()
   @ApiProperty({
-    example: '01/01/2023 to 01/02/2023',
-    nullable: true,
+    example: new Date(),
   })
-  activePeriod: string;
+  startDate: Date;
+
+  @Expose()
+  @ApiProperty({
+    example: new Date(),
+  })
+  endDate: Date;
 
   @Expose()
   @ApiProperty({
