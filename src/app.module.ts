@@ -53,6 +53,7 @@ import { TransactionsModule } from '~/transactions/ioc/transactions.module';
     CurrenciesModule,
     SettlementCurrenciesModule,
     TermsRecurringIntervalModule,
+    TransactionsModule,
     EventEmitterModule.forRoot({
       global: true,
     }),
