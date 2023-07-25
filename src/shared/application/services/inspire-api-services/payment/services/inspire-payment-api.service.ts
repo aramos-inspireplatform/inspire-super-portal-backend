@@ -10,6 +10,7 @@ import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-a
 import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
 import { FindAllPaymentsPeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payments-period.dto';
 import { ReconcileStripeDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-stripe.dto';
+import { ReconcileBexsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-bexs.dto';
 import { CreatePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/create-payout.dto';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
@@ -260,9 +261,27 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
     );
     return result.data.body.data;
   }
-}
 
-// export namespace InspirePaymentApiService {
-//   export type FindAllHttpResponse =
-//     InspireHttpPaginatedResponse<InspirePaymentApiServiceDto.Payments>;
-// }
+  async reconcileBexs(
+    attrs: ReconcileBexsDto.InputAttrs,
+  ): ReconcileBexsDto.Result {
+    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations/bexs?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}`;
+
+    const reconcileBexs = await this.httpClient.post<any>(
+      url,
+      {
+        file: attrs.buffer,
+      },
+      {
+        headers: {
+          authorization: attrs.accessToken,
+          tenant: attrs.gTenantId,
+          'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
+          'content-type': 'multipart/form-data',
+        },
+      },
+    );
+
+    return reconcileBexs.data.body.data;
+  }
+}

@@ -1,9 +1,12 @@
 import {
+  BadRequestException,
+  Body,
   Controller,
   Get,
   Inject,
   Param,
   ParseUUIDPipe,
+  Post,
   Query,
   Req,
 } from '@nestjs/common';
@@ -21,6 +24,8 @@ import { IFindAllPaymentsPeriodQuery } from '~/payouts/application/queries/contr
 import { FindAllPaymentsPeriodInputDto } from '~/payouts/presentation/dtos/requests/find-all-payments-period.input.dto';
 import { FindAllPaymentsPeriodOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period.output';
 import { IFindAllPaymentsPeriodPagedQuery } from '~/payouts/application/queries/contracts/find-all-payments-period-paged.query.contract';
+import { CreatePayoutBexsInputDto } from '~/payouts/presentation/dtos/requests/create-payout-bexs.input';
+import { ICreatePayoutBexsQuery } from '~/payouts/application/queries/contracts/create-payout-bexs.query.contract';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
