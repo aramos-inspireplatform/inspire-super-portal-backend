@@ -18,6 +18,7 @@ export namespace ICreateTenantUserCommand {
       confirmationPassword: string;
       title?: string;
       phoneNumber?: string;
+      isSsoUser: boolean;
     };
   };
 
