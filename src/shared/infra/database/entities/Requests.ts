@@ -22,10 +22,9 @@ export class Requests extends BaseEntity {
   createdByUserEmail: string;
 
   @OneToMany(() => RequestModules, (requestModules) => requestModules.request, {
-    eager: true,
     cascade: ['update'],
   })
-  requestModules: Relation<RequestModules[]>;
+  requestModules: RequestModules[];
 
   @ManyToOne(
     () => RequestStatuses,
@@ -33,19 +32,17 @@ export class Requests extends BaseEntity {
     {
       onDelete: 'RESTRICT',
       onUpdate: 'CASCADE',
-      eager: true,
       cascade: ['update'],
     },
   )
   @JoinColumn([{ name: 'request_status_id', referencedColumnName: 'id' }])
-  requestStatus: Relation<RequestStatuses>;
+  requestStatus: RequestStatuses;
 
   @ManyToOne(() => Tenants, (tenants) => tenants.requests, {
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
-    eager: true,
     cascade: ['update'],
   })
   @JoinColumn([{ name: 'tenant_id', referencedColumnName: 'id' }])
-  tenant: Relation<Tenants>;
+  tenant: Tenants;
 }
