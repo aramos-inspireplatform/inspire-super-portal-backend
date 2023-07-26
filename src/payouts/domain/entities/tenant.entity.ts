@@ -1,4 +1,4 @@
-import { TenantBalancesEntity } from '~/payouts/domain/entities/tenant-balances.entity';
+import { TenantBalanceDomainEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 
 export class TenantDomainEntity extends BaseDomainEntity {
@@ -11,7 +11,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
   private tenantStatusId: string;
   private totalPaidAmount: number;
   private lastTenantPayoutId: string;
-  //private tenantBalances: TenantBalancesEntity[] = [];
+  private tenantBalances: TenantBalanceDomainEntity[] = [];
 
   constructor(input?: Partial<TenantDomainEntity.Input>) {
     super(input);
@@ -28,21 +28,8 @@ export class TenantDomainEntity extends BaseDomainEntity {
       termsRecurringIntervalCount,
       termsRecurringIntervalId,
       tenantStatusId,
-      //tenantBalances,
+      tenantBalances,
     } = input;
-
-    // if (!paymentGateway?.isStripe())
-    //   throw new BadRequestException(
-    //     ReconciliationEnum.Exceptions.PAYMENT_GATEWAY_MUST_BE_STRIPE,
-    //   );
-
-    // this.validateGeneralCreateInfo({
-    //   status,
-    //   periodStartDate,
-    //   periodEndDate,
-    //   maxPeriodDateRange,
-    //   creatorUser,
-    // });
 
     this.id = id;
     this.name = name;
@@ -53,8 +40,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
     this.termsRecurringIntervalId = termsRecurringIntervalId;
     this.tenantStatusId = tenantStatusId;
     this.totalPaidAmount = 0;
-    //this.tenantBalances = tenantBalances;
-    //this.updatedDate = new Date();
+    this.synchronizeTenantBalances({ tenantBalances });
   }
 
   synchronize(input: TenantDomainEntity.Synchronize) {
@@ -66,21 +52,8 @@ export class TenantDomainEntity extends BaseDomainEntity {
       termsRecurringIntervalCount,
       termsRecurringIntervalId,
       tenantStatusId,
-      //tenantBalances,
+      tenantBalances,
     } = input;
-
-    // if (!paymentGateway?.isStripe())
-    //   throw new BadRequestException(
-    //     ReconciliationEnum.Exceptions.PAYMENT_GATEWAY_MUST_BE_STRIPE,
-    //   );
-
-    // this.validateGeneralCreateInfo({
-    //   status,
-    //   periodStartDate,
-    //   periodEndDate,
-    //   maxPeriodDateRange,
-    //   creatorUser,
-    // });
 
     this.name = name;
     this.gTenantId = gTenantId;
@@ -89,8 +62,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
     this.termsRecurringIntervalCount = termsRecurringIntervalCount;
     this.termsRecurringIntervalId = termsRecurringIntervalId;
     this.tenantStatusId = tenantStatusId;
-    //this.tenantBalances = tenantBalances;
-    //this.updatedDate = new Date();
+    this.synchronizeTenantBalances({ tenantBalances });
   }
 
   getState() {
@@ -105,11 +77,54 @@ export class TenantDomainEntity extends BaseDomainEntity {
       tenantStatusId: this.tenantStatusId,
       totalPaidAmount: this.totalPaidAmount,
       lastTenantPayoutId: this.lastTenantPayoutId,
-      //tenantBalances: this.tenantBalances,
+      tenantBalances: this.tenantBalances,
       createdDate: this.createdDate,
       updatedDate: this.updatedDate,
       deletedDate: this.deletedDate,
     };
+  }
+
+  // Tenant Balances
+  private synchronizeTenantBalances({
+    tenantBalances,
+  }: {
+    tenantBalances: TenantBalanceDomainEntity[];
+  }) {
+    this.deleteMissingTenantBalances({ tenantBalances });
+
+    tenantBalances?.map((tenantBalance) => {
+      const currentTenantBalance = this.tenantBalances?.find(
+        (currentTenantBalance) =>
+          currentTenantBalance.getState().settlementCurrencyId ==
+          tenantBalance.getState().settlementCurrencyId,
+      );
+      if (currentTenantBalance)
+        currentTenantBalance.updateAmount({
+          amount: tenantBalance.getState().amount,
+        });
+      else this.tenantBalances.push(tenantBalance);
+    });
+  }
+
+  private deleteMissingTenantBalances({
+    tenantBalances,
+  }: {
+    tenantBalances: TenantBalanceDomainEntity[];
+  }) {
+    const newTenantBalancesSettlementCurrencyId = tenantBalances?.map(
+      (tenantBalance) => tenantBalance.getState().settlementCurrencyId,
+    );
+
+    const missingTenantBalances = this.tenantBalances?.filter(
+      (tenantBalance) =>
+        !newTenantBalancesSettlementCurrencyId.includes(
+          tenantBalance.getState().settlementCurrencyId,
+        ),
+    );
+
+    missingTenantBalances?.map((tenantBalance) => {
+      tenantBalance.delete();
+    });
   }
 }
 
@@ -125,7 +140,7 @@ export namespace TenantDomainEntity {
     tenantStatusId: string;
     totalPaidAmount: number;
     lastTenantPayoutId: string;
-    //tenantBalances:  TenantBalancesEntity[];
+    tenantBalances: TenantBalanceDomainEntity[];
     createdDate: Date;
     updatedDate: Date;
     deletedDate: Date;
@@ -147,7 +162,7 @@ export namespace TenantDomainEntity {
     //| 'termsRecurringInterval'
     | 'tenantStatusId'
     //| 'tenantStatus'
-    //| 'tenantBalances'
+    | 'tenantBalances'
   > & {
     //
   };
@@ -163,7 +178,7 @@ export namespace TenantDomainEntity {
     //| 'termsRecurringInterval'
     | 'tenantStatusId'
     //| 'tenantStatus'
-    //| 'tenantBalances'
+    | 'tenantBalances'
   > & {
     //
   };

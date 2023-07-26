@@ -1,4 +1,5 @@
 import { ISynchronizeTenantBalanceCommand } from '~/payouts/application/commands';
+import { TenantBalanceDomainEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 import { TenantDomainEntity } from '~/payouts/domain/entities/tenant.entity';
 import { ITenantRepository } from '~/payouts/infra/repositories/contracts';
 
@@ -12,36 +13,47 @@ export class SynchronizeTenantBalanceCommand
   async execute(
     input: ISynchronizeTenantBalanceCommand.Input,
   ): ISynchronizeTenantBalanceCommand.Output {
-    const { tenant, agency, status, terms } = input;
+    const { tenantId, gTenantId, name, agency, status, terms, balances } =
+      input;
 
-    let tenantDb = await this.getTenant({ tenantId: tenant.id });
-    if (tenantDb) {
-      tenantDb.synchronize({
-        name: tenant.name,
-        gTenantId: tenant.gTenantId,
+    const tenantBalances = balances?.map((balance) => {
+      const tenantBalance = new TenantBalanceDomainEntity();
+      tenantBalance.synchronize({
+        settlementCurrencyId: balance.settlementCurrencyId,
+        amount: balance.amount,
+      });
+
+      return tenantBalance;
+    });
+
+    let tenant = await this.getTenant({ tenantId: tenantId });
+    if (tenant) {
+      tenant.synchronize({
+        name: name,
+        gTenantId: gTenantId,
         agencyId: agency.id,
         agencyName: agency.name,
         termsRecurringIntervalCount: terms.recurringIntervalCount,
         termsRecurringIntervalId: terms.recurringIntervalId,
         tenantStatusId: status.id,
-        //tenantBalances: null,
+        tenantBalances: tenantBalances,
       });
     } else {
-      tenantDb = new TenantDomainEntity();
-      tenantDb.create({
-        id: tenant.id,
-        name: tenant.name,
-        gTenantId: tenant.gTenantId,
+      tenant = new TenantDomainEntity();
+      tenant.create({
+        id: tenantId,
+        name: name,
+        gTenantId: gTenantId,
         agencyId: agency.id,
         agencyName: agency.name,
         termsRecurringIntervalCount: terms.recurringIntervalCount,
         termsRecurringIntervalId: terms.recurringIntervalId,
         tenantStatusId: status.id,
-        //tenantBalances: null,
+        tenantBalances: tenantBalances,
       });
     }
 
-    this.tenantRepository.save(tenantDb);
+    this.tenantRepository.save(tenant);
   }
 
   private async getTenant({

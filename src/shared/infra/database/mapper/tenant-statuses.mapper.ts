@@ -1,10 +1,13 @@
-import { TenantStatuses } from '~/shared/infra/database/entities';
+import { TenantStatusesDataMapper } from '~/shared/infra/database/entities';
 import { IMapper } from '~/shared/infra/database/mapper/mapper';
 import { TenantStatus } from '~/tenants/domain/entities/tenant-statuses.entity';
 
-export const TenantStatusesMapper: IMapper<TenantStatus, TenantStatuses> = {
-  domainToModel: (domain: TenantStatus): TenantStatuses => {
-    const model = new TenantStatuses();
+export const TenantStatusesMapper: IMapper<
+  TenantStatus,
+  TenantStatusesDataMapper
+> = {
+  domainToModel: (domain: TenantStatus): TenantStatusesDataMapper => {
+    const model = new TenantStatusesDataMapper();
     model.id = domain.id;
     model.name = domain.name;
     model.slug = domain.slug;
@@ -13,7 +16,7 @@ export const TenantStatusesMapper: IMapper<TenantStatus, TenantStatuses> = {
     model.deletedDate = domain.deletedDate;
     return model;
   },
-  modelToDomain: (model: TenantStatuses): TenantStatus => {
+  modelToDomain: (model: TenantStatusesDataMapper): TenantStatus => {
     const domain = new TenantStatus({
       id: model.id,
       name: model.name,

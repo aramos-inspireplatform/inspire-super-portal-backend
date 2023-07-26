@@ -1,25 +1,14 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Requests } from './Requests';
-import { TenantBalances } from './TenantBalances';
+import { TenantBalancesDataMapper } from './TenantBalances';
 import { TenantPayouts } from './TenantPayouts';
-import { TenantStatuses } from './TenantStatuses';
+import { TenantStatusesDataMapper } from './TenantStatuses';
 import { RecurringIntervals } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
-@Index('idx__tenants__agencies_id', ['agencyId', 'deletedDate'], {})
-@Index('idx__uq__tenants', ['deletedDate', 'googleTenantId'], { unique: true })
-@Index('idx__part__uq__tenants', ['googleTenantId'], { unique: true })
-@Index('pk__tenants', ['id'], { unique: true })
 @Entity('tenants', { schema: 'public' })
-export class Tenants extends BaseEntity {
+export class TenantsDataMapper extends BaseEntity {
   @Column('character varying', { name: 'name', length: 200 })
   name: string;
 
@@ -56,8 +45,12 @@ export class Tenants extends BaseEntity {
   })
   totalPaidAmount: number;
 
-  @OneToMany(() => TenantBalances, (tenantBalances) => tenantBalances.tenant)
-  tenantBalances: TenantBalances[];
+  @OneToMany(
+    () => TenantBalancesDataMapper,
+    (tenantBalances) => tenantBalances.tenant,
+    { cascade: true },
+  )
+  tenantBalances: TenantBalancesDataMapper[];
 
   @OneToMany(() => Requests, (requests) => requests.tenant)
   requests: Requests[];
@@ -76,12 +69,16 @@ export class Tenants extends BaseEntity {
   @JoinColumn([{ name: 'last_tenant_payouts_id', referencedColumnName: 'id' }])
   lastTenantPayout: TenantPayouts;
 
-  @ManyToOne(() => TenantStatuses, (tenantStatuses) => tenantStatuses.tenants, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT',
-  })
+  @ManyToOne(
+    () => TenantStatusesDataMapper,
+    (tenantStatuses) => tenantStatuses.tenants,
+    {
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+    },
+  )
   @JoinColumn([{ name: 'tenant_statuses_id', referencedColumnName: 'id' }])
-  tenantStatus: TenantStatuses;
+  tenantStatus: TenantStatusesDataMapper;
 
   @ManyToOne(
     () => RecurringIntervals,

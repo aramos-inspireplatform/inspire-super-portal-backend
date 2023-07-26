@@ -6,23 +6,34 @@ export interface ISynchronizeTenantBalanceCommand {
 
 export namespace ISynchronizeTenantBalanceCommand {
   export type Input = {
-    tenant: {
-      id: string;
-      gTenantId: string;
-      name: string;
-    };
-    agency: {
-      id: string;
-      name: string;
-    };
-    status: {
-      id: string;
-    };
-    terms: {
-      recurringIntervalCount: number;
-      recurringIntervalId: string;
-    };
+    tenantId: string;
+    gTenantId: string;
+    name: string;
+    agency: Agency;
+    status: Status;
+    terms: Terms;
+    balances: Balance[];
   };
 
   export type Output = Promise<void>;
+
+  // Additional types
+  type Agency = {
+    id: string;
+    name: string;
+  };
+
+  type Status = {
+    id: string;
+  };
+
+  type Terms = {
+    recurringIntervalCount: number;
+    recurringIntervalId: string;
+  };
+
+  type Balance = {
+    settlementCurrencyId: string;
+    amount: number;
+  };
 }

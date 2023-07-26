@@ -1,6 +1,6 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
 import { TenantPayouts } from './TenantPayouts';
-import { Tenants } from './Tenants';
+import { TenantsDataMapper } from './Tenants';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index('idx__uq__recurring_intervals', ['deletedDate', 'name'], {
@@ -25,6 +25,6 @@ export class RecurringIntervals extends BaseEntity {
   )
   tenantPayouts: TenantPayouts[];
 
-  @OneToMany(() => Tenants, (tenants) => tenants.termsRecurringInterval)
-  tenants: Tenants[];
+  @OneToMany(() => TenantsDataMapper, (tenants) => tenants.termsRecurringInterval)
+  tenants: TenantsDataMapper[];
 }

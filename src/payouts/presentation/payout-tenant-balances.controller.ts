@@ -16,7 +16,7 @@ import { FindOneTenantBalanceQuery } from '~/payouts/application/queries/find-on
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import {
   FindOneTenantBalanceInputDto,
-  SynchronizeTenantBalanceInputDto,
+  SynchronizeTenantInputDto,
 } from '~/payouts/presentation/dtos/requests/tenant-balances';
 import {
   FindAllTenantBalancesPagedOutputDto,
@@ -82,7 +82,7 @@ export class PayoutTenantBalancesController {
     return tenantBalance;
   }
 
-  @Post()
+  @Post('/synchronize')
   @AuthenticatedRoute()
   @ApiParam({
     name: 'gTenantId',
@@ -92,14 +92,12 @@ export class PayoutTenantBalancesController {
   @ApiOkResponse()
   async synchronize(
     @UserAuth() userAuth: UserAuthDto,
-    @Body() inputDto: SynchronizeTenantBalanceInputDto,
+    @Body() inputDto: SynchronizeTenantInputDto,
   ) {
     await this.synchronizeTenantBalanceCommand.execute({
-      tenant: {
-        id: inputDto.tenantId,
-        gTenantId: inputDto.gTenantId,
-        name: inputDto.name,
-      },
+      tenantId: inputDto.tenantId,
+      gTenantId: inputDto.gTenantId,
+      name: inputDto.name,
       agency: {
         id: inputDto.agencyId,
         name: inputDto.agencyName,
@@ -111,6 +109,12 @@ export class PayoutTenantBalancesController {
         recurringIntervalCount: inputDto.termsRecurringIntervalCount,
         recurringIntervalId: inputDto.termsRecurringIntervalId,
       },
+      balances: inputDto.balances
+        ? inputDto.balances.map((balance) => ({
+            settlementCurrencyId: balance.settlementCurrencyId,
+            amount: balance.amount,
+          }))
+        : null,
     });
   }
 }
