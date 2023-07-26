@@ -1,4 +1,5 @@
 export enum PayoutsExceptionsConstants {
   PAYOUT_NOT_FOUND = 'exception:PAYOUT_NOT_FOUND',
+  TENANT_GTENANTID_ALREADY_IN_USE = 'exception:TENANT_GTENANTID_ALREADY_IN_USE',
   TENANT_BALANCE_NOT_FOUND = 'exception:TENANT_BALANCE_NOT_FOUND',
 }

@@ -40,7 +40,7 @@ export class TenantRepositoryTypeOrmAdapter implements ITenantRepository {
     query.where(`${this.entity}.googleTenantId = :googleTenantId`, {
       googleTenantId: params.gTenantId,
     });
-    const tenant = await query.get();
+    const tenant = await query.getOne();
 
     return tenant ? TenantAssembler.assembly(tenant) : null;
   }

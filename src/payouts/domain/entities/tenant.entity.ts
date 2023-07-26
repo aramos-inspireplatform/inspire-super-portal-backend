@@ -46,7 +46,6 @@ export class TenantDomainEntity extends BaseDomainEntity {
   synchronize(input: TenantDomainEntity.Synchronize) {
     const {
       name,
-      gTenantId,
       agencyId,
       agencyName,
       termsRecurringIntervalCount,
@@ -56,7 +55,6 @@ export class TenantDomainEntity extends BaseDomainEntity {
     } = input;
 
     this.name = name;
-    this.gTenantId = gTenantId;
     this.agencyId = agencyId;
     this.agencyName = agencyName;
     this.termsRecurringIntervalCount = termsRecurringIntervalCount;
@@ -170,7 +168,6 @@ export namespace TenantDomainEntity {
   export type Synchronize = Pick<
     TenantDomainEntity.Input,
     | 'name'
-    | 'gTenantId'
     | 'agencyId'
     | 'agencyName'
     | 'termsRecurringIntervalCount'

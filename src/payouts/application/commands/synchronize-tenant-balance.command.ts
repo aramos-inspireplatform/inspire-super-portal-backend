@@ -1,6 +1,8 @@
+import { UnprocessableEntityException } from '@nestjs/common';
 import { ISynchronizeTenantBalanceCommand } from '~/payouts/application/commands';
 import { TenantBalanceDomainEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 import { TenantDomainEntity } from '~/payouts/domain/entities/tenant.entity';
+import { PayoutsExceptionsConstants } from '~/payouts/domain/exceptions/payouts-exceptions.enum';
 import { ITenantRepository } from '~/payouts/infra/repositories/contracts';
 
 export class SynchronizeTenantBalanceCommand
@@ -26,11 +28,10 @@ export class SynchronizeTenantBalanceCommand
       return tenantBalance;
     });
 
-    let tenant = await this.getTenant({ tenantId: tenantId });
+    let tenant = await this.getTenantById({ tenantId: tenantId });
     if (tenant) {
       tenant.synchronize({
         name: name,
-        gTenantId: gTenantId,
         agencyId: agency.id,
         agencyName: agency.name,
         termsRecurringIntervalCount: terms.recurringIntervalCount,
@@ -39,6 +40,14 @@ export class SynchronizeTenantBalanceCommand
         tenantBalances: tenantBalances,
       });
     } else {
+      const tenantCheck = await this.getTenantByGTenantId({
+        gTenantId: gTenantId,
+      });
+      if (tenantCheck)
+        throw new UnprocessableEntityException(
+          PayoutsExceptionsConstants.TENANT_GTENANTID_ALREADY_IN_USE,
+        );
+
       tenant = new TenantDomainEntity();
       tenant.create({
         id: tenantId,
@@ -56,13 +65,25 @@ export class SynchronizeTenantBalanceCommand
     this.tenantRepository.save(tenant);
   }
 
-  private async getTenant({
+  private async getTenantById({
     tenantId,
   }: {
     tenantId: string;
   }): Promise<TenantDomainEntity> {
     const tenant = await this.tenantRepository.findOneById({
       id: tenantId,
+    });
+
+    return tenant;
+  }
+
+  private async getTenantByGTenantId({
+    gTenantId,
+  }: {
+    gTenantId: string;
+  }): Promise<TenantDomainEntity> {
+    const tenant = await this.tenantRepository.findOneByGTenantId({
+      gTenantId: gTenantId,
     });
 
     return tenant;
