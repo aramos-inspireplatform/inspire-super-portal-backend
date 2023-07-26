@@ -52,6 +52,15 @@ export class RequestRepository implements IRequestRepository {
 
     const storedRequestEntity = await this.repository.findOne({
       where: { id: requestEntity.id },
+      relations: {
+        requestModules: true,
+        requestStatus: true,
+        tenant: {
+          tenantStatus: true,
+          //tenantBalances: true,
+          //termsRecurringInterval: true,
+        },
+      },
     });
 
     return RequestMapper.modelToDomain(storedRequestEntity);
@@ -60,13 +69,18 @@ export class RequestRepository implements IRequestRepository {
   async findById(id: string): Promise<Request> {
     const request = await this.repository.findOne({
       where: { id },
-      relations: [
-        'requestStatus',
-        'tenant',
-        'requestModules',
-        'requestModules.module',
-        'requestModules.moduleRequestStatus',
-      ],
+      relations: {
+        requestModules: {
+          module: true,
+          moduleRequestStatus: true,
+        },
+        requestStatus: true,
+        tenant: {
+          tenantStatus: true,
+          //tenantBalances: true,
+          //termsRecurringInterval: true,
+        },
+      },
     });
 
     if (!request) return null;
