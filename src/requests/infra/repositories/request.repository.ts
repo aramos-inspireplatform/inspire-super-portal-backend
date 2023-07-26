@@ -57,8 +57,6 @@ export class RequestRepository implements IRequestRepository {
         requestStatus: true,
         tenant: {
           tenantStatus: true,
-          //tenantBalances: true,
-          //termsRecurringInterval: true,
         },
       },
     });
@@ -77,8 +75,6 @@ export class RequestRepository implements IRequestRepository {
         requestStatus: true,
         tenant: {
           tenantStatus: true,
-          //tenantBalances: true,
-          //termsRecurringInterval: true,
         },
       },
     });
