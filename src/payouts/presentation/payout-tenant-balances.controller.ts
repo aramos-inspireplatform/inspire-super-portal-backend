@@ -14,10 +14,8 @@ import { ISynchronizeTenantBalanceCommand } from '~/payouts/application/commands
 import { FindAllTenantBalancesPagedQuery } from '~/payouts/application/queries/find-all-tenant-balances-paged.query';
 import { FindOneTenantBalanceQuery } from '~/payouts/application/queries/find-one-tenant-balance.query';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
-import {
-  FindOneTenantBalanceInputDto,
-  SynchronizeTenantInputDto,
-} from '~/payouts/presentation/dtos/requests/tenant-balances';
+import { FindOneTenantBalanceInputDto } from '~/payouts/presentation/dtos/requests/tenant-balances/find-one-tenant-balance.input.dto';
+import { SynchronizeTenantInputDto } from '~/payouts/presentation/dtos/requests/tenant-balances/synchronize-tenant.input.dto';
 import {
   FindAllTenantBalancesPagedOutputDto,
   FindOneTenantBalanceOutput,
