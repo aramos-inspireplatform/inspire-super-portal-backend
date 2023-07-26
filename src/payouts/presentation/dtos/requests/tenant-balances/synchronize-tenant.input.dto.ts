@@ -9,7 +9,7 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { SynchronizeTenantBalanceInputDto } from '~/payouts/presentation/dtos/requests/tenant-balances';
+import { SynchronizeTenantBalanceInputDto } from '~/payouts/presentation/dtos/requests/tenant-balances/synchronize-tenant-balance.input.dto';
 
 export class SynchronizeTenantInputDto {
   @ApiProperty({
