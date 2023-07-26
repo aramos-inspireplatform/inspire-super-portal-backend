@@ -1,10 +1,10 @@
-export interface IReconcileStripeCommand {
+export interface IReconciliateStripeCommand {
   execute(
-    params: IReconcileStripeCommand.Input,
-  ): IReconcileStripeCommand.Output;
+    params: IReconciliateStripeCommand.Input,
+  ): IReconciliateStripeCommand.Output;
 }
 
-export namespace IReconcileStripeCommand {
+export namespace IReconciliateStripeCommand {
   export type Input = {
     accessToken: string;
     gTenantId: string;

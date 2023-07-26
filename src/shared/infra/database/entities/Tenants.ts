@@ -29,12 +29,6 @@ export class Tenants extends BaseEntity {
   @Column('uuid', { name: 'agencies_id', nullable: true })
   agencyId: string | null;
 
-  @Column('uuid', { name: 'terms_recurring_intervals_id', nullable: true })
-  termsRecurringIntervalId: string;
-
-  @Column('uuid', { name: 'tenant_statuses_id', nullable: true })
-  statusId: string;
-
   @Column('character varying', {
     name: 'agency_name',
     nullable: true,
@@ -48,6 +42,12 @@ export class Tenants extends BaseEntity {
   })
   termsRecurringIntervalCount: number;
 
+  @Column('uuid', { name: 'terms_recurring_intervals_id', nullable: true })
+  termsRecurringIntervalId: string;
+
+  @Column('uuid', { name: 'tenant_statuses_id', nullable: true })
+  statusId: string;
+
   @Column('numeric', {
     name: 'total_paid_amount',
     precision: 15,
@@ -56,11 +56,11 @@ export class Tenants extends BaseEntity {
   })
   totalPaidAmount: number;
 
-  @OneToMany(() => Requests, (requests) => requests.tenant)
-  requests: Requests[];
-
   @OneToMany(() => TenantBalances, (tenantBalances) => tenantBalances.tenant)
   tenantBalances: TenantBalances[];
+
+  @OneToMany(() => Requests, (requests) => requests.tenant)
+  requests: Requests[];
 
   @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenant)
   tenantPayouts: TenantPayouts[];

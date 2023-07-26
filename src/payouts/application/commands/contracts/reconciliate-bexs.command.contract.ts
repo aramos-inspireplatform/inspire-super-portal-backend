@@ -1,10 +1,12 @@
 import { MultipartFile } from '@fastify/multipart';
 
-export interface IReconcileBexsCommand {
-  execute(params: IReconcileBexsCommand.Input): IReconcileBexsCommand.Output;
+export interface IReconciliateBexsCommand {
+  execute(
+    params: IReconciliateBexsCommand.Input,
+  ): IReconciliateBexsCommand.Output;
 }
 
-export namespace IReconcileBexsCommand {
+export namespace IReconciliateBexsCommand {
   export type Input = {
     accessToken: string;
     gTenantId: string;

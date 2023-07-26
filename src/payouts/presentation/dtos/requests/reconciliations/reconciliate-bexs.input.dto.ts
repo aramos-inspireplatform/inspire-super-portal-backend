@@ -3,7 +3,7 @@ import { Type } from 'class-transformer';
 import { IsNotEmpty, IsString, IsDate } from 'class-validator';
 import { DateRage } from '~/shared/infra/nestjs/decorators/data-range.dto.decorator';
 
-export class ReconcileBexsInputDto {
+export class ReconciliateBexsInputDto {
   @ApiProperty({
     example: 'teste-hnmkt',
   })

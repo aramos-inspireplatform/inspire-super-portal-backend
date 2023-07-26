@@ -12,12 +12,11 @@ import {
   ArrayMinSize,
   ArrayMaxSize,
   IsEnum,
-  IsNumber,
   ValidateNested,
   IsBoolean,
 } from 'class-validator';
 import { CreatePayoutCommandType } from '~/payouts/domain/enums';
-import { CreatePayoutAdjustmentFeeInputDto } from '~/payouts/presentation/dtos/requests/create-payout-adjustment-fee.input.dto';
+import { CreatePayoutAdjustmentFeeInputDto } from '~/payouts/presentation/dtos/requests/adjustments';
 
 const MAX_ACCEPTED_PAYMENTS = 1000 * 10;
 

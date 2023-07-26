@@ -29,10 +29,11 @@ import { FindAllPaymentsPeriodQueryFactoryProvider } from '~/payouts/ioc/provide
 import { FindAllPayoutPaymentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-payments-paged-query-factory.provider';
 import { FindAllPayoutAdjustmentsQueryFactoryProvider } from '~/payouts/ioc/providers/queries/find-all-payout-adjutments-query-factory.provider';
 import { ReconciliationsController } from '~/payouts/presentation/reconciliations.controller';
-import { ReconcileStripeCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconcile-stripe-command-factory.provider';
-import { ReconcileBexsCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconcile-bexs-command-factory.provider';
+import { ReconciliateStripeCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconciliate-stripe-command-factory.provider';
+import { ReconciliateBexsCommandFactoryProvider } from '~/payouts/ioc/providers/commands/reconciliate-bexs-command-factory.provider';
 import { CreatePayoutCommandFactoryProvider } from '~/payouts/ioc/providers/commands/create-payout-command-factory.provider';
 import { repositoryProviders } from '~/payouts/ioc/providers/repositories/repository.provider';
+import { SynchronizeTenantBalanceCommandFactoryProvider } from '~/payouts/ioc/providers/commands/synchronize-tenant-balance-command-factory.provider';
 
 @Module({
   providers: [
@@ -62,9 +63,10 @@ import { repositoryProviders } from '~/payouts/ioc/providers/repositories/reposi
     FindOneTenantDaoFactoryProvider.register(),
     FindAllPaymentsPeriodPagedQueryFactoryProvider.register(),
     FindOneCurrencyDaoFactoryProvider.register(),
-    ReconcileStripeCommandFactoryProvider.register(),
-    ReconcileBexsCommandFactoryProvider.register(),
+    ReconciliateStripeCommandFactoryProvider.register(),
+    ReconciliateBexsCommandFactoryProvider.register(),
     CreatePayoutCommandFactoryProvider.register(),
+    SynchronizeTenantBalanceCommandFactoryProvider.register(),
   ],
   controllers: [
     PayoutController,

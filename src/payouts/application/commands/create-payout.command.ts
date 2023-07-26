@@ -30,7 +30,7 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
       selectAllPayments,
     } = input;
 
-    const tenant = await this.tenantRepository.findOne({
+    const tenant = await this.tenantRepository.findOneByGTenantId({
       gTenantId,
     });
 

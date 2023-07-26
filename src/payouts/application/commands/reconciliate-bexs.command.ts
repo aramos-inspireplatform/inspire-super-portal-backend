@@ -1,15 +1,15 @@
 import { BadRequestException } from '@nestjs/common';
-import { IReconcileBexsCommand } from '~/payouts/application/commands/contracts/reconcile-bexs.command.contract';
+import { IReconciliateBexsCommand } from '~/payouts/application/commands/contracts/reconciliate-bexs.command.contract';
 import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
 
-export class ReconcileBexsCommand implements IReconcileBexsCommand {
+export class ReconciliateBexsCommand implements IReconciliateBexsCommand {
   constructor(
     private readonly inspirePaymentService: IInspirePaymentApiService,
   ) {}
 
   async execute(
-    attrs: IReconcileBexsCommand.Input,
-  ): IReconcileBexsCommand.Output {
+    attrs: IReconciliateBexsCommand.Input,
+  ): IReconciliateBexsCommand.Output {
     if (!attrs.file) {
       throw new BadRequestException('File is required');
     }
@@ -20,7 +20,7 @@ export class ReconcileBexsCommand implements IReconcileBexsCommand {
 
     const buffer = await attrs.file.toBuffer();
 
-    await this.inspirePaymentService.reconcileBexs({
+    await this.inspirePaymentService.reconciliateBexs({
       accessToken: attrs.accessToken,
       gTenantId: attrs.gTenantId,
       periodStartDate: attrs.periodStartDate,

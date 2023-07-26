@@ -9,8 +9,10 @@ import {
   IsUUID,
   ValidateNested,
 } from 'class-validator';
-import { FindOnePayoutSummaryPreviewAdjustmentFeeInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary-preview-adjustment-fee.input.dto';
-import { FindOnePayoutSummaryPreviewPaymentInputDto } from '~/payouts/presentation/dtos/requests/find-one-payout-summary-preview-payment.input.dto';
+import {
+  FindOnePayoutSummaryPreviewAdjustmentFeeInputDto,
+  FindOnePayoutSummaryPreviewPaymentInputDto,
+} from '~/payouts/presentation/dtos/requests/payouts';
 
 export class FindOnePayoutSummaryPreviewInputDto {
   @ApiProperty({

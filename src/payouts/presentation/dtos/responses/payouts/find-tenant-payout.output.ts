@@ -1,12 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
-import { IsUUID } from 'class-validator';
-import { PayoutStatusesDto } from '~/payout-statuses/presentation/dtos/responses/payout-statuses.dto';
-import { FindTermsRecurringIntervalsOutput } from '~/payouts/presentation/dtos/responses/find-terms-recurring-intervals.output';
-import { GetSettlementCurrenciesResponseDto } from '~/settlement-currencies/presentation/dto/output/get-settlement-currencies.dto';
+import { Expose } from 'class-transformer';
 import { BaseDto } from '~/shared/presentation/base.dto';
-import { TenantDto } from '~/tenants/presentation/dtos/responses/tenant.dto';
-import { UserResponseDto } from '~/users/presentation/dtos/responses/user-response.dto';
 
 export class FindTenantPayoutOutput extends BaseDto {
   @Expose()

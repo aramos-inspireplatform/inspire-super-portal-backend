@@ -13,8 +13,8 @@ import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticat
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
 import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
 import { IFindAllPayoutAdjustmentsQuery } from '~/payouts/application/queries/contracts/find-all-payout-adjustments.query.contract';
-import { FindAllPayoutAdjustmentsInputDto } from '~/payouts/presentation/dtos/requests/find-all-payout-adjustments.input.dto';
-import { FindAllPayoutAdjustmentsOutput } from '~/payouts/presentation/dtos/responses/find-all-payout-adjustments.output';
+import { FindAllPayoutAdjustmentsOutput } from '~/payouts/presentation/dtos/responses/adjustments';
+import { FindAllPayoutAdjustmentsInputDto } from '~/payouts/presentation/dtos/requests/adjustments';
 
 @Controller('/payouts/:payoutId/adjustments')
 @ApiTags('Payouts')
