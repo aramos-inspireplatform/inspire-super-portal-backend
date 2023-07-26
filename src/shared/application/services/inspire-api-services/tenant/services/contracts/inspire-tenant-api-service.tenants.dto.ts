@@ -46,6 +46,7 @@ export namespace InspireTenantApiServiceTenantsDto {
     status: TenantStatus;
     termsRecurringIntervalCount: number;
     termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
   };
 
   export type SupportAddress = {
@@ -113,6 +114,11 @@ export namespace InspireTenantApiServiceTenantsDto {
     name: string;
     interval: string;
     isActive: boolean;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
   };
 
   // FindAll

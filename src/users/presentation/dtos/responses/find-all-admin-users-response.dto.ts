@@ -24,8 +24,8 @@ export class FindAllAdminUsersResponseDto extends BaseDto {
   email: string;
 
   @Expose()
-  @ApiProperty({ example: 'Active' })
-  status: string;
+  @ApiProperty({ example: false, type: Boolean })
+  isActive: boolean;
 
   @Expose({ name: 'tenantId' })
   @ApiProperty({ example: 'teste-hnmkt', name: 'tenantId' })

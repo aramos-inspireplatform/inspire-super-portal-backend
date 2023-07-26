@@ -35,7 +35,6 @@ export class AxiosHttpClientAdapter implements IHttpClient {
     config?: TConfig,
   ): Promise<IHttpClient.HttpClientResponse<TResponse>> {
     try {
-      console.log('data', config);
       const response = await firstValueFrom(
         this.httpService.post(url, data, config),
       );
