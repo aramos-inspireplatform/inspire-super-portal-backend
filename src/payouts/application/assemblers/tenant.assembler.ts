@@ -19,6 +19,7 @@ export class TenantAssembler {
         TenantBalanceAssembler.assembly(tenantBalance),
       ),
       totalPaidAmount: input.totalPaidAmount,
+      lastTenantPayoutId: input.lastTenantPayoutId,
       createdDate: input.createdDate,
       updatedDate: input.updatedDate,
       deletedDate: input.deletedDate,
@@ -36,6 +37,7 @@ export namespace TenantAssembler {
     tenantStatus: TenantStatusAssembler.Input;
     tenantBalances: TenantBalanceAssembler.Input[];
     totalPaidAmount: number;
+    lastTenantPayoutId: string;
     createdDate: Date;
     updatedDate: Date;
     deletedDate: Date;

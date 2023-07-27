@@ -45,6 +45,9 @@ export class TenantsDataMapper extends BaseEntity {
   })
   totalPaidAmount: number;
 
+  @Column('uuid', { name: 'last_tenant_payouts_id', nullable: true })
+  lastTenantPayoutId: string | null;
+
   @OneToMany(
     () => TenantBalancesDataMapper,
     (tenantBalances) => tenantBalances.tenant,

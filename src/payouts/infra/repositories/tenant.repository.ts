@@ -68,7 +68,7 @@ export class TenantRepositoryTypeOrmAdapter implements ITenantRepository {
         .termsRecurringInterval?.getState()?.id,
       statusId: input.getState().tenantStatus?.getState()?.id,
       totalPaidAmount: input.getState().totalPaidAmount,
-      //lastTenantPayoutId: input.getState().lastTenantPayoutId,
+      lastTenantPayoutId: input.getState().lastTenantPayout?.getState().id,
       tenantBalances: input.getState().tenantBalances?.map((tenantBalance) => {
         return {
           id: tenantBalance.getState().id,
