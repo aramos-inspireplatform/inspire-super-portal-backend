@@ -1,14 +1,21 @@
-import { UnprocessableEntityException } from '@nestjs/common';
 import { ISynchronizeTenantBalanceCommand } from '~/payouts/application/commands';
 import { TenantBalanceDomainEntity } from '~/payouts/domain/entities/tenant-balances.entity';
+import { TenantStatusDomainEntity } from '~/payouts/domain/entities/tenant-status.entity';
 import { TenantDomainEntity } from '~/payouts/domain/entities/tenant.entity';
 import { PayoutsExceptionsConstants } from '~/payouts/domain/exceptions/payouts-exceptions.enum';
-import { ITenantRepository } from '~/payouts/infra/repositories/contracts';
+import {
+  ITenantRepository,
+  ITenantStatusRepository,
+} from '~/payouts/domain/repositories';
+import { BadRequestException } from '~/shared/domain/exceptions';
 
 export class SynchronizeTenantBalanceCommand
   implements ISynchronizeTenantBalanceCommand
 {
-  constructor(private readonly tenantRepository: ITenantRepository) {
+  constructor(
+    private readonly tenantRepository: ITenantRepository,
+    private readonly tenantStatusRepository: ITenantStatusRepository,
+  ) {
     //
   }
 
@@ -29,25 +36,31 @@ export class SynchronizeTenantBalanceCommand
     });
 
     let tenant = await this.getTenantById({ tenantId: tenantId });
+
+    const gTenantIdCheck = await this.getTenantByGTenantId({
+      gTenantId: gTenantId,
+    });
+    if (gTenantIdCheck && gTenantIdCheck.id !== tenant?.id)
+      throw new BadRequestException(
+        PayoutsExceptionsConstants.TENANT_GTENANTID_ALREADY_IN_USE,
+      );
+
+    const tenantStatus = await this.getTenantStatusById({
+      tenantStatusId: status?.id,
+    });
+
     if (tenant) {
       tenant.synchronize({
         name: name,
+        gTenantId: gTenantId,
         agencyId: agency.id,
         agencyName: agency.name,
         termsRecurringIntervalCount: terms.recurringIntervalCount,
         termsRecurringIntervalId: terms.recurringIntervalId,
-        tenantStatusId: status.id,
+        tenantStatus: tenantStatus,
         tenantBalances: tenantBalances,
       });
     } else {
-      const tenantCheck = await this.getTenantByGTenantId({
-        gTenantId: gTenantId,
-      });
-      if (tenantCheck)
-        throw new UnprocessableEntityException(
-          PayoutsExceptionsConstants.TENANT_GTENANTID_ALREADY_IN_USE,
-        );
-
       tenant = new TenantDomainEntity();
       tenant.create({
         id: tenantId,
@@ -57,7 +70,7 @@ export class SynchronizeTenantBalanceCommand
         agencyName: agency.name,
         termsRecurringIntervalCount: terms.recurringIntervalCount,
         termsRecurringIntervalId: terms.recurringIntervalId,
-        tenantStatusId: status.id,
+        tenantStatus: tenantStatus,
         tenantBalances: tenantBalances,
       });
     }
@@ -87,5 +100,17 @@ export class SynchronizeTenantBalanceCommand
     });
 
     return tenant;
+  }
+
+  private async getTenantStatusById({
+    tenantStatusId,
+  }: {
+    tenantStatusId: string;
+  }): Promise<TenantStatusDomainEntity> {
+    const tenantStatus = await this.tenantStatusRepository.findOneById({
+      id: tenantStatusId,
+    });
+
+    return tenantStatus;
   }
 }

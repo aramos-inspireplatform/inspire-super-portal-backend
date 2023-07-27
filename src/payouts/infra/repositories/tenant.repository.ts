@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import { TenantAssembler } from '~/payouts/application/assemblers/tenant.assembler';
 import { TenantDomainEntity } from '~/payouts/domain/entities/tenant.entity';
-import { ITenantRepository } from '~/payouts/infra/repositories/contracts';
+import { ITenantRepository } from '~/payouts/domain/repositories';
 import { TenantsDataMapper } from '~/shared/infra/database/entities';
 
 export class TenantRepositoryTypeOrmAdapter implements ITenantRepository {
@@ -54,7 +54,7 @@ export class TenantRepositoryTypeOrmAdapter implements ITenantRepository {
       agencyName: input.getState().agencyName,
       termsRecurringIntervalCount: input.getState().termsRecurringIntervalCount,
       termsRecurringIntervalId: input.getState().termsRecurringIntervalId,
-      statusId: input.getState().tenantStatusId,
+      statusId: input.getState().tenantStatus?.getState()?.id,
       totalPaidAmount: input.getState().totalPaidAmount,
       //lastTenantPayoutId: input.getState().lastTenantPayoutId,
       tenantBalances: input.getState().tenantBalances?.map((tenantBalance) => {

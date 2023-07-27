@@ -16,7 +16,7 @@ import { UserAuth } from '~/auth/presentation/decorators/user-auth.decorator';
 import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
 import { IFindAllTenantPayoutsPagedQuery } from '~/payouts/application/queries/contracts/find-all-tenant-payouts-paged.query.contract';
 import { IFindOneTenantPayoutQuery } from '~/payouts/application/queries/contracts/find-one-tenant-payout.query.contract';
-import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
+import { PayoutProvidersSymbols } from '~/payouts/ioc/providers/payouts-providers.symbols';
 import { PaginationInput } from '~/shared/application/services/pagination';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { FindOnePayoutSummaryPreviewQuery } from '~/payouts/application/queries/find-one-payout-summary-preview.query';
@@ -44,15 +44,15 @@ import {
 @CustomApiExtraModels()
 export class PayoutController {
   constructor(
-    @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_PAYOUT_PAGED_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_TENANT_PAYOUT_PAGED)
     private readonly findAllTenantPayoutsPagedQuery: IFindAllTenantPayoutsPagedQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ONE_TENANT_PAYOUT_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ONE_TENANT_PAYOUT)
     private readonly findOneTenantPayoutQuery: IFindOneTenantPayoutQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ONE_PAYOUT_SUMMARY)
     private readonly findOnePayoutSummaryQuery: FindOnePayoutSummaryQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_PREVIEW_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ONE_PAYOUT_SUMMARY_PREVIEW)
     private readonly findOnePayoutSummaryPreviewQuery: FindOnePayoutSummaryPreviewQuery,
-    @Inject(PayoutProvidersSymbols.CREATE_PAYOUT_COMMAND)
+    @Inject(PayoutProvidersSymbols.Commands.CREATE_PAYOUT)
     private readonly createPayoutCommand: CreatePayoutCommand,
   ) {}
 

@@ -11,7 +11,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
+import { PayoutProvidersSymbols } from '~/payouts/ioc/providers/payouts-providers.symbols';
 import { IFindAllPayoutPaymentsPagedQuery } from '~/payouts/application/queries/contracts/find-all-payout-payments-paged.query.contract';
 import { IFindAllPaymentsPeriodQuery } from '~/payouts/application/queries/contracts/find-all-payments-period.query.contract';
 import { IFindAllPaymentsPeriodPagedQuery } from '~/payouts/application/queries/contracts/find-all-payments-period-paged.query.contract';
@@ -31,11 +31,11 @@ import {
 @CustomApiExtraModels()
 export class PayoutPaymentsController {
   constructor(
-    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYMENTS_PERIOD_PAGED_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_PAYMENTS_PERIOD_PAGED)
     private readonly findAllPaymentsPeriodPagedQuery: IFindAllPaymentsPeriodPagedQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYMENTS_PERIOD_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_PAYMENTS_PERIOD)
     private readonly findAllPaymentsPeriodQuery: IFindAllPaymentsPeriodQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYOUT_PAYMENTS_PAGED_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_PAYOUT_PAYMENTS_PAGED)
     private readonly findAllPayoutPaymentsPagedQuery: IFindAllPayoutPaymentsPagedQuery,
   ) {}
 

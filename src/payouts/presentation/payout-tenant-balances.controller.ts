@@ -13,7 +13,7 @@ import { UserAuthDto } from '~/auth/presentation/dto/input/user-auth.dto';
 import { ISynchronizeTenantBalanceCommand } from '~/payouts/application/commands/contracts';
 import { FindAllTenantBalancesPagedQuery } from '~/payouts/application/queries/find-all-tenant-balances-paged.query';
 import { FindOneTenantBalanceQuery } from '~/payouts/application/queries/find-one-tenant-balance.query';
-import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
+import { PayoutProvidersSymbols } from '~/payouts/ioc/providers/payouts-providers.symbols';
 import { FindOneTenantBalanceInputDto } from '~/payouts/presentation/dtos/requests/tenant-balances/find-one-tenant-balance.input.dto';
 import { SynchronizeTenantInputDto } from '~/payouts/presentation/dtos/requests/tenant-balances/synchronize-tenant.input.dto';
 import {
@@ -30,11 +30,11 @@ import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-pagin
 @CustomApiExtraModels()
 export class PayoutTenantBalancesController {
   constructor(
-    @Inject(PayoutProvidersSymbols.FIND_ALL_TENANT_BALANCES_PAGED_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_TENANT_BALANCES_PAGED)
     private readonly findAllTenantBalancesPagedQuery: FindAllTenantBalancesPagedQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ONE_TENANT_BALANCE_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ONE_TENANT_BALANCE)
     private readonly findOneTenantBalanceQuery: FindOneTenantBalanceQuery,
-    @Inject(PayoutProvidersSymbols.SYNCHRONIZE_TENANT_BALANCE_COMMAND)
+    @Inject(PayoutProvidersSymbols.Commands.SYNCHRONIZE_TENANT_BALANCE)
     private readonly synchronizeTenantBalanceCommand: ISynchronizeTenantBalanceCommand,
   ) {}
 

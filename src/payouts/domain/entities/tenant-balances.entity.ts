@@ -1,6 +1,11 @@
 import { CurrencyDomainEntity } from '~/payouts/domain/entities/currency.entity';
 import { TenantDomainEntity } from '~/payouts/domain/entities/tenant.entity';
+import { TenantBalancesEnum } from '~/payouts/domain/enums';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
+import {
+  BadRequestException,
+  NotFoundException,
+} from '~/shared/domain/exceptions';
 
 export class TenantBalanceDomainEntity extends BaseDomainEntity {
   private tenantId: string;
@@ -25,6 +30,9 @@ export class TenantBalanceDomainEntity extends BaseDomainEntity {
     const { amount } = input;
 
     this.amount = amount;
+    this.updatedDate = new Date();
+
+    this.validate();
   }
 
   delete() {
@@ -43,6 +51,35 @@ export class TenantBalanceDomainEntity extends BaseDomainEntity {
       updatedDate: this.updatedDate,
       deletedDate: this.deletedDate,
     };
+  }
+
+  // Validations
+  private validate() {
+    this.validateAmount();
+  }
+
+  private validateAmount() {
+    if (this.amount === null || this.amount === undefined)
+      throw new NotFoundException(
+        TenantBalancesEnum.Exceptions.AMOUNT_IS_REQUIRED,
+      );
+
+    if (this.amount < 0)
+      throw new BadRequestException(
+        TenantBalancesEnum.Exceptions.AMOUNT_MUST_BE_GREATER_OR_EQUAL_THEN_ZERO,
+      );
+  }
+
+  private validateSettlementCurrency() {
+    if (!this.settlementCurrencyId)
+      throw new NotFoundException(
+        TenantBalancesEnum.Exceptions.SETTLEMENT_CURRENCY_IS_REQUIRED,
+      );
+
+    if (this.settlementCurrencyId.length > 36)
+      throw new BadRequestException(
+        TenantBalancesEnum.Exceptions.SETTLEMENT_CURRENCY_IS_MUST_BE_UUID,
+      );
   }
 }
 

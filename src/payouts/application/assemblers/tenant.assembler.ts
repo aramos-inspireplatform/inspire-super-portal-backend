@@ -13,6 +13,7 @@ export class TenantAssembler {
       tenantBalances: input.tenantBalances?.map((tenantBalance) =>
         TenantBalanceAssembler.assembly(tenantBalance),
       ),
+      totalPaidAmount: input.totalPaidAmount,
       createdDate: input.createdDate,
       updatedDate: input.updatedDate,
       deletedDate: input.deletedDate,
@@ -28,6 +29,7 @@ export namespace TenantAssembler {
     termsRecurringIntervalCount: number;
     termsRecurringIntervalId: string;
     tenantBalances: TenantBalanceAssembler.Input[];
+    totalPaidAmount: number;
     createdDate: Date;
     updatedDate: Date;
     deletedDate: Date;

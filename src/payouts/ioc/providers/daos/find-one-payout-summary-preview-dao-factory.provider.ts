@@ -1,5 +1,5 @@
 import { FactoryProvider } from '@nestjs/common';
-import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
+import { PayoutProvidersSymbols } from '~/payouts/ioc/providers/payouts-providers.symbols';
 import { IInspirePaymentApiService } from '~/shared/application/services/inspire-api-services/payment/services/contracts/inspire-payment-api-service.contract';
 import { InspireApiServicesProvidersSymbols } from '~/shared/application/services/inspire-api-services/shared/symbols/inspire-api-services-providers.symbols';
 import { FindOnePayoutSummaryPreviewDao } from '~/payouts/infra/daos/find-one-payout-summary-preview.dao';
@@ -7,7 +7,7 @@ import { FindOnePayoutSummaryPreviewDao } from '~/payouts/infra/daos/find-one-pa
 export class FindOnePayoutSummaryPreviewDaoFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide: PayoutProvidersSymbols.FIND_ONE_PAYOUT_SUMMARY_PREVIEW_DAO,
+      provide: PayoutProvidersSymbols.Daos.FIND_ONE_PAYOUT_SUMMARY_PREVIEW,
       useFactory: (inspirePaymentApiService: IInspirePaymentApiService) =>
         new FindOnePayoutSummaryPreviewDao(inspirePaymentApiService),
       inject: [InspireApiServicesProvidersSymbols.INSPIRE_PAYMENT_API_SERVICE],

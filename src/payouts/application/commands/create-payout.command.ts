@@ -3,7 +3,7 @@ import { ICreatePayoutCommand } from '~/payouts/application/commands/contracts';
 import {
   ITenantRepository,
   IPayoutRepository,
-} from '~/payouts/infra/repositories/contracts';
+} from '~/payouts/domain/repositories';
 import { PayoutDomainEntity } from '~/payouts/domain/entities/payout.entity';
 
 export class CreatePayoutCommand implements ICreatePayoutCommand {

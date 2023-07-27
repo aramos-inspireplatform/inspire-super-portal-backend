@@ -40,7 +40,7 @@ export class SynchronizeTenantInputDto {
     example: 'fe716c91-e6bc-4231-a361-81c4696daac8',
     description: 'The agency unique identifier.',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsUUID()
   agencyId: string;
 
@@ -48,7 +48,7 @@ export class SynchronizeTenantInputDto {
     example: 'Agency',
     description: 'The agency name.',
   })
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   agencyName: string;
 

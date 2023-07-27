@@ -3,7 +3,7 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
+import { PayoutProvidersSymbols } from '~/payouts/ioc/providers/payouts-providers.symbols';
 import { IReconciliateStripeCommand } from '~/payouts/application/commands/contracts/reconciliate-stripe.command.contract';
 import { IReconciliateBexsCommand } from '~/payouts/application/commands/contracts/reconciliate-bexs.command.contract';
 import {
@@ -16,9 +16,9 @@ import {
 @CustomApiExtraModels()
 export class ReconciliationsController {
   constructor(
-    @Inject(PayoutProvidersSymbols.RECONCILIATE_STRIPE_COMMAND)
+    @Inject(PayoutProvidersSymbols.Commands.RECONCILIATE_STRIPE)
     private readonly reconciliateStripeCommand: IReconciliateStripeCommand,
-    @Inject(PayoutProvidersSymbols.RECONCILIATE_BEXS_COMMAND)
+    @Inject(PayoutProvidersSymbols.Commands.RECONCILIATE_BEXS)
     private readonly reconciliateBexsCommand: IReconciliateBexsCommand,
   ) {}
 
