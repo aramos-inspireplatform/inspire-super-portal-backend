@@ -46,7 +46,9 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
       selectAllPayments,
       termsRecurringIntervalCount:
         tenant.getState().termsRecurringIntervalCount,
-      termsRecurringIntervalId: tenant.getState().termsRecurringIntervalId,
+      termsRecurringIntervalId: tenant
+        .getState()
+        .termsRecurringInterval?.getState()?.id,
     });
 
     const payout = new PayoutDomainEntity().save({

@@ -17,6 +17,11 @@ export class TenantRepositoryTypeOrmAdapter implements ITenantRepository {
     params: ITenantRepository.FindOneById,
   ): Promise<TenantDomainEntity> {
     const query = this.repository.createQueryBuilder(this.entity);
+    query.innerJoinAndSelect(
+      `${this.entity}.termsRecurringInterval`,
+      'termsRecurringInterval',
+    );
+    query.innerJoinAndSelect(`${this.entity}.tenantStatus`, 'tenantStatus');
     query.leftJoinAndSelect(`${this.entity}.tenantBalances`, 'tenantBalances');
     query.leftJoinAndSelect(
       `tenantBalances.settlementCurrency`,
@@ -33,6 +38,11 @@ export class TenantRepositoryTypeOrmAdapter implements ITenantRepository {
   ): Promise<TenantDomainEntity> {
     const query = this.repository.createQueryBuilder(this.entity);
     query.leftJoinAndSelect(`${this.entity}.tenantBalances`, 'tenantBalances');
+    query.innerJoinAndSelect(
+      `${this.entity}.termsRecurringInterval`,
+      'termsRecurringInterval',
+    );
+    query.innerJoinAndSelect(`${this.entity}.tenantStatus`, 'tenantStatus');
     query.leftJoinAndSelect(
       `tenantBalances.settlementCurrency`,
       'settlementCurrency',
@@ -53,7 +63,9 @@ export class TenantRepositoryTypeOrmAdapter implements ITenantRepository {
       agencyId: input.getState().agencyId,
       agencyName: input.getState().agencyName,
       termsRecurringIntervalCount: input.getState().termsRecurringIntervalCount,
-      termsRecurringIntervalId: input.getState().termsRecurringIntervalId,
+      termsRecurringIntervalId: input
+        .getState()
+        .termsRecurringInterval?.getState()?.id,
       statusId: input.getState().tenantStatus?.getState()?.id,
       totalPaidAmount: input.getState().totalPaidAmount,
       //lastTenantPayoutId: input.getState().lastTenantPayoutId,

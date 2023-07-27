@@ -10,7 +10,7 @@ import { Users } from './Users';
 import { PayoutStatuses } from './PayoutStatuses';
 import { Currencies } from './Currencies';
 import { TenantsDataMapper } from './Tenants';
-import { RecurringIntervals } from './RecurringIntervals';
+import { RecurringIntervalsDataMapper } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
@@ -156,14 +156,14 @@ export class TenantPayouts extends BaseEntity {
   tenant: TenantsDataMapper;
 
   @ManyToOne(
-    () => RecurringIntervals,
+    () => RecurringIntervalsDataMapper,
     (recurringIntervals) => recurringIntervals.tenantPayouts,
     { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' },
   )
   @JoinColumn([
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
-  termsRecurringInterval: RecurringIntervals;
+  termsRecurringInterval: RecurringIntervalsDataMapper;
 
   @ManyToOne(() => Users, (users) => users.updaterUsersId, {
     onDelete: 'RESTRICT',

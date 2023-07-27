@@ -1,9 +1,11 @@
 import { ISynchronizeTenantBalanceCommand } from '~/payouts/application/commands';
+import { RecurringIntervalDomainEntity } from '~/payouts/domain/entities/recurring-interval.entity';
 import { TenantBalanceDomainEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 import { TenantStatusDomainEntity } from '~/payouts/domain/entities/tenant-status.entity';
 import { TenantDomainEntity } from '~/payouts/domain/entities/tenant.entity';
 import { PayoutsExceptionsConstants } from '~/payouts/domain/exceptions/payouts-exceptions.enum';
 import {
+  IRecurringIntervalRepository,
   ITenantRepository,
   ITenantStatusRepository,
 } from '~/payouts/domain/repositories';
@@ -15,6 +17,7 @@ export class SynchronizeTenantBalanceCommand
   constructor(
     private readonly tenantRepository: ITenantRepository,
     private readonly tenantStatusRepository: ITenantStatusRepository,
+    private readonly recurringIntervalRepository: IRecurringIntervalRepository,
   ) {
     //
   }
@@ -49,6 +52,10 @@ export class SynchronizeTenantBalanceCommand
       tenantStatusId: status?.id,
     });
 
+    const recurringInterval = await this.getRecurringIntervalById({
+      recurringIntervalId: terms?.recurringIntervalId,
+    });
+
     if (tenant) {
       tenant.synchronize({
         name: name,
@@ -56,7 +63,7 @@ export class SynchronizeTenantBalanceCommand
         agencyId: agency.id,
         agencyName: agency.name,
         termsRecurringIntervalCount: terms.recurringIntervalCount,
-        termsRecurringIntervalId: terms.recurringIntervalId,
+        termsRecurringInterval: recurringInterval,
         tenantStatus: tenantStatus,
         tenantBalances: tenantBalances,
       });
@@ -69,7 +76,7 @@ export class SynchronizeTenantBalanceCommand
         agencyId: agency.id,
         agencyName: agency.name,
         termsRecurringIntervalCount: terms.recurringIntervalCount,
-        termsRecurringIntervalId: terms.recurringIntervalId,
+        termsRecurringInterval: recurringInterval,
         tenantStatus: tenantStatus,
         tenantBalances: tenantBalances,
       });
@@ -112,5 +119,18 @@ export class SynchronizeTenantBalanceCommand
     });
 
     return tenantStatus;
+  }
+
+  private async getRecurringIntervalById({
+    recurringIntervalId,
+  }: {
+    recurringIntervalId: string;
+  }): Promise<RecurringIntervalDomainEntity> {
+    const recurringInterval =
+      await this.recurringIntervalRepository.findOneById({
+        id: recurringIntervalId,
+      });
+
+    return recurringInterval;
   }
 }

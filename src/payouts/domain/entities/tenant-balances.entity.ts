@@ -56,6 +56,7 @@ export class TenantBalanceDomainEntity extends BaseDomainEntity {
   // Validations
   private validate() {
     this.validateAmount();
+    this.validateSettlementCurrency();
   }
 
   private validateAmount() {

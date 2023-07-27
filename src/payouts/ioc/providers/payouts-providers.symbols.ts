@@ -58,6 +58,7 @@ export namespace PayoutProvidersSymbols {
     TENANT: Symbol('PAYOUTS_TENANT_REPOSITORY'),
     TENANT_STATUS: Symbol('TENANT_STATUS_REPOSITORY'),
     PAYOUT: Symbol('PAYOUTS_PAYOUT_REPOSITORY'),
+    RECURRING_INTERVAL: Symbol('PAYOUTS_RECURRING_INTERVAL'),
   };
 
   export const Services = {};

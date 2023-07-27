@@ -1,3 +1,4 @@
+import { RecurringIntervalDomainEntity } from '~/payouts/domain/entities/recurring-interval.entity';
 import { TenantBalanceDomainEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 import { TenantStatusDomainEntity } from '~/payouts/domain/entities/tenant-status.entity';
 import { TenantStatusesEnum, TenantsEnum } from '~/payouts/domain/enums';
@@ -13,7 +14,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
   private agencyId: string;
   private agencyName: string;
   private termsRecurringIntervalCount: number;
-  private termsRecurringIntervalId: string;
+  private termsRecurringInterval: RecurringIntervalDomainEntity;
   private tenantStatus: TenantStatusDomainEntity;
   private totalPaidAmount: number;
   private lastTenantPayoutId: string;
@@ -32,7 +33,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
       agencyId,
       agencyName,
       termsRecurringIntervalCount,
-      termsRecurringIntervalId,
+      termsRecurringInterval,
       tenantStatus,
       tenantBalances,
     } = input;
@@ -43,7 +44,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
     this.agencyId = agencyId;
     this.agencyName = agencyName;
     this.termsRecurringIntervalCount = termsRecurringIntervalCount;
-    this.termsRecurringIntervalId = termsRecurringIntervalId;
+    this.termsRecurringInterval = termsRecurringInterval;
     this.tenantStatus = tenantStatus;
     this.totalPaidAmount = 0;
     this.synchronizeTenantBalances({ tenantBalances });
@@ -58,7 +59,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
       agencyId,
       agencyName,
       termsRecurringIntervalCount,
-      termsRecurringIntervalId,
+      termsRecurringInterval,
       tenantStatus,
       tenantBalances,
     } = input;
@@ -68,7 +69,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
     this.agencyId = agencyId;
     this.agencyName = agencyName;
     this.termsRecurringIntervalCount = termsRecurringIntervalCount;
-    this.termsRecurringIntervalId = termsRecurringIntervalId;
+    this.termsRecurringInterval = termsRecurringInterval;
     this.tenantStatus = tenantStatus;
     this.synchronizeTenantBalances({ tenantBalances });
 
@@ -83,7 +84,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
       agencyId: this.agencyId,
       agencyName: this.agencyName,
       termsRecurringIntervalCount: this.termsRecurringIntervalCount,
-      termsRecurringIntervalId: this.termsRecurringIntervalId,
+      termsRecurringInterval: this.termsRecurringInterval,
       tenantStatus: this.tenantStatus,
       totalPaidAmount: this.totalPaidAmount,
       lastTenantPayoutId: this.lastTenantPayoutId,
@@ -210,14 +211,9 @@ export class TenantDomainEntity extends BaseDomainEntity {
         TenantsEnum.Exceptions.TERMS_RECURRING_INTERVAL_COUNT_MUST_BE_GREATER_THEN_ZERO,
       );
 
-    if (!this.termsRecurringIntervalId)
+    if (!this.termsRecurringInterval)
       throw new NotFoundException(
         TenantsEnum.Exceptions.TERMS_RECURRING_INTERVAL_IS_REQUIRED,
-      );
-
-    if (this.termsRecurringIntervalId.length > 36)
-      throw new BadRequestException(
-        TenantsEnum.Exceptions.TERMS_RECURRING_INTERVAL_IS_MUST_BE_UUID,
       );
   }
 
@@ -260,8 +256,7 @@ export namespace TenantDomainEntity {
     agencyId: string;
     agencyName: string;
     termsRecurringIntervalCount: number;
-    termsRecurringIntervalId: string;
-    //tenantStatusId: string;
+    termsRecurringInterval: RecurringIntervalDomainEntity;
     tenantStatus: TenantStatusDomainEntity;
     totalPaidAmount: number;
     lastTenantPayoutId: string;
@@ -283,8 +278,7 @@ export namespace TenantDomainEntity {
     | 'agencyId'
     | 'agencyName'
     | 'termsRecurringIntervalCount'
-    | 'termsRecurringIntervalId'
-    //| 'termsRecurringInterval'
+    | 'termsRecurringInterval'
     | 'tenantStatus'
     | 'tenantBalances'
   > & {
@@ -298,8 +292,7 @@ export namespace TenantDomainEntity {
     | 'agencyId'
     | 'agencyName'
     | 'termsRecurringIntervalCount'
-    | 'termsRecurringIntervalId'
-    //| 'termsRecurringInterval'
+    | 'termsRecurringInterval'
     | 'tenantStatus'
     | 'tenantBalances'
   > & {

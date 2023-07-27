@@ -3,7 +3,7 @@ import { Requests } from './Requests';
 import { TenantBalancesDataMapper } from './TenantBalances';
 import { TenantPayouts } from './TenantPayouts';
 import { TenantStatusesDataMapper } from './TenantStatuses';
-import { RecurringIntervals } from './RecurringIntervals';
+import { RecurringIntervalsDataMapper } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
@@ -81,12 +81,12 @@ export class TenantsDataMapper extends BaseEntity {
   tenantStatus: TenantStatusesDataMapper;
 
   @ManyToOne(
-    () => RecurringIntervals,
+    () => RecurringIntervalsDataMapper,
     (recurringIntervals) => recurringIntervals.tenants,
     { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' },
   )
   @JoinColumn([
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
-  termsRecurringInterval: RecurringIntervals;
+  termsRecurringInterval: RecurringIntervalsDataMapper;
 }
