@@ -99,6 +99,8 @@ export class RequestRepository implements IRequestRepository {
         'requestModules',
         'requestModules.module',
         'requestModules.moduleRequestStatus',
+        'requestModules.requestModuleAttempts',
+        'requestModules.requestModuleAttempts.requestModuleAttemptStatus',
       ],
       skip: attrs.page * attrs.pageSize,
       take: attrs.pageSize,
