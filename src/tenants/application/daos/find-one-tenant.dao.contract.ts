@@ -34,6 +34,9 @@ export namespace IFindOneTenantDao {
     country: Country;
     status: Status;
     settings: Settings;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
   }>;
 
   // Additional types
@@ -77,6 +80,18 @@ export namespace IFindOneTenantDao {
     id: string;
     name: string;
     slug: string;
+  };
+
+  type TermsRecurringInterval = {
+    uuid: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
   };
 
   type Settings = { [property: string]: any };

@@ -22,6 +22,9 @@ export namespace IFindTenantQuery {
     language: Language;
     country: Country;
     status: Status;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
     settings: Settings;
   }>;
 
@@ -57,6 +60,18 @@ export namespace IFindTenantQuery {
     id: string;
     name: string;
     slug: string;
+  };
+
+  type TermsRecurringInterval = {
+    uuid: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
   };
 
   type Settings = { [property: string]: any };
