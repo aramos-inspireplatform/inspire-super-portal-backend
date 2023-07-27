@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import {
   TenantPayouts,
-  Tenants,
+  TenantsDataMapper,
   Users,
 } from '~/shared/infra/database/entities';
 
@@ -41,7 +41,7 @@ export function createRandomUser(): Partial<Users> {
   };
 }
 
-export function createRandomTenant(): Partial<Tenants> {
+export function createRandomTenant(): Partial<TenantsDataMapper> {
   return {
     id: faker.string.uuid(),
     name: faker.person.firstName(),

@@ -1,12 +1,9 @@
 import {
-  BadRequestException,
-  Body,
   Controller,
   Get,
   Inject,
   Param,
   ParseUUIDPipe,
-  Post,
   Query,
   Req,
 } from '@nestjs/common';
@@ -14,29 +11,31 @@ import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import { PayoutProvidersSymbols } from '~/payouts/ioc/payouts-providers.symbols';
-import { FindAllPaymentsPeriodPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period-paged.output';
-import { FindAllPaymentsPeriodPagedInputDto } from '~/payouts/presentation/dtos/requests/find-all-payments-period-paged.input.dto';
+import { PayoutProvidersSymbols } from '~/payouts/ioc/providers/payouts-providers.symbols';
 import { IFindAllPayoutPaymentsPagedQuery } from '~/payouts/application/queries/contracts/find-all-payout-payments-paged.query.contract';
-import { FindAllPayoutPaymentsPagedInputDto } from '~/payouts/presentation/dtos/requests/find-all-payout-payments-paged.input.dto';
-import { FindAllPayoutPaymentsPagedOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payout-payments-paged.output';
 import { IFindAllPaymentsPeriodQuery } from '~/payouts/application/queries/contracts/find-all-payments-period.query.contract';
-import { FindAllPaymentsPeriodInputDto } from '~/payouts/presentation/dtos/requests/find-all-payments-period.input.dto';
-import { FindAllPaymentsPeriodOutputDto } from '~/payouts/presentation/dtos/responses/find-all-payments-period.output';
 import { IFindAllPaymentsPeriodPagedQuery } from '~/payouts/application/queries/contracts/find-all-payments-period-paged.query.contract';
-import { CreatePayoutBexsInputDto } from '~/payouts/presentation/dtos/requests/create-payout-bexs.input';
-import { ICreatePayoutBexsQuery } from '~/payouts/application/queries/contracts/create-payout-bexs.query.contract';
+import {
+  FindAllPaymentsPeriodOutputDto,
+  FindAllPaymentsPeriodPagedOutputDto,
+  FindAllPayoutPaymentsPagedOutputDto,
+} from '~/payouts/presentation/dtos/responses/payments';
+import {
+  FindAllPaymentsPeriodInputDto,
+  FindAllPaymentsPeriodPagedInputDto,
+  FindAllPayoutPaymentsPagedInputDto,
+} from '~/payouts/presentation/dtos/requests/payments';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
 @CustomApiExtraModels()
 export class PayoutPaymentsController {
   constructor(
-    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYMENTS_PERIOD_PAGED_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_PAYMENTS_PERIOD_PAGED)
     private readonly findAllPaymentsPeriodPagedQuery: IFindAllPaymentsPeriodPagedQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYMENTS_PERIOD_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_PAYMENTS_PERIOD)
     private readonly findAllPaymentsPeriodQuery: IFindAllPaymentsPeriodQuery,
-    @Inject(PayoutProvidersSymbols.FIND_ALL_PAYOUT_PAYMENTS_PAGED_QUERY)
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_PAYOUT_PAYMENTS_PAGED)
     private readonly findAllPayoutPaymentsPagedQuery: IFindAllPayoutPaymentsPagedQuery,
   ) {}
 

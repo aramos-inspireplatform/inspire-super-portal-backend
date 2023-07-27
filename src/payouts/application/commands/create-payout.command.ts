@@ -3,7 +3,7 @@ import { ICreatePayoutCommand } from '~/payouts/application/commands/contracts';
 import {
   ITenantRepository,
   IPayoutRepository,
-} from '~/payouts/infra/repositories/contracts';
+} from '~/payouts/domain/repositories';
 import { PayoutDomainEntity } from '~/payouts/domain/entities/payout.entity';
 
 export class CreatePayoutCommand implements ICreatePayoutCommand {
@@ -30,7 +30,7 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
       selectAllPayments,
     } = input;
 
-    const tenant = await this.tenantRepository.findOne({
+    const tenant = await this.tenantRepository.findOneByGTenantId({
       gTenantId,
     });
 
@@ -46,7 +46,9 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
       selectAllPayments,
       termsRecurringIntervalCount:
         tenant.getState().termsRecurringIntervalCount,
-      termsRecurringIntervalId: tenant.getState().termsRecurringIntervalId,
+      termsRecurringIntervalId: tenant
+        .getState()
+        .termsRecurringInterval?.getState()?.id,
     });
 
     const payout = new PayoutDomainEntity().save({

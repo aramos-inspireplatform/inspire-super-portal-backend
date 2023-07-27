@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 import { PayoutDomainEntity } from '~/payouts/domain/entities/payout.entity';
-import { IPayoutRepository } from '~/payouts/infra/repositories/contracts';
+import { IPayoutRepository } from '~/payouts/domain/repositories';
 import { TenantPayouts } from '~/shared/infra/database/entities';
 
 export class PayoutRepositoryTypeOrmAdapter implements IPayoutRepository {

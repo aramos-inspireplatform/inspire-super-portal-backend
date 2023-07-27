@@ -1,8 +1,11 @@
-import { NotFoundException as NotFoundExceptionNestJs } from '@nestjs/common';
-import { GeneralExceptionsConstants } from '~/shared/domain/common/general-exceptions.enum';
+import { GeneralExceptionsEnum, HttpStatusEnum } from '~/shared/domain/enums';
+import { BaseException } from '~/shared/domain/exceptions';
 
-export class NotFoundException extends NotFoundExceptionNestJs {
+export class NotFoundException extends BaseException {
   constructor(tag?: string) {
-    super(tag ?? GeneralExceptionsConstants.NOT_FOUND);
+    super(
+      tag ?? GeneralExceptionsEnum.Messages.NOT_FOUND,
+      HttpStatusEnum.Code.NOT_FOUND,
+    );
   }
 }

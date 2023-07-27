@@ -1,4 +1,4 @@
-export namespace ReconcileBexsDto {
+export namespace ReconciliateBexsDto {
   export type InputAttrs = {
     accessToken: string;
     gTenantId: string;
