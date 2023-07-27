@@ -71,6 +71,9 @@ export class RequestRepository implements IRequestRepository {
         requestModules: {
           module: true,
           moduleRequestStatus: true,
+          requestModuleAttempts: {
+            requestModuleAttemptStatus: true,
+          },
         },
         requestStatus: true,
         tenant: {

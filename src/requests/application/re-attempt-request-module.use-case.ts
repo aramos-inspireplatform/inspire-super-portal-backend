@@ -80,7 +80,7 @@ export class ReAttemptRequestModuleUseCase {
         {
           headers: {
             authorization: accessToken,
-            'x-integration-key': requestModule.module.integrationKey,
+            'x-integration-key': process.env.TENANT_INTEGRATION_KEY,
           },
         },
       );
