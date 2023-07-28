@@ -5,6 +5,7 @@ import {
   IPayoutRepository,
 } from '~/payouts/domain/repositories';
 import { PayoutDomainEntity } from '~/payouts/domain/entities/payout.entity';
+import { PayoutStatusesEnum } from '~/payouts/domain/enums/payout-statuses.enum';
 
 export class CreatePayoutCommand implements ICreatePayoutCommand {
   constructor(
@@ -51,7 +52,7 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
         .termsRecurringInterval?.getState()?.id,
     });
 
-    const payout = new PayoutDomainEntity().save({
+    const payout = new PayoutDomainEntity().create({
       id: result.id,
       createdDate: result.createdDate,
       updatedDate: result.updatedDate,
@@ -74,6 +75,14 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
     });
 
     await this.payoutRepository.save(payout);
+
+    if (payout.statusId === PayoutStatusesEnum.Ids.PROCESSED) {
+      tenant.updateLastTenantPayout({
+        lastTenantPayout: payout,
+      });
+    }
+
+    await this.tenantRepository.save(tenant);
 
     return { id: result.id };
   }
