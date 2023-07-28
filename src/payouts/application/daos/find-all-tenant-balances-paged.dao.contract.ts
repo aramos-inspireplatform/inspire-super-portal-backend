@@ -79,6 +79,7 @@ export namespace IFindAllTenantBalancesPagedDao {
   type Balance = {
     id: string;
     amount: number;
+    updatedDate: Date;
     settlementCurrency: Currency;
   };
 }
