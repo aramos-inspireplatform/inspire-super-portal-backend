@@ -12,6 +12,7 @@ import {
   FindOnePayoutSummaryPreviewDaoFactoryProvider,
   FindOneTenantBalanceDaoFactoryProvider,
   FindOneTenantPayoutDaoFactoryProvider,
+  FindAllReconcilePeriodDaoFactoryProvider,
 } from '~/payouts/ioc/providers/daos';
 import { FindOneTenantDaoFactoryProvider } from '~/tenants/ioc/providers/daos/find-tenant-dao-factory.provider';
 
@@ -27,6 +28,7 @@ export const daosProviders: FactoryProvider[] = [
   FindOnePayoutSummaryDaoFactoryProvider.register(),
   FindOnePayoutSummaryPreviewDaoFactoryProvider.register(),
   FindOneTenantPayoutDaoFactoryProvider.register(),
+  FindAllReconcilePeriodDaoFactoryProvider.register(),
 ];
 
 export const daosExternalProviders: FactoryProvider[] = [

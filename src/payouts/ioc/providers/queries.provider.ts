@@ -11,6 +11,7 @@ import {
   FindOnePayoutSummaryQueryFactoryProvider,
   FindOneTenantBalanceQueryFactoryProvider,
   FindOneTenantPayoutQueryFactoryProvider,
+  FindAllReconcilePeriodQueryFactoryProvider,
 } from '~/payouts/ioc/providers/queries';
 
 export const queriesProviders: FactoryProvider[] = [
@@ -25,6 +26,7 @@ export const queriesProviders: FactoryProvider[] = [
   FindOnePayoutSummaryQueryFactoryProvider.register(),
   FindOnePayoutSummaryPreviewQueryFactoryProvider.register(),
   FindOneTenantPayoutQueryFactoryProvider.register(),
+  FindAllReconcilePeriodQueryFactoryProvider.register(),
 ];
 
 export const queriesExternalProviders: FactoryProvider[] = [];

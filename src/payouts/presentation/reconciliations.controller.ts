@@ -1,21 +1,35 @@
-import { Body, Controller, Inject, Post, Query, Req } from '@nestjs/common';
+import {
+  Get,
+  Body,
+  Controller,
+  Inject,
+  Post,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import { PayoutProvidersSymbols } from '~/payouts/ioc/providers/payouts-providers.symbols';
-import { IReconciliateStripeCommand } from '~/payouts/application/commands/contracts/reconciliate-stripe.command.contract';
-import { IReconciliateBexsCommand } from '~/payouts/application/commands/contracts/reconciliate-bexs.command.contract';
+import {
+  IReconciliateBexsCommand,
+  IReconciliateStripeCommand,
+} from '~/payouts/application/commands/contracts';
+import { ReconcilePeriodInputDto } from '~/payouts/presentation/dtos/requests/reconcile-period.input.dto';
+import { IFindAllReconcilePeriodQuery } from '~/payouts/application/queries/contracts/find-all-reconcile-period.query.contract';
 import {
   ReconciliateBexsInputDto,
   ReconciliateStripeInputDto,
 } from '~/payouts/presentation/dtos/requests/reconciliations';
+import { PayoutProvidersSymbols } from '~/payouts/ioc/providers/payouts-providers.symbols';
 
 @Controller('/payouts')
 @ApiTags('Payouts')
 @CustomApiExtraModels()
 export class ReconciliationsController {
   constructor(
+    @Inject(PayoutProvidersSymbols.Queries.FIND_ALL_RECONCILE_PERIOD)
+    private readonly findAllReconcilePeriodQuery: IFindAllReconcilePeriodQuery,
     @Inject(PayoutProvidersSymbols.Commands.RECONCILIATE_STRIPE)
     private readonly reconciliateStripeCommand: IReconciliateStripeCommand,
     @Inject(PayoutProvidersSymbols.Commands.RECONCILIATE_BEXS)
@@ -34,6 +48,22 @@ export class ReconciliationsController {
       gTenantId: inputDto.gTenantId,
       periodStartDate: inputDto.periodStartDate,
       periodEndDate: inputDto.periodEndDate,
+    });
+  }
+
+  @Get('/reconciliations/period')
+  @AuthenticatedRoute()
+  @ApiOkResponse()
+  async reconcilePeriod(
+    @Req() request: FastifyRequest,
+    @Query() inputDto: ReconcilePeriodInputDto,
+  ) {
+    return await this.findAllReconcilePeriodQuery.execute({
+      accessToken: request.headers.authorization,
+      gTenantId: inputDto.gTenantId,
+      periodStartDate: inputDto.periodStartDate,
+      periodEndDate: inputDto.periodEndDate,
+      status: inputDto.status,
     });
   }
 
