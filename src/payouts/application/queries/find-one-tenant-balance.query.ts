@@ -78,6 +78,7 @@ export class FindOneTenantBalanceQuery implements IFindOneTenantBalanceQuery {
         ? {
             id: tenantBalance.balance.id,
             amount: Number(tenantBalance.balance.amount),
+            updatedDate: tenantBalance.balance.updatedDate,
             settlementCurrency: {
               id: tenantBalance.balance.settlementCurrency.id,
               name: tenantBalance.balance.settlementCurrency.name,
