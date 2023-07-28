@@ -3,7 +3,7 @@ import * as Factory from './factory/factory';
 import { faker } from '@faker-js/faker';
 import {
   TenantPayouts,
-  Tenants,
+  TenantsDataMapper,
   Users,
 } from '~/shared/infra/database/entities';
 
@@ -23,7 +23,7 @@ import {
     const connection = await dataSource.initialize();
 
     const userRepository = connection.getRepository(Users);
-    const tenantRepository = connection.getRepository(Tenants);
+    const tenantRepository = connection.getRepository(TenantsDataMapper);
     const tanantPayoutRepository = connection.getRepository(TenantPayouts);
 
     await userRepository.save(user);

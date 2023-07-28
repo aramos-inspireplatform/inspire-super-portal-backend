@@ -1,4 +1,4 @@
-import { Tenants } from '~/shared/infra/database/entities';
+import { TenantsDataMapper } from '~/shared/infra/database/entities';
 import { IMapper } from '~/shared/infra/database/mapper/mapper';
 import { RecurringIntervalsMapper } from '~/shared/infra/database/mapper/recurring-intervals.mapper';
 import { TenantStatusesMapper } from '~/shared/infra/database/mapper/tenant-statuses.mapper';
@@ -6,9 +6,9 @@ import { Tenant } from '~/tenants/domain/entities/tenant.entity';
 
 // TODO: AQ???
 
-export const TenantMapper: IMapper<Tenant, Tenants> = {
-  domainToModel: (domain: Tenant): Tenants => {
-    const model = new Tenants();
+export const TenantMapper: IMapper<Tenant, TenantsDataMapper> = {
+  domainToModel: (domain: Tenant): TenantsDataMapper => {
+    const model = new TenantsDataMapper();
     model.id = domain.id;
     model.name = domain.name;
     model.googleTenantId = domain.googleTenantId;
@@ -26,7 +26,7 @@ export const TenantMapper: IMapper<Tenant, Tenants> = {
     model.deletedDate = domain.deletedDate;
     return model;
   },
-  modelToDomain: (model: Tenants): Tenant => {
+  modelToDomain: (model: TenantsDataMapper): Tenant => {
     const domain = new Tenant({
       id: model.id,
       name: model.name,
@@ -43,7 +43,6 @@ export const TenantMapper: IMapper<Tenant, Tenants> = {
       updatedDate: model.updatedDate,
       deletedDate: model.deletedDate,
       lastTenantPayout: model.lastTenantPayout,
-      tenantBalances: model.tenantBalances,
     });
     return domain;
   },

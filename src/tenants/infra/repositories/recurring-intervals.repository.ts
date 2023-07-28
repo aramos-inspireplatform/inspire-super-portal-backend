@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repository, DataSource } from 'typeorm';
-import { RecurringIntervals } from '~/shared/infra/database/entities';
+import { RecurringIntervalsDataMapper } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 import { RecurringInterval } from '~/tenants/domain/entities/recurring-intervals.entity';
 import { IRecurringIntervalsRepository } from '~/tenants/domain/repositories/recurring-intervals-repository.contract';
@@ -9,14 +9,14 @@ import { IRecurringIntervalsRepository } from '~/tenants/domain/repositories/rec
 export class RecurringIntervalsRepository
   implements IRecurringIntervalsRepository
 {
-  repository: Repository<RecurringIntervals>;
+  repository: Repository<RecurringIntervalsDataMapper>;
 
   constructor(
     @Inject(DatabaseProvidersSymbols.DATA_SOURCE)
     private readonly dataSource: DataSource,
   ) {
     this.repository =
-      this.dataSource.getRepository<RecurringIntervals>(RecurringIntervals);
+      this.dataSource.getRepository<RecurringIntervalsDataMapper>(RecurringIntervalsDataMapper);
   }
 
   async findById(

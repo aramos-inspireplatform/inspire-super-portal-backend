@@ -7,8 +7,8 @@ import { ManualReconciledDto } from '~/shared/application/services/inspire-api-s
 import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
 import { FindOnePayoutSummaryPreviewDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary-preview.dto';
 import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
-import { ReconcileStripeDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-stripe.dto';
-import { ReconcileBexsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-bexs.dto';
+import { ReconciliateStripeDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-stripe.dto';
+import { ReconciliateBexsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-bexs.dto';
 import { CreatePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/create-payout.dto';
 import { ReconcilePeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-period.dto';
 
@@ -47,12 +47,14 @@ export interface IInspirePaymentApiService {
     attrs: FindAllPaymentsPeriodDto.InputAttrs,
   ): FindAllPaymentsPeriodDto.Result;
 
-  reconcileStripe(
-    attrs: ReconcileStripeDto.InputAttrs,
-  ): ReconcileStripeDto.Result;
+  reconciliateStripe(
+    attrs: ReconciliateStripeDto.InputAttrs,
+  ): ReconciliateStripeDto.Result;
 
-  reconcileBexs(attrs: ReconcileBexsDto.InputAttrs): ReconcileBexsDto.Result;
-  
+  reconciliateBexs(
+    attrs: ReconciliateBexsDto.InputAttrs,
+  ): ReconciliateBexsDto.Result;
+
   createPayoutCommand(
     attrs: CreatePayoutDto.InputAttrs,
   ): CreatePayoutDto.Result;

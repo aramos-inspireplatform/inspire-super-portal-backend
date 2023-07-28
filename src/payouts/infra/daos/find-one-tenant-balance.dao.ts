@@ -1,12 +1,12 @@
 import { DataSource, Repository } from 'typeorm';
 import { IFindOneTenantBalanceDao } from '~/payouts/application/daos/find-one-tenant-balance.dao.contract';
-import { Tenants } from '~/shared/infra/database/entities';
+import { TenantsDataMapper } from '~/shared/infra/database/entities';
 
 export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
-  private tenantRepository: Repository<Tenants>;
+  private tenantRepository: Repository<TenantsDataMapper>;
 
   constructor(private readonly dataSource: DataSource) {
-    this.tenantRepository = this.dataSource.getRepository(Tenants);
+    this.tenantRepository = this.dataSource.getRepository(TenantsDataMapper);
   }
 
   async execute(

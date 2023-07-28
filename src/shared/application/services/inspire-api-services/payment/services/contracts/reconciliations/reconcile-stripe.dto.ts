@@ -1,4 +1,4 @@
-export namespace ReconcileStripeDto {
+export namespace ReconciliateStripeDto {
   export type InputAttrs = {
     accessToken: string;
     gTenantId: string;

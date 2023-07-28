@@ -59,7 +59,6 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       tenantStatus: pendingTenantStatus,
       totalPaidAmount: 0,
       lastTenantPayout: null,
-      tenantBalances: null,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
 

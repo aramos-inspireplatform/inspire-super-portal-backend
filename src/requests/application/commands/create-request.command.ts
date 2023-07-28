@@ -32,7 +32,7 @@ export class CreateRequestCommand implements ICreateRequestCommand {
       tenant,
     });
 
-    for (const module of attrs.modules) {
+    for await (const module of attrs.modules) {
       const storedModule = await this.getModule(module);
       if (!storedModule) continue;
       request.addRequestModule({

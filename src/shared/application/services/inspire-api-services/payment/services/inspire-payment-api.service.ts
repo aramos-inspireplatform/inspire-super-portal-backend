@@ -9,8 +9,8 @@ import { ManualReconciledDto } from '~/shared/application/services/inspire-api-s
 import { FindOnePayoutSummaryDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/payout-summary.dto';
 import { FindOnePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/find-one-payout.dto';
 import { FindAllPaymentsPeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payments/find-all-payments-period.dto';
-import { ReconcileStripeDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-stripe.dto';
-import { ReconcileBexsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-bexs.dto';
+import { ReconciliateStripeDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-stripe.dto';
+import { ReconciliateBexsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-bexs.dto';
 import { CreatePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/create-payout.dto';
 import { ReconcilePeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-period.dto';
 
@@ -195,9 +195,9 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
     return result.data;
   }
 
-  async reconcileStripe(
-    attrs: ReconcileStripeDto.InputAttrs,
-  ): ReconcileStripeDto.Result {
+  async reconciliateStripe(
+    attrs: ReconciliateStripeDto.InputAttrs,
+  ): ReconciliateStripeDto.Result {
     const url = `${this.PAYOUT_API_BASE_URL}/reconciliations/stripe`;
 
     const reconcileStripe = await this.httpClient.post<any>(
@@ -280,9 +280,9 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
 
     return reconcile.data.body.data;
   }
-  async reconcileBexs(
-    attrs: ReconcileBexsDto.InputAttrs,
-  ): ReconcileBexsDto.Result {
+  async reconciliateBexs(
+    attrs: ReconciliateBexsDto.InputAttrs,
+  ): ReconciliateBexsDto.Result {
     const url = `${this.PAYOUT_API_BASE_URL}/reconciliations/bexs?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}`;
 
     const reconcileBexs = await this.httpClient.post<any>(
