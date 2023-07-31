@@ -25,7 +25,7 @@ export class PayoutDomainEntity extends BaseDomainEntity {
     Object.assign(this, input);
   }
 
-  save(input: PayoutDomainEntity.Create) {
+  create(input: PayoutDomainEntity.Create) {
     const {
       id,
       createdDate,

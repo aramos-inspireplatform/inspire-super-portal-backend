@@ -1,7 +1,12 @@
+import { PayoutDomainEntity } from '~/payouts/domain/entities/payout.entity';
 import { RecurringIntervalDomainEntity } from '~/payouts/domain/entities/recurring-interval.entity';
 import { TenantBalanceDomainEntity } from '~/payouts/domain/entities/tenant-balances.entity';
 import { TenantStatusDomainEntity } from '~/payouts/domain/entities/tenant-status.entity';
-import { TenantStatusesEnum, TenantsEnum } from '~/payouts/domain/enums';
+import {
+  PayoutStatusesEnum,
+  TenantStatusesEnum,
+  TenantsEnum,
+} from '~/payouts/domain/enums';
 import { BaseDomainEntity } from '~/shared/domain/entity/base-domain.entity';
 import {
   BadRequestException,
@@ -18,6 +23,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
   private tenantStatus: TenantStatusDomainEntity;
   private totalPaidAmount: number;
   private lastTenantPayoutId: string;
+  private lastTenantPayout: PayoutDomainEntity;
   private tenantBalances: TenantBalanceDomainEntity[] = [];
 
   constructor(input?: Partial<TenantDomainEntity.Input>) {
@@ -76,6 +82,15 @@ export class TenantDomainEntity extends BaseDomainEntity {
     this.validateSynchronize();
   }
 
+  updateLastTenantPayout(input: TenantDomainEntity.UpdateLastTenantPayout) {
+    const { lastTenantPayout } = input;
+
+    this.lastTenantPayoutId = lastTenantPayout?.id;
+    this.lastTenantPayout = lastTenantPayout;
+
+    this.validateUpdateLastTenantPayout();
+  }
+
   getState() {
     return {
       id: this.id,
@@ -87,7 +102,7 @@ export class TenantDomainEntity extends BaseDomainEntity {
       termsRecurringInterval: this.termsRecurringInterval,
       tenantStatus: this.tenantStatus,
       totalPaidAmount: this.totalPaidAmount,
-      lastTenantPayoutId: this.lastTenantPayoutId,
+      lastTenantPayout: this.lastTenantPayout,
       tenantBalances: this.tenantBalances,
       createdDate: this.createdDate,
       updatedDate: this.updatedDate,
@@ -157,6 +172,10 @@ export class TenantDomainEntity extends BaseDomainEntity {
     this.validateTenantStatus();
     this.validateTotalPaidAmount();
     this.validateTenantBalances();
+  }
+
+  private validateUpdateLastTenantPayout() {
+    this.validateLastTenantPayout();
   }
 
   private validateName() {
@@ -246,6 +265,15 @@ export class TenantDomainEntity extends BaseDomainEntity {
         TenantsEnum.Exceptions.TENANT_BALANCES_MUST_HAVE_ONE_OF_EACH_SETTLEMENT_CURRENCY,
       );
   }
+
+  private validateLastTenantPayout() {
+    if (!this.lastTenantPayout) return;
+
+    if (this.lastTenantPayout.statusId !== PayoutStatusesEnum.Ids.PROCESSED)
+      throw new BadRequestException(
+        TenantsEnum.Exceptions.LAST_TENANT_PAYOUT_STATUS_MUST_BE_PROCESSED,
+      );
+  }
 }
 
 export namespace TenantDomainEntity {
@@ -260,6 +288,7 @@ export namespace TenantDomainEntity {
     tenantStatus: TenantStatusDomainEntity;
     totalPaidAmount: number;
     lastTenantPayoutId: string;
+    lastTenantPayout: PayoutDomainEntity;
     tenantBalances: TenantBalanceDomainEntity[];
     createdDate: Date;
     updatedDate: Date;
@@ -295,6 +324,13 @@ export namespace TenantDomainEntity {
     | 'termsRecurringInterval'
     | 'tenantStatus'
     | 'tenantBalances'
+  > & {
+    //
+  };
+
+  export type UpdateLastTenantPayout = Pick<
+    TenantDomainEntity.Input,
+    'lastTenantPayout'
   > & {
     //
   };

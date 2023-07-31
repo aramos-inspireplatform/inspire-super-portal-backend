@@ -28,6 +28,7 @@ export namespace PayoutProvidersSymbols {
     FIND_ONE_PAYOUT_SUMMARY_PREVIEW: Symbol(
       'FIND_ONE_PAYOUT_SUMMARY_PREVIEW_DAO',
     ),
+    FIND_ALL_RECONCILE_PERIOD: Symbol('FIND_ALL_RECONCILE_PERIOD_DAO'),
   };
 
   export const Queries = {
@@ -52,6 +53,7 @@ export namespace PayoutProvidersSymbols {
     FIND_ONE_PAYOUT_SUMMARY_PREVIEW: Symbol(
       'FIND_ONE_PAYOUT_SUMMARY_PREVIEW_QUERY',
     ),
+    FIND_ALL_RECONCILE_PERIOD: Symbol('FIND_ALL_RECONCILE_PERIOD_QUERY'),
   };
 
   export const Repositories = {

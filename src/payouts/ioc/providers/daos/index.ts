@@ -9,3 +9,4 @@ export * from './find-all-tenant-payouts-paged-dao-factory.provider';
 export * from './find-one-payout-summary-dao-factory.provider';
 export * from './find-one-payout-summary-preview-dao-factory.provider';
 export * from './find-one-tenant-payout-dao-factory.provider';
+export * from './find-all-reconcile-period-dao-factory.provider';

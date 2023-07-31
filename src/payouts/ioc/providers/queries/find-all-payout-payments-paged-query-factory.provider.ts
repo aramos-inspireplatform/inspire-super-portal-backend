@@ -6,8 +6,7 @@ import { FindAllPayoutPaymentsPagedQuery } from '~/payouts/application/queries/f
 export class FindAllPayoutPaymentsQueryFactoryProvider {
   static register(): FactoryProvider {
     return {
-      provide:
-        PayoutProvidersSymbols.Queries.FIND_ALL_PAYOUT_PAYMENTS_PAGED,
+      provide: PayoutProvidersSymbols.Queries.FIND_ALL_PAYOUT_PAYMENTS_PAGED,
       useFactory: (
         findAllPayoutPaymentsPagedDao: IFindAllPayoutPaymentsPagedDao,
       ) => new FindAllPayoutPaymentsPagedQuery(findAllPayoutPaymentsPagedDao),
