@@ -42,6 +42,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
         'lastTenantPayoutSettlementCurrency.symbol',
         'tenantBalances.id',
         'tenantBalances.amount',
+        'tenantBalances.updatedDate',
         'tenantBalanceSettlementCurrency.id',
         'tenantBalanceSettlementCurrency.name',
         'tenantBalanceSettlementCurrency.isoCode',
@@ -130,6 +131,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
             ? {
                 id: tenantBalance.tenantBalances[0].id,
                 amount: tenantBalance.tenantBalances[0].amount,
+                updatedDate: tenantBalance.tenantBalances[0].updatedDate,
                 settlementCurrency: {
                   id: tenantBalance.tenantBalances[0].settlementCurrency.id,
                   name: tenantBalance.tenantBalances[0].settlementCurrency.name,

@@ -44,6 +44,7 @@ export class FindAllTenantBalancesPagedDao
         'lastTenantPayoutSettlementCurrency.symbol',
         'tenantBalances.id',
         'tenantBalances.amount',
+        'tenantBalances.updatedDate',
         'tenantBalanceSettlementCurrency.id',
         'tenantBalanceSettlementCurrency.name',
         'tenantBalanceSettlementCurrency.isoCode',
@@ -133,6 +134,7 @@ export class FindAllTenantBalancesPagedDao
           ? tenantBalance.tenantBalances.map((balance) => ({
               id: balance.id,
               amount: balance.amount,
+              updatedDate: balance.updatedDate,
               settlementCurrency: {
                 id: balance.settlementCurrency.id,
                 name: balance.settlementCurrency.name,

@@ -65,6 +65,7 @@ export class FindAllTenantBalancesPagedQuery
           ? tenantBalance.balances.map((balance) => ({
               id: balance.id,
               amount: Number(balance.amount),
+              updatedDate: balance.updatedDate,
               settlementCurrency: {
                 id: balance.settlementCurrency.id,
                 name: balance.settlementCurrency.name,

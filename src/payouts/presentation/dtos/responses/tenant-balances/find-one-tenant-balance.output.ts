@@ -76,6 +76,7 @@ export class FindOneTenantBalanceOutput extends BaseDto {
     example: {
       id: '05d1c20c-d0d5-47ee-bed9-accb0dbeb2fb',
       amount: '95000.000000',
+      updatedDate: new Date(),
       settlementCurrency: {
         id: 'ef579caf-a6da-4d53-80cb-a67bf4742a3e',
         name: 'United States dollar',
