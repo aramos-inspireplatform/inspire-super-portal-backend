@@ -16,13 +16,13 @@ export class ReconcilePeriodInputDto {
   @IsString()
   status: string;
 
-  @ApiProperty({ example: new Date() })
+  @ApiProperty({ example: '2023-07-01' })
   @IsNotEmpty()
   @IsDate()
   @Type(() => Date)
   periodStartDate: Date;
 
-  @ApiProperty({ example: new Date() })
+  @ApiProperty({ example: '2023-10-01' })
   @IsNotEmpty()
   @IsDate()
   @DateRage('periodStartDate', process.env.PAYOUT_MAX_PERIOD_RANGE ?? null)

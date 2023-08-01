@@ -4,6 +4,7 @@ import {
   buildMessage,
   ValidationArguments,
 } from 'class-validator';
+import { isLowerThanRangeLimit } from '~/shared/infra/helpers/date-fns.helper';
 
 export const DateRage = (
   property: string,
@@ -24,12 +25,8 @@ export const DateRage = (
           const fromDate = relatedValue;
           const toDate = value;
 
-          if (
-            rangeLimit &&
-            !isDateDifferenceLower(fromDate, toDate, rangeLimit)
-          ) {
-            return false;
-          }
+          if (rangeLimit)
+            return isLowerThanRangeLimit(fromDate, toDate, rangeLimit);
 
           return toDate.toISOString() >= fromDate.toISOString();
         },
