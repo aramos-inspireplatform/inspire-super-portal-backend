@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsEmail,
   IsMongoId,
   IsNotEmpty,
@@ -95,4 +96,9 @@ export class CreateTenantUserRequestDto {
   @IsOptional()
   @IsMongoId()
   phoneNumberCountryId?: string;
+
+  @ApiProperty({ example: true, required: false })
+  @IsBoolean()
+  @IsOptional()
+  isSsoUser: boolean;
 }

@@ -5,7 +5,6 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
-  Relation,
 } from 'typeorm';
 import { RequestModules } from './RequestModules';
 import { RequestStatuses } from './RequestStatuses';
