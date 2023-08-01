@@ -1,6 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
-import { IsNotEmpty, IsString, IsDate, IsOptional } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsString,
+  IsOptional,
+  IsDateString,
+} from 'class-validator';
 import { DateRage } from '~/shared/infra/nestjs/decorators/data-range.dto.decorator';
 
 export class ReconcilePeriodInputDto {
@@ -16,16 +20,14 @@ export class ReconcilePeriodInputDto {
   @IsString()
   status: string;
 
-  @ApiProperty({ example: new Date() })
+  @ApiProperty({ example: '2023-07-01T00:00:00.000-0300' })
   @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
+  @IsDateString()
   periodStartDate: Date;
 
-  @ApiProperty({ example: new Date() })
+  @ApiProperty({ example: '2023-01-10T23:59:59.999-0300' })
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   @DateRage('periodStartDate', process.env.PAYOUT_MAX_PERIOD_RANGE ?? null)
-  @Type(() => Date)
   periodEndDate: Date;
 }
