@@ -1,13 +1,6 @@
-import {
-  differenceInCalendarMonths,
-  differenceInDays,
-  addMonths,
-  isWithinInterval,
-  addDays,
-  addYears,
-} from 'date-fns';
+import { addMonths, isWithinInterval, addDays, addYears } from 'date-fns';
 
-export const isLowerThanRangeLimit = (
+export const dateIntervalIsLowerThanRangeLimit = (
   dateLeft: Date,
   dateRight: Date,
   rangeLimit: string,

@@ -1,11 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Type } from 'class-transformer';
 import {
   IsNotEmpty,
   IsString,
   IsUUID,
-  IsDate,
   IsOptional,
+  IsDateString,
 } from 'class-validator';
 import { DateRage } from '~/shared/infra/nestjs/decorators/data-range.dto.decorator';
 
@@ -19,15 +18,13 @@ export class FindAllPaymentsPeriodInputDto {
 
   @ApiProperty({ example: new Date() })
   @IsNotEmpty()
-  @IsDate()
-  @Type(() => Date)
+  @IsDateString()
   periodStartDate: Date;
 
   @ApiProperty({ example: new Date() })
   @IsNotEmpty()
-  @IsDate()
+  @IsDateString()
   @DateRage('periodStartDate', process.env.PAYOUT_MAX_PERIOD_RANGE ?? null)
-  @Type(() => Date)
   periodEndDate: Date;
 
   @ApiProperty({
