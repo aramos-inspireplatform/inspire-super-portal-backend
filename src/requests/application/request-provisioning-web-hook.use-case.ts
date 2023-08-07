@@ -53,7 +53,7 @@ export class RequestProvisioningWebHookUseCase {
 
     const moduleStatus = await this.getModuleStatus(
       module.statusUrl,
-      request.tenant.tenantId,
+      request.tenant.googleTenantId,
       this.TENANT_INTEGRATION_KEY, //moduleType.integrationKey,
     );
 
@@ -92,7 +92,7 @@ export class RequestProvisioningWebHookUseCase {
     const tenantDetails =
       await this.inspireTenantService.getTenantAndUserDetails({
         tenantIntegrationKey: this.TENANT_INTEGRATION_KEY,
-        googleTenantId: request.tenant.tenantId,
+        googleTenantId: request.tenant.googleTenantId,
       });
     if (attemptHasSucceeded) {
       await this.inspireTenantService.linkTenantModule({
@@ -123,7 +123,7 @@ export class RequestProvisioningWebHookUseCase {
         body: {
           to: tenantDetails.firstUserEmail,
           subject: welcomeSubject,
-          tenant: request.tenant.tenantId,
+          tenant: request.tenant.googleTenantId,
           dynamicTemplateData: {
             accessUrl: process.env.TENANT_FRONTEND_URL,
           },
@@ -141,7 +141,7 @@ export class RequestProvisioningWebHookUseCase {
         body: {
           to: tenantDetails.firstUserEmail,
           subject: almostThereEmailSubject,
-          tenant: request.tenant.tenantId,
+          tenant: request.tenant.googleTenantId,
           templateLanguage: tenantDetails.languageId.id,
           templateName: RequestEmailTemplates.AlmostThere,
         },
@@ -155,7 +155,7 @@ export class RequestProvisioningWebHookUseCase {
             RequestEmailTemplatesSubject.AlmostThere[
               tenantDetails.languageId.isoCode.toLocaleLowerCase()
             ] ?? RequestEmailTemplatesSubject.AlmostThere['en-us'],
-          tenant: request.tenant.tenantId,
+          tenant: request.tenant.googleTenantId,
           templateLanguage: tenantDetails.languageId.id,
           templateName: RequestEmailTemplates.AlmostThere,
         },

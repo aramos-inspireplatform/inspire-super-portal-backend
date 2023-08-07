@@ -1,4 +1,4 @@
-export namespace InspireTenantApiServiceDto {
+export namespace InspireTenantApiServiceTenantsDto {
   export type Tenants = {
     rows: Tenant[];
     count: number;
@@ -18,6 +18,7 @@ export namespace InspireTenantApiServiceDto {
 
   export type Tenant = {
     id: string;
+    uuid: string;
     name: string;
     slug: string;
     googleTenantId: string;
@@ -43,6 +44,8 @@ export namespace InspireTenantApiServiceDto {
     agency: Agency;
     country: Country;
     status: TenantStatus;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
     createdBy: CreatedBy;
   };
 
@@ -84,6 +87,7 @@ export namespace InspireTenantApiServiceDto {
 
   export type Agency = {
     id: string;
+    uuid: string;
     name: string;
     logo: string;
   };
@@ -100,8 +104,16 @@ export namespace InspireTenantApiServiceDto {
 
   export type TenantStatus = {
     id: string;
+    uuid: string;
     name: string;
     slug: string;
+  };
+
+  type TermsRecurringInterval = {
+    uuid: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
   };
 
   type CreatedBy = {
@@ -119,17 +131,17 @@ export namespace InspireTenantApiServiceDto {
       keywords?: string;
     };
   };
-  export type FindAllResult = Promise<Tenants>;
+  export type FindAllTenantsResult = Promise<Tenants>;
 
-  // FindOne
-  export type FindOneInputAttrs = {
+  // FindOneTenant
+  export type FindOneTenantInputAttrs = {
     accessToken: string;
     gTenantId: string;
   };
-  export type FindOneResult = Promise<Tenant | Error>;
+  export type FindOneTenantResult = Promise<Tenant | Error>;
 
-  // Create
-  export type CreateInputAttrs = {
+  // CreateTenant
+  export type CreateTenantInputAttrs = {
     accessToken: string;
     currentUser: string;
     tenant: {
@@ -141,9 +153,17 @@ export namespace InspireTenantApiServiceDto {
       agencyId?: string;
       timezoneId?: string;
       languageId?: string;
+      termsRecurringIntervalCount: number;
+      termsRecurringIntervalId: string;
     };
   };
-  export type CreateResult = Promise<Tenant | Error>;
+  export type CreateTenantResult = Promise<Tenant | Error>;
+
+  // FindOneAdminUser
+  export type FindOneAdminUserInputAttrs = {
+    accessToken: string;
+  };
+  export type FindOneAdminUserResult = Promise<Tenant | Error>;
 
   // Deprecated below ------------------------------------------------
   export type TenantUserUserDetails = {
@@ -161,6 +181,7 @@ export namespace InspireTenantApiServiceDto {
 
   export type TenantDetails = {
     _id: string;
+    uuid: string;
     name: string;
     slug: string;
     googleTenantId: string;

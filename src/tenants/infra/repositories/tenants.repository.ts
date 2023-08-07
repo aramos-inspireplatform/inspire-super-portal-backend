@@ -1,19 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { DataSource, Repository } from 'typeorm';
-import { Tenants } from '~/shared/infra/database/entities';
+import { TenantsDataMapper } from '~/shared/infra/database/entities';
 import { DatabaseProvidersSymbols } from '~/shared/infra/database/ioc/providers/provider.symbols';
 import { Tenant } from '~/tenants/domain/entities/tenant.entity';
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 
 @Injectable()
 export class TenantsRepository implements ITenantRepository {
-  repository: Repository<Tenants>;
+  repository: Repository<TenantsDataMapper>;
 
   constructor(
     @Inject(DatabaseProvidersSymbols.DATA_SOURCE)
     private readonly dataSource: DataSource,
   ) {
-    this.repository = this.dataSource.getRepository<Tenants>(Tenants);
+    this.repository = this.dataSource.getRepository<TenantsDataMapper>(TenantsDataMapper);
   }
 
   async save(
@@ -62,7 +62,9 @@ export class TenantsRepository implements ITenantRepository {
     const tenant = await this.repository
       .createQueryBuilder('tenants')
       .leftJoinAndSelect('tenants.tenantStatus', 'tenantStatus')
-      .where('tenants.tenantId = :gTenantId', { gTenantId: attrs.gTenantId })
+      .where('tenants.googleTenantId = :gTenantId', {
+        gTenantId: attrs.gTenantId,
+      })
       .getOne();
 
     return tenant ? new Tenant(tenant) : null;

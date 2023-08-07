@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { RequestModules } from './RequestModules';
 import { RequestStatuses } from './RequestStatuses';
-import { Tenants } from './Tenants';
+import { TenantsDataMapper } from './Tenants';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
 @Index('pk__requests', ['id'], { unique: true })
@@ -31,18 +31,17 @@ export class Requests extends BaseEntity {
     {
       onDelete: 'RESTRICT',
       onUpdate: 'CASCADE',
-
       cascade: ['update'],
     },
   )
   @JoinColumn([{ name: 'request_status_id', referencedColumnName: 'id' }])
   requestStatus: RequestStatuses;
 
-  @ManyToOne(() => Tenants, (tenants) => tenants.requests, {
+  @ManyToOne(() => TenantsDataMapper, (tenants) => tenants.requests, {
     onDelete: 'RESTRICT',
     onUpdate: 'CASCADE',
     cascade: ['update'],
   })
   @JoinColumn([{ name: 'tenant_id', referencedColumnName: 'id' }])
-  tenant: Tenants;
+  tenant: TenantsDataMapper;
 }

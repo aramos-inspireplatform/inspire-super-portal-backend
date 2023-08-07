@@ -14,8 +14,13 @@ export class BaseEntity extends TypeOrmBaseEntity {
   @PrimaryColumn('uuid', { primary: true, name: 'id' })
   id: string;
 
-  @Column({ type: 'bigint', name: 'alternative_id' })
-  alternativeId: string;
+  @Column({
+    type: 'bigint',
+    name: 'alternative_id',
+    update: false,
+    insert: false,
+  })
+  alternativeId: number;
 
   @CreateDateColumn({ type: 'timestamp with time zone', name: 'created_date' })
   createdDate: Date;
