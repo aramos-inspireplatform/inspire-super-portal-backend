@@ -1,25 +1,14 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Requests } from './Requests';
-import { TenantBalances } from './TenantBalances';
+import { TenantBalancesDataMapper } from './TenantBalances';
 import { TenantPayouts } from './TenantPayouts';
-import { TenantStatuses } from './TenantStatuses';
-import { RecurringIntervals } from './RecurringIntervals';
+import { TenantStatusesDataMapper } from './TenantStatuses';
+import { RecurringIntervalsDataMapper } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
-@Index('idx__tenants__agencies_id', ['agencyId', 'deletedDate'], {})
-@Index('idx__uq__tenants', ['deletedDate', 'googleTenantId'], { unique: true })
-@Index('idx__part__uq__tenants', ['googleTenantId'], { unique: true })
-@Index('pk__tenants', ['id'], { unique: true })
 @Entity('tenants', { schema: 'public' })
-export class Tenants extends BaseEntity {
+export class TenantsDataMapper extends BaseEntity {
   @Column('character varying', { name: 'name', length: 200 })
   name: string;
 
@@ -28,12 +17,6 @@ export class Tenants extends BaseEntity {
 
   @Column('uuid', { name: 'agencies_id', nullable: true })
   agencyId: string | null;
-
-  @Column('uuid', { name: 'terms_recurring_intervals_id', nullable: true })
-  termsRecurringIntervalId: string;
-
-  @Column('uuid', { name: 'tenant_statuses_id', nullable: true })
-  statusId: string;
 
   @Column('character varying', {
     name: 'agency_name',
@@ -48,6 +31,12 @@ export class Tenants extends BaseEntity {
   })
   termsRecurringIntervalCount: number;
 
+  @Column('uuid', { name: 'terms_recurring_intervals_id', nullable: true })
+  termsRecurringIntervalId: string;
+
+  @Column('uuid', { name: 'tenant_statuses_id', nullable: true })
+  statusId: string;
+
   @Column('numeric', {
     name: 'total_paid_amount',
     precision: 15,
@@ -56,11 +45,18 @@ export class Tenants extends BaseEntity {
   })
   totalPaidAmount: number;
 
+  @Column('uuid', { name: 'last_tenant_payouts_id', nullable: true })
+  lastTenantPayoutId: string | null;
+
+  @OneToMany(
+    () => TenantBalancesDataMapper,
+    (tenantBalances) => tenantBalances.tenant,
+    { cascade: true },
+  )
+  tenantBalances: TenantBalancesDataMapper[];
+
   @OneToMany(() => Requests, (requests) => requests.tenant)
   requests: Requests[];
-
-  @OneToMany(() => TenantBalances, (tenantBalances) => tenantBalances.tenant)
-  tenantBalances: TenantBalances[];
 
   @OneToMany(() => TenantPayouts, (tenantPayouts) => tenantPayouts.tenant)
   tenantPayouts: TenantPayouts[];
@@ -76,20 +72,24 @@ export class Tenants extends BaseEntity {
   @JoinColumn([{ name: 'last_tenant_payouts_id', referencedColumnName: 'id' }])
   lastTenantPayout: TenantPayouts;
 
-  @ManyToOne(() => TenantStatuses, (tenantStatuses) => tenantStatuses.tenants, {
-    onDelete: 'RESTRICT',
-    onUpdate: 'RESTRICT',
-  })
+  @ManyToOne(
+    () => TenantStatusesDataMapper,
+    (tenantStatuses) => tenantStatuses.tenants,
+    {
+      onDelete: 'RESTRICT',
+      onUpdate: 'RESTRICT',
+    },
+  )
   @JoinColumn([{ name: 'tenant_statuses_id', referencedColumnName: 'id' }])
-  tenantStatus: TenantStatuses;
+  tenantStatus: TenantStatusesDataMapper;
 
   @ManyToOne(
-    () => RecurringIntervals,
+    () => RecurringIntervalsDataMapper,
     (recurringIntervals) => recurringIntervals.tenants,
     { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' },
   )
   @JoinColumn([
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
-  termsRecurringInterval: RecurringIntervals;
+  termsRecurringInterval: RecurringIntervalsDataMapper;
 }

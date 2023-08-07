@@ -1,13 +1,13 @@
-import { RecurringIntervals } from '~/shared/infra/database/entities';
+import { RecurringIntervalsDataMapper } from '~/shared/infra/database/entities';
 import { IMapper } from '~/shared/infra/database/mapper/mapper';
 import { RecurringInterval } from '~/tenants/domain/entities/recurring-intervals.entity';
 
 export const RecurringIntervalsMapper: IMapper<
   RecurringInterval,
-  RecurringIntervals
+  RecurringIntervalsDataMapper
 > = {
-  domainToModel: (domain: RecurringInterval): RecurringIntervals => {
-    const model = new RecurringIntervals();
+  domainToModel: (domain: RecurringInterval): RecurringIntervalsDataMapper => {
+    const model = new RecurringIntervalsDataMapper();
     model.id = domain.id;
     model.name = domain.name;
     model.interval = domain.interval;
@@ -17,7 +17,7 @@ export const RecurringIntervalsMapper: IMapper<
     model.deletedDate = domain.deletedDate;
     return model;
   },
-  modelToDomain: (model: RecurringIntervals): RecurringInterval => {
+  modelToDomain: (model: RecurringIntervalsDataMapper): RecurringInterval => {
     const domain = new RecurringInterval({
       id: model.id,
       name: model.name,

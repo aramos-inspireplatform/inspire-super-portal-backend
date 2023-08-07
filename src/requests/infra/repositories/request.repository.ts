@@ -52,6 +52,15 @@ export class RequestRepository implements IRequestRepository {
 
     const storedRequestEntity = await this.repository.findOne({
       where: { id: requestEntity.id },
+      relations: {
+        requestModules: true,
+        requestStatus: true,
+        tenant: {
+          tenantStatus: true,
+          tenantBalances: true,
+          termsRecurringInterval: true,
+        },
+      },
     });
 
     return RequestMapper.modelToDomain(storedRequestEntity);
@@ -60,13 +69,21 @@ export class RequestRepository implements IRequestRepository {
   async findById(id: string): Promise<Request> {
     const request = await this.repository.findOne({
       where: { id },
-      relations: [
-        'requestStatus',
-        'tenant',
-        'requestModules',
-        'requestModules.module',
-        'requestModules.moduleRequestStatus',
-      ],
+      relations: {
+        requestModules: {
+          module: true,
+          moduleRequestStatus: true,
+          requestModuleAttempts: {
+            requestModuleAttemptStatus: true,
+          },
+        },
+        requestStatus: true,
+        tenant: {
+          tenantStatus: true,
+          tenantBalances: true,
+          termsRecurringInterval: true,
+        },
+      },
     });
 
     if (!request) return null;
@@ -89,6 +106,8 @@ export class RequestRepository implements IRequestRepository {
         'requestModules',
         'requestModules.module',
         'requestModules.moduleRequestStatus',
+        'requestModules.requestModuleAttempts',
+        'requestModules.requestModuleAttempts.requestModuleAttemptStatus',
       ],
       skip: attrs.page * attrs.pageSize,
       take: attrs.pageSize,
@@ -113,6 +132,16 @@ export class RequestRepository implements IRequestRepository {
           id: requestModuleId,
         },
       },
+      relations: {
+        requestModules: {
+          module: true,
+          moduleRequestStatus: true,
+        },
+        requestStatus: true,
+        tenant: {
+          tenantStatus: true,
+        },
+      },
     });
 
     if (!storedRequestEntity) return null;
@@ -121,15 +150,31 @@ export class RequestRepository implements IRequestRepository {
   }
 
   async findByAttemptId(attemptId: string): Promise<Request | null> {
-    const storedRequestEntity = await this.repository.findOne({
-      where: {
-        requestModules: {
-          requestModuleAttempts: {
-            id: attemptId,
-          },
-        },
-      },
-    });
+    const storedRequestEntity = await this.repository
+      .createQueryBuilder('request')
+      .leftJoinAndSelect('request.requestModules', 'requestModules')
+      .leftJoinAndSelect('requestModules.module', 'module')
+      .leftJoinAndSelect(
+        'requestModules.moduleRequestStatus',
+        'moduleRequestStatus',
+      )
+      .leftJoinAndSelect(
+        'requestModules.requestModuleAttempts',
+        'requestModuleAttemptsFilter',
+      )
+      .leftJoinAndSelect(
+        'requestModules.requestModuleAttempts',
+        'requestModuleAttempts',
+      )
+      .leftJoinAndSelect(
+        'requestModuleAttempts.requestModuleAttemptStatus',
+        'requestModuleAttemptStatus',
+      )
+      .leftJoinAndSelect('request.requestStatus', 'requestStatus')
+      .leftJoinAndSelect('request.tenant', 'tenant')
+      .leftJoinAndSelect('tenant.tenantStatus', 'tenantStatus')
+      .where('requestModuleAttemptsFilter.id = :attemptId', { attemptId })
+      .getOne();
 
     if (!storedRequestEntity) return null;
 

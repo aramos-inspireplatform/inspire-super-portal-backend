@@ -9,8 +9,8 @@ import {
 import { Users } from './Users';
 import { PayoutStatuses } from './PayoutStatuses';
 import { Currencies } from './Currencies';
-import { Tenants } from './Tenants';
-import { RecurringIntervals } from './RecurringIntervals';
+import { TenantsDataMapper } from './Tenants';
+import { RecurringIntervalsDataMapper } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
@@ -148,22 +148,22 @@ export class TenantPayouts extends BaseEntity {
   ])
   settlementCurrency: Currencies;
 
-  @ManyToOne(() => Tenants, (tenants) => tenants.tenantPayouts, {
+  @ManyToOne(() => TenantsDataMapper, (tenants) => tenants.tenantPayouts, {
     onDelete: 'RESTRICT',
     onUpdate: 'RESTRICT',
   })
   @JoinColumn([{ name: 'tenants_id', referencedColumnName: 'id' }])
-  tenant: Tenants;
+  tenant: TenantsDataMapper;
 
   @ManyToOne(
-    () => RecurringIntervals,
+    () => RecurringIntervalsDataMapper,
     (recurringIntervals) => recurringIntervals.tenantPayouts,
     { onDelete: 'RESTRICT', onUpdate: 'RESTRICT' },
   )
   @JoinColumn([
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
-  termsRecurringInterval: RecurringIntervals;
+  termsRecurringInterval: RecurringIntervalsDataMapper;
 
   @ManyToOne(() => Users, (users) => users.updaterUsersId, {
     onDelete: 'RESTRICT',
@@ -172,6 +172,6 @@ export class TenantPayouts extends BaseEntity {
   @JoinColumn([{ name: 'updater_users_id', referencedColumnName: 'id' }])
   updaterUsers: Users;
 
-  @OneToMany(() => Tenants, (tenants) => tenants.lastTenantPayout)
-  lastPayoutTenants: Tenants[];
+  @OneToMany(() => TenantsDataMapper, (tenants) => tenants.lastTenantPayout)
+  lastPayoutTenants: TenantsDataMapper[];
 }

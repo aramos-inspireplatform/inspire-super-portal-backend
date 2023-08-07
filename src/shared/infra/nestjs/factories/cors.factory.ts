@@ -1,6 +1,6 @@
 import { INestApplication } from '@nestjs/common';
 
-export function corstFactory(app: INestApplication) {
+export function corsFactory(app: INestApplication) {
   app.enableCors({
     origin: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],

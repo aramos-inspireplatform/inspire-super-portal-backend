@@ -1,5 +1,5 @@
 import { Column, Entity, Index, OneToMany } from 'typeorm';
-import { TenantBalances } from './TenantBalances';
+import { TenantBalancesDataMapper } from './TenantBalances';
 import { TenantPayouts } from './TenantPayouts';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
@@ -18,10 +18,10 @@ export class Currencies extends BaseEntity {
   isoCode: string;
 
   @OneToMany(
-    () => TenantBalances,
+    () => TenantBalancesDataMapper,
     (tenantBalances) => tenantBalances.settlementCurrency,
   )
-  tenantBalances: TenantBalances[];
+  tenantBalances: TenantBalancesDataMapper[];
 
   @OneToMany(
     () => TenantPayouts,

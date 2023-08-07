@@ -1,12 +1,12 @@
 import { DataSource, Repository } from 'typeorm';
 import { IFindOneTenantBalanceDao } from '~/payouts/application/daos/find-one-tenant-balance.dao.contract';
-import { Tenants } from '~/shared/infra/database/entities';
+import { TenantsDataMapper } from '~/shared/infra/database/entities';
 
 export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
-  private tenantRepository: Repository<Tenants>;
+  private tenantRepository: Repository<TenantsDataMapper>;
 
   constructor(private readonly dataSource: DataSource) {
-    this.tenantRepository = this.dataSource.getRepository(Tenants);
+    this.tenantRepository = this.dataSource.getRepository(TenantsDataMapper);
   }
 
   async execute(
@@ -42,6 +42,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
         'lastTenantPayoutSettlementCurrency.symbol',
         'tenantBalances.id',
         'tenantBalances.amount',
+        'tenantBalances.updatedDate',
         'tenantBalanceSettlementCurrency.id',
         'tenantBalanceSettlementCurrency.name',
         'tenantBalanceSettlementCurrency.isoCode',
@@ -130,6 +131,7 @@ export class FindOneTenantBalanceDao implements IFindOneTenantBalanceDao {
             ? {
                 id: tenantBalance.tenantBalances[0].id,
                 amount: tenantBalance.tenantBalances[0].amount,
+                updatedDate: tenantBalance.tenantBalances[0].updatedDate,
                 settlementCurrency: {
                   id: tenantBalance.tenantBalances[0].settlementCurrency.id,
                   name: tenantBalance.tenantBalances[0].settlementCurrency.name,
