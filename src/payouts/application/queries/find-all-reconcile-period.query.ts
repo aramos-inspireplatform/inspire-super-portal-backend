@@ -21,19 +21,12 @@ export class FindAllReconcilePeriodQuery
     if (reconciles instanceof Error) throw reconciles;
 
     return reconciles?.map((reconcile) => ({
-      transactions: reconcile.transactions,
       id: reconcile.id,
       periodStartDate: reconcile.periodStartDate,
       periodEndDate: reconcile.periodEndDate,
-      filename: reconcile.filename,
-      filenameExtension: reconcile.filenameExtension,
-      processMessage: reconcile.processMessage,
-      paymentGateway: reconcile.paymentGateway,
       status: reconcile.status,
       creatorUser: reconcile.creatorUser,
       createdDate: reconcile.createdDate,
-      updatedDate: reconcile.updatedDate,
-      deletedDate: reconcile.deletedDate,
     }));
   }
 }
