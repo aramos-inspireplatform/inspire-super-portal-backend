@@ -13,6 +13,7 @@ import { GeneralExceptionsEnum } from '~/shared/domain/enums';
 import { BaseException } from '~/shared/domain/exceptions';
 
 @Catch()
+// TODO: refactor needed
 export class DefaultExceptionsFilter implements ExceptionFilter {
   private loggerService: Logger;
 
@@ -91,7 +92,9 @@ export class DefaultExceptionsFilter implements ExceptionFilter {
 
     this.saveLogsOnSentry(status, response, exception);
 
-    this.loggerService.error(body.message);
+    this.loggerService.error(
+      body?.message || body?.errors || 'Error not listed',
+    );
 
     if (exception.name === 'QueryFailedError') {
       const responseBody = {
@@ -118,10 +121,11 @@ export class DefaultExceptionsFilter implements ExceptionFilter {
         HttpStatus.BAD_REQUEST,
       );
     } else {
+      const messageError = body?.message || body?.errors || 'Error not listed';
       const parsedMessage =
         typeof body.message === 'object'
-          ? this.parseMessages(body.message)
-          : this.checkIfLogsMustBeDisplayed(body.message);
+          ? this.parseMessages(messageError)
+          : this.checkIfLogsMustBeDisplayed(messageError);
       const exceptionMessage = this.getHttpStatusExceptionMessage(
         parsedMessage,
         status,

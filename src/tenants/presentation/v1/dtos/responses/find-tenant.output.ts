@@ -1,13 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { TenantCountryDto } from '~/tenants/presentation/dtos/responses/tenant-country.dto';
-import { TenantLanguageDto } from '~/tenants/presentation/dtos/responses/tenant-language.dto';
-import { TenantTimezoneDto } from '~/tenants/presentation/dtos/responses/tenant-timezone.dto';
-import { TenantAgencyDto } from '~/tenants/presentation/dtos/responses/tenant-agency.dto';
-import { TenantCurrencyDto } from '~/tenants/presentation/dtos/responses/tenant-currency.dto';
 import { IsArray } from 'class-validator';
-import { TenantStatusDto } from '~/tenants/presentation/dtos/responses/tenant-status.dto';
+
+import {
+  TenantCountryDto,
+  TenantLanguageDto,
+  TenantTimezoneDto,
+  TenantAgencyDto,
+  TenantCurrencyDto,
+  TenantStatusDto,
+} from '~/tenants/presentation/v1/dtos/responses';
 import { BaseTenantDto } from '~/shared/presentation/base-tenant.dto';
+
 export class FindTenantOutput extends BaseTenantDto {
   @Expose()
   @ApiProperty({
