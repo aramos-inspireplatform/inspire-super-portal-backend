@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Exclude } from 'class-transformer';
-import { BaseDto } from '../../../../shared/presentation/base.dto';
+import { BaseDto } from '~/shared/presentation/base.dto';
 import { TenantStatusesConstant } from '~/tenants/domain/constants/tenant-statuses.constant';
 import { TenantStatus } from '~/tenants/domain/entities/tenant-statuses.entity';
 export class TenantDto extends BaseDto {
