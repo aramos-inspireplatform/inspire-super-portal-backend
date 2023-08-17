@@ -7,23 +7,27 @@ import {
   Post,
   Query,
   Req,
+  Version,
 } from '@nestjs/common';
 import { ApiDefaultResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CustomApiExtraModels } from '~/shared/presentation/decorators/has-paginated-result.decorator';
-import { TenantProvidersSymbols } from '~/tenants/ioc/tenants-providers.symbols';
+import {
+  TenantProviders,
+  TenantProvidersSymbols,
+} from '~/tenants/ioc/tenants-providers.symbols';
 import { FindOneTenantQuery } from '~/tenants/application/queries/find-one-tenant.query';
 import { FindAllTenantsQuery } from '~/tenants/application/queries/find-all-tenants.query';
-import { FindAllTenantsOutput } from '~/tenants/presentation/dtos/responses/find-all-tenants.output';
-import { FindTenantOutput } from '~/tenants/presentation/dtos/responses/find-tenant.output';
+import { FindAllTenantsOutput } from '~/tenants/presentation/v1/dtos/responses/find-all-tenants.output';
+import { FindTenantOutput } from '~/tenants/presentation/v1/dtos/responses/find-tenant.output';
 import {
   GetUserFromRequest,
   UserFromRequest,
 } from '~/shared/presentation/decorators/get-user-from-request';
-import { CreateTenantRequestBodyDto } from '~/tenants/presentation/dtos/requests/create-tenant-request.dto';
-import { CreateTenantCommand } from '~/tenants/application/commands/create-tenant.command';
+import { CreateTenantRequestBodyDto } from '~/tenants/presentation/v1/dtos/requests';
+import { CreateTenantCommand } from '~/tenants/application/commands';
 
 @Controller('/tenants')
 @ApiTags('Tenants')
@@ -34,7 +38,7 @@ export class TenantsController {
     private readonly findAllTenantQuery: FindAllTenantsQuery,
     @Inject(TenantProvidersSymbols.FIND_ONE_TENANT_QUERY)
     private readonly findTenantQuery: FindOneTenantQuery,
-    @Inject(TenantProvidersSymbols.CREATE_TENANT_COMMAND)
+    @Inject(TenantProviders.Commands.CREATE_TENANT_COMMAND)
     private readonly createTenantCommand: CreateTenantCommand,
   ) {}
 
@@ -81,7 +85,16 @@ export class TenantsController {
   ) {
     const tenant = await this.createTenantCommand.execute({
       accessToken: request.headers.authorization,
-      tenant: createDto,
+      tenant: {
+        name: createDto.name,
+        accountName: createDto.accountName,
+        slug: createDto.slug,
+        countryId: createDto.countryId,
+        settings: createDto.settings,
+        agencyId: createDto.agencyId,
+        timezoneId: createDto.timezoneId,
+        languageId: createDto.languageId,
+      },
       currentUserId: user.claims.userId,
       currentUserEmail: user.claims.email,
     });
