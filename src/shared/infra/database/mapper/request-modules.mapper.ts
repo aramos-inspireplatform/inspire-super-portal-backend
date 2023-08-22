@@ -32,6 +32,7 @@ export const RequestModulesMapper: IMapper<
     return model;
   },
   modelToDomain: (model: TypeOrmRequestModules): RequestModules => {
+    if (!model) return;
     const domain = new RequestModules({
       id: model.id,
       module: ModulesMapper.modelToDomain(model.module),

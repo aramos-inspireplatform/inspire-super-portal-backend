@@ -24,6 +24,7 @@ export const RequestMapper: IMapper<Request, Requests> = {
     return model;
   },
   modelToDomain: (model: Requests): Request => {
+    if (!model) return;
     const domain = new Request({
       id: model.id,
       createdByUserEmail: model.createdByUserEmail,
