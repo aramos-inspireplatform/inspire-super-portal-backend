@@ -18,6 +18,7 @@ export const RecurringIntervalsMapper: IMapper<
     return model;
   },
   modelToDomain: (model: RecurringIntervalsDataMapper): RecurringInterval => {
+    if (!model) return;
     const domain = new RecurringInterval({
       id: model.id,
       name: model.name,
