@@ -1,5 +1,6 @@
 type Json = { [property: string]: string | Json | object | Buffer | any };
 export type ReqConfig = {
+  params?: { [key: string]: unknown };
   headers?: {
     'x-integration-key'?: string;
     authorization?: string;
