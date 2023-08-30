@@ -5,5 +5,5 @@ if [ ! -f ".env" ]; then
 fi
 
 npm install
-## npm run migration-dev:run
+### npm run migration-dev:run
 while sleep 1000; do :; done
