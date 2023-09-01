@@ -8,10 +8,13 @@ export class Processor extends BaseDomainEntity {
 
   integrationCode?: string;
 
+  isPayoutAvailable?: boolean;
+
   constructor(attrs: InstanceProperties<Processor>) {
     super(attrs);
     this.name = attrs?.name;
     this.isActive = attrs?.isActive;
     this.integrationCode = attrs?.integrationCode;
+    this.isPayoutAvailable = attrs?.isPayoutAvailable;
   }
 }
