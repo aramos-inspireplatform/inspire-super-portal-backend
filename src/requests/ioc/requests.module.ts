@@ -13,6 +13,7 @@ import { RequestProvisioningWebHookUseCaseFactoryProvider } from '~/requests/ioc
 import { RequestTasksService } from '~/requests/presentation/bach-runner.cron';
 import { RequestsController } from '~/requests/presentation/requests.controller';
 import { QueueModule } from '~/shared/infra/sqs/queue.module';
+import { RequestsControllerV2 } from '~/requests/presentation/v2/requests.controller';
 
 @Module({
   providers: [
@@ -28,7 +29,7 @@ import { QueueModule } from '~/shared/infra/sqs/queue.module';
     RequestTasksService,
   ],
   exports: [ModuleRequestBatchUseCaseFactoryProvider.register()],
-  controllers: [RequestsController],
+  controllers: [RequestsController, RequestsControllerV2],
   imports: [QueueModule, InspireTenantApiServiceModule, DiscoveryModule],
 })
 export class RequestModule {}
