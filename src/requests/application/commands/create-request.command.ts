@@ -48,7 +48,9 @@ export class CreateRequestCommand implements ICreateRequestCommand {
             paymentGatewayId,
           );
         requestSettings.paymentProcessor.isPayoutActive =
-          gatewayConfig.getState().isPayoutAvailable;
+          gatewayConfig?.getState()?.isPayoutAvailable;
+      } else {
+        requestSettings.paymentProcessor.isPayoutActive = false;
       }
 
       request.addRequestModule({
