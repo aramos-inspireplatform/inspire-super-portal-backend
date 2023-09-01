@@ -1,7 +1,6 @@
-import { Column, Entity, Index } from 'typeorm';
+import { Column, Entity } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('pk__countries', ['id'], { unique: true })
 @Entity('countries', { schema: 'public' })
 export class Countries extends BaseEntity {
   @Column('character varying', { name: 'name', length: 200 })
