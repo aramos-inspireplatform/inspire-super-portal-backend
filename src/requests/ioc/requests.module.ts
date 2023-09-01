@@ -14,10 +14,16 @@ import { RequestTasksService } from '~/requests/presentation/bach-runner.cron';
 import { RequestsController } from '~/requests/presentation/requests.controller';
 import { QueueModule } from '~/shared/infra/sqs/queue.module';
 import { RequestsControllerV2 } from '~/requests/presentation/v2/requests.controller';
+import {
+  repositoriesProviders,
+  commandsProviders,
+} from '~/requests/ioc/providers';
 
 @Module({
   providers: [
-    CreateRequestCommandFactoryProvider.register(),
+    ...repositoriesProviders,
+    ...commandsProviders,
+    // -
     RequestCreatedEventUseCaseFactoryProvider.register(),
     RequestProvisioningWebHookUseCaseFactoryProvider.register(),
     ListAllRequestsUseCaseFactoryProvider.register(),
