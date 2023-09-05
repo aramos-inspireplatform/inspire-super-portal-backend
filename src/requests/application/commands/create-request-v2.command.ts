@@ -37,6 +37,7 @@ export class CreateRequestV2Command implements ICreateRequestCommand {
       const storedModule = await this.getModule(module);
       if (!storedModule) continue;
       const { requestSettings } = module;
+      // until this time, the default is always dolar
       requestSettings.paymentProcessor.settlementCurrencyId =
         PayoutCurrenciesEnum.USD;
 

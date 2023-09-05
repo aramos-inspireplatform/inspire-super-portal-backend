@@ -11,5 +11,5 @@ export class PaymentProcessorDtoV2 extends OmitType(PaymentProcessorDto, [
   })
   @IsNotEmpty()
   @IsBoolean()
-  isPayoutActive: boolean;
+  payoutThroughInspire: boolean;
 }

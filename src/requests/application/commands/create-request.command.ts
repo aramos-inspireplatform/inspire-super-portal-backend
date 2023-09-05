@@ -47,10 +47,10 @@ export class CreateRequestCommand implements ICreateRequestCommand {
           await this.paymentProcessorRepository.findByIntegrationCode(
             paymentGatewayId,
           );
-        requestSettings.paymentProcessor.isPayoutActive =
+        requestSettings.paymentProcessor.payoutThroughInspire =
           gatewayConfig?.getState()?.isPayoutAvailable;
       } else {
-        requestSettings.paymentProcessor.isPayoutActive = false;
+        requestSettings.paymentProcessor.payoutThroughInspire = false;
       }
 
       request.addRequestModule({
