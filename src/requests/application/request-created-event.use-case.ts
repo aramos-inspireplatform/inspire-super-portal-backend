@@ -8,7 +8,7 @@ import { Request } from '~/requests/domain/entities/request.entity';
 import { IRequestRepository } from '~/requests/domain/repositories/request-repository.contract';
 import { IHttpClient } from '~/shared/infra/http/contracts/http-client.contract';
 import { InspireHttpResponse } from '~/shared/types/inspire-http-response.type';
-import { InspireTenantApiServiceDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.dto';
+import { InspireTenantApiServiceTenantsDto } from '~/shared/application/services/inspire-api-services/tenant/services/contracts/inspire-tenant-api-service.tenants.dto';
 
 export class RequestCreatedEventUseCase {
   constructor(
@@ -20,7 +20,7 @@ export class RequestCreatedEventUseCase {
   async handle(attrs: RequestCreatedEventUseCase.InputAttrs) {
     const request = await this.requestRepository.findById(attrs.requestId);
     const tenantDetails = await this.inspireTenantService.getTenantDetails({
-      integrationCode: request.tenant.tenantId,
+      integrationCode: request.tenant.googleTenantId,
     });
     if (tenantDetails instanceof Error) return;
     const requestModuleAttemptStatus = <any>{
@@ -54,17 +54,21 @@ export class RequestCreatedEventUseCase {
     requestModuleAttempt: RequestModuleAttempts,
     requestModule: RequestModules,
     request: Request,
-    tenantDetails: InspireTenantApiServiceDto.TenantDetails,
+    tenantDetails: InspireTenantApiServiceTenantsDto.TenantDetails,
     attrs: RequestCreatedEventUseCase.InputAttrs,
   ) {
     const payload = {
       callbackId: requestModuleAttempt.id,
       requestSettings: requestModule.requestSettings,
-      tenant: request.tenant,
-      tenantId: tenantDetails.googleTenantId,
+      //tenant: request.tenant,
+      tenantId: tenantDetails.uuid,
+      tenantName: tenantDetails.name,
       tenantSlug: tenantDetails.slug,
+      gTenantId: tenantDetails.googleTenantId,
     };
+
     const url = requestModule.module.deployUrl;
+
     try {
       const response = await this.httpClient.post<InspireHttpResponse<any>>(
         url,

@@ -9,7 +9,7 @@ export class FindAllTenantsDao implements IFindAllTenantsDao {
   ) {}
 
   async execute(attrs: IFindAllTenantsDao.Input): IFindAllTenantsDao.Output {
-    const tenants = await this.inspireTenantApiService.findAll({
+    const tenants = await this.inspireTenantApiService.findAllTenants({
       accessToken: attrs.accessToken,
       pagination: attrs.pagination,
     });
@@ -74,6 +74,15 @@ export class FindAllTenantsDao implements IFindAllTenantsDao {
             }
           : null,
         settings: tenant.settings,
+        termsRecurringIntervalCount: tenant.termsRecurringIntervalCount,
+        termsRecurringInterval: tenant.termsRecurringInterval
+          ? {
+              uuid: tenant.termsRecurringInterval.uuid,
+              name: tenant.termsRecurringInterval.name,
+              interval: tenant.termsRecurringInterval.interval,
+              isActive: tenant.termsRecurringInterval.isActive,
+            }
+          : null,
         createdBy: tenant.createdBy,
       })),
       page: tenants.page,

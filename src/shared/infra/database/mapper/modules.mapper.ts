@@ -18,6 +18,7 @@ export const ModulesMapper: IMapper<Module, Modules> = {
     return model;
   },
   modelToDomain: (model: Modules): Module => {
+    if (!model) return;
     const domain = new Module({
       id: model.id,
       name: model.name,

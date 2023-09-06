@@ -1,4 +1,4 @@
-import { IFindTenantDao as IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
+import { IFindOneTenantDao as IFindOneTenantDao } from '~/tenants/application/daos/find-one-tenant.dao.contract';
 import { IFindTenantQuery as IFindOneTenantQuery } from '~/tenants/application/queries/contracts/find-tenant.query.contract';
 
 export class FindOneTenantQuery implements IFindOneTenantQuery {
@@ -57,6 +57,21 @@ export class FindOneTenantQuery implements IFindOneTenantQuery {
             id: tenant.status.id,
             name: tenant.status.name,
             slug: tenant.status.slug,
+          }
+        : null,
+      termsRecurringIntervalCount: tenant.termsRecurringIntervalCount,
+      termsRecurringInterval: tenant.termsRecurringInterval
+        ? {
+            uuid: tenant.termsRecurringInterval.uuid,
+            name: tenant.termsRecurringInterval.name,
+            interval: tenant.termsRecurringInterval.interval,
+            isActive: tenant.termsRecurringInterval.isActive,
+          }
+        : null,
+      createdBy: tenant.createdBy
+        ? {
+            firstName: tenant.createdBy.firstName,
+            lastName: tenant.createdBy.lastName,
           }
         : null,
       settings: tenant.settings,

@@ -22,7 +22,7 @@ export class FindAllTenantUsersQuery implements IFindAllTenantUsersQuery {
       rows: users.rows.map((user) => ({
         id: user.id,
         name:
-          user.firstName.trim() +
+          user.firstName?.trim() +
           (user.lastName ? ' ' + user.lastName?.trim() : ''),
         firstName: user.firstName?.trim(),
         lastName: user.lastName?.trim(),

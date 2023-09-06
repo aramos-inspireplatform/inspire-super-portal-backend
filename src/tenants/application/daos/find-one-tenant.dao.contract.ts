@@ -1,8 +1,8 @@
-export interface IFindTenantDao {
-  execute(params: IFindTenantDao.Input): IFindTenantDao.Output;
+export interface IFindOneTenantDao {
+  execute(params: IFindOneTenantDao.Input): IFindOneTenantDao.Output;
 }
 
-export namespace IFindTenantDao {
+export namespace IFindOneTenantDao {
   export type Input = {
     accessToken: string;
     gTenantId: string;
@@ -10,6 +10,7 @@ export namespace IFindTenantDao {
 
   export type Output = Promise<{
     id: string;
+    uuid: string;
     name: string;
     slug: string;
     googleTenantId: string;
@@ -33,6 +34,9 @@ export namespace IFindTenantDao {
     country: Country;
     status: Status;
     settings: Settings;
+    termsRecurringIntervalCount: number;
+    termsRecurringInterval: TermsRecurringInterval;
+    createdBy: CreatedBy;
   }>;
 
   // Additional types
@@ -76,6 +80,18 @@ export namespace IFindTenantDao {
     id: string;
     name: string;
     slug: string;
+  };
+
+  type TermsRecurringInterval = {
+    uuid: string;
+    name: string;
+    interval: string;
+    isActive: boolean;
+  };
+
+  type CreatedBy = {
+    firstName: string;
+    lastName: string;
   };
 
   type Settings = { [property: string]: any };
