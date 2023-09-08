@@ -1,9 +1,8 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { TenantPayouts } from './TenantPayouts';
 import { TenantsDataMapper } from './Tenants';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('pk__recurring_intervals', ['id'], { unique: true })
 @Entity('recurring_intervals', { schema: 'public' })
 export class RecurringIntervalsDataMapper extends BaseEntity {
   @Column('character varying', { name: 'name', length: 50 })

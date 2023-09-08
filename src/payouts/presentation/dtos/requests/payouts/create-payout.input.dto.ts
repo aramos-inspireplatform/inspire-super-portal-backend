@@ -89,4 +89,11 @@ export class CreatePayoutInputDto {
   @Type(() => CreatePayoutAdjustmentFeeInputDto)
   @ApiPropertyOptional()
   adjustmentFees: CreatePayoutAdjustmentFeeInputDto[];
+
+  @ApiProperty({
+    example: 'USD',
+    required: true,
+  })
+  @IsNotEmpty()
+  settlementCurrencyIsoCode: string;
 }

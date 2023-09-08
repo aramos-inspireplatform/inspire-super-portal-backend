@@ -27,6 +27,7 @@ export const TenantMapper: IMapper<Tenant, TenantsDataMapper> = {
     return model;
   },
   modelToDomain: (model: TenantsDataMapper): Tenant => {
+    if (!model) return;
     const domain = new Tenant({
       id: model.id,
       name: model.name,

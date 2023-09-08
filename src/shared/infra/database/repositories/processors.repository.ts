@@ -20,6 +20,6 @@ export class ProcessorsRepository implements IProcessorsRepository {
     // TODO: verificar se vamos fazer esse filtro: { where: { isActive: true } }
     const [processsors, count] = await this.repository.findAndCount();
 
-    return [processsors.map((p) => new Processor(p)), count];
+    return [processsors.map((processor) => new Processor(processor)), count];
   }
 }
