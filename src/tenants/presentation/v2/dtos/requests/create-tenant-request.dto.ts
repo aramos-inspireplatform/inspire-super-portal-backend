@@ -71,4 +71,20 @@ export class CreateTenantRequestBodyDto {
   })
   @IsNotEmpty()
   termsRecurringIntervalId: string;
+
+  @ApiProperty({
+    example: {
+      discountAmount: 10,
+      paymentMethodIds: [
+        'cd44a946-bfdd-4370-b2cc-1b3f0df311fd',
+        'af44a946-bfdd-4370-b2cc-1b3f0df311jg',
+      ],
+    },
+    required: true,
+  })
+  @IsOptional()
+  dualPricing?: {
+    discountAmount: number;
+    paymentMethodIds: string[];
+  };
 }

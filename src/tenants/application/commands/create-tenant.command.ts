@@ -38,6 +38,10 @@ export class CreateTenantCommand implements ICreateTenantCommand {
         languageId: attrs.tenant.languageId,
         termsRecurringIntervalCount,
         termsRecurringIntervalId,
+        dualPricingDiscountAmount: Number(
+          attrs.tenant?.dualPricing?.discountAmount ?? 0,
+        ),
+        isDualPricingActive: !!attrs.tenant?.dualPricing,
       },
     });
     if (tenant instanceof Error) throw tenant;
@@ -62,6 +66,8 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       tenantStatus: pendingTenantStatus,
       totalPaidAmount: 0,
       lastTenantPayout: null,
+      dualPricingDiscountAmount: tenant.dualPricingDiscountAmount,
+      isDualPricingActive: tenant.isDualPricingActive,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
 
@@ -73,6 +79,8 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       logo: tenant.logo,
       accountName: tenant.accountName,
       publicBusinessName: tenant.publicBusinessName,
+      dualPricingDiscountAmount: tenant.dualPricingDiscountAmount,
+      isDualPricingActive: tenant.isDualPricingActive,
     };
   }
 }

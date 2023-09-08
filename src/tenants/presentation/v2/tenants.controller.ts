@@ -42,6 +42,10 @@ export class TenantsControllerV2 {
         languageId: createDto.languageId,
         termsRecurringIntervalCount: createDto.termsRecurringIntervalCount,
         termsRecurringIntervalId: createDto.termsRecurringIntervalId,
+        dualPricing: {
+          discountAmount: createDto.dualPricing?.discountAmount,
+          paymentMethodIds: createDto.dualPricing?.paymentMethodIds,
+        },
       },
       currentUserId: user.claims.userId,
       currentUserEmail: user.claims.email,

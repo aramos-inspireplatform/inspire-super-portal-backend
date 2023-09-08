@@ -47,6 +47,8 @@ export namespace InspireTenantApiServiceTenantsDto {
     termsRecurringIntervalCount: number;
     termsRecurringInterval: TermsRecurringInterval;
     createdBy: CreatedBy;
+    dualPricingDiscountAmount: number;
+    isDualPricingActive: boolean;
   };
 
   export type SupportAddress = {
@@ -155,6 +157,8 @@ export namespace InspireTenantApiServiceTenantsDto {
       languageId?: string;
       termsRecurringIntervalCount: number;
       termsRecurringIntervalId: string;
+      isDualPricingActive: boolean;
+      dualPricingDiscountAmount: number;
     };
   };
   export type CreateTenantResult = Promise<Tenant | Error>;
