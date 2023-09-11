@@ -33,7 +33,7 @@ export namespace ICreateTenantCommand {
     logo: string;
     accountName: string;
     publicBusinessName: string;
-    dualPricingDiscountAmount: number;
+    dualPricingPercentage: number;
     isDualPricingActive: boolean;
   }>;
 

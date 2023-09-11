@@ -96,6 +96,6 @@ export class TenantsDataMapper extends BaseEntity {
   @Column('boolean', { name: 'is_dual_pricing_active', nullable: true })
   isDualPricingActive: boolean;
 
-  @Column('numeric', { name: 'dual_pricing_discount_amount', nullable: true })
-  dualPricingDiscountAmount: number;
+  @Column('numeric', { name: 'dual_pricing_percentage', nullable: true })
+  dualPricingPercentage: number;
 }

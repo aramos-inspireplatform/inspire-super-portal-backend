@@ -66,7 +66,7 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       tenantStatus: pendingTenantStatus,
       totalPaidAmount: 0,
       lastTenantPayout: null,
-      dualPricingDiscountAmount: tenant.dualPricingDiscountAmount,
+      dualPricingPercentage: tenant.dualPricingPercentage,
       isDualPricingActive: tenant.isDualPricingActive,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
@@ -79,7 +79,7 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       logo: tenant.logo,
       accountName: tenant.accountName,
       publicBusinessName: tenant.publicBusinessName,
-      dualPricingDiscountAmount: tenant.dualPricingDiscountAmount,
+      dualPricingPercentage: tenant.dualPricingPercentage,
       isDualPricingActive: tenant.isDualPricingActive,
     };
   }

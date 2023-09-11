@@ -44,7 +44,7 @@ export const TenantMapper: IMapper<Tenant, TenantsDataMapper> = {
       updatedDate: model.updatedDate,
       deletedDate: model.deletedDate,
       lastTenantPayout: model.lastTenantPayout,
-      dualPricingDiscountAmount: model.dualPricingDiscountAmount,
+      dualPricingPercentage: model.dualPricingPercentage,
       isDualPricingActive: model.isDualPricingActive,
     });
     return domain;

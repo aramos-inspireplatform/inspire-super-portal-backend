@@ -28,8 +28,8 @@ export class CreateTenantOutput extends BaseTenantDto {
   @ApiProperty({ example: 'Sample public business name' })
   publicBusinessName: string;
 
-  @ApiProperty({ example: 'Dual pricing discount' })
-  dualPricingDiscountAmount: number;
+  @ApiProperty({ example: 'Dual pricing percentage' })
+  dualPricingPercentage: number;
 
   @ApiProperty({ example: 'Dual pricing active' })
   isDualPricingActive: boolean;
