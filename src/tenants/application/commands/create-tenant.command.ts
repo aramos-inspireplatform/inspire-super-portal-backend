@@ -38,7 +38,7 @@ export class CreateTenantCommand implements ICreateTenantCommand {
         languageId: attrs.tenant.languageId,
         termsRecurringIntervalCount,
         termsRecurringIntervalId,
-        dualPricingDiscountAmount: Number(
+        dualPricingPercentage: Number(
           attrs.tenant?.dualPricing?.discountAmount ?? 0,
         ),
         isDualPricingActive: !!attrs.tenant?.dualPricing,
@@ -66,8 +66,6 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       tenantStatus: pendingTenantStatus,
       totalPaidAmount: 0,
       lastTenantPayout: null,
-      dualPricingPercentage: tenant.dualPricingPercentage,
-      isDualPricingActive: tenant.isDualPricingActive,
     });
     await this.tenantRepository.save({ tenant: storedTenant });
 

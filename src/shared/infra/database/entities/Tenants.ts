@@ -92,10 +92,4 @@ export class TenantsDataMapper extends BaseEntity {
     { name: 'terms_recurring_intervals_id', referencedColumnName: 'id' },
   ])
   termsRecurringInterval: RecurringIntervalsDataMapper;
-
-  @Column('boolean', { name: 'is_dual_pricing_active', nullable: true })
-  isDualPricingActive: boolean;
-
-  @Column('numeric', { name: 'dual_pricing_percentage', nullable: true })
-  dualPricingPercentage: number;
 }

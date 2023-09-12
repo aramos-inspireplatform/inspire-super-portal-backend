@@ -14,8 +14,6 @@ export class Tenant extends BaseDomainEntity {
   tenantStatus: TenantStatus;
   totalPaidAmount: number;
   lastTenantPayout: TenantPayoutsEntity;
-  dualPricingPercentage: number;
-  isDualPricingActive: boolean;
 
   constructor(attrs: InstanceProperties<Tenant>) {
     super(attrs);
@@ -28,7 +26,5 @@ export class Tenant extends BaseDomainEntity {
     this.tenantStatus = attrs.tenantStatus;
     this.totalPaidAmount = attrs.totalPaidAmount;
     this.lastTenantPayout = attrs.lastTenantPayout;
-    this.dualPricingPercentage = attrs.dualPricingPercentage;
-    this.isDualPricingActive = attrs.isDualPricingActive;
   }
 }
