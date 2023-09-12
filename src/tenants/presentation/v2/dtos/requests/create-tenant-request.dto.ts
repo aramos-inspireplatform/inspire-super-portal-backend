@@ -74,7 +74,7 @@ export class CreateTenantRequestBodyDto {
 
   @ApiProperty({
     example: {
-      discountAmount: 10,
+      discountPercentage: 10,
       paymentMethodIds: [
         'cd44a946-bfdd-4370-b2cc-1b3f0df311fd',
         'af44a946-bfdd-4370-b2cc-1b3f0df311jg',
@@ -84,7 +84,7 @@ export class CreateTenantRequestBodyDto {
   })
   @IsOptional()
   dualPricing?: {
-    discountAmount: number;
+    discountPercentage: number;
     paymentMethodIds: string[];
   };
 }

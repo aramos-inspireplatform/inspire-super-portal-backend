@@ -44,7 +44,7 @@ export class TenantsControllerV2 {
         termsRecurringIntervalId: createDto.termsRecurringIntervalId,
         dualPricing: createDto?.dualPricing
           ? {
-              discountAmount: createDto.dualPricing.discountAmount,
+              discountPercentage: createDto.dualPricing.discountPercentage,
               paymentMethodIds: createDto.dualPricing.paymentMethodIds,
             }
           : null,

@@ -39,7 +39,7 @@ export class CreateTenantCommand implements ICreateTenantCommand {
         termsRecurringIntervalCount,
         termsRecurringIntervalId,
         dualPricingPercentage: Number(
-          attrs.tenant?.dualPricing?.discountAmount ?? 0,
+          attrs.tenant?.dualPricing?.discountPercentage ?? 0,
         ),
         isDualPricingActive: !!attrs.tenant?.dualPricing,
       },

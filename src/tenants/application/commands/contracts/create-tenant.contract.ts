@@ -19,7 +19,7 @@ export namespace ICreateTenantCommand {
       termsRecurringIntervalCount?: number;
       termsRecurringIntervalId?: string;
       dualPricing?: {
-        discountAmount: number;
+        discountPercentage: number;
         paymentMethodIds: string[];
       };
     };
