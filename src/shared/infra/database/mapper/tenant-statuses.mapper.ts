@@ -17,6 +17,7 @@ export const TenantStatusesMapper: IMapper<
     return model;
   },
   modelToDomain: (model: TenantStatusesDataMapper): TenantStatus => {
+    if (!model) return;
     const domain = new TenantStatus({
       id: model.id,
       name: model.name,

@@ -13,6 +13,7 @@ export const RequestStatusesMapper: IMapper<RequestStatus, RequestStatuses> = {
     return model;
   },
   modelToDomain: (model: RequestStatuses): RequestStatus => {
+    if (!model) return;
     const domain = new RequestStatus({
       id: model.id,
       name: model.name,
