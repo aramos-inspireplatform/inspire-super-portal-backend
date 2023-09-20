@@ -20,6 +20,7 @@ export const RequestModuleAttemptsStatusesMapper: IMapper<
   modelToDomain: (
     model: RequestModuleAttemptStatuses,
   ): RequestModuleAttemptStatus => {
+    if (!model) return;
     const domain = new RequestModuleAttemptStatus({
       id: model.id,
       name: model.name,

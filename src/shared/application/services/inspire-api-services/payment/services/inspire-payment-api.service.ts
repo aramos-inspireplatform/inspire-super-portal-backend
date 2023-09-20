@@ -266,11 +266,14 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
   async findAllReconcilePeriod(
     attrs: ReconcilePeriodDto.InputAttrs,
   ): ReconcilePeriodDto.Result {
-    const url = attrs.status
-      ? `${this.PAYOUT_API_BASE_URL}/reconciliations?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}&status=${attrs.status}`
-      : `${this.PAYOUT_API_BASE_URL}/reconciliations?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}`;
+    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations`;
 
     const reconcile = await this.httpClient.get<any>(url, {
+      params: {
+        periodStartDate: attrs.periodStartDate,
+        periodEndDate: attrs.periodEndDate,
+        status: attrs.status,
+      },
       headers: {
         authorization: attrs.accessToken,
         tenant: attrs.gTenantId,
@@ -283,7 +286,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
   async reconciliateBexs(
     attrs: ReconciliateBexsDto.InputAttrs,
   ): ReconciliateBexsDto.Result {
-    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations/bexs?periodStartDate=${attrs.periodStartDate}&periodEndDate=${attrs.periodEndDate}`;
+    const url = `${this.PAYOUT_API_BASE_URL}/reconciliations/bexs`;
 
     const reconcileBexs = await this.httpClient.post<any>(
       url,
@@ -291,6 +294,10 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
         file: attrs.buffer,
       },
       {
+        params: {
+          periodStartDate: attrs.periodStartDate,
+          periodEndDate: attrs.periodEndDate,
+        },
         headers: {
           authorization: attrs.accessToken,
           tenant: attrs.gTenantId,
