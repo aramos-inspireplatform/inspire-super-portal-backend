@@ -33,6 +33,7 @@ export const RequestModuleAttemptsMapper: IMapper<
   modelToDomain: (
     model: TypeOrmRequestModuleAttempts,
   ): RequestModuleAttempts => {
+    if (!model) return;
     const domain = new RequestModuleAttempts({
       id: model.id,
       createdByUserId: model.createdByUserId,

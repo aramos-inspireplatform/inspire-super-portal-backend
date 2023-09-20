@@ -16,6 +16,7 @@ export const RequestModuleStatusesMapper: IMapper<
     return model;
   },
   modelToDomain: (model: ModuleRequestStatuses): RequestModuleStatus => {
+    if (!model) return;
     const domain = new RequestModuleStatus({
       id: model.id,
       name: model.name,
