@@ -19,6 +19,7 @@ export namespace CreatePayoutDto {
     selectedPayments: string[];
     adjustmentFees: AdjustmentFee[];
     selectAllPayments: boolean;
+    settlementCurrencyIsoCode: string;
   };
 
   export type Response = {

@@ -1,9 +1,6 @@
 import { Column, Entity, Index } from 'typeorm';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('uq__processors__name', ['deletedDate', 'name'], { unique: true })
-@Index('pk__processors', ['id'], { unique: true })
-@Index('uq__part__processors__name', ['name'], { unique: true })
 @Entity('processors', { schema: 'public' })
 export class Processors extends BaseEntity {
   @Column('character varying', { name: 'name', length: 200 })
@@ -17,4 +14,7 @@ export class Processors extends BaseEntity {
     length: 50,
   })
   integrationCode: string;
+
+  @Column('boolean', { name: 'is_payout_available' })
+  isPayoutAvailable: boolean;
 }

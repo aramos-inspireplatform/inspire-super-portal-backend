@@ -1,19 +1,7 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  Relation,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Relation } from 'typeorm';
 import { GeneralDataTypes } from './GeneralDataTypes';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('idx__uq__system_configurations', ['deletedDate', 'slug'], {
-  unique: true,
-})
-@Index('pk__system_configurations', ['id'], { unique: true })
-@Index('idx__part__uq__system_configurations', ['slug'], { unique: true })
 @Entity('system_configurations', { schema: 'public' })
 export class SystemConfigurations extends BaseEntity {
   @Column('character varying', { name: 'name', length: 100 })
