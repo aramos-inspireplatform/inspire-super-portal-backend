@@ -18,6 +18,10 @@ export namespace ICreateTenantCommand {
       languageId?: string;
       termsRecurringIntervalCount?: number;
       termsRecurringIntervalId?: string;
+      dualPricing?: {
+        discountPercentage: number;
+        paymentMethodIds: string[];
+      };
     };
   };
 
@@ -29,6 +33,8 @@ export namespace ICreateTenantCommand {
     logo: string;
     accountName: string;
     publicBusinessName: string;
+    dualPricingPercentage: number;
+    isDualPricingActive: boolean;
   }>;
 
   // Additional types

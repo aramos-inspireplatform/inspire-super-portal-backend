@@ -38,6 +38,10 @@ export class CreateTenantCommand implements ICreateTenantCommand {
         languageId: attrs.tenant.languageId,
         termsRecurringIntervalCount,
         termsRecurringIntervalId,
+        dualPricingPercentage: Number(
+          attrs.tenant?.dualPricing?.discountPercentage ?? 0,
+        ),
+        isDualPricingActive: !!attrs.tenant?.dualPricing,
       },
     });
     if (tenant instanceof Error) throw tenant;
@@ -73,6 +77,8 @@ export class CreateTenantCommand implements ICreateTenantCommand {
       logo: tenant.logo,
       accountName: tenant.accountName,
       publicBusinessName: tenant.publicBusinessName,
+      dualPricingPercentage: tenant.dualPricingPercentage,
+      isDualPricingActive: tenant.isDualPricingActive,
     };
   }
 }
