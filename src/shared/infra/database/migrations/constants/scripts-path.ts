@@ -17,4 +17,6 @@ export const SqlScriptPaths = {
   ADD_TENANT_PAYOUTS_PAY_INFO_DOWN: `${SCRIPTS_FOLDER}/1689551860832-add-tenant-payouts-pay-info.down.sql`,
   ADD_ZOOP_PAYMENT_PROCESSOR_UP: `${SCRIPTS_FOLDER}/1694101690729-add-zoop-payment-processor.up.sql`,
   ADD_ZOOP_PAYMENT_PROCESSOR_DOWN: `${SCRIPTS_FOLDER}/1694101690729-add-zoop-payment-processor.down.sql`,
+  ADD_PAYA_PAYMENT_PROCESSOR_UP: `${SCRIPTS_FOLDER}/1698263808392-add-paya-payment-processor.up.sql`,
+  ADD_PAYA_PAYMENT_PROCESSOR_DOWN: `${SCRIPTS_FOLDER}/1698263808392-add-paya-payment-processor.down.sql`,
 } as const;
