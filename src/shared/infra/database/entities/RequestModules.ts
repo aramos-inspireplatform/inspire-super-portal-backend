@@ -1,7 +1,6 @@
 import {
   Column,
   Entity,
-  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -13,7 +12,6 @@ import { Modules } from './Modules';
 import { Requests } from './Requests';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('pk__request_module', ['id'], { unique: true })
 @Entity('request_modules', { schema: 'public' })
 export class RequestModules extends BaseEntity {
   @Column('smallint', { name: 'attempts' })

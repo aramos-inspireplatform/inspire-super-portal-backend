@@ -8,12 +8,15 @@ import { RequestEvents } from '~/shared/domain/events/request.events';
 import { TenantNotFoundException } from '~/tenants/domain/exceptions/tenant-not-found.exception';
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { ICreateRequestCommand } from '~/requests/application/commands/contracts/create-request.contract';
+import { PayoutCurrenciesEnum } from '~/shared/domain/enums';
+import { IPaymentProcessorRepository } from '~/requests/domain/repositories/payment-processor-repository.contract';
 
 export class CreateRequestCommand implements ICreateRequestCommand {
   constructor(
     private readonly tenantRepository: ITenantRepository,
     private readonly moduleRepository: IModuleRepository,
     private readonly requestRepository: IRequestRepository,
+    private readonly paymentProcessorRepository: IPaymentProcessorRepository,
     private readonly eventEmitter: IEventEmitter,
     private readonly inspireTenantService: IInspireTenantApiService,
   ) {}
@@ -35,6 +38,21 @@ export class CreateRequestCommand implements ICreateRequestCommand {
     for await (const module of attrs.modules) {
       const storedModule = await this.getModule(module);
       if (!storedModule) continue;
+      const { requestSettings } = module;
+      const { paymentProcessor } = requestSettings;
+      const { paymentGatewayId, settlementCurrencyId } = paymentProcessor;
+
+      if (settlementCurrencyId === PayoutCurrenciesEnum.USD) {
+        const gatewayConfig =
+          await this.paymentProcessorRepository.findByIntegrationCode(
+            paymentGatewayId,
+          );
+        requestSettings.paymentProcessor.payoutThroughInspire =
+          gatewayConfig?.getState()?.isPayoutAvailable;
+      } else {
+        requestSettings.paymentProcessor.payoutThroughInspire = false;
+      }
+
       request.addRequestModule({
         module: {
           id: storedModule.id,

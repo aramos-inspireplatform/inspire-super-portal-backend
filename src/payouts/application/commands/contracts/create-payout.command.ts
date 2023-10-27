@@ -26,6 +26,7 @@ export namespace ICreatePayoutCommand {
     selectedPayments: string[];
     adjustmentFees: AdjustmentFee[];
     selectAllPayments: boolean;
+    settlementCurrencyIsoCode: string;
   };
   export type Output = { id: string };
 }
