@@ -1,8 +1,7 @@
-import { Column, Entity, Index, OneToMany } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 import { TenantPayouts } from './TenantPayouts';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('pk__templates_cp', ['id'], { unique: true })
 @Entity('users', { schema: 'public' })
 export class Users extends BaseEntity {
   @Column('character varying', { name: 'first_name', length: 100 })

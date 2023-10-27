@@ -1,11 +1,4 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { Users } from './Users';
 import { PayoutStatuses } from './PayoutStatuses';
 import { Currencies } from './Currencies';
@@ -14,7 +7,6 @@ import { RecurringIntervalsDataMapper } from './RecurringIntervals';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 import { ColumnNumericTransformer } from '~/shared/infra/database/helpers/ColumnNumericTransformer.helper';
 
-@Index('pk__tenant_payouts', ['id'], { unique: true })
 @Entity('tenant_payouts', { schema: 'public' })
 export class TenantPayouts extends BaseEntity {
   @Column('bigint', { name: 'payout_alternative_id' })

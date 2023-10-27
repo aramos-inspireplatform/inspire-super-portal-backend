@@ -150,6 +150,7 @@ export class PayoutController {
       selectedPayments: inputDto.selectedPayments,
       adjustmentFees: inputDto.adjustmentFees,
       selectAllPayments: inputDto.selectAllPayments,
+      settlementCurrencyIsoCode: inputDto.settlementCurrencyIsoCode,
     });
   }
 }
