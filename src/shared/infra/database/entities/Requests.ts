@@ -1,17 +1,9 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { RequestModules } from './RequestModules';
 import { RequestStatuses } from './RequestStatuses';
 import { TenantsDataMapper } from './Tenants';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('pk__requests', ['id'], { unique: true })
 @Entity('requests', { schema: 'public' })
 export class Requests extends BaseEntity {
   @Column('character varying', { name: 'created_by_user_id', length: 300 })

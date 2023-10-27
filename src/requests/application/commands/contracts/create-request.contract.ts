@@ -22,7 +22,7 @@ export namespace ICreateRequestCommand {
   // Additional types
   type RequestModule = {
     moduleId: string;
-    requestSettings: object;
+    requestSettings: any;
   };
 
   // Must be moved to API

@@ -1,16 +1,8 @@
-import {
-  Column,
-  Entity,
-  Index,
-  JoinColumn,
-  ManyToOne,
-  Relation,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, Relation } from 'typeorm';
 import { RequestModules } from './RequestModules';
 import { RequestModuleAttemptStatuses } from './RequestModuleAttemptStatuses';
 import { BaseEntity } from '~/shared/infra/database/entities/base';
 
-@Index('pk__module_request_attempts', ['id'], { unique: true })
 @Entity('request_module_attempts', { schema: 'public' })
 export class RequestModuleAttempts extends BaseEntity {
   @Column('character varying', { name: 'created_by_user_id', length: 300 })
