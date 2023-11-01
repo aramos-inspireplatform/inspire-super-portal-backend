@@ -1,0 +1,42 @@
+version: '3'
+
+name: ${COMPOSE_PROJECT_NAME}
+services:
+  inspire-superportal-api:
+    container_name: inspire-superportal-api
+    build:
+      args:
+        - GIT_USER_NAME=${GIT_USER_NAME}
+        - GIT_USER_EMAIL=${GIT_USER_EMAIL}
+      context: .
+      dockerfile: development.Dockerfile
+    tty: true
+    stdin_open: true
+    user: node
+    ports:
+      - 3334:3334
+    volumes:
+      - .:/home/node/app
+
+  inspire-superportal-postgres:
+    container_name: inspire-superportal-postgres
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - POSTGRES_DB=${DB_NAME}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    ports:
+      - 5434:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  default:
+    name: inspire-network
+    external: true
+
