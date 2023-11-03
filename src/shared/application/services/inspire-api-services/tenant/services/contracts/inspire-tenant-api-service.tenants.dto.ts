@@ -116,6 +116,7 @@ export namespace InspireTenantApiServiceTenantsDto {
     name: string;
     interval: string;
     isActive: boolean;
+    id?: string;
   };
 
   type CreatedBy = {
@@ -168,6 +169,31 @@ export namespace InspireTenantApiServiceTenantsDto {
     accessToken: string;
   };
   export type FindOneAdminUserResult = Promise<Tenant | Error>;
+
+  // UpdateTenant
+  export type UpdateTenantInputAttrs = {
+    accessToken: string;
+    tenant: string;
+    id: string;
+    body?: Object | UpdateTenantBodyAttr;
+  };
+
+  export type UpdateTenantBodyAttr = {
+    name?: string;
+    accountName?: string;
+    slug?: string;
+    settings?: Object;
+    countryId?: string;
+    agencyId?: string;
+    timezoneId?: string;
+    languageId?: string;
+    termsRecurringIntervalCount?: number;
+    termsRecurringIntervalId?: string;
+    isDualPricingActive?: boolean;
+    dualPricingPercentage?: number;
+  };
+
+  export type UpdateTenantResult = Promise<Tenant | Error>;
 
   // Deprecated below ------------------------------------------------
   export type TenantUserUserDetails = {
