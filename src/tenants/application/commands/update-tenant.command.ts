@@ -76,7 +76,7 @@ export class UpdateTenantCommand implements IUpdateTenantCommand {
           await this.inspireBillingService.updateProductPrice({
             accessToken: attrs.accessToken,
             tenant: tenant?.googleTenantId,
-            percentage: attrs?.body?.dualPricingPercentage,
+            percentage: res?.dualPricingPercentage,
           });
 
         if (resBilling instanceof Error) throw resBilling;
