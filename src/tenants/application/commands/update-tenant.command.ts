@@ -40,7 +40,7 @@ export class UpdateTenantCommand implements IUpdateTenantCommand {
             : tenant?.isDualPricingActive,
         dualPricingPercentage:
           attrs?.body?.dualPricingPercentage !== undefined
-            ? attrs?.body?.dualPricingPercentage
+            ? attrs?.body?.dualPricingPercentage / 100
             : tenant?.dualPricingPercentage,
       };
 
