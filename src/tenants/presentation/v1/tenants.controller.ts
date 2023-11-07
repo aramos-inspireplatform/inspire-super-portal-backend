@@ -4,6 +4,7 @@ import {
   Get,
   Inject,
   Param,
+  Patch,
   Post,
   Query,
   Req,
@@ -26,8 +27,14 @@ import {
   GetUserFromRequest,
   UserFromRequest,
 } from '~/shared/presentation/decorators/get-user-from-request';
-import { CreateTenantRequestBodyDto } from '~/tenants/presentation/v1/dtos/requests';
-import { CreateTenantCommand } from '~/tenants/application/commands';
+import {
+  CreateTenantRequestBodyDto,
+  UpdateDualPriceTenantRequestDto,
+} from '~/tenants/presentation/v1/dtos/requests';
+import {
+  CreateTenantCommand,
+  UpdateTenantCommand,
+} from '~/tenants/application/commands';
 
 @Controller('/tenants')
 @ApiTags('Tenants')
@@ -40,6 +47,8 @@ export class TenantsController {
     private readonly findTenantQuery: FindOneTenantQuery,
     @Inject(TenantProviders.Commands.CREATE_TENANT_COMMAND)
     private readonly createTenantCommand: CreateTenantCommand,
+    @Inject(TenantProviders.Commands.UPDATE_TENANT)
+    private readonly updateTenantDualPriceCommand: UpdateTenantCommand,
   ) {}
 
   @Get()
@@ -100,5 +109,19 @@ export class TenantsController {
     });
 
     return tenant;
+  }
+
+  @Patch(':gTenantId')
+  @AuthenticatedRoute()
+  async updateTenantDualPrice(
+    @Req() request: FastifyRequest,
+    @Body() updateDto: UpdateDualPriceTenantRequestDto,
+    @Param('gTenantId') gTenantId: string,
+  ) {
+    return this.updateTenantDualPriceCommand.execute({
+      accessToken: request.headers.authorization,
+      tenantId: gTenantId,
+      body: updateDto,
+    });
   }
 }
