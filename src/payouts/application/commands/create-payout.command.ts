@@ -29,6 +29,7 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
       selectedPayments,
       adjustmentFees,
       selectAllPayments,
+      settlementCurrencyIsoCode,
     } = input;
 
     const tenant = await this.tenantRepository.findOneByGTenantId({
@@ -45,6 +46,7 @@ export class CreatePayoutCommand implements ICreatePayoutCommand {
       selectedPayments,
       adjustmentFees,
       selectAllPayments,
+      settlementCurrencyIsoCode,
       termsRecurringIntervalCount:
         tenant.getState().termsRecurringIntervalCount,
       termsRecurringIntervalId: tenant

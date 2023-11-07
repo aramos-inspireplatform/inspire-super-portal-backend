@@ -11,13 +11,16 @@ import {
 } from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
-import { CreateRequestCommand } from '~/requests/application/commands/create-request.command';
+import { CreateRequestCommand } from '~/requests/application/commands';
 import { ListAllRequestsUseCase } from '~/requests/application/list-all-requests.use-case';
 import { ListOneRequestModuleUseCase } from '~/requests/application/list-one-request-modules.use-case';
 import { ListOneRequestUseCase } from '~/requests/application/list-one-request.use-case';
 import { ReAttemptRequestModuleUseCase } from '~/requests/application/re-attempt-request-module.use-case';
 import { RequestProvisioningWebHookUseCase } from '~/requests/application/request-provisioning-web-hook.use-case';
-import { RequestProviderSymbols } from '~/requests/ioc/requests-providers.symbols';
+import {
+  RequestProviderSymbols,
+  RequestProvider,
+} from '~/requests/ioc/requests-providers.symbols';
 import { CreateRequestBodyDto } from '~/requests/presentation/dtos/requests/create-request-body.dto';
 import { WebHookRequestBodyDto } from '~/requests/presentation/dtos/requests/web-hook-request-body.dto';
 import { PaymentProviderValidatorRequestDto } from '~/requests/presentation/dtos/modules-requests/requests/modules/payment/payment-validator.dto';
@@ -36,7 +39,7 @@ import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto
 )
 export class RequestsController {
   constructor(
-    @Inject(RequestProviderSymbols.CREATE_REQUEST_COMMAND)
+    @Inject(RequestProvider.Commands.CREATE_REQUEST_COMMAND)
     private readonly createRequestUseCase: CreateRequestCommand,
     @Inject(RequestProviderSymbols.REQUEST_PROVISIONING_WEB_HOOK_USE_CASE)
     private readonly requestProvisioningWebHookUseCase: RequestProvisioningWebHookUseCase,

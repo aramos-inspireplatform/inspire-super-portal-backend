@@ -1,3 +1,14 @@
+export namespace RequestProvider {
+  export enum Repositories {
+    PAYMENT_PROCESSOR = 'REQUEST_PAYMENT_PROCESSOR',
+  }
+
+  export enum Commands {
+    CREATE_REQUEST_COMMAND = 'REQUEST_CREATE_REQUEST_COMMAND',
+    CREATE_REQUEST_COMMAND_V2 = 'REQUEST_CREATE_REQUEST_COMMAND_V2',
+  }
+}
+
 export const RequestProviderSymbols = {
   CREATE_REQUEST_COMMAND: Symbol('CREATE_REQUEST_COMMAND'),
   LIST_ALL_REQUESTS_USE_CASE: Symbol('LIST_ALL_REQUESTS_USE_CASE'),
