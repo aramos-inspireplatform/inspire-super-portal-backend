@@ -194,8 +194,24 @@ export class InspireTenantApiService implements IInspireTenantApiService {
       );
     return responseOrError.data.body.data;
   }
-}
 
+  async updateTenant(
+    attrs: InspireTenantApiServiceTenantsDto.UpdateTenantInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.UpdateTenantResult {
+    const response = await this.httpClient.patch<any>(
+      `${this.TENANT_INTEGRATION_ROUTE}/${attrs.id}`,
+      attrs.body,
+      {
+        headers: {
+          authorization: attrs.accessToken,
+          tenant: attrs.tenant,
+        },
+      },
+    );
+
+    return response.data.body.data;
+  }
+}
 export namespace InspireTenantApiService {
   // Tenants
   export type FindAllTenantsHttpResponse =
@@ -210,6 +226,9 @@ export namespace InspireTenantApiService {
   // Admin users
   export type FindOneAdminUserHttpResponse =
     InspireHttpResponse<InspireTenantApiServiceAdminUsersDto.AdminUser>;
+
+  export type UpdateTenantHttpResponse =
+    InspireHttpResponse<InspireTenantApiServiceTenantsDto.Tenant>;
 
   // Deprecated below -------------------------------------
   export type UserDetailsHttpResponse =

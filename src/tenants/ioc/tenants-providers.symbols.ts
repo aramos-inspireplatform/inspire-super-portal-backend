@@ -1,6 +1,7 @@
 export namespace TenantProviders {
   export enum Commands {
     CREATE_TENANT_COMMAND = 'CREATE_TENANT_COMMAND',
+    UPDATE_TENANT = 'UPDATE_TENANT',
   }
 }
 export const TenantProvidersSymbols = {
