@@ -18,4 +18,8 @@ export class GetProcessorResponseDto extends BaseDto {
   @Expose()
   @ApiProperty({ example: true })
   isPayoutAvailable: boolean;
+
+  @Expose()
+  @ApiProperty({ example: true })
+  isCalculatorAvailable: boolean;
 }
