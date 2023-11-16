@@ -1,0 +1,1 @@
+ALTER TABLE processors DROP COLUMN IF EXISTS is_calculator_available CASCADE

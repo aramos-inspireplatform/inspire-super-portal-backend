@@ -6,3 +6,4 @@ export * from './1689102592879-changes-for-payout';
 export * from './1689551860832-add-tenant-payouts-pay-info';
 export * from './1693500212248-add-payout-management';
 export * from './1694101690729-add-zoop-payment-processor';
+export * from './1700165976187-add-calculator-available';
