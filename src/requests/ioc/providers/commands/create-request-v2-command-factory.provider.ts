@@ -11,6 +11,8 @@ import { RequestRepository } from '~/requests/infra/repositories/request.reposit
 import { TenantsRepository } from '~/tenants/infra/repositories/tenants.repository';
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { CreateRequestV2Command } from '~/requests/application/commands/create-request-v2.command';
+import { IProcessorsRepository } from '~/processors/infra/contracts/repository/processors-repository.contract';
+import { ProcessorsRepository } from '~/shared/infra/database/repositories/processors.repository';
 
 export class CreateRequestCommandV2FactoryProvider {
   static register(): FactoryProvider {
@@ -20,6 +22,7 @@ export class CreateRequestCommandV2FactoryProvider {
         tenantRepository: ITenantRepository,
         moduleRepository: IModuleRepository,
         requestRepository: IRequestRepository,
+        processorsRepository: IProcessorsRepository,
         eventEmitter: IEventEmitter,
         inspireTenantService: IInspireTenantApiService,
       ) =>
@@ -27,6 +30,7 @@ export class CreateRequestCommandV2FactoryProvider {
           tenantRepository,
           moduleRepository,
           requestRepository,
+          processorsRepository,
           eventEmitter,
           inspireTenantService,
         ),
@@ -34,6 +38,7 @@ export class CreateRequestCommandV2FactoryProvider {
         TenantsRepository,
         ModulesRepository,
         RequestRepository,
+        ProcessorsRepository,
         EventEmitter2,
         InspireApiServicesProvidersSymbols.INSPIRE_TENANT_API_SERVICE,
       ],

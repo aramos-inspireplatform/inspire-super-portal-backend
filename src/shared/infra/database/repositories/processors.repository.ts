@@ -22,4 +22,15 @@ export class ProcessorsRepository implements IProcessorsRepository {
 
     return [processsors.map((processor) => new Processor(processor)), count];
   }
+
+  async find(
+    input: IProcessorsRepository.FindInput,
+  ): IProcessorsRepository.FindResult {
+    const processsor = await this.repository.findOne({
+      where: {
+        integrationCode: input.id,
+      },
+    });
+    return new Processor(processsor);
+  }
 }

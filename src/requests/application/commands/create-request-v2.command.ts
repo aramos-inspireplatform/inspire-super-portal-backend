@@ -9,12 +9,14 @@ import { TenantNotFoundException } from '~/tenants/domain/exceptions/tenant-not-
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { ICreateRequestCommand } from '~/requests/application/commands/contracts/create-request.contract';
 import { PayoutCurrenciesEnum } from '~/shared/domain/enums';
+import { IProcessorsRepository } from '~/processors/infra/contracts/repository/processors-repository.contract';
 
 export class CreateRequestV2Command implements ICreateRequestCommand {
   constructor(
     private readonly tenantRepository: ITenantRepository,
     private readonly moduleRepository: IModuleRepository,
     private readonly requestRepository: IRequestRepository,
+    private readonly processorsRepository: IProcessorsRepository,
     private readonly eventEmitter: IEventEmitter,
     private readonly inspireTenantService: IInspireTenantApiService,
   ) {}
@@ -40,6 +42,13 @@ export class CreateRequestV2Command implements ICreateRequestCommand {
       // until this time, the default is always dolar
       requestSettings.paymentProcessor.settlementCurrencyId =
         PayoutCurrenciesEnum.USD;
+
+      if (requestSettings.paymentProcessor.enableCalculator) {
+        const processor = await this.processorsRepository.find({
+          id: requestSettings.paymentProcessor.paymentGatewayId,
+        });
+        processor.isCalculatorAvailableOrThrow();
+      }
 
       request.addRequestModule({
         module: {
