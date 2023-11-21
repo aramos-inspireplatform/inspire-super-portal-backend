@@ -9,14 +9,14 @@ import { TenantNotFoundException } from '~/tenants/domain/exceptions/tenant-not-
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { ICreateRequestCommand } from '~/requests/application/commands/contracts/create-request.contract';
 import { PayoutCurrenciesEnum } from '~/shared/domain/enums';
-import { IProcessorsRepository } from '~/processors/infra/contracts/repository/processors-repository.contract';
+import { IProcessorRepository } from '~/processors/infra/contracts/repository/processor-repository.contract';
 
 export class CreateRequestV2Command implements ICreateRequestCommand {
   constructor(
     private readonly tenantRepository: ITenantRepository,
     private readonly moduleRepository: IModuleRepository,
     private readonly requestRepository: IRequestRepository,
-    private readonly processorsRepository: IProcessorsRepository,
+    private readonly processorsRepository: IProcessorRepository,
     private readonly eventEmitter: IEventEmitter,
     private readonly inspireTenantService: IInspireTenantApiService,
   ) {}

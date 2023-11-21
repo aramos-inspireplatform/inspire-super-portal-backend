@@ -1,13 +1,11 @@
 import { Processor } from '~/processors/domain/entity/processor.entity';
 
-export interface IProcessorsRepository {
-  findAll(): IProcessorsRepository.FindAllResult;
-  find(
-    input: IProcessorsRepository.FindInput,
-  ): IProcessorsRepository.FindResult;
+export interface IProcessorRepository {
+  findAll(): IProcessorRepository.FindAllResult;
+  find(input: IProcessorRepository.FindInput): IProcessorRepository.FindResult;
 }
 
-export namespace IProcessorsRepository {
+export namespace IProcessorRepository {
   export type FindAllResult = Promise<[Array<Processor>, number]>;
   export type FindResult = Promise<Processor>;
   export type FindInput = { id: string };

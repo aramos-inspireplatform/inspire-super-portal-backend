@@ -11,7 +11,7 @@ import { RequestRepository } from '~/requests/infra/repositories/request.reposit
 import { TenantsRepository } from '~/tenants/infra/repositories/tenants.repository';
 import { ITenantRepository } from '~/tenants/domain/repositories/tenant-repository.contract';
 import { CreateRequestV2Command } from '~/requests/application/commands/create-request-v2.command';
-import { IProcessorsRepository } from '~/processors/infra/contracts/repository/processors-repository.contract';
+import { IProcessorRepository } from '~/processors/infra/contracts/repository/processor-repository.contract';
 import { ProcessorsRepository } from '~/shared/infra/database/repositories/processors.repository';
 
 export class CreateRequestCommandV2FactoryProvider {
@@ -22,7 +22,7 @@ export class CreateRequestCommandV2FactoryProvider {
         tenantRepository: ITenantRepository,
         moduleRepository: IModuleRepository,
         requestRepository: IRequestRepository,
-        processorsRepository: IProcessorsRepository,
+        processorsRepository: IProcessorRepository,
         eventEmitter: IEventEmitter,
         inspireTenantService: IInspireTenantApiService,
       ) =>
