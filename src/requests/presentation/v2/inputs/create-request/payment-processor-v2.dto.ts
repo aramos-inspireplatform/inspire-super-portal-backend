@@ -1,5 +1,5 @@
 import { ApiProperty, OmitType } from '@nestjs/swagger';
-import { IsNotEmpty, IsBoolean, IsNumber } from 'class-validator';
+import { IsNotEmpty, IsBoolean, IsNumber, IsOptional } from 'class-validator';
 import { PaymentProcessorDto } from '~/requests/presentation/dtos/modules-requests/requests/modules/payment/payment-processor.dto';
 
 export class PaymentProcessorDtoV2 extends OmitType(PaymentProcessorDto, [
@@ -22,9 +22,10 @@ export class PaymentProcessorDtoV2 extends OmitType(PaymentProcessorDto, [
   enableCalculator: boolean;
 
   @ApiProperty({
-    required: true,
+    required: false,
     example: true,
   })
+  @IsOptional()
   @IsNumber()
   terminalId?: number;
 }
