@@ -1,0 +1,1 @@
+ALTER TABLE processors ADD is_calculator_available bool NULL

@@ -17,4 +17,7 @@ export class Processors extends BaseEntity {
 
   @Column('boolean', { name: 'is_payout_available' })
   isPayoutAvailable: boolean;
+
+  @Column('boolean', { name: 'is_calculator_available' })
+  isCalculatorAvailable: boolean;
 }
