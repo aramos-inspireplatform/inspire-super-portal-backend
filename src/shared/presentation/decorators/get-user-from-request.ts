@@ -6,6 +6,7 @@ export type UserFromRequest = {
   iat: number;
   exp: number;
   iss: string;
+  tenantId: string;
 };
 
 export interface Claims {
