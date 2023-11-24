@@ -29,7 +29,7 @@ import {
 } from '~/shared/presentation/decorators/get-user-from-request';
 import {
   CreateTenantRequestBodyDto,
-  UpdateDualPriceTenantRequestDto,
+  UpdateTenantRequestDto,
 } from '~/tenants/presentation/v1/dtos/requests';
 import {
   CreateTenantCommand,
@@ -48,7 +48,7 @@ export class TenantsController {
     @Inject(TenantProviders.Commands.CREATE_TENANT_COMMAND)
     private readonly createTenantCommand: CreateTenantCommand,
     @Inject(TenantProviders.Commands.UPDATE_TENANT)
-    private readonly updateTenantDualPriceCommand: UpdateTenantCommand,
+    private readonly updateTenantCommand: UpdateTenantCommand,
   ) {}
 
   @Get()
@@ -115,10 +115,10 @@ export class TenantsController {
   @AuthenticatedRoute()
   async updateTenantDualPrice(
     @Req() request: FastifyRequest,
-    @Body() updateDto: UpdateDualPriceTenantRequestDto,
+    @Body() updateDto: UpdateTenantRequestDto,
     @Param('gTenantId') gTenantId: string,
   ) {
-    return this.updateTenantDualPriceCommand.execute({
+    return this.updateTenantCommand.execute({
       accessToken: request.headers.authorization,
       tenantId: gTenantId,
       body: updateDto,

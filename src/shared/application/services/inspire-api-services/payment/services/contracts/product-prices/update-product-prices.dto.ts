@@ -1,13 +1,16 @@
-export namespace UpdateProductPriceDto {
+export namespace UpdateTenantConfigurationsDto {
   export type InputAttrs = {
     accessToken: string;
     tenant: string;
-    percentage: number;
+    dualPricingPercentage: number;
+    isDualPricingActive: boolean;
   };
 
-  export type Response = {
+  export type Response = Array<{
     numberOfProductPricesUpdated: number;
-  };
+    numberOfPaymentLinksUpdated: number;
+    numberOfProductPricesArchived: number;
+  }>;
 
   export type Result = Promise<Response>;
 }
