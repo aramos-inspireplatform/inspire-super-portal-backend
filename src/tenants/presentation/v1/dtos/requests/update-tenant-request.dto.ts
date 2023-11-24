@@ -12,7 +12,7 @@ import {
   MinLength,
 } from 'class-validator';
 
-export class UpdateDualPriceTenantRequestDto {
+export class UpdateTenantRequestDto {
   @IsOptional()
   @IsString()
   name?: string;
