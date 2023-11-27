@@ -25,7 +25,7 @@ import { CurrenciesModule } from '~/currencies/ioc/currencies.module';
 import { InspireTenantApiServiceModule } from '~/shared/application/services/inspire-api-services/tenant/ioc/inspire-tenant-api-service.module';
 import { InspirePaymentApiServiceModule } from '~/shared/application/services/inspire-api-services/payment/ioc/inspire-payment-api-service.module';
 import { TransactionsModule } from '~/transactions/ioc/transactions.module';
-import { PaymentGatewayCalculatorModule } from '~/calculator/infra/ioc/nestjs/payment-gateway-calculator.module';
+import { PaymentModule } from '~/payments/infra/ioc/nestjs/payment.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -55,7 +55,7 @@ import { PaymentGatewayCalculatorModule } from '~/calculator/infra/ioc/nestjs/pa
     SettlementCurrenciesModule,
     TermsRecurringIntervalModule,
     TransactionsModule,
-    PaymentGatewayCalculatorModule,
+    PaymentModule,
     EventEmitterModule.forRoot({
       global: true,
     }),
