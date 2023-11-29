@@ -16,6 +16,10 @@ export interface IInspireTenantApiService {
     attrs: InspireTenantApiServiceTenantsDto.CreateTenantInputAttrs,
   ): InspireTenantApiServiceTenantsDto.CreateTenantResult;
 
+  updateTenant(
+    attrs: InspireTenantApiServiceTenantsDto.UpdateTenantInputAttrs,
+  ): InspireTenantApiServiceTenantsDto.UpdateTenantResult;
+
   // Admin Users
   findOneAdminUser(
     attrs: InspireTenantApiServiceAdminUsersDto.FindOneInputAttrs,

@@ -13,7 +13,8 @@ export class TenantsRepository implements ITenantRepository {
     @Inject(DatabaseProvidersSymbols.DATA_SOURCE)
     private readonly dataSource: DataSource,
   ) {
-    this.repository = this.dataSource.getRepository<TenantsDataMapper>(TenantsDataMapper);
+    this.repository =
+      this.dataSource.getRepository<TenantsDataMapper>(TenantsDataMapper);
   }
 
   async save(
