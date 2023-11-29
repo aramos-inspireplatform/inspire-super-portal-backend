@@ -47,5 +47,7 @@ export namespace IUpdateTenantCommand {
     message: string;
     updatedTenant: Object;
     updatedProductPrices?: number;
+    updatedPaymentLinks?: number;
+    archivedProductPrices?: number;
   };
 }

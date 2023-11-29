@@ -11,7 +11,7 @@ import { ReconciliateStripeDto } from '~/shared/application/services/inspire-api
 import { ReconciliateBexsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-bexs.dto';
 import { CreatePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/create-payout.dto';
 import { ReconcilePeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-period.dto';
-import { UpdateProductPriceDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/product-prices/update-product-prices.dto';
+import { UpdateTenantConfigurationsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/product-prices/update-product-prices.dto';
 
 export interface IInspirePaymentApiService {
   findAllPaymentsPeriodPaged(
@@ -64,7 +64,7 @@ export interface IInspirePaymentApiService {
     attrs: ReconcilePeriodDto.InputAttrs,
   ): ReconcilePeriodDto.Result;
 
-  updateProductPrice(
-    attrs: UpdateProductPriceDto.InputAttrs,
-  ): UpdateProductPriceDto.Result;
+  updateTenantConfiguration(
+    attrs: UpdateTenantConfigurationsDto.InputAttrs,
+  ): UpdateTenantConfigurationsDto.Result;
 }

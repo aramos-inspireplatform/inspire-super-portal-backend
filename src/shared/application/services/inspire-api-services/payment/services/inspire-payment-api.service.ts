@@ -13,7 +13,7 @@ import { ReconciliateStripeDto } from '~/shared/application/services/inspire-api
 import { ReconciliateBexsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-bexs.dto';
 import { CreatePayoutDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/payouts/create-payout.dto';
 import { ReconcilePeriodDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/reconciliations/reconcile-period.dto';
-import { UpdateProductPriceDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/product-prices/update-product-prices.dto';
+import { UpdateTenantConfigurationsDto } from '~/shared/application/services/inspire-api-services/payment/services/contracts/product-prices/update-product-prices.dto';
 
 export class InspirePaymentApiService implements IInspirePaymentApiService {
   private readonly PAYMENT_API_BASE_URL = `${process.env.PAYMENT_API_URL}`;
@@ -22,7 +22,7 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
 
   private readonly TRANSACTION_API_BASE_URL = `${this.PAYMENT_API_BASE_URL}/transactions`;
 
-  private readonly PRODUCT_PRICE_API_BASE_URL = `${this.PAYMENT_API_BASE_URL}/product-prices`;
+  private readonly TENANT_API_BASE_URL = `${this.PAYMENT_API_BASE_URL}/tenants`;
 
   constructor(private readonly httpClient: IHttpClient) {}
 
@@ -315,12 +315,15 @@ export class InspirePaymentApiService implements IInspirePaymentApiService {
     return reconcileBexs.data.body.data;
   }
 
-  async updateProductPrice(
-    attrs: UpdateProductPriceDto.InputAttrs,
-  ): UpdateProductPriceDto.Result {
+  async updateTenantConfiguration(
+    attrs: UpdateTenantConfigurationsDto.InputAttrs,
+  ): UpdateTenantConfigurationsDto.Result {
     const response = await this.httpClient.patch<any>(
-      `${this.PRODUCT_PRICE_API_BASE_URL}/dual-price/${attrs.percentage}`,
-      undefined,
+      `${this.TENANT_API_BASE_URL}/update-tenants-configurations`,
+      {
+        isDualPricingActive: attrs.isDualPricingActive,
+        dualPricingPercentage: attrs.dualPricingPercentage,
+      },
       {
         headers: {
           authorization: attrs.accessToken,
