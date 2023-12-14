@@ -19,4 +19,8 @@ export const SqlScriptPaths = {
   ADD_PAYOUT_MANAGEMENT_DOWN: `${SCRIPTS_FOLDER}/1693500212248-add-payout-management.down.sql`,
   ADD_ZOOP_PAYMENT_PROCESSOR_UP: `${SCRIPTS_FOLDER}/1694101690729-add-zoop-payment-processor.up.sql`,
   ADD_ZOOP_PAYMENT_PROCESSOR_DOWN: `${SCRIPTS_FOLDER}/1694101690729-add-zoop-payment-processor.down.sql`,
+  ADD_PAYA_PAYMENT_PROCESSOR_UP: `${SCRIPTS_FOLDER}/1698263808392-add-paya-payment-processor.up.sql`,
+  ADD_PAYA_PAYMENT_PROCESSOR_DOWN: `${SCRIPTS_FOLDER}/1698263808392-add-paya-payment-processor.down.sql`,
+  ADD_PAYMENT_METHOD_ACH_UP: `${SCRIPTS_FOLDER}/1698858337931-add-payment-method-ach.up.sql`,
+  ADD_PAYMENT_METHOD_ACH_DOWN: `${SCRIPTS_FOLDER}/1698858337931-add-payment-method-ach.down.sql`,
 } as const;
