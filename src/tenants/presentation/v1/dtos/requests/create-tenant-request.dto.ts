@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
-  IsMongoId,
+  IsUUID,
   IsNotEmpty,
   IsObject,
   IsOptional,
@@ -41,22 +41,31 @@ export class CreateTenantRequestBodyDto {
   @IsOptional()
   settings?: Record<string, any>;
 
-  @ApiProperty({ example: '614ce3cfc4e9775f5a6dc5a9' })
-  @IsMongoId()
+  @ApiProperty({ example: '8b49702a-a52f-4753-955a-336a4bd4714b' })
+  @IsUUID()
   countryId: string;
 
-  @ApiProperty({ example: '614ce3cfc4e9775f5a6dc5a7', required: false })
-  @IsMongoId()
+  @ApiProperty({
+    example: '62df0ea3-c220-48a2-ae55-e96ccfbfadd3',
+    required: false,
+  })
+  @IsUUID()
   @IsOptional()
   agencyId?: string;
 
-  @ApiProperty({ example: '614ce3cfc4e9775f5a6dc5a8', required: false })
-  @IsMongoId()
+  @ApiProperty({
+    example: '890e08dc-a6f7-488f-86af-13be8909e296',
+    required: false,
+  })
+  @IsUUID()
   @IsOptional()
   timezoneId?: string;
 
-  @ApiProperty({ example: '614ce3cfc4e9775f5a6dc5a8', required: false })
-  @IsMongoId()
+  @ApiProperty({
+    example: 'ecbe0ecd-5d89-4238-b4c3-260723f11378',
+    required: false,
+  })
+  @IsUUID()
   @IsOptional()
   languageId?: string;
 }

@@ -1,7 +1,13 @@
-import { Controller, Get, Inject, Param, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Param,
+  ParseUUIDPipe,
+  Req,
+} from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
-import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { GetOneUserTypesUseCase } from '~/user-types/application/get-one-user-types.use-case';
 import { ListUserTypesUseCase } from '~/user-types/application/list-user-types.use-case';
@@ -33,7 +39,7 @@ export class UserTypesController {
   @AuthenticatedRoute()
   async findOne(
     @Req() request: FastifyRequest,
-    @Param('id', IsMongoIdPipe) id: string,
+    @Param('id', ParseUUIDPipe) id: string,
   ) {
     const userTypes = this.getOneUserTypesUseCase.handle({
       accessToken: request.headers.authorization,

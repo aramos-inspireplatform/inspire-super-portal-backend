@@ -4,13 +4,13 @@ import {
   Get,
   Inject,
   Param,
+  ParseUUIDPipe,
   Post,
   Query,
   Req,
 } from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
-import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { CreateAdminUserCommand } from '~/users/application/commands/create-admin-user.command';
@@ -65,7 +65,7 @@ export class TenantAdminUsersController {
   @ApiDefaultResponse({ type: FindAllAdminUsersResponseDto })
   async findOne(
     @Req() request: FastifyRequest,
-    @Param('id', IsMongoIdPipe) userId: string,
+    @Param('id', ParseUUIDPipe) userId: string,
   ) {
     const user = await this.findOneAdminUserQuery.execute({
       accessToken: request.headers.authorization,

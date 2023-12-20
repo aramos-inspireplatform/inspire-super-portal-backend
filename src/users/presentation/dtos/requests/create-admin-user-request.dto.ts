@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsEmail,
-  IsMongoId,
+  IsUUID,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -55,18 +55,27 @@ export class CreateAdminUserRequestDto {
   @IsOptional()
   phoneNumber?: string;
 
-  @ApiProperty({ example: '61b0dbd5ec727212cd6e2e21', required: false })
+  @ApiProperty({
+    example: '432c58ad-d5f5-4914-8968-51de0bf6b4d5',
+    required: false,
+  })
   @IsOptional()
-  @IsMongoId()
+  @IsUUID()
   userTypeId: string;
 
-  @ApiProperty({ example: ['61b0dbd5ec727249cd6e2e24'], required: false })
+  @ApiProperty({
+    example: ['62df0ea3-c220-48a2-ae55-e96ccfbfadd3'],
+    required: false,
+  })
   @IsOptional()
-  @IsMongoId({ each: true })
+  @IsUUID('all', { each: true })
   agencies?: string[];
 
-  @ApiProperty({ example: '61b0dbd5ec727212cd6e2e21', required: false })
+  @ApiProperty({
+    example: '8b49702a-a52f-4753-955a-336a4bd4714b',
+    required: false,
+  })
   @IsOptional()
-  @IsMongoId()
+  @IsUUID()
   phoneNumberCountryId?: string;
 }
