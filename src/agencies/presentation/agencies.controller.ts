@@ -1,11 +1,18 @@
-import { Controller, Get, Inject, Param, Query, Req } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Inject,
+  Param,
+  ParseUUIDPipe,
+  Query,
+  Req,
+} from '@nestjs/common';
 import { ApiDefaultResponse, ApiTags } from '@nestjs/swagger';
 import { FastifyRequest } from 'fastify';
 import { FindAllAgenciesQuery } from '~/agencies/application/queries/find-all-agencies.query';
 import { FindAllUserAgenciesQuery } from '~/agencies/application/queries/find-all-user-agencies.query';
 import { AgenciesProvidersSymbols } from '~/agencies/ioc/agencies-providers.symbols';
 import { GetAgencyDto } from '~/agencies/presentation/dto/output/get-agencies.dto';
-import { IsMongoIdPipe } from '~/shared/infra/nestjs/pipes/is-mongo-id.pipe';
 import { CommonPaginateDto } from '~/shared/presentation/common-paginated.dto';
 import { AuthenticatedRoute } from '~/shared/presentation/decorators/authenticated-route.decorator';
 import { PaginatedResultsDto } from '~/shared/presentation/paginated-results.dto';
@@ -45,7 +52,7 @@ export class AgenciesController {
   @ApiDefaultResponse({ type: PaginatedResultsDto<GetAgencyDto> })
   async findAllByUser(
     @Req() request: FastifyRequest,
-    @Param('userId', IsMongoIdPipe) userId: string,
+    @Param('userId', ParseUUIDPipe) userId: string,
   ) {
     const agencies = await this.findAllUserAgenciesQuery.execute({
       accessToken: request.headers.authorization,
